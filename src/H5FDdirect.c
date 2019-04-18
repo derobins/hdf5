@@ -137,6 +137,7 @@ static herr_t H5FD_direct_write(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, h
 static herr_t H5FD_direct_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
 static herr_t H5FD_direct_lock(H5FD_t *_file, hbool_t rw);
 static herr_t H5FD_direct_unlock(H5FD_t *_file);
+static herr_t H5FD_direct_delete(const char *filename, hid_t fapl_id);
 
 
 static const H5FD_class_t H5FD_direct_g = {
@@ -171,6 +172,7 @@ static const H5FD_class_t H5FD_direct_g = {
     H5FD_direct_truncate,      	/*truncate    */
     H5FD_direct_lock,          	/*lock                  */
     H5FD_direct_unlock,        	/*unlock                */
+    H5FD_direct_delete,                       /* del                  */
     H5FD_FLMAP_DICHOTOMY       	/*fl_map                */
 };
 
@@ -346,7 +348,7 @@ H5Pget_fapl_direct(hid_t fapl_id, size_t *boundary/*out*/, size_t *block_size/*o
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access list")
     if(H5FD_DIRECT != H5P_peek_driver(plist))
         HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, FAIL, "incorrect VFL driver")
-    if(NULL == (fa = H5P_peek_driver_info(plist)))
+    if(NULL == (fa = (const H5FD_direct_fapl_t *)H5P_peek_driver_info(plist)))
         HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, FAIL, "bad VFL driver info")
     if(boundary)
         *boundary = fa->mboundary;
@@ -385,12 +387,11 @@ H5FD_direct_fapl_get(H5FD_t *_file)
     H5FD_direct_t  *file = (H5FD_direct_t*)_file;
     void *ret_value;    /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     /* Set return value */
-    ret_value= H5FD_direct_fapl_copy(&(file->fa));
+    ret_value = H5FD_direct_fapl_copy(&(file->fa));
 
-done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5FD_direct_fapl_get() */
 
@@ -415,7 +416,7 @@ static void *
 H5FD_direct_fapl_copy(const void *_old_fa)
 {
     const H5FD_direct_fapl_t *old_fa = (const H5FD_direct_fapl_t*)_old_fa;
-    H5FD_direct_fapl_t *new_fa = H5MM_calloc(sizeof(H5FD_direct_fapl_t));
+    H5FD_direct_fapl_t *new_fa = (H5FD_direct_fapl_t *)H5MM_calloc(sizeof(H5FD_direct_fapl_t));
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -450,9 +451,9 @@ static H5FD_t *
 H5FD_direct_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr)
 {
     int      o_flags;
-    int      fd=(-1);
-    H5FD_direct_t  *file=NULL;
-    H5FD_direct_fapl_t  *fa;
+    int      fd = (-1);
+    H5FD_direct_t  *file = NULL;
+    const H5FD_direct_fapl_t  *fa;
 #ifdef H5_HAVE_WIN32_API
     HFILE     filehandle;
     struct _BY_HANDLE_FILE_INFORMATION fileinfo;
@@ -470,7 +471,7 @@ H5FD_direct_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxadd
     /* Check arguments */
     if (!name || !*name)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, NULL, "invalid file name")
-    if (0==maxaddr || HADDR_UNDEF==maxaddr)
+    if (0 == maxaddr || HADDR_UNDEF==maxaddr)
         HGOTO_ERROR(H5E_ARGS, H5E_BADRANGE, NULL, "bogus maxaddr")
     if (ADDR_OVERFLOW(maxaddr))
         HGOTO_ERROR(H5E_ARGS, H5E_OVERFLOW, NULL, "bogus maxaddr")
@@ -492,13 +493,13 @@ H5FD_direct_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxadd
         HSYS_GOTO_ERROR(H5E_FILE, H5E_BADFILE, NULL, "unable to fstat file")
 
     /* Create the new file struct */
-    if (NULL==(file=H5FL_CALLOC(H5FD_direct_t)))
+    if (NULL == (file = H5FL_CALLOC(H5FD_direct_t)))
         HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, NULL, "unable to allocate file struct")
 
     /* Get the driver specific information */
     if(NULL == (plist = H5P_object_verify(fapl_id,H5P_FILE_ACCESS)))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, NULL, "not a file access property list")
-    if(NULL == (fa = (H5FD_direct_fapl_t *)H5P_peek_driver_info(plist)))
+    if(NULL == (fa = (const H5FD_direct_fapl_t *)H5P_peek_driver_info(plist)))
         HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, NULL, "bad VFL driver info")
 
     file->fd = fd;
@@ -526,7 +527,7 @@ H5FD_direct_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxadd
      *       HDposix_memalign.
      */
     buf1 = (int *)HDmalloc(sizeof(int));
-    if(HDposix_memalign(&buf2, file->fa.mboundary, file->fa.fbsize) != 0)
+    if(HDposix_memalign((void **)&buf2, file->fa.mboundary, file->fa.fbsize) != 0)
         HGOTO_ERROR(H5E_RESOURCE, H5E_CANTALLOC, NULL, "HDposix_memalign failed")
 
     if(o_flags & O_CREAT) {
@@ -794,7 +795,7 @@ H5FD_direct_get_eof(const H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type)
 {
     const H5FD_direct_t  *file = (const H5FD_direct_t*)_file;
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     FUNC_LEAVE_NOAPI(file->eof)
 }
@@ -1343,7 +1344,7 @@ H5FD_direct_lock(H5FD_t *_file, hbool_t rw)
     HDassert(file);
 
     /* Determine the type of lock */
-    int lock = rw ? LOCK_EX : LOCK_SH;
+    lock = rw ? LOCK_EX : LOCK_SH;
     
     /* Place the lock with non-blocking */
     if(HDflock(file->fd, lock | LOCK_NB) < 0)
@@ -1381,6 +1382,32 @@ H5FD_direct_unlock(H5FD_t *_file)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5FD_direct_unlock() */
+
+
+/*-------------------------------------------------------------------------
+ * Function:    H5FD_direct_delete
+ *
+ * Purpose:     Delete a file
+ *
+ * Return:      SUCCEED/FAIL
+ *
+ *-------------------------------------------------------------------------
+ */
+static herr_t
+H5FD_direct_delete(const char *filename, hid_t H5_ATTR_UNUSED fapl_id)
+{
+    herr_t ret_value = SUCCEED;                 /* Return value             */
+
+    FUNC_ENTER_NOAPI_NOINIT
+
+    HDassert(filename);
+
+    if(HDremove(filename) < 0)
+        HSYS_GOTO_ERROR(H5E_FILE, H5E_CANTDELETEFILE, FAIL, "unable to delete file")
+
+done:
+    FUNC_LEAVE_NOAPI(ret_value)
+} /* end H5FD_direct_delete() */
 
 #endif /* H5_HAVE_DIRECT */
 

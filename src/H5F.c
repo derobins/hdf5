@@ -565,15 +565,15 @@ done:
  *-------------------------------------------------------------------------
  */
 htri_t
-H5Fis_accessible(const char *name, hid_t fapl_id)
+H5Fis_accessible(const char *filename, hid_t fapl_id)
 {
     htri_t      ret_value;              /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("t", "*si", name, fapl_id);
+    H5TRACE2("t", "*si", filename, fapl_id);
 
     /* Check args */
-    if(!name || !*name)
+    if(!filename || !*filename)
         HGOTO_ERROR(H5E_ARGS, H5E_BADRANGE, FAIL, "no file name specified")
 
     /* Check the file access property list */
@@ -584,7 +584,7 @@ H5Fis_accessible(const char *name, hid_t fapl_id)
             HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not file access property list")
 
     /* Check if file is accessible */
-    if(H5VL_file_specific(NULL, H5VL_FILE_IS_ACCESSIBLE, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL, fapl_id, name, &ret_value) < 0)
+    if(H5VL_file_specific(NULL, H5VL_FILE_IS_ACCESSIBLE, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL, fapl_id, filename, &ret_value) < 0)
         HGOTO_ERROR(H5E_FILE, H5E_NOTHDF5, FAIL, "unable to determine if file is accessible as HDF5")
 
 done:
@@ -831,6 +831,50 @@ H5Fclose(hid_t file_id)
      */
     if(H5I_dec_app_ref(file_id) < 0)
         HGOTO_ERROR(H5E_ATOM, H5E_CANTCLOSEFILE, FAIL, "decrementing file ID failed")
+
+done:
+    FUNC_LEAVE_API(ret_value)
+} /* end H5Fclose() */
+
+
+/*-------------------------------------------------------------------------
+ * Function:    H5Fdelete
+ *
+ * Purpose:     Deletes an HDF5 file.
+ *
+ * Return:      SUCCEED/FAIL
+ *
+ *-------------------------------------------------------------------------
+ */
+herr_t
+H5Fdelete(const char *filename, hid_t fapl_id)
+{
+    htri_t      is_hdf5 = FAIL;
+    herr_t      ret_value = SUCCEED;
+
+    FUNC_ENTER_API(FAIL)
+    H5TRACE2("e", "*si", filename, fapl_id);
+
+    /* Check args */
+    if(!filename || !*filename)
+        HGOTO_ERROR(H5E_ARGS, H5E_BADRANGE, FAIL, "no file name specified")
+
+    /* Check the file access property list */
+    if(H5P_DEFAULT == fapl_id)
+        fapl_id = H5P_FILE_ACCESS_DEFAULT;
+    else
+        if(TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+            HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not file access property list")
+
+    /* Make sure this is HDF5 storage for this VOL connector */
+    if(H5VL_file_specific(NULL, H5VL_FILE_IS_ACCESSIBLE, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL, fapl_id, filename, &is_hdf5) < 0)
+        HGOTO_ERROR(H5E_FILE, H5E_NOTHDF5, FAIL, "unable to determine if file is accessible as HDF5")
+    if(!is_hdf5)
+        HGOTO_ERROR(H5E_FILE, H5E_NOTHDF5, FAIL, "not an HDF5 file")
+
+    /* Delete the file */
+    if(H5VL_file_specific(NULL, H5VL_FILE_DELETE, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL, fapl_id, filename, &ret_value) < 0)
+        HGOTO_ERROR(H5E_FILE, H5E_CANTDELETEFILE, FAIL, "unable to delete the file")
 
 done:
     FUNC_LEAVE_API(ret_value)

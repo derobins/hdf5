@@ -1782,6 +1782,53 @@ test_file_ishdf5(void)
 } /* end test_file_ishdf5() */
 #endif /* H5_NO_DEPRECATED_SYMBOLS */
 
+
+/****************************************************************
+**
+**  test_file_delete(): tests H5Fdelete for all VFDs
+**
+*****************************************************************/
+#define FILE_DELETE     "test_file_delete"
+static void
+test_file_delete(hid_t fapl_id)
+{
+    hid_t    fid;               /* File to be deleted */
+    char filename[FILENAME_LEN]; /* Filename to use */
+    htri_t   status;            /* Whether a file is an HDF5 file */
+    herr_t   ret;
+
+    /* Output message about test being performed */
+    MESSAGE(5, ("Testing Deletion of HDF5 Files\n"));
+
+    /* Get FAPL */
+    h5_fixname(FILE_DELETE, fapl_id, filename, sizeof(filename));
+
+    /* Create a file */
+    fid = H5Fcreate(filename, H5F_ACC_TRUNC, H5P_DEFAULT, fapl_id);
+    CHECK(fid, FAIL, "H5Fcreate");
+
+    /* Close file */
+    ret = H5Fclose(fid);
+    CHECK(ret, FAIL, "H5Fclose");
+
+    /* Verify that the file is an HDF5 file */
+    status = H5Fis_accessible(filename, fapl_id);
+    VERIFY(status, TRUE, "H5Fis_accessible");
+
+    /* Delete the file */
+    ret = H5Fdelete(filename, fapl_id);
+    CHECK(ret, FAIL, "H5Fdelete");
+
+    /* Verify that the file is NO LONGER an HDF5 file */
+    status = H5Fis_accessible(filename, fapl_id);
+    CHECK(status, TRUE, "H5Fis_accessible");
+
+    /* Just in case deletion fails - silent on errors */
+    h5_delete_test_file(FILE_DELETE, fapl_id);
+
+} /* end test_file_delete() */
+
+
 /****************************************************************
 **
 **  test_file_open_dot(): low-level file test routine.
@@ -7537,8 +7584,11 @@ test_deprec(void)
 void
 test_file(void)
 {
-    hbool_t  single_file_vfd;   /* Whether VFD used is a single file */
+    hbool_t single_file_vfd;   /* Whether VFD used is a single file */
+    hbool_t vfd_creates_files;
     const char  *env_h5_drvr;         /* File Driver value from environment */
+    hid_t fapl_id = H5I_INVALID_HID;    /* VFD-dependent fapl ID */
+    herr_t   ret;
 
     /* Output message about test being performed */
     MESSAGE(5, ("Testing Low-Level File I/O\n"));
@@ -7548,6 +7598,11 @@ test_file(void)
     if(env_h5_drvr == NULL)
         env_h5_drvr = "nomatch";
     single_file_vfd = (hbool_t)(HDstrcmp(env_h5_drvr, "split") && HDstrcmp(env_h5_drvr, "multi") && HDstrcmp(env_h5_drvr, "family"));
+    vfd_creates_files = (hbool_t)(HDstrcmp(env_h5_drvr, "core") && HDstrcmp(env_h5_drvr, "core_paged"));
+
+    /* Improved version of VFD-dependent checks */
+    fapl_id = h5_fileaccess();
+    CHECK(fapl_id, H5I_INVALID_HID, "h5_fileaccess");
 
     test_file_create();                         /* Test file creation(also creation templates)*/
     test_file_open();                           /* Test file opening */
@@ -7558,6 +7613,8 @@ test_file(void)
     test_file_perm();                           /* Test file access permissions */
     test_file_perm2();                          /* Test file access permission again */
     test_file_is_accessible(env_h5_drvr);       /* Test detecting HDF5 files correctly */
+    if(vfd_creates_files)
+        test_file_delete(fapl_id);              /* Test H5Fdelete */
     test_file_open_dot();                       /* Test opening objects with "." for a name */
     test_file_open_overlap();                   /* Test opening files in an overlapping manner */
     test_file_getname();                        /* Test basic H5Fget_name() functionality */
@@ -7599,13 +7656,18 @@ test_file(void)
         MESSAGE(5, ("Skipping testing detection of HDF5 Files (using deprecated H5Fis_hdf5() call for non-single file VFDs)\n"));
     test_deprec();                              /* Test deprecated routines */
 #endif /* H5_NO_DEPRECATED_SYMBOLS */
+
+    ret = H5Pclose(fapl_id);
+    CHECK(ret, FAIL, "H5Pclose");
+
 } /* test_file() */
 
 
 /*-------------------------------------------------------------------------
  * Function:    cleanup_file
  *
- * Purpose:    Cleanup temporary test files
+ * Purpose:    Cleanup temporary test files:w
+ *
  *
  * Return:    none
  *
