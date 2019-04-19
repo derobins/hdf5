@@ -91,6 +91,7 @@ static herr_t H5FD__mpio_write(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, ha
             size_t size, const void *buf);
 static herr_t H5FD__mpio_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
 static herr_t H5FD__mpio_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
+static herr_t H5FD__mpio_delete(const char *filename, hid_t fapl_id);
 static int H5FD__mpio_mpi_rank(const H5FD_t *_file);
 static int H5FD__mpio_mpi_size(const H5FD_t *_file);
 static MPI_Comm H5FD__mpio_communicator(const H5FD_t *_file);
@@ -130,7 +131,7 @@ static const H5FD_class_mpi_t H5FD_mpio_g = {
     H5FD__mpio_truncate,			/*truncate		*/
     NULL,                                       /*lock                  */
     NULL,                                       /*unlock                */
-    NULL,                       /* del                  */
+    H5FD__mpio_delete,                          /* del                  */
     H5FD_FLMAP_DICHOTOMY                        /*fl_map                */
     },  /* End of superclass information */
     H5FD__mpio_mpi_rank,                        /*get_rank              */
@@ -264,7 +265,7 @@ done:
 static herr_t
 H5FD__mpio_term(void)
 {
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Reset VFL ID */
     H5FD_MPIO_g = 0;
@@ -789,7 +790,7 @@ H5FD__mpio_fapl_free(void *_fa)
     H5FD_mpio_fapl_t	*fa = (H5FD_mpio_fapl_t*)_fa;
     herr_t		ret_value = SUCCEED;
 
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
 #ifdef H5FDmpio_DEBUG
 if(H5FD_mpio_Debug[(int)'t'])
@@ -957,17 +958,17 @@ H5FD__mpio_open(const char *name, unsigned flags, hid_t fapl_id,
     if(NULL == (plist = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, NULL, "not a file access property list")
     if(H5P_FILE_ACCESS_DEFAULT == fapl_id || H5FD_MPIO != H5P_peek_driver(plist)) {
-	_fa.comm = MPI_COMM_SELF; /*default*/
-	_fa.info = MPI_INFO_NULL; /*default*/
-	fa = &_fa;
+        _fa.comm = MPI_COMM_SELF; /*default*/
+        _fa.info = MPI_INFO_NULL; /*default*/
+        fa = &_fa;
     } /* end if */
     else
         if(NULL == (fa = (const H5FD_mpio_fapl_t *)H5P_peek_driver_info(plist)))
-	    HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, NULL, "bad VFL driver info")
+            HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, NULL, "bad VFL driver info")
 
     /* Duplicate communicator and Info object for use by this file. */
     if(FAIL == H5FD_mpi_comm_info_dup(fa->comm, fa->info, &comm_dup, &info_dup))
-	HGOTO_ERROR(H5E_INTERNAL, H5E_CANTCOPY, NULL, "Communicator/Info duplicate failed")
+        HGOTO_ERROR(H5E_INTERNAL, H5E_CANTCOPY, NULL, "Communicator/Info duplicate failed")
 
     /* convert HDF5 flags to MPI-IO flags */
     /* some combinations are illegal; let MPI-IO figure it out */
@@ -1130,7 +1131,7 @@ done:
 static herr_t
 H5FD__mpio_query(const H5FD_t H5_ATTR_UNUSED *_file, unsigned long *flags /* out */)
 {
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Set the VFL feature flags that this driver supports */
     if(flags) {
@@ -1166,7 +1167,7 @@ H5FD__mpio_get_eoa(const H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type)
 {
     const H5FD_mpio_t	*file = (const H5FD_mpio_t*)_file;
 
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity checks */
     HDassert(file);
@@ -1196,7 +1197,7 @@ H5FD__mpio_set_eoa(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, haddr_t addr)
 {
     H5FD_mpio_t	*file = (H5FD_mpio_t*)_file;
 
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity checks */
     HDassert(file);
@@ -1239,7 +1240,7 @@ H5FD__mpio_get_eof(const H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type)
 {
     const H5FD_mpio_t	*file = (const H5FD_mpio_t*)_file;
 
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity checks */
     HDassert(file);
@@ -1878,6 +1879,47 @@ done:
 
 
 /*-------------------------------------------------------------------------
+ * Function:    H5FD__mpio_delete
+ *
+ * Purpose:     Delete a file
+ *
+ * Return:      SUCCEED/FAIL
+ *
+ *-------------------------------------------------------------------------
+ */
+static herr_t
+H5FD__mpio_delete(const char *filename, hid_t fapl_id)
+{
+    H5P_genplist_t  *plist;      /* Property list pointer */
+    const H5FD_mpio_fapl_t	*fa = NULL;
+    MPI_Info        info = MPI_INFO_NULL;
+    herr_t          ret_value = SUCCEED;                /* Return value             */
+
+    FUNC_ENTER_NOAPI_NOINIT
+
+    HDassert(filename);
+
+    /* Get the MPI info from the fapl */
+    if(NULL == (plist = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
+        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list")
+    if(H5P_FILE_ACCESS_DEFAULT == fapl_id || H5FD_MPIO != H5P_peek_driver(plist))
+        info = MPI_INFO_NULL;   /* default */
+    else {
+        if(NULL == (fa = (const H5FD_mpio_fapl_t *)H5P_peek_driver_info(plist)))
+            HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "bad VFL driver info")
+        info = fa->info;
+    }
+
+    /* Delete the file */
+    if(MPI_File_delete(filename, info) < 0)
+        HSYS_GOTO_ERROR(H5E_IO, H5E_CANTDELETEFILE, FAIL, "unable to delete file")
+
+done:
+    FUNC_LEAVE_NOAPI(ret_value)
+} /* end H5FD__mpio_delete() */
+
+
+/*-------------------------------------------------------------------------
  * Function:	H5FD__mpio_mpi_rank
  *
  * Purpose:	Returns the MPI rank for a process
@@ -1895,7 +1937,7 @@ H5FD__mpio_mpi_rank(const H5FD_t *_file)
 {
     const H5FD_mpio_t	*file = (const H5FD_mpio_t*)_file;
 
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity checks */
     HDassert(file);
@@ -1923,7 +1965,7 @@ H5FD__mpio_mpi_size(const H5FD_t *_file)
 {
     const H5FD_mpio_t	*file = (const H5FD_mpio_t*)_file;
 
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity checks */
     HDassert(file);
@@ -1952,7 +1994,7 @@ H5FD__mpio_communicator(const H5FD_t *_file)
 {
     const H5FD_mpio_t	*file = (const H5FD_mpio_t*)_file;
 
-    FUNC_ENTER_STATIC
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity checks */
     HDassert(file);
