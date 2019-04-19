@@ -1788,19 +1788,26 @@ test_file_ishdf5(void)
 **  test_file_delete(): tests H5Fdelete for all VFDs
 **
 *****************************************************************/
-#define FILE_DELETE     "test_file_delete"
+#define FILE_DELETE             "test_file_delete"
+#define FILE_DELETE_NOT_HDF5    "test_file_delete_not_hdf5"
 static void
 test_file_delete(hid_t fapl_id)
 {
-    hid_t    fid;               /* File to be deleted */
-    char filename[FILENAME_LEN]; /* Filename to use */
-    htri_t   status;            /* Whether a file is an HDF5 file */
-    herr_t   ret;
+    hid_t       fid = H5I_INVALID_HID;  /* File to be deleted */
+    char        filename[FILENAME_LEN]; /* Filename to use */
+    htri_t      is_hdf5;                /* Whether a file is an HDF5 file */
+    int         fd;                     /* POSIX file descriptor */
+    int         iret;
+    herr_t      ret;
 
     /* Output message about test being performed */
     MESSAGE(5, ("Testing Deletion of HDF5 Files\n"));
 
-    /* Get FAPL */
+    /*************/
+    /* HDF5 FILE */
+    /*************/
+
+    /* Get fapl-dependent filename */
     h5_fixname(FILE_DELETE, fapl_id, filename, sizeof(filename));
 
     /* Create a file */
@@ -1812,19 +1819,48 @@ test_file_delete(hid_t fapl_id)
     CHECK(ret, FAIL, "H5Fclose");
 
     /* Verify that the file is an HDF5 file */
-    status = H5Fis_accessible(filename, fapl_id);
-    VERIFY(status, TRUE, "H5Fis_accessible");
+    is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    VERIFY(is_hdf5, TRUE, "H5Fis_accessible");
 
     /* Delete the file */
     ret = H5Fdelete(filename, fapl_id);
     CHECK(ret, FAIL, "H5Fdelete");
 
     /* Verify that the file is NO LONGER an HDF5 file */
-    status = H5Fis_accessible(filename, fapl_id);
-    CHECK(status, TRUE, "H5Fis_accessible");
+    is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    CHECK(is_hdf5, TRUE, "H5Fis_accessible");
 
     /* Just in case deletion fails - silent on errors */
     h5_delete_test_file(FILE_DELETE, fapl_id);
+
+    /*****************/
+    /* NON-HDF5 FILE */
+    /*****************/
+
+    /* Get fapl-dependent filename */
+    h5_fixname(FILE_DELETE_NOT_HDF5, fapl_id, filename, sizeof(filename));
+
+    /* Create a non-HDF5 file */
+    fd = HDopen(filename, O_RDWR | O_CREAT | O_TRUNC, H5_POSIX_CREATE_MODE_RW);
+    CHECK_I(fd, "HDopen");
+
+    /* Close the file */
+    ret = HDclose(fd);
+    VERIFY(ret, 0, "HDclose");
+
+    /* Verify that the file is not an HDF5 file */
+    is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    VERIFY(is_hdf5, FALSE, "H5Fis_accessible");
+
+    /* Try to delete it (should fail) */
+    H5E_BEGIN_TRY {
+        ret = H5Fdelete(filename, fapl_id);
+    } H5E_END_TRY;
+    VERIFY(ret, FAIL, "H5Fdelete");
+
+    /* Delete the file */
+    iret = HDremove(filename);
+    VERIFY(iret, 0, "HDremove");
 
 } /* end test_file_delete() */
 
