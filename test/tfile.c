@@ -1812,11 +1812,11 @@ test_file_delete(hid_t fapl_id)
 
     /* Create a file */
     fid = H5Fcreate(filename, H5F_ACC_TRUNC, H5P_DEFAULT, fapl_id);
-    CHECK(fid, FAIL, "H5Fcreate");
+    CHECK(fid, H5I_INVALID_HID, "H5Fcreate");
 
     /* Close file */
     ret = H5Fclose(fid);
-    CHECK(ret, FAIL, "H5Fclose");
+    VERIFY(ret, SUCCEED, "H5Fclose");
 
     /* Verify that the file is an HDF5 file */
     is_hdf5 = H5Fis_accessible(filename, fapl_id);
@@ -1824,11 +1824,14 @@ test_file_delete(hid_t fapl_id)
 
     /* Delete the file */
     ret = H5Fdelete(filename, fapl_id);
-    CHECK(ret, FAIL, "H5Fdelete");
+    VERIFY(ret, SUCCEED, "H5Fdelete");
 
     /* Verify that the file is NO LONGER an HDF5 file */
-    is_hdf5 = H5Fis_accessible(filename, fapl_id);
-    CHECK(is_hdf5, TRUE, "H5Fis_accessible");
+    /* This should fail since there is no file */
+    H5E_BEGIN_TRY {
+        is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    } H5E_END_TRY;
+    VERIFY(is_hdf5, FAIL, "H5Fis_accessible");
 
     /* Just in case deletion fails - silent on errors */
     h5_delete_test_file(FILE_DELETE, fapl_id);
@@ -1849,8 +1852,15 @@ test_file_delete(hid_t fapl_id)
     VERIFY(ret, 0, "HDclose");
 
     /* Verify that the file is not an HDF5 file */
-    is_hdf5 = H5Fis_accessible(filename, fapl_id);
-    VERIFY(is_hdf5, FALSE, "H5Fis_accessible");
+    /* Note that you can get a FAIL result when h5_fixname()
+     * perturbs the filename as a file with that exact name
+     * may not have been created since we created it with
+     * open(2) and not the library.
+     */
+    H5E_BEGIN_TRY {
+        is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    } H5E_END_TRY;
+    CHECK(is_hdf5, SUCCEED, "H5Fis_accessible");
 
     /* Try to delete it (should fail) */
     H5E_BEGIN_TRY {
@@ -7621,7 +7631,6 @@ void
 test_file(void)
 {
     hbool_t single_file_vfd;   /* Whether VFD used is a single file */
-    hbool_t vfd_creates_files;
     const char  *env_h5_drvr;         /* File Driver value from environment */
     hid_t fapl_id = H5I_INVALID_HID;    /* VFD-dependent fapl ID */
     herr_t   ret;
@@ -7634,7 +7643,6 @@ test_file(void)
     if(env_h5_drvr == NULL)
         env_h5_drvr = "nomatch";
     single_file_vfd = (hbool_t)(HDstrcmp(env_h5_drvr, "split") && HDstrcmp(env_h5_drvr, "multi") && HDstrcmp(env_h5_drvr, "family"));
-    vfd_creates_files = (hbool_t)(HDstrcmp(env_h5_drvr, "core") && HDstrcmp(env_h5_drvr, "core_paged"));
 
     /* Improved version of VFD-dependent checks */
     fapl_id = h5_fileaccess();
@@ -7649,8 +7657,7 @@ test_file(void)
     test_file_perm();                           /* Test file access permissions */
     test_file_perm2();                          /* Test file access permission again */
     test_file_is_accessible(env_h5_drvr);       /* Test detecting HDF5 files correctly */
-    if(vfd_creates_files)
-        test_file_delete(fapl_id);              /* Test H5Fdelete */
+    test_file_delete(fapl_id);                  /* Test H5Fdelete */
     test_file_open_dot();                       /* Test opening objects with "." for a name */
     test_file_open_overlap();                   /* Test opening files in an overlapping manner */
     test_file_getname();                        /* Test basic H5Fget_name() functionality */

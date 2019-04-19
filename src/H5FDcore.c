@@ -146,6 +146,7 @@ static herr_t H5FD__core_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
 static herr_t H5FD__core_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
 static herr_t H5FD_core_lock(H5FD_t *_file, hbool_t rw);
 static herr_t H5FD_core_unlock(H5FD_t *_file);
+static herr_t H5FD_core_delete(const char *filename, hid_t fapl_id);
 
 static const H5FD_class_t H5FD_core_g = {
     "core",                     /* name                 */
@@ -179,7 +180,7 @@ static const H5FD_class_t H5FD_core_g = {
     H5FD__core_truncate,        /* truncate             */
     H5FD_core_lock,             /* lock                 */
     H5FD_core_unlock,           /* unlock               */
-    NULL,                       /* del                  */
+    H5FD_core_delete,           /* del                  */
     H5FD_FLMAP_DICHOTOMY        /* fl_map               */
 };
 
@@ -1662,4 +1663,30 @@ H5FD_core_unlock(H5FD_t *_file)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5FD_core_unlock() */
+
+
+/*-------------------------------------------------------------------------
+ * Function:    H5FD_core_delete
+ *
+ * Purpose:     Delete a file
+ *
+ * Return:      SUCCEED/FAIL
+ *
+ *-------------------------------------------------------------------------
+ */
+static herr_t
+H5FD_core_delete(const char *filename, hid_t H5_ATTR_UNUSED fapl_id)
+{
+    herr_t ret_value = SUCCEED;                 /* Return value             */
+
+    FUNC_ENTER_NOAPI_NOINIT
+
+    HDassert(filename);
+
+    if(HDremove(filename) < 0)
+        HSYS_GOTO_ERROR(H5E_FILE, H5E_CANTDELETEFILE, FAIL, "unable to delete file")
+
+done:
+    FUNC_LEAVE_NOAPI(ret_value)
+} /* end H5FD_core_delete() */
 

@@ -560,7 +560,8 @@ done:
  *
  * Purpose:     Check if the file can be opened with the given fapl.
  *
- * Return:      TRUE/FALSE/FAIL
+ * Return:      Succeed:    TRUE/FALSE
+ *              Failure:    FAIL (includes file does not exist)
  *
  *-------------------------------------------------------------------------
  */
