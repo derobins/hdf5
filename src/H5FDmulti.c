@@ -1005,7 +1005,7 @@ H5FD_multi_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr
         H5Epush_ret(func, H5E_ERR_CLS, H5E_RESOURCE, H5E_NOSPACE, "memory allocation failed", NULL)
     if(H5P_FILE_ACCESS_DEFAULT == fapl_id || H5FD_MULTI != H5Pget_driver(fapl_id)) {
         close_fapl = fapl_id = H5Pcreate(H5P_FILE_ACCESS);
-        if(H5Pset_fapl_multi(fapl_id, NULL, NULL, NULL, NULL, TRUE)<0)
+        if(H5Pset_fapl_multi(fapl_id, NULL, NULL, NULL, NULL, TRUE) < 0)
             H5Epush_goto(func, H5E_ERR_CLS, H5E_FILE, H5E_CANTSET, "can't set property value", error)
     }
     fa = (const H5FD_multi_fapl_t *)H5Pget_driver_info(fapl_id);
@@ -1024,8 +1024,8 @@ H5FD_multi_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr
     file->fa.relax = fa->relax;
     file->flags = flags;
     file->name = my_strdup(name);
-    if (close_fapl>=0)
-        if(H5Pclose(close_fapl)<0)
+    if (close_fapl >= 0)
+        if(H5Pclose(close_fapl) < 0)
             H5Epush_goto(func, H5E_ERR_CLS, H5E_FILE, H5E_CANTCLOSEOBJ, "can't close property list", error)
 
     /* Compute derived properties and open member files */
@@ -1047,10 +1047,11 @@ error:
     if (file) {
         ALL_MEMBERS(mt) {
             if (file->memb[mt]) (void)H5FDclose(file->memb[mt]);
-            if (file->fa.memb_fapl[mt]>=0) (void)H5Idec_ref(file->fa.memb_fapl[mt]);
+            if (file->fa.memb_fapl[mt] >= 0) (void)H5Idec_ref(file->fa.memb_fapl[mt]);
             if (file->fa.memb_name[mt]) free(file->fa.memb_name[mt]);
         } END_MEMBERS;
-        if (file->name) free(file->name);
+        if (file->name)
+            free(file->name);
         free(file);
     }
     return NULL;
