@@ -177,7 +177,6 @@ static herr_t H5FD_internaltest_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t clos
 static herr_t H5FD_internaltest_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
 static herr_t H5FD_internaltest_lock(H5FD_t *_file, hbool_t rw);
 static herr_t H5FD_internaltest_unlock(H5FD_t *_file);
-static herr_t H5FD_internaltest_delete(const char *filename, hid_t fapl_id);
 
 static const H5FD_class_t H5FD_internaltest_g = {
     "internaltest",                    /* name         */
@@ -211,7 +210,7 @@ static const H5FD_class_t H5FD_internaltest_g = {
     H5FD_internaltest_truncate,        /* truncate     */
     H5FD_internaltest_lock,            /* lock         */
     H5FD_internaltest_unlock,          /* unlock       */
-    H5FD_internaltest_delete,          /* del          */
+    NULL,                              /* del          */
     H5FD_FLMAP_DICHOTOMY	/* fl_map       */
 };
 
@@ -1189,35 +1188,6 @@ H5FD_internaltest_unlock(H5FD_t *_file)
 
     return 0;
 } /* end H5FD_internaltest_unlock() */
-
-
-/*-------------------------------------------------------------------------
- * Function:    H5FD_internaltest_delete
- *
- * Purpose:     Delete a file
- *
- * Return:      SUCCEED/FAIL
- *
- *-------------------------------------------------------------------------
- */
-static herr_t
-H5FD_internaltest_delete(const char *filename, hid_t /*UNUSED*/ fapl_id)
-{
-    static const char *func = "H5FD_internaltest_delete";  /* Function Name for error reporting    */
-
-    /* Clear the error stack */
-    H5Eclear2(H5E_DEFAULT);
-
-    assert(filename);
-
-    /* Quiet compiler */
-    fapl_id = fapl_id;
-
-    if(remove(filename) < 0)
-        H5Epush_ret(func, H5E_ERR_CLS, H5E_IO, H5E_CANTDELETEFILE, "can't delete file)", -1)
-
-    return 0;
-} /* end H5FD_internaltest_delete() */
 
 
 #ifdef _H5private_H
