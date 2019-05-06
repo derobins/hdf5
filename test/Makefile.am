@@ -218,7 +218,7 @@ CHECK_CLEANFILES+=accum.h5 cmpd_dset.h5 compact_dataset.h5 dataset.h5 dset_offse
 testhdf5_SOURCES=testhdf5.c tarray.c tattr.c tchecksum.c tconfig.c tfile.c \
     tgenprop.c th5o.c th5s.c tcoords.c theap.c tid.c titerate.c tmeta.c tmisc.c \
     trefer.c trefstr.c tselect.c tskiplist.c tsohm.c ttime.c ttst.c tunicode.c \
-    tvlstr.c tvltypes.c
+    tvlstr.c tvltypes.c H5FDinternaltest.c
 
 # Sources for Use Cases
 use_append_chunk_SOURCES=use_append_chunk.c use_common.c

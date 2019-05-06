@@ -1061,6 +1061,8 @@
 ./test/h5fc_ext2_sf.h5
 ./test/h5fc_ext3_isf.h5
 ./test/h5fc_ext_none.h5
+./test/H5FDinternaltest.c
+./test/H5FDinternaltest.h
 ./test/h5test.c
 ./test/h5test.h
 ./test/hyperslab.c

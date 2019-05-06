@@ -25,6 +25,7 @@
 #include "H5Iprivate.h"
 #include "H5Pprivate.h"
 #include "H5VLprivate.h"        /* Virtual Object Layer                     */
+#include "H5FDinternaltest.h"   /* Internal test VFD (in test/)             */
 
 /*
  * This file needs to access private information from the H5F package.
@@ -1942,6 +1943,104 @@ test_file_delete(hid_t fapl_id)
 
 } /* end test_file_delete() */
 
+
+/****************************************************************
+**
+**  test_file_delete_open_close(): tests H5Fdelete with the
+**  open/close scheme (uses H5FDinternaltest).
+**
+*****************************************************************/
+#define FILE_DELETE_OPEN_CLOSE  "test_file_delete_open_close.h5"
+static void
+test_file_delete_open_close(void)
+{
+    hid_t       fid = H5I_INVALID_HID;      /* File to be deleted */
+    hid_t       fapl_id = H5I_INVALID_HID;  /* File to be deleted */
+    const char *filename = FILE_DELETE_OPEN_CLOSE; /* Filename to use */
+    htri_t      is_hdf5;                    /* Whether a file is an HDF5 file */
+    int         fd;                         /* POSIX file descriptor */
+    int         iret;
+    herr_t      ret;
+
+    /* Output message about test being performed */
+    MESSAGE(5, ("Testing Deletion of HDF5 Files\n"));
+
+    /* Set up a fapl to use the internal test VFD */
+    fapl_id = h5_fileaccess();
+    CHECK(fapl_id, H5I_INVALID_HID, "h5_fileaccess");
+
+    /* Set the internal test VFD */
+    ret = H5Pset_fapl_internaltest(fapl_id);
+    CHECK(ret, FAIL, "H5Pset_fapl_internaltest");
+
+    /*************/
+    /* HDF5 FILE */
+    /*************/
+
+    /* Create a file */
+    fid = H5Fcreate(filename, H5F_ACC_TRUNC, H5P_DEFAULT, fapl_id);
+    CHECK(fid, H5I_INVALID_HID, "H5Fcreate");
+
+    /* Close file */
+    ret = H5Fclose(fid);
+    VERIFY(ret, SUCCEED, "H5Fclose");
+
+    /* Verify that the file is an HDF5 file */
+    is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    VERIFY(is_hdf5, TRUE, "H5Fis_accessible");
+
+    /* Delete the file */
+    ret = H5Fdelete(filename, fapl_id);
+    VERIFY(ret, SUCCEED, "H5Fdelete");
+
+    /* Verify that the file is NO LONGER an HDF5 file */
+    /* This should fail since there is no file */
+    H5E_BEGIN_TRY {
+        is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    } H5E_END_TRY;
+    VERIFY(is_hdf5, FAIL, "H5Fis_accessible");
+
+    /* Just in case deletion fails - silent on errors */
+    HDremove(filename);
+
+    /*****************/
+    /* NON-HDF5 FILE */
+    /*****************/
+
+    /* Create a non-HDF5 file */
+    fd = HDopen(filename, O_RDWR | O_CREAT | O_TRUNC, H5_POSIX_CREATE_MODE_RW);
+    CHECK_I(fd, "HDopen");
+
+    /* Close the file */
+    ret = HDclose(fd);
+    VERIFY(ret, 0, "HDclose");
+
+    /* Verify that the file is not an HDF5 file */
+    /* Note that you can get a FAIL result when h5_fixname()
+     * perturbs the filename as a file with that exact name
+     * may not have been created since we created it with
+     * open(2) and not the library.
+     */
+    H5E_BEGIN_TRY {
+        is_hdf5 = H5Fis_accessible(filename, fapl_id);
+    } H5E_END_TRY;
+    VERIFY(is_hdf5, SUCCEED, "H5Fis_accessible");
+
+    /* Try to delete it (should fail) */
+    H5E_BEGIN_TRY {
+        ret = H5Fdelete(filename, fapl_id);
+    } H5E_END_TRY;
+    VERIFY(ret, FAIL, "H5Fdelete");
+
+    /* Delete the file */
+    iret = HDremove(filename);
+    VERIFY(iret, 0, "HDremove");
+
+    /* Close the fapl */
+    ret = H5Pclose(fapl_id);
+    CHECK(ret, FAIL, "H5Pclose");
+
+} /* end test_file_delete_open_close() */
 
 /****************************************************************
 **
@@ -7724,6 +7823,7 @@ test_file(void)
     test_file_perm2();                          /* Test file access permission again */
     test_file_is_accessible(env_h5_drvr);       /* Test detecting HDF5 files correctly */
     test_file_delete(fapl_id);                  /* Test H5Fdelete */
+    test_file_delete_open_close();              /* Test H5Fdelete with the open/close scheme */
     test_file_open_dot();                       /* Test opening objects with "." for a name */
     test_file_open_overlap();                   /* Test opening files in an overlapping manner */
     test_file_getname();                        /* Test basic H5Fget_name() functionality */

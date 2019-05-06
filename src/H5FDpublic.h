@@ -257,6 +257,12 @@ typedef enum H5F_mem_t	H5FD_mem_t;
      * the canonical HDF5 file format.
      */
 #define H5FD_FEAT_DEFAULT_VFD_COMPATIBLE        0x00008000
+    /*
+     * Defining H5FD_FEAT_DELETE_VIA_OPEN_CLOSE for a file driver
+     * means that the VFD handles deletes via an open/close cycle
+     * (with the FOO property set) instead of the del callback.
+     */
+#define H5FD_FEAT_DELETE_VIA_OPEN_CLOSE         0x00010000
 
 
 /* Forward declaration */

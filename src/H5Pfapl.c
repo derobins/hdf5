@@ -263,6 +263,9 @@
 #define H5F_ACS_VOL_CONN_COPY                   H5P__facc_vol_copy
 #define H5F_ACS_VOL_CONN_CMP                    H5P__facc_vol_cmp
 #define H5F_ACS_VOL_CONN_CLOSE                  H5P__facc_vol_close
+/* Definition for delete file on close flag (used in H5Fdelete code - private to library) */
+#define H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_SIZE                sizeof(hbool_t)
+#define H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_DEF                 FALSE
 
 
 /******************/
@@ -409,6 +412,7 @@ static const H5AC_cache_image_config_t H5F_def_mdc_initCacheImageCfg_g = H5F_ACS
 static const size_t H5F_def_page_buf_size_g = H5F_ACS_PAGE_BUFFER_SIZE_DEF;      /* Default page buffer size */
 static const unsigned H5F_def_page_buf_min_meta_perc_g = H5F_ACS_PAGE_BUFFER_MIN_META_PERC_DEF;      /* Default page buffer minimum metadata size */
 static const unsigned H5F_def_page_buf_min_raw_perc_g = H5F_ACS_PAGE_BUFFER_MIN_RAW_PERC_DEF;      /* Default page buffer mininum raw data size */
+static const hbool_t H5F_def_delete_file_on_close_flag_g = H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_DEF;                 /* Default delete file on close flag value */
 
 
 /*-------------------------------------------------------------------------
@@ -652,6 +656,13 @@ H5P__facc_reg_prop(H5P_genclass_t *pclass)
             H5F_ACS_VOL_CONN_DEL, H5F_ACS_VOL_CONN_COPY, H5F_ACS_VOL_CONN_CMP, H5F_ACS_VOL_CONN_CLOSE) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTINSERT, FAIL, "can't insert property into class")
 
+    /* Register the private property of whether to delete the file on close */
+    /* (used internally to the library only) */
+    /* (Note: this property should not have an encode/decode callback -DER) */
+    if(H5P__register_real(pclass, H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_NAME, H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_SIZE, &H5F_def_delete_file_on_close_flag_g,
+            NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) < 0)
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTINSERT, FAIL, "can't insert property into class")
+
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5P__facc_reg_prop() */
@@ -868,20 +879,20 @@ done:
 hid_t
 H5P_peek_driver(H5P_genplist_t *plist)
 {
-    hid_t ret_value = FAIL;     /* Return value */
+    hid_t ret_value = H5I_INVALID_HID;      /* Return value */
 
-    FUNC_ENTER_NOAPI(FAIL)
+    FUNC_ENTER_NOAPI(H5I_INVALID_HID)
 
     /* Get the current driver ID */
     if(TRUE == H5P_isa_class(plist->plist_id, H5P_FILE_ACCESS)) {
         H5FD_driver_prop_t driver_prop;         /* Property for driver ID & info */
 
         if(H5P_peek(plist, H5F_ACS_FILE_DRV_NAME, &driver_prop) < 0)
-            HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get driver ID")
+            HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, H5I_INVALID_HID, "can't get driver ID")
         ret_value = driver_prop.driver_id;
     } /* end if */
     else
-        HGOTO_ERROR(H5E_PLIST, H5E_BADTYPE, FAIL, "not a file access property list")
+        HGOTO_ERROR(H5E_PLIST, H5E_BADTYPE, H5I_INVALID_HID, "not a file access property list")
 
     if(H5FD_VFD_DEFAULT == ret_value)
         ret_value = H5_DEFAULT_VFD;
@@ -894,17 +905,17 @@ done:
 /*-------------------------------------------------------------------------
  * Function:    H5Pget_driver
  *
- * Purpose:    Return the ID of the low-level file driver.  PLIST_ID should
- *        be a file access property list.
+ * Purpose:     Return the ID of the low-level file driver.  PLIST_ID should
+ *              be a file access property list.
  *
- * Note:    The ID returned should not be closed.
+ * Note:        The ID returned should not be closed.
  *
- * Return:    Success:    A low-level driver ID which is the same ID
- *                used when the driver was set for the property
- *                list. The driver ID is only valid as long as
- *                the file driver remains registered.
+ * Return:      Success:    A low-level driver ID which is the same ID
+ *                          used when the driver was set for the property
+ *                          list. The driver ID is only valid as long as
+ *                          the file driver remains registered.
  *
- *        Failure:    Negative
+ *              Failure:    H5I_INVALID_HID
  *
  * Programmer:    Robb Matzke
  *        Thursday, February 26, 1998
@@ -915,17 +926,17 @@ hid_t
 H5Pget_driver(hid_t plist_id)
 {
     H5P_genplist_t *plist;      /* Property list pointer */
-    hid_t    ret_value;      /* Return value */
+    hid_t           ret_value = H5I_INVALID_HID;    /* Return value */
 
-    FUNC_ENTER_API(FAIL)
+    FUNC_ENTER_API(H5I_INVALID_HID)
     H5TRACE1("i", "i", plist_id);
 
     if(NULL == (plist = (H5P_genplist_t *)H5I_object_verify(plist_id, H5I_GENPROP_LST)))
-        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a property list")
+        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, H5I_INVALID_HID, "not a property list")
 
     /* Get the driver */
-    if((ret_value = H5P_peek_driver(plist)) < 0)
-         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get driver")
+    if(H5I_INVALID_HID == (ret_value = H5P_peek_driver(plist)))
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, H5I_INVALID_HID, "can't get driver")
 
 done:
     FUNC_LEAVE_API(ret_value)
@@ -5305,4 +5316,48 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5P__facc_vol_close() */
 
+
+/*-------------------------------------------------------------------------
+ * Function:    H5Pget_delete_file_on_close_flag
+ *
+ * Purpose:     Gets the delete_file_on_close_flag value.
+ *
+ *              *** INTENDED FOR VFD AUTHORS ONLY ***
+ *
+ *              This flag is set by the library when H5Fdelete() is
+ *              called and the file cannot be deleted via a del callback.
+ *              (e.g., when information must be extracted from the
+ *              superblock in order to delete the file)
+ *
+ * Return:      SUCCEED/FAIL
+ *
+ * Programmer:  Dana Robinson
+ *              Spring 2019
+ *
+ *-------------------------------------------------------------------------
+ */
+herr_t
+H5Pget_delete_file_on_close_flag(hid_t fapl_id, hbool_t *delete_on_close)
+{
+    H5P_genplist_t *plist;          /* property list pointer */
+    herr_t ret_value = SUCCEED;     /* return value */
+
+    FUNC_ENTER_API(FAIL)
+    H5TRACE2("e", "i*b", fapl_id, delete_on_close);
+
+    /* Compare the property list's class against the other class */
+    if(TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTREGISTER, FAIL, "property list is not a file access plist")
+
+    /* Get the plist structure */
+    if(NULL == (plist = (H5P_genplist_t *)H5I_object(fapl_id)))
+        HGOTO_ERROR(H5E_ATOM, H5E_BADATOM, FAIL, "can't find object for ID")
+
+    /* Get the property */
+    if(H5P_get(plist, H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_NAME, delete_on_close) < 0)
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get delete on close flag")
+
+done:
+    FUNC_LEAVE_API(ret_value)
+} /* end H5Pget_delete_file_on_close_flag() */
 

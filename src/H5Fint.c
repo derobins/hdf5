@@ -2026,15 +2026,67 @@ done:
 herr_t
 H5F_delete(const char *filename, hid_t fapl_id)
 {
-    herr_t          ret_value = SUCCEED;       /* Return value                             */
+    H5P_genplist_t *plist;                          /* Property list pointer */
+    hid_t           driver_id = H5I_INVALID_HID;    /* Return value */
+    H5FD_class_t    *driver = NULL;                 /* Pointer to VFD class struct  */
+    unsigned long   flags = 0;                      /* VFD capability flags */
+    herr_t          ret_value = SUCCEED;            /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
     HDassert(filename);
 
-    /* Delete the file */
-    if(H5FD_delete(filename, fapl_id) < 0)
-        HGOTO_ERROR(H5E_FILE, H5E_CANTDELETEFILE, FAIL, "unable to delete file")
+    /* Get the fapl */
+    if(NULL == (plist = (H5P_genplist_t *)H5I_object_verify(fapl_id, H5I_GENPROP_LST)))
+        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a property list")
+
+    /* Get the ID for the VFD set in the fapl */
+    if(H5I_INVALID_HID == (driver_id = H5P_peek_driver(plist)))
+        HGOTO_ERROR(H5E_FILE, H5E_CANTGET, FAIL, "can't get driver")
+
+    /* Get the driver struct for the VFD set in the fapl */
+    if(NULL == (driver = (H5FD_class_t *)H5I_object_verify(driver_id, H5I_VFL)))
+        HGOTO_ERROR(H5E_FILE, H5E_BADATOM, FAIL, "not a VFL ID")
+    if(H5FD_driver_query(driver, &flags) < 0)
+        HGOTO_ERROR(H5E_FILE, H5E_BADVALUE, FAIL, "driver flag query failed")
+
+    /* If the VFD has a del callback, use that.
+     *
+     * Otherwise, check if the VFD has the H5FD_FEAT_DELETE_VIA_OPEN_CLOSE
+     * capability flag. If so, set the internal property and do an open/close.
+     *
+     * If neither of those are true, the VFD does not support deletes
+     * so emit an error.
+     */
+    if(driver->del) {
+        if(H5FD_delete(filename, fapl_id) < 0)
+            HGOTO_ERROR(H5E_FILE, H5E_CANTDELETEFILE, FAIL, "unable to delete file")
+    }
+    else if(flags & H5FD_FEAT_DELETE_VIA_OPEN_CLOSE) {
+
+        H5F_t      *temp = NULL;                /* Temporary file struct */
+        hbool_t     delete_file_on_close;       /* Delete file on close flag */
+
+        /* Set internal property on fapl */
+        delete_file_on_close = TRUE;
+        if(H5P_set(plist, H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_NAME, &delete_file_on_close) < 0)
+            HGOTO_ERROR(H5E_FILE, H5E_CANTSET, FAIL, "can't set delete file on close flag")
+
+        /* Open the file (the VFD should inspect the flag and stash what it needs for the close) */
+        if(NULL == (temp = H5F_open(filename, H5F_ACC_RDWR, H5P_FILE_CREATE_DEFAULT, fapl_id)))
+            HGOTO_ERROR(H5E_FILE, H5E_CANTOPENFILE, FAIL, "unable to open file")
+
+        /* Close (the VFD should delete the file here) */
+        if(H5F__close(temp) < 0)
+            HGOTO_ERROR(H5E_FILE, H5E_CANTDEC, FAIL, "can't close file")
+
+        /* Un-set internal property */
+        delete_file_on_close = FALSE;
+        if(H5P_set(plist, H5F_ACS_DELETE_FILE_ON_CLOSE_FLAG_NAME, &delete_file_on_close) < 0)
+            HGOTO_ERROR(H5E_PLIST, H5E_CANTSET, FAIL, "can't set delete file on close flag")
+    }
+    else
+        HGOTO_ERROR(H5E_FILE, H5E_UNSUPPORTED, FAIL, "file driver has no 'del' method and does not have the H5FD_FEAT_DELETE_VIA_OPEN_CLOSE flag")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)

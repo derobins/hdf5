@@ -12,27 +12,24 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Robb Matzke <matzke@llnl.gov>
- *              Monday, August  2, 1999
- *
- * Purpose:	The public header file for the stdio driver.
+ * Purpose:	The public header file for the internaltest driver.
  */
-#ifndef H5FDstdio_H
-#define H5FDstdio_H
+#ifndef H5FDinternaltest_H
+#define H5FDinternaltest_H
 
 #include "H5Ipublic.h"
 
-#define H5FD_STDIO	(H5FD_stdio_init())
+#define H5FD_INTERNALTEST   (H5FD_internaltest_init())
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-H5_DLL hid_t H5FD_stdio_init(void);
-H5_DLL herr_t H5Pset_fapl_stdio(hid_t fapl_id);
+H5_DLL hid_t H5FD_internaltest_init(void);
+H5_DLL herr_t H5Pset_fapl_internaltest(hid_t fapl_id);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* H5FDinternaltest_H */

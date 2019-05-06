@@ -199,6 +199,7 @@ set (testhdf5_SOURCES
     ${HDF5_TEST_SOURCE_DIR}/tunicode.c
     ${HDF5_TEST_SOURCE_DIR}/tvltypes.c
     ${HDF5_TEST_SOURCE_DIR}/tvlstr.c
+    ${HDF5_TEST_SOURCE_DIR}/H5FDinternaltest.c
 )
 
 set (cache_image_SOURCES

@@ -1938,7 +1938,7 @@ H5FDdriver_query(hid_t driver_id, unsigned long *flags/*out*/)
 
     /* Check for the driver to query and then query it */
     if (NULL == (driver = (H5FD_class_t *)H5I_object_verify(driver_id, H5I_VFL)))
-        HGOTO_ERROR(H5E_ATOM, H5E_BADATOM, FAIL, "not a VFL ID")
+        HGOTO_ERROR(H5E_VFL, H5E_BADATOM, FAIL, "not a VFL ID")
     if (H5FD_driver_query(driver, flags) < 0)
         HGOTO_ERROR(H5E_VFL, H5E_BADVALUE, FAIL, "driver flag query failed")
 

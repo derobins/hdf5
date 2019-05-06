@@ -419,8 +419,8 @@ H5FD_delete(const char *filename, hid_t fapl_id)
     HDassert(filename);
 
     /* Get file access property list */
-    if(NULL == (plist = (H5P_genplist_t *)H5I_object(fapl_id)))
-        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list")
+    if(NULL == (plist = (H5P_genplist_t *)H5I_object_verify(fapl_id, H5I_GENPROP_LST)))
+        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a property list")
 
     /* Get the VFD to open the file with */
     if(H5P_peek(plist, H5F_ACS_FILE_DRV_NAME, &driver_prop) < 0)
