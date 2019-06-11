@@ -7872,8 +7872,7 @@ test_file(void)
 /*-------------------------------------------------------------------------
  * Function:    cleanup_file
  *
- * Purpose:    Cleanup temporary test files:w
- *
+ * Purpose:    Cleanup temporary test files
  *
  * Return:    none
  *

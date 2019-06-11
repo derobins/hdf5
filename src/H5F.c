@@ -897,7 +897,7 @@ H5Fdelete(const char *filename, hid_t fapl_id)
 
 done:
     FUNC_LEAVE_API(ret_value)
-} /* end H5Fclose() */
+} /* end H5Fdelete() */
 
 
 /*-------------------------------------------------------------------------

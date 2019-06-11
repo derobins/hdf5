@@ -399,7 +399,7 @@ H5VL__native_file_specific(void *obj, H5VL_file_specific_t specific_type,
 
                 /* Call private routine */
                 if((*ret = H5F_delete(name, fapl_id)) < 0)
-                    HGOTO_ERROR(H5E_FILE, H5E_CANTDELETEFILE, FAIL, "error in HDF5 file check")
+                    HGOTO_ERROR(H5E_FILE, H5E_CANTDELETEFILE, FAIL, "error in file delete")
                 break;
             }
 
