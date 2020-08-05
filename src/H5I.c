@@ -61,6 +61,7 @@ typedef struct H5I_id_info_t {
     unsigned    count;        /* ref. count for this atom            */
     unsigned    app_count;      /* ref. count of application visible atoms  */
     const void    *obj_ptr;    /* pointer associated with the atom        */
+    UT_hash_handle hh;      /* Hash table handle (must be LAST) */
 } H5I_id_info_t;
 
 /* ID type structure used */
@@ -71,6 +72,7 @@ typedef struct {
     uint64_t    nextid;        /* ID to use for the next atom            */
     H5I_id_info_t *last_info;   /* Info for most recent ID looked up        */
     H5SL_t      *ids;           /* Pointer to skip list that stores IDs     */
+    H5I_id_info_t *hash_table;  /* Hash table pointer for this ID type */
 } H5I_id_type_t;
 
 typedef struct {
@@ -324,6 +326,7 @@ H5I_register_type(const H5I_class_t *cls)
         type_ptr->last_info = NULL;
         if(NULL == (type_ptr->ids = H5SL_create(H5SL_TYPE_HID, NULL)))
             HGOTO_ERROR(H5E_ATOM, H5E_CANTCREATE, FAIL, "skip list creation failed")
+        type_ptr->hash_table = NULL;
     } /* end if */
 
     /* Increment the count of the times this type has been initialized */
