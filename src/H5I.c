@@ -44,6 +44,8 @@
 #include "H5Tpkg.h"             /* Datatypes                                */
 #include "H5VLprivate.h"        /* Virtual Object Layer                     */
 
+#include "uthash.h"             /* Hash table functionality                 */
+
 
 /* Local Macros */
 
