@@ -40,7 +40,9 @@
 #include "H5Ipkg.h"             /* IDs                                      */
 #include "H5MMprivate.h"        /* Memory management                        */
 #include "H5Oprivate.h"         /* Object headers                           */
+#ifndef HASH_TABLE_IDS
 #include "H5SLprivate.h"        /* Skip Lists                               */
+#endif
 #include "H5Tpkg.h"             /* Datatypes                                */
 #include "H5VLprivate.h"        /* Virtual Object Layer                     */
 
@@ -73,8 +75,11 @@ typedef struct {
     uint64_t    id_count;    /* Current number of IDs held            */
     uint64_t    nextid;        /* ID to use for the next atom            */
     H5I_id_info_t *last_info;   /* Info for most recent ID looked up        */
-    H5SL_t      *ids;           /* Pointer to skip list that stores IDs     */
+#ifdef HASH_TABLE_IDS
     H5I_id_info_t *hash_table;  /* Hash table pointer for this ID type */
+#else
+    H5SL_t      *ids;           /* Pointer to skip list that stores IDs     */
+#endif
 } H5I_id_type_t;
 
 typedef struct {
@@ -179,7 +184,11 @@ H5I_term_package(void)
 
         /* How many types are still being used? */
         for(type = 0; type < H5I_next_type; type++)
+#ifdef HASH_TABLE_IDS
+            if((type_ptr = H5I_id_type_list_g[type]) && type_ptr->hash_table)
+#else
             if((type_ptr = H5I_id_type_list_g[type]) && type_ptr->ids)
+#endif
                 n++;
 
         /* If no types are used then clean up */
@@ -187,7 +196,11 @@ H5I_term_package(void)
             for(type = 0; type < H5I_next_type; type++) {
                 type_ptr = H5I_id_type_list_g[type];
                 if(type_ptr) {
+#ifdef HASH_TABLE_IDS
+                    HDassert(NULL == type_ptr->hash_table);
+#else
                     HDassert(NULL == type_ptr->ids);
+#endif
                     type_ptr = H5FL_FREE(H5I_id_type_t, type_ptr);
                     H5I_id_type_list_g[type] = NULL;
                     n++;
@@ -328,9 +341,10 @@ H5I_register_type(const H5I_class_t *cls)
         type_ptr->last_info = NULL;
 #ifdef HASH_TABLE_IDS
         type_ptr->hash_table = NULL;
-#endif
+#else
         if(NULL == (type_ptr->ids = H5SL_create(H5SL_TYPE_HID, NULL)))
             HGOTO_ERROR(H5E_ATOM, H5E_CANTCREATE, FAIL, "skip list creation failed")
+#endif
     } /* end if */
 
     /* Increment the count of the times this type has been initialized */
@@ -339,8 +353,10 @@ H5I_register_type(const H5I_class_t *cls)
 done:
     if(ret_value < 0) {    /* Clean up on error */
         if(type_ptr) {
+#ifndef HASH_TABLE_IDS
             if(type_ptr->ids)
                 H5SL_close(type_ptr->ids);
+#endif
             H5FL_FREE(H5I_id_type_t, type_ptr);
         } /* end if */
     } /* end if */
@@ -579,13 +595,25 @@ H5I_clear_type(H5I_type_t type, hbool_t force, hbool_t app_ref)
     udata.app_ref = app_ref;
 
 #ifdef HASH_TABLE_IDS
-    /* Have to empty this out early or the pointers will all be stale */
-    HASH_CLEAR(hh, udata.type_ptr->hash_table);
-#endif
+{
+    H5I_id_info_t *item = NULL;
+    H5I_id_info_t *tmp = NULL;
 
+    /* This is a "delete-safe" iteration */
+    HASH_ITER(hh, udata.type_ptr->hash_table, item, tmp) {
+        htri_t ret = H5I__clear_type_cb((void *)item, NULL, (void *)&udata);
+        if (FAIL == ret)
+            HGOTO_ERROR(H5E_ATOM, H5E_BADITER, FAIL, "iteration failed")
+        if (TRUE == ret)
+            HASH_DELETE(hh, udata.type_ptr->hash_table, item);
+    }
+}
+//    HASH_CLEAR(hh, udata.type_ptr->hash_table);
+#else
     /* Attempt to free all ids in the type */
     if(H5SL_try_free_safe(udata.type_ptr->ids, H5I__clear_type_cb, &udata) < 0)
         HGOTO_ERROR(H5E_ATOM, H5E_CANTDELETE, FAIL, "can't free ids in type")
+#endif
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -735,11 +763,11 @@ H5I__destroy_type(H5I_type_t type)
 #ifdef HASH_TABLE_IDS
     HASH_CLEAR(hh, type_ptr->hash_table);
     type_ptr->hash_table = NULL;
-#endif
-
+#else
     if(H5SL_close(type_ptr->ids) < 0)
         HGOTO_ERROR(H5E_ATOM, H5E_CANTCLOSEOBJ, FAIL, "can't close skip list")
     type_ptr->ids = NULL;
+#endif
 
     type_ptr = H5FL_FREE(H5I_id_type_t, type_ptr);
     H5I_id_type_list_g[type] = NULL;
@@ -821,15 +849,15 @@ H5I_register(H5I_type_t type, const void *object, hbool_t app_ref)
     id_ptr->obj_ptr     = object;
 
     /* Insert into the type */
-    if (H5SL_insert(type_ptr->ids, id_ptr, &id_ptr->id) < 0)
-        HGOTO_ERROR(H5E_ATOM, H5E_CANTINSERT, H5I_INVALID_HID, "can't insert ID node into skip list")
-    type_ptr->id_count++;
-    type_ptr->nextid++;
-
 #ifdef HASH_TABLE_IDS
     /* Insert into the hash table */
     HASH_ADD(hh, type_ptr->hash_table, id, sizeof(hid_t), id_ptr);
+#else
+    if (H5SL_insert(type_ptr->ids, id_ptr, &id_ptr->id) < 0)
+        HGOTO_ERROR(H5E_ATOM, H5E_CANTINSERT, H5I_INVALID_HID, "can't insert ID node into skip list")
 #endif
+    type_ptr->id_count++;
+    type_ptr->nextid++;
 
     /* Sanity check for the 'nextid' getting too large and wrapping around */
     HDassert(type_ptr->nextid <= ID_MASK);
@@ -906,14 +934,14 @@ H5I_register_using_existing_id(H5I_type_t type, void *object, hbool_t app_ref, h
     id_ptr->obj_ptr     = object;
 
     /* Insert into the type */
-    if(H5SL_insert(type_ptr->ids, id_ptr, &id_ptr->id) < 0)
-        HGOTO_ERROR(H5E_ATOM, H5E_CANTINSERT, FAIL, "can't insert ID node into skip list")
-    type_ptr->id_count++;
-
 #ifdef HASH_TABLE_IDS
     /* Insert into the hash table */
     HASH_ADD(hh, type_ptr->hash_table, id, sizeof(hid_t), id_ptr);
+#else
+    if(H5SL_insert(type_ptr->ids, id_ptr, &id_ptr->id) < 0)
+        HGOTO_ERROR(H5E_ATOM, H5E_CANTINSERT, FAIL, "can't insert ID node into skip list")
 #endif
+    type_ptr->id_count++;
 
     /* Set the most recent ID to this object */
     type_ptr->last_info = id_ptr;
@@ -1264,7 +1292,7 @@ H5_GCC_DIAG_OFF(implicit-fallthrough)
 static void *
 H5I__remove_common(H5I_id_type_t *type_ptr, hid_t id)
 {
-    H5I_id_info_t *curr_id;    /* Pointer to the current atom */
+    H5I_id_info_t *curr_id = NULL;    /* Pointer to the current atom */
     void *ret_value = NULL;    /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1272,21 +1300,18 @@ H5I__remove_common(H5I_id_type_t *type_ptr, hid_t id)
     /* Sanity check */
     HDassert(type_ptr);
 
+    /* Delete the node */
 #ifdef HASH_TABLE_IDS
     /* Remove the node from the hash table */
-{
-    H5I_id_info_t *test = NULL;
-
-    HASH_FIND(hh, type_ptr->hash_table, &id, sizeof(hid_t), test);
-
-    if (test)
-        HASH_DELETE(hh, type_ptr->hash_table, test);
-}
-#endif
-
-    /* Get the ID node for the ID */
+    HASH_FIND(hh, type_ptr->hash_table, &id, sizeof(hid_t), curr_id);
+    if (curr_id)
+        HASH_DELETE(hh, type_ptr->hash_table, curr_id);
+    else
+        HGOTO_ERROR(H5E_ATOM, H5E_CANTDELETE, NULL, "can't remove ID node from hash table")
+#else
     if(NULL == (curr_id = (H5I_id_info_t *)H5SL_remove(type_ptr->ids, &id)))
         HGOTO_ERROR(H5E_ATOM, H5E_CANTDELETE, NULL, "can't remove ID node from skip list")
+#endif
 
     /* Check if this ID was the last one accessed */
     if(type_ptr->last_info == curr_id)
