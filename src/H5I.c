@@ -326,11 +326,11 @@ H5I_register_type(const H5I_class_t *cls)
         type_ptr->id_count = 0;
         type_ptr->nextid = cls->reserved;
         type_ptr->last_info = NULL;
-        if(NULL == (type_ptr->ids = H5SL_create(H5SL_TYPE_HID, NULL)))
-            HGOTO_ERROR(H5E_ATOM, H5E_CANTCREATE, FAIL, "skip list creation failed")
 #ifdef HASH_TABLE_IDS
         type_ptr->hash_table = NULL;
 #endif
+        if(NULL == (type_ptr->ids = H5SL_create(H5SL_TYPE_HID, NULL)))
+            HGOTO_ERROR(H5E_ATOM, H5E_CANTCREATE, FAIL, "skip list creation failed")
     } /* end if */
 
     /* Increment the count of the times this type has been initialized */
@@ -341,7 +341,7 @@ done:
         if(type_ptr) {
             if(type_ptr->ids)
                 H5SL_close(type_ptr->ids);
-            (void)H5FL_FREE(H5I_id_type_t, type_ptr);
+            H5FL_FREE(H5I_id_type_t, type_ptr);
         } /* end if */
     } /* end if */
 
@@ -2009,7 +2009,7 @@ H5Isearch(H5I_type_t type, H5I_search_func_t func, void *key)
     /* Note that H5I_iterate returns an error code.  We ignore it
      * here, as we can't do anything with it without revising the API.
      */
-    (void)H5I_iterate(type, H5I__search_cb, &udata, TRUE);
+    H5I_iterate(type, H5I__search_cb, &udata, TRUE);
 
     /* Set return value */
     ret_value = udata.ret_obj;
@@ -2204,8 +2204,23 @@ H5I_iterate(H5I_type_t type, H5I_search_func_t func, void *udata, hbool_t app_re
         iter_udata.obj_type     = type;
 
         /* Iterate over IDs */
+#ifdef HASH_TABLE_IDS
+{
+        H5I_id_info_t *item = NULL;
+        H5I_id_info_t *tmp = NULL;
+
+        HASH_ITER(hh, type_ptr->hash_table, item, tmp) {
+            int ret = H5I__iterate_cb((void *)item, NULL, (void *)&iter_udata);
+            if (H5_ITER_ERROR == ret)
+                HGOTO_ERROR(H5E_ATOM, H5E_BADITER, FAIL, "iteration failed")
+            if (H5_ITER_STOP == ret)
+                break;
+        }
+}
+#else
         if((iter_status = H5SL_iterate(type_ptr->ids, H5I__iterate_cb, &iter_udata)) < 0)
             HGOTO_ERROR(H5E_ATOM, H5E_BADITER, FAIL, "iteration failed")
+#endif
     } /* end if */
 
 done:
@@ -2434,8 +2449,23 @@ H5I_find_id(const void *object, H5I_type_t type, hid_t *id)
         udata.ret_id    = H5I_INVALID_HID;
 
         /* Iterate over IDs for the ID type */
+#ifdef HASH_TABLE_IDS
+{
+        H5I_id_info_t *item = NULL;
+        H5I_id_info_t *tmp = NULL;
+
+        HASH_ITER(hh, type_ptr->hash_table, item, tmp) {
+            int ret = H5I__find_id_cb((void *)item, NULL, (void *)&udata);
+            if (H5_ITER_ERROR == ret)
+                HGOTO_ERROR(H5E_ATOM, H5E_BADITER, FAIL, "iteration failed")
+            if (H5_ITER_STOP == ret)
+                break;
+        }
+}
+#else
         if ((iter_status = H5SL_iterate(type_ptr->ids, H5I__find_id_cb, &udata)) < 0)
             HGOTO_ERROR(H5E_ATOM, H5E_BADITER, FAIL, "iteration failed")
+#endif
 
         *id = udata.ret_id;
     } /* end if */
@@ -2464,6 +2494,7 @@ H5I__id_dump_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
 
     FUNC_ENTER_STATIC_NOERR
 
+    HDfprintf(stderr, "\n");
     HDfprintf(stderr, "         id = %lu\n", (unsigned long)(item->id));
     HDfprintf(stderr, "         count = %u\n", item->count);
     HDfprintf(stderr, "         obj   = 0x%08p\n", item->obj_ptr);
@@ -2563,7 +2594,27 @@ H5I_dump_ids_for_type(H5I_type_t type)
         /* List */
         if(type_ptr->id_count > 0) {
             HDfprintf(stderr, "     List:\n");
+
+#ifdef HASH_TABLE_IDS
+{
+            H5I_id_info_t *item = NULL;
+            H5I_id_info_t *tmp = NULL;
+
+            /* Normally we care about the callback's return value
+             * (H5I_ITER_CONT, etc.), but this is an iteration over all
+             * the IDs so we don't care.
+             *
+             * XXX: Update this to emit an error message on errors?
+             */
+            HDfprintf(stderr, "     (HASH TABLE)\n");
+            HASH_ITER(hh, type_ptr->hash_table, item, tmp) {
+                H5I__id_dump_cb((void *)item, NULL, (void *)&type);
+            }
+}
+#else
+            HDfprintf(stderr, "     (SKIP LIST)\n");
             H5SL_iterate(type_ptr->ids, H5I__id_dump_cb, &type);
+#endif
         }
     }
     else
