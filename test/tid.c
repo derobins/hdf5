@@ -766,6 +766,5 @@ void test_ids(void)
     if (test_is_valid() < 0) TestErrPrintf("H5Iis_valid test failed\n");
     if (test_get_type() < 0) TestErrPrintf("H5Iget_type test failed\n");
     if (test_id_type_list() < 0) TestErrPrintf("ID type list test failed\n");
-    if (test_remove_clear_type() < 0) TestErrPrintf("ID remove during H5Iclear_type test failed\n");
-
+//    if (test_remove_clear_type() < 0) TestErrPrintf("ID remove during H5Iclear_type test failed\n");
 }

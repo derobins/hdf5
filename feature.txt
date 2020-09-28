@@ -1,0 +1,22 @@
+Basic Stuff:
+
+* I'm using uthash to replace the skip lists that we use to hold open IDs.
+  We want to see if using a hash table gives us any speedup in ID-intensive
+  workloads (particularly in the DAOS VOL connector, where dataspace IDs
+  get heavy use).
+
+* Each ID "class" (datasets, files, etc.) is tracked separately by the library
+  and has its own skip list to store IDs.
+
+  ID class: H5I_id_type_t
+
+  ID element: H5I_id_info_t
+
+  So each H5I_id_type_t contains a skip list that stores elements of type
+  H5I_id_info_t.
+
+* I've added a H5I_id_info_t *hash_table pointer field to the H5I_id_type_t
+  class struct so each ID class gets its own hash table. This is where each
+  skip list lives.
+
+* The H5I_id_info_t struct gets a UT_hash_handle hh field.

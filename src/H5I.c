@@ -46,8 +46,10 @@
 
 #include "uthash.h"             /* Hash table functionality                 */
 
-
 /* Local Macros */
+
+/* Turn hash table IDs on and off. Undefine to use skip lists. */
+#define HASH_TABLE_IDS
 
 /* Combine a Type number and an atom index into an atom */
 #define H5I_MAKE(g,i)    ((((hid_t)(g) & TYPE_MASK) << ID_BITS) |      \
@@ -326,7 +328,9 @@ H5I_register_type(const H5I_class_t *cls)
         type_ptr->last_info = NULL;
         if(NULL == (type_ptr->ids = H5SL_create(H5SL_TYPE_HID, NULL)))
             HGOTO_ERROR(H5E_ATOM, H5E_CANTCREATE, FAIL, "skip list creation failed")
+#ifdef HASH_TABLE_IDS
         type_ptr->hash_table = NULL;
+#endif
     } /* end if */
 
     /* Increment the count of the times this type has been initialized */
@@ -574,6 +578,11 @@ H5I_clear_type(H5I_type_t type, hbool_t force, hbool_t app_ref)
     udata.force = force;
     udata.app_ref = app_ref;
 
+#ifdef HASH_TABLE_IDS
+    /* Have to empty this out early or the pointers will all be stale */
+    HASH_CLEAR(hh, udata.type_ptr->hash_table);
+#endif
+
     /* Attempt to free all ids in the type */
     if(H5SL_try_free_safe(udata.type_ptr->ids, H5I__clear_type_cb, &udata) < 0)
         HGOTO_ERROR(H5E_ATOM, H5E_CANTDELETE, FAIL, "can't free ids in type")
@@ -723,6 +732,11 @@ H5I__destroy_type(H5I_type_t type)
     if(type_ptr->cls->flags & H5I_CLASS_IS_APPLICATION)
         type_ptr->cls = H5FL_FREE(H5I_class_t, (void *)type_ptr->cls);
 
+#ifdef HASH_TABLE_IDS
+    HASH_CLEAR(hh, type_ptr->hash_table);
+    type_ptr->hash_table = NULL;
+#endif
+
     if(H5SL_close(type_ptr->ids) < 0)
         HGOTO_ERROR(H5E_ATOM, H5E_CANTCLOSEOBJ, FAIL, "can't close skip list")
     type_ptr->ids = NULL;
@@ -779,6 +793,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF(implicit-fallthrough)
 hid_t
 H5I_register(H5I_type_t type, const void *object, hbool_t app_ref)
 {
@@ -811,6 +826,11 @@ H5I_register(H5I_type_t type, const void *object, hbool_t app_ref)
     type_ptr->id_count++;
     type_ptr->nextid++;
 
+#ifdef HASH_TABLE_IDS
+    /* Insert into the hash table */
+    HASH_ADD(hh, type_ptr->hash_table, id, sizeof(hid_t), id_ptr);
+#endif
+
     /* Sanity check for the 'nextid' getting too large and wrapping around */
     HDassert(type_ptr->nextid <= ID_MASK);
 
@@ -823,6 +843,7 @@ H5I_register(H5I_type_t type, const void *object, hbool_t app_ref)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I_register() */
+H5_GCC_DIAG_ON(implicit-fallthrough)
 
 
 /*-------------------------------------------------------------------------
@@ -843,6 +864,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF(implicit-fallthrough)
 herr_t
 H5I_register_using_existing_id(H5I_type_t type, void *object, hbool_t app_ref, hid_t existing_id)
 {
@@ -888,12 +910,18 @@ H5I_register_using_existing_id(H5I_type_t type, void *object, hbool_t app_ref, h
         HGOTO_ERROR(H5E_ATOM, H5E_CANTINSERT, FAIL, "can't insert ID node into skip list")
     type_ptr->id_count++;
 
+#ifdef HASH_TABLE_IDS
+    /* Insert into the hash table */
+    HASH_ADD(hh, type_ptr->hash_table, id, sizeof(hid_t), id_ptr);
+#endif
+
     /* Set the most recent ID to this object */
     type_ptr->last_info = id_ptr;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I_register_using_existing_id() */
+H5_GCC_DIAG_ON(implicit-fallthrough)
 
 
 /*-------------------------------------------------------------------------
@@ -1232,6 +1260,7 @@ H5I__remove_verify(hid_t id, H5I_type_t id_type)
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF(implicit-fallthrough)
 static void *
 H5I__remove_common(H5I_id_type_t *type_ptr, hid_t id)
 {
@@ -1242,6 +1271,18 @@ H5I__remove_common(H5I_id_type_t *type_ptr, hid_t id)
 
     /* Sanity check */
     HDassert(type_ptr);
+
+#ifdef HASH_TABLE_IDS
+    /* Remove the node from the hash table */
+{
+    H5I_id_info_t *test = NULL;
+
+    HASH_FIND(hh, type_ptr->hash_table, &id, sizeof(hid_t), test);
+
+    if (test)
+        HASH_DELETE(hh, type_ptr->hash_table, test);
+}
+#endif
 
     /* Get the ID node for the ID */
     if(NULL == (curr_id = (H5I_id_info_t *)H5SL_remove(type_ptr->ids, &id)))
@@ -1260,6 +1301,7 @@ H5I__remove_common(H5I_id_type_t *type_ptr, hid_t id)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I__remove_common() */
+H5_GCC_DIAG_ON(implicit-fallthrough)
 
 
 /*-------------------------------------------------------------------------
@@ -2183,6 +2225,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF(implicit-fallthrough)
 static H5I_id_info_t *
 H5I__find_id(hid_t id)
 {
@@ -2205,8 +2248,11 @@ H5I__find_id(hid_t id)
         ret_value = type_ptr->last_info;
     else {
         /* Locate the ID node for the ID */
+#ifdef HASH_TABLE_IDS
+        HASH_FIND(hh, type_ptr->hash_table, &id, sizeof(hid_t), ret_value);
+#else
         ret_value = (H5I_id_info_t *)H5SL_search(type_ptr->ids, &id);
-
+#endif
         /* Remember this ID */
         type_ptr->last_info = ret_value;
     } /* end else */
@@ -2214,6 +2260,7 @@ H5I__find_id(hid_t id)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I__find_id() */
+H5_GCC_DIAG_ON(implicit-fallthrough)
 
 
 /*-------------------------------------------------------------------------
