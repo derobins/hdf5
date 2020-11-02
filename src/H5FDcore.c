@@ -1091,6 +1091,7 @@ H5FD__core_query(const H5FD_t * _file, unsigned long *flags /* out */)
 
     FUNC_ENTER_STATIC_NOERR
 
+    /* clang-format off */
     /* Set the VFL feature flags that this driver supports */
     if(flags) {
         *flags = 0;
@@ -1107,6 +1108,7 @@ H5FD__core_query(const H5FD_t * _file, unsigned long *flags /* out */)
             *flags |= H5FD_FEAT_DEFAULT_VFD_COMPATIBLE;     /* VFD creates a file which can be opened with the default VFD      */
         }
     } /* end if */
+    /* clang-format on */
 
     FUNC_LEAVE_NOAPI(SUCCEED)
 } /* end H5FD__core_query() */

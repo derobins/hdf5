@@ -26,6 +26,9 @@
  *		reason why this file was created.
  */
 
+/* clang-format off */
+/* Maintain current format by disabling format for this file */
+
 #if !(defined H5C_FRIEND || defined H5C_MODULE)
 #error "Do not include this file outside the H5C package!"
 #endif
@@ -5193,4 +5196,4 @@ H5_DLL void H5C_set_curr_io_type_splitable(H5C_t * cache_ptr,
 #endif /* H5C_TESTING */
 
 #endif /* _H5Cpkg_H */
-
+/* clang-format on */

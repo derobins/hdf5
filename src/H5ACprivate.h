@@ -223,6 +223,7 @@ typedef struct H5AC_proxy_entry_t {
 #define H5AC__DEFAULT_METADATA_WRITE_STRATEGY   \
                                 H5AC_METADATA_WRITE_STRATEGY__DISTRIBUTED
 
+/* clang-format off */
 #ifdef H5_HAVE_PARALLEL
 #define H5AC__DEFAULT_CACHE_CONFIG                                            \
 {                                                                             \
@@ -304,6 +305,7 @@ typedef struct H5AC_proxy_entry_t {
    /* hbool_t save_resize_status = */ FALSE,                                 \
    /* int32_t entry_ageout       = */ H5AC__CACHE_IMAGE__ENTRY_AGEOUT__NONE  \
 }
+/* clang-format on */
 /*
  * Library prototypes.
  */

@@ -260,6 +260,7 @@ uint64_decode(uint8_t **pp)
     (p) += 8;                                      \
 }
 
+/* clang-format off */
 /* Address-related macros */
 #define H5F_addr_overflow(X,Z)    (HADDR_UNDEF==(X) ||                      \
                 HADDR_UNDEF==(X)+(haddr_t)(Z) ||                            \
@@ -288,6 +289,7 @@ uint64_decode(uint8_t **pp)
 #define H5F_addr_pow2(N)    ((haddr_t)1<<(N))
 #define H5F_addr_overlap(O1,L1,O2,L2) (((O1) < (O2) && ((O1) + (L1)) > (O2)) || \
                                  ((O1) >= (O2) && (O1) < ((O2) + (L2))))
+/* clang-format on */
 
 /* If the module using this macro is allowed access to the private variables, access them directly */
 #ifdef H5F_MODULE

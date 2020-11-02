@@ -349,6 +349,7 @@ H5VM_vector_inc(int n, hsize_t *v1, const hsize_t *v2)
 /* Lookup table for general log2(n) routine */
 static const unsigned char LogTable256[] =
 {
+    /* clang-clang-format off */
     0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3,
     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
@@ -365,6 +366,7 @@ static const unsigned char LogTable256[] =
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+    /* clang-clang-format on */
 };
 
 

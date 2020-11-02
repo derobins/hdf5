@@ -101,6 +101,7 @@
 #define H5C_RESIZE_CFG__VALIDATE_INCREMENT      0x2
 #define H5C_RESIZE_CFG__VALIDATE_DECREMENT      0x4
 #define H5C_RESIZE_CFG__VALIDATE_INTERACTIONS   0x8
+/* clang-format off */
 #define H5C_RESIZE_CFG__VALIDATE_ALL      \
 (                                         \
     H5C_RESIZE_CFG__VALIDATE_GENERAL |    \
@@ -108,6 +109,7 @@
     H5C_RESIZE_CFG__VALIDATE_DECREMENT |  \
     H5C_RESIZE_CFG__VALIDATE_INTERACTIONS \
 )
+/* clang-format on */
 
 /* Cache configuration versions */
 #define H5C__CURR_AUTO_SIZE_CTL_VER		1
