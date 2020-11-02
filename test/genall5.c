@@ -22,16 +22,15 @@
 #include <err.h>
 
 #include "cache_common.h"
-#include "vfd_swmr_common.h"    /* for below_speed_limit() */
+#include "vfd_swmr_common.h" /* for below_speed_limit() */
 #include "genall5.h"
 
-#define DSET_DIMS (1024 * 1024)
-#define DSET_SMALL_DIMS (64 * 1024)
-#define DSET_CHUNK_DIMS 1024
+#define DSET_DIMS         (1024 * 1024)
+#define DSET_SMALL_DIMS   (64 * 1024)
+#define DSET_CHUNK_DIMS   1024
 #define DSET_COMPACT_DIMS 4096
 
-typedef enum phase {PHASE_CREATE, PHASE_VALIDATE, PHASE_DELETE,
-    PHASE_VALIDATE_DELETION} phase_t;
+typedef enum phase { PHASE_CREATE, PHASE_VALIDATE, PHASE_DELETE, PHASE_VALIDATE_DELETION } phase_t;
 
 static bool rm_ns_grp_0(hid_t, const char *);
 static bool rm_ns_grp_c(hid_t, const char *, unsigned);
@@ -53,10 +52,9 @@ static bool missing_ds_chk_i(hid_t, const char *, hbool_t);
 static bool missing_ds_cpt_i(hid_t, const char *, hbool_t);
 static bool missing_ds_ctg_v(hid_t, const char *, hbool_t);
 
-#define FN_ITEM_DEFN(__name, ...)                           \
-    typedef bool (*__name##fn_t)(__VA_ARGS__);              \
-    static const __name##fn_t __name##_fntbl[] =            \
-        {__name, vrfy_##__name, rm_##__name, missing_##__name}
+#define FN_ITEM_DEFN(__name, ...)                                                                            \
+    typedef bool (*__name##fn_t)(__VA_ARGS__);                                                               \
+    static const __name##fn_t __name##_fntbl[] = {__name, vrfy_##__name, rm_##__name, missing_##__name}
 
 FN_ITEM_DEFN(ns_grp_0, hid_t, const char *);
 FN_ITEM_DEFN(ns_grp_c, hid_t, const char *, unsigned);
@@ -74,14 +72,14 @@ static bool
 file_has_no_path(hid_t fid, const char *path)
 {
     switch (H5Lexists(fid, path, H5P_DEFAULT)) {
-    case FALSE:
-        return true;
-    case TRUE:
-        failure_mssg = "H5Lexists unexpectedly true.";
-        return false;
-    default:
-        failure_mssg = "H5Lexists unexpectedly failed.";
-        return false;
+        case FALSE:
+            return true;
+        case TRUE:
+            failure_mssg = "H5Lexists unexpectedly true.";
+            return false;
+        default:
+            failure_mssg = "H5Lexists unexpectedly failed.";
+            return false;
     }
 }
 
@@ -127,8 +125,8 @@ rm_ns_grp_0(hid_t fid, const char *group_name)
 bool
 ns_grp_0(hid_t fid, const char *group_name)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t  gid  = -1;
+    hid_t  gcpl = -1;
     herr_t ret;
 
     gcpl = H5Pcreate(H5P_GROUP_CREATE);
@@ -169,7 +167,6 @@ ns_grp_0(hid_t fid, const char *group_name)
     return true;
 }
 
-
 /*-------------------------------------------------------------------------
  * Function:    vrfy_ns_grp_0
  *
@@ -190,11 +187,11 @@ ns_grp_0(hid_t fid, const char *group_name)
 bool
 vrfy_ns_grp_0(hid_t fid, const char *group_name)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t      gid  = -1;
+    hid_t      gcpl = -1;
     H5G_info_t grp_info;
-    unsigned crt_order_flags = 0;
-    herr_t ret;
+    unsigned   crt_order_flags = 0;
+    herr_t     ret;
 
     gid = H5Gopen2(fid, group_name, H5P_DEFAULT);
 
@@ -215,9 +212,9 @@ vrfy_ns_grp_0(hid_t fid, const char *group_name)
     if (ret < 0) {
         failure_mssg = "vrfy_ns_grp_0: H5Pget_link_creation_order() failed";
         return false;
-    } else if ( H5P_CRT_ORDER_TRACKED != crt_order_flags) {
-        failure_mssg =
-                "vrfy_ns_grp_0: H5P_CRT_ORDER_TRACKED != crt_order_flags";
+    }
+    else if (H5P_CRT_ORDER_TRACKED != crt_order_flags) {
+        failure_mssg = "vrfy_ns_grp_0: H5P_CRT_ORDER_TRACKED != crt_order_flags";
         return false;
     }
 
@@ -234,17 +231,20 @@ vrfy_ns_grp_0(hid_t fid, const char *group_name)
     if (ret < 0) {
         failure_mssg = "vrfy_ns_grp_0: H5Gget_info() failed";
         return false;
-    } else if (H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type) {
-        failure_mssg =
-                "vrfy_ns_grp_0: H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type";
+    }
+    else if (H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type) {
+        failure_mssg = "vrfy_ns_grp_0: H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type";
         return false;
-    } else if (0 != grp_info.nlinks) {
+    }
+    else if (0 != grp_info.nlinks) {
         failure_mssg = "vrfy_ns_grp_0: 0 != grp_info.nlinks";
         return false;
-    } else if (0 != grp_info.max_corder) {
+    }
+    else if (0 != grp_info.max_corder) {
         failure_mssg = "vrfy_ns_grp_0: 0 != grp_info.max_corder";
         return false;
-    } else if ( FALSE != grp_info.mounted) {
+    }
+    else if (FALSE != grp_info.mounted) {
         failure_mssg = "vrfy_ns_grp_0: FALSE != grp_info.mounted";
         return false;
     }
@@ -258,7 +258,6 @@ vrfy_ns_grp_0(hid_t fid, const char *group_name)
 
     return true;
 } /* vrfy_ns_grp_0() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    ns_grp_c
@@ -278,8 +277,7 @@ vrfy_ns_grp_0(hid_t fid, const char *group_name)
  */
 
 static bool
-missing_ns_grp_c(hid_t fid, const char *group_name,
-    unsigned H5_ATTR_UNUSED nlinks)
+missing_ns_grp_c(hid_t fid, const char *group_name, unsigned H5_ATTR_UNUSED nlinks)
 {
     return file_has_no_path(fid, group_name);
 }
@@ -293,11 +291,11 @@ rm_ns_grp_c(hid_t fid, const char *group_name, unsigned H5_ATTR_UNUSED nlinks)
 bool
 ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t    gid  = -1;
+    hid_t    gcpl = -1;
     unsigned max_compact;
     unsigned u;
-    herr_t ret;
+    herr_t   ret;
 
     gcpl = H5Pcreate(H5P_GROUP_CREATE);
 
@@ -321,15 +319,17 @@ ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
     }
 
     max_compact = 0;
-    ret = H5Pget_link_phase_change(gcpl, &max_compact, NULL);
+    ret         = H5Pget_link_phase_change(gcpl, &max_compact, NULL);
 
     if (ret < 0) {
         failure_mssg = "ns_grp_c: H5Pget_link_phase_change() failed";
         return false;
-    } else if (nlinks <= 0) {
+    }
+    else if (nlinks <= 0) {
         failure_mssg = "ns_grp_c: nlinks <= 0";
         return false;
-    } else if (nlinks >= max_compact) {
+    }
+    else if (nlinks >= max_compact) {
         failure_mssg = "ns_grp_c: nlinks >= max_compact";
         return false;
     }
@@ -340,25 +340,24 @@ ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
         HDsprintf(linkname, "%u", u);
 
         if (0 == (u % 3)) {
-            ret = H5Lcreate_soft(group_name, gid, linkname, H5P_DEFAULT,
-                H5P_DEFAULT);
+            ret = H5Lcreate_soft(group_name, gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
 
             if (ret < 0) {
                 failure_mssg = "ns_grp_c: H5Lcreate_soft() failed";
                 return false;
             }
-        } else if (1 == (u % 3)) {
-            ret = H5Lcreate_hard(fid, "/", gid, linkname, H5P_DEFAULT,
-            H5P_DEFAULT);
+        }
+        else if (1 == (u % 3)) {
+            ret = H5Lcreate_hard(fid, "/", gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
 
             if (ret < 0) {
                 failure_mssg = "ns_grp_c: H5Lcreate_hard() failed";
                 return false;
             }
-        } else {
+        }
+        else {
             HDassert(2 == (u % 3));
-            ret = H5Lcreate_external("external.h5", "/ext", gid, linkname,
-            H5P_DEFAULT, H5P_DEFAULT);
+            ret = H5Lcreate_external("external.h5", "/ext", gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
 
             if (ret < 0) {
                 failure_mssg = "ns_grp_c: H5Lcreate_external() failed";
@@ -385,7 +384,6 @@ ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
 
 } /* ns_grp_c() */
 
-
 /*-------------------------------------------------------------------------
  * Function:    vrfy_ns_grp_c
  *
@@ -406,12 +404,12 @@ ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
 bool
 vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t      gid  = -1;
+    hid_t      gcpl = -1;
     H5G_info_t grp_info;
-    unsigned crt_order_flags = 0;
-    unsigned u;
-    herr_t ret;
+    unsigned   crt_order_flags = 0;
+    unsigned   u;
+    herr_t     ret;
 
     gid = H5Gopen2(fid, group_name, H5P_DEFAULT);
 
@@ -432,9 +430,9 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
     if (ret < 0) {
         failure_mssg = "vrfy_ns_grp_c: H5Pget_link_creation_order() failed";
         return false;
-    } else if ( H5P_CRT_ORDER_TRACKED != crt_order_flags) {
-        failure_mssg =
-            "vrfy_ns_grp_c: H5P_CRT_ORDER_TRACKED != crt_order_flags";
+    }
+    else if (H5P_CRT_ORDER_TRACKED != crt_order_flags) {
+        failure_mssg = "vrfy_ns_grp_c: H5P_CRT_ORDER_TRACKED != crt_order_flags";
         return false;
     }
 
@@ -451,25 +449,28 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
     if (ret < 0) {
         failure_mssg = "vrfy_ns_grp_c: H5Gget_info() failed";
         return false;
-    } else if (H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type) {
-        failure_mssg =
-            "vrfy_ns_grp_c: H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type";
+    }
+    else if (H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type) {
+        failure_mssg = "vrfy_ns_grp_c: H5G_STORAGE_TYPE_COMPACT != grp_info.storage_type";
         return false;
-    } else if (nlinks != grp_info.nlinks) {
+    }
+    else if (nlinks != grp_info.nlinks) {
         failure_mssg = "vrfy_ns_grp_c: nlinks != grp_info.nlinks";
         return false;
-    } else if (nlinks != grp_info.max_corder) {
+    }
+    else if (nlinks != grp_info.max_corder) {
         failure_mssg = "vrfy_ns_grp_c: nlinks != grp_info.max_corder";
         return false;
-    } else if ( FALSE != grp_info.mounted) {
+    }
+    else if (FALSE != grp_info.mounted) {
         failure_mssg = "vrfy_ns_grp_c: FALSE != grp_info.mounted";
         return false;
     }
 
     for (u = 0; u < nlinks; u++) {
         H5L_info2_t lnk_info;
-        char linkname[16];
-        htri_t link_exists;
+        char        linkname[16];
+        htri_t      link_exists;
 
         HDsprintf(linkname, "%u", u);
         link_exists = H5Lexists(gid, linkname, H5P_DEFAULT);
@@ -485,13 +486,16 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
         if (ret < 0) {
             failure_mssg = "vrfy_ns_grp_c: H5Lget_info() failed";
             return false;
-        } else if ( TRUE != lnk_info.corder_valid) {
+        }
+        else if (TRUE != lnk_info.corder_valid) {
             failure_mssg = "vrfy_ns_grp_c: TRUE != lnk_info.corder_valid";
             return false;
-        } else if (u != lnk_info.corder) {
+        }
+        else if (u != lnk_info.corder) {
             failure_mssg = "vrfy_ns_grp_c: u != lnk_info.corder";
             return false;
-        } else if (H5T_CSET_ASCII != lnk_info.cset) {
+        }
+        else if (H5T_CSET_ASCII != lnk_info.cset) {
             failure_mssg = "vrfy_ns_grp_c: H5T_CSET_ASCII != lnk_info.cset";
             return false;
         }
@@ -515,22 +519,23 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
                 return false;
             }
 
-            ret = H5Lget_val(gid, linkname, slinkval, lnk_info.u.val_size,
-            H5P_DEFAULT);
+            ret = H5Lget_val(gid, linkname, slinkval, lnk_info.u.val_size, H5P_DEFAULT);
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_c: H5Lget_val() failed";
                 HDfree(slinkval);
                 return false;
-            } else if (0 != HDstrcmp(slinkval, group_name)) {
+            }
+            else if (0 != HDstrcmp(slinkval, group_name)) {
                 failure_mssg = "vrfy_ns_grp_c: 0 != HDstrcmp(slinkval, group_name)";
                 HDfree(slinkval);
                 return false;
             }
 
             HDfree(slinkval);
-        } else if (1 == (u % 3)) {
+        }
+        else if (1 == (u % 3)) {
             H5O_info2_t root_oinfo;
-            int token_cmp = 0;
+            int         token_cmp = 0;
 
             if (H5L_TYPE_HARD != lnk_info.type) {
                 failure_mssg = "vrfy_ns_grp_c: H5L_TYPE_HARD != lnk_info.type";
@@ -543,23 +548,25 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_c: H5Oget_info() failed.";
                 return false;
-            } else if(H5Otoken_cmp(fid, &root_oinfo.token, &lnk_info.u.token, &token_cmp) < 0) {
+            }
+            else if (H5Otoken_cmp(fid, &root_oinfo.token, &lnk_info.u.token, &token_cmp) < 0) {
                 failure_mssg = "vrfy_ns_grp_c: H5Otoken_cmp() failed.";
                 return false;
-            } else if (token_cmp) {
+            }
+            else if (token_cmp) {
                 failure_mssg = "vrfy_ns_grp_c: root_oinfo.token != lnk_info.u.token";
                 return false;
             }
-        } else {
-            void *elinkval;
+        }
+        else {
+            void *      elinkval;
             const char *file = NULL;
             const char *path = NULL;
 
             HDassert(2 == (u % 3));
 
             if (H5L_TYPE_EXTERNAL != lnk_info.type) {
-                failure_mssg =
-                    "vrfy_ns_grp_c: H5L_TYPE_EXTERNAL != lnk_info.type";
+                failure_mssg = "vrfy_ns_grp_c: H5L_TYPE_EXTERNAL != lnk_info.type";
                 return false;
             }
 
@@ -570,25 +577,24 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
                 return false;
             }
 
-            ret = H5Lget_val(gid, linkname, elinkval, lnk_info.u.val_size,
-            H5P_DEFAULT);
+            ret = H5Lget_val(gid, linkname, elinkval, lnk_info.u.val_size, H5P_DEFAULT);
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_c: H5Lget_val() failed.";
                 return false;
             }
 
-            ret = H5Lunpack_elink_val(elinkval, lnk_info.u.val_size, NULL,
-                &file, &path);
+            ret = H5Lunpack_elink_val(elinkval, lnk_info.u.val_size, NULL, &file, &path);
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_c: H5Lunpack_elink_val() failed.";
                 HDfree(elinkval);
                 return false;
-            } else if (0 != HDstrcmp(file, "external.h5")) {
-                failure_mssg =
-                    "vrfy_ns_grp_c: 0 != HDstrcmp(file, \"external.h5\")";
+            }
+            else if (0 != HDstrcmp(file, "external.h5")) {
+                failure_mssg = "vrfy_ns_grp_c: 0 != HDstrcmp(file, \"external.h5\")";
                 HDfree(elinkval);
                 return false;
-            } else if (0 != HDstrcmp(path, "/ext")) {
+            }
+            else if (0 != HDstrcmp(path, "/ext")) {
                 failure_mssg = "vrfy_ns_grp_c: 0 != HDstrcmp(path, \"/ext\")";
                 HDfree(elinkval);
                 return false;
@@ -606,7 +612,6 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
 
     return true;
 } /* vrfy_ns_grp_c() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    ns_grp_d
@@ -626,8 +631,7 @@ vrfy_ns_grp_c(hid_t fid, const char *group_name, unsigned nlinks)
  */
 
 static bool
-missing_ns_grp_d(hid_t fid, const char *group_name,
-    unsigned H5_ATTR_UNUSED nlinks)
+missing_ns_grp_d(hid_t fid, const char *group_name, unsigned H5_ATTR_UNUSED nlinks)
 {
     return file_has_no_path(fid, group_name);
 }
@@ -641,11 +645,11 @@ rm_ns_grp_d(hid_t fid, const char *group_name, unsigned H5_ATTR_UNUSED nlinks)
 bool
 ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t    gid  = -1;
+    hid_t    gcpl = -1;
     unsigned max_compact;
     unsigned u;
-    herr_t ret;
+    herr_t   ret;
 
     gcpl = H5Pcreate(H5P_GROUP_CREATE);
 
@@ -669,7 +673,7 @@ ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
     }
 
     max_compact = 0;
-    ret = H5Pget_link_phase_change(gcpl, &max_compact, NULL);
+    ret         = H5Pget_link_phase_change(gcpl, &max_compact, NULL);
 
     if (ret < 0) {
         failure_mssg = "ns_grp_d: H5Pget_link_phase_change() failed.";
@@ -686,26 +690,25 @@ ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
         HDsprintf(linkname, "%u", u);
 
         if (0 == (u % 3)) {
-            ret = H5Lcreate_soft(group_name, gid, linkname,
-            H5P_DEFAULT, H5P_DEFAULT);
+            ret = H5Lcreate_soft(group_name, gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
 
             if (ret < 0) {
                 failure_mssg = "ns_grp_d: H5Lcreate_soft() failed.";
                 return false;
             }
-        } else if (1 == (u % 3)) {
-            ret = H5Lcreate_hard(fid, "/", gid, linkname,
-            H5P_DEFAULT, H5P_DEFAULT);
+        }
+        else if (1 == (u % 3)) {
+            ret = H5Lcreate_hard(fid, "/", gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
 
             if (ret < 0) {
                 failure_mssg = "ns_grp_d: H5Lcreate_hard() failed.";
                 return false;
             }
-        } else {
+        }
+        else {
             HDassert(2 == (u % 3));
 
-            ret = H5Lcreate_external("external.h5", "/ext", gid, linkname,
-            H5P_DEFAULT, H5P_DEFAULT);
+            ret = H5Lcreate_external("external.h5", "/ext", gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
 
             if (ret < 0) {
                 failure_mssg = "ns_grp_d: H5Lcreate_external() failed.";
@@ -731,7 +734,6 @@ ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
     return true;
 } /* ns_grp_d() */
 
-
 /*-------------------------------------------------------------------------
  * Function:    vrfy_ns_grp_d
  *
@@ -749,16 +751,15 @@ ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
  *-------------------------------------------------------------------------
  */
 
-
 bool
 vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t      gid  = -1;
+    hid_t      gcpl = -1;
     H5G_info_t grp_info;
-    unsigned crt_order_flags = 0;
-    unsigned u;
-    herr_t ret;
+    unsigned   crt_order_flags = 0;
+    unsigned   u;
+    herr_t     ret;
 
     gid = H5Gopen2(fid, group_name, H5P_DEFAULT);
 
@@ -779,9 +780,9 @@ vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
     if (ret < 0) {
         failure_mssg = "vrfy_ns_grp_d: H5Pget_link_creation_order() failed.";
         return false;
-    } else if (H5P_CRT_ORDER_TRACKED != crt_order_flags) {
-        failure_mssg =
-            "vrfy_ns_grp_d: H5P_CRT_ORDER_TRACKED != crt_order_flags";
+    }
+    else if (H5P_CRT_ORDER_TRACKED != crt_order_flags) {
+        failure_mssg = "vrfy_ns_grp_d: H5P_CRT_ORDER_TRACKED != crt_order_flags";
         return false;
     }
 
@@ -798,24 +799,28 @@ vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
     if (ret < 0) {
         failure_mssg = "vrfy_ns_grp_d: H5Gget_info() failed.";
         return false;
-    } else if (H5G_STORAGE_TYPE_DENSE != grp_info.storage_type) {
+    }
+    else if (H5G_STORAGE_TYPE_DENSE != grp_info.storage_type) {
         failure_mssg = "vrfy_ns_grp_d: H5G_STORAGE_TYPE_DENSE != grp_info.storage_type";
         return false;
-    } else if (nlinks != grp_info.nlinks) {
+    }
+    else if (nlinks != grp_info.nlinks) {
         failure_mssg = "vrfy_ns_grp_d: nlinks != grp_info.nlinks";
         return false;
-    } else if (nlinks != grp_info.max_corder) {
+    }
+    else if (nlinks != grp_info.max_corder) {
         failure_mssg = "vrfy_ns_grp_d: nlinks != grp_info.max_corder";
         return false;
-    } else if ( FALSE != grp_info.mounted) {
+    }
+    else if (FALSE != grp_info.mounted) {
         failure_mssg = "vrfy_ns_grp_d: FALSE != grp_info.mounted";
         return false;
     }
 
     for (u = 0; u < nlinks; u++) {
         H5L_info2_t lnk_info;
-        char linkname[16];
-        htri_t link_exists;
+        char        linkname[16];
+        htri_t      link_exists;
 
         HDsprintf(linkname, "%u", u);
         link_exists = H5Lexists(gid, linkname, H5P_DEFAULT);
@@ -831,13 +836,16 @@ vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
         if (ret < 0) {
             failure_mssg = "vrfy_ns_grp_d: H5Lget_info() failed.";
             return false;
-        } else if (TRUE != lnk_info.corder_valid) {
+        }
+        else if (TRUE != lnk_info.corder_valid) {
             failure_mssg = "vrfy_ns_grp_d: TRUE != lnk_info.corder_valid";
             return false;
-        } else if (u != lnk_info.corder) {
+        }
+        else if (u != lnk_info.corder) {
             failure_mssg = "vrfy_ns_grp_d: u != lnk_info.corder";
             return false;
-        } else if (H5T_CSET_ASCII != lnk_info.cset) {
+        }
+        else if (H5T_CSET_ASCII != lnk_info.cset) {
             failure_mssg = "vrfy_ns_grp_d: H5T_CSET_ASCII != lnk_info.cset";
             return false;
         }
@@ -861,21 +869,22 @@ vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
                 return false;
             }
 
-            ret = H5Lget_val(gid, linkname, slinkval, lnk_info.u.val_size,
-                H5P_DEFAULT);
+            ret = H5Lget_val(gid, linkname, slinkval, lnk_info.u.val_size, H5P_DEFAULT);
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_d: H5Lget_val() failed";
                 HDfree(slinkval);
                 return false;
-            } else if (0 != HDstrcmp(slinkval, group_name)) {
+            }
+            else if (0 != HDstrcmp(slinkval, group_name)) {
                 failure_mssg = "vrfy_ns_grp_d: 0 != HDstrcmp(slinkval, group_name)";
                 HDfree(slinkval);
                 return false;
             }
             HDfree(slinkval);
-        } else if (1 == (u % 3)) {
+        }
+        else if (1 == (u % 3)) {
             H5O_info2_t root_oinfo;
-            int token_cmp = 0;
+            int         token_cmp = 0;
 
             if (H5L_TYPE_HARD != lnk_info.type) {
                 failure_mssg = "vrfy_ns_grp_d: H5L_TYPE_HARD != lnk_info.type";
@@ -887,23 +896,25 @@ vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_d: H5Oget_info() failed.";
                 return false;
-            } else if(H5Otoken_cmp(fid, &root_oinfo.token, &lnk_info.u.token, &token_cmp) < 0) {
+            }
+            else if (H5Otoken_cmp(fid, &root_oinfo.token, &lnk_info.u.token, &token_cmp) < 0) {
                 failure_mssg = "vrfy_ns_grp_d: H5Otoken_cmp() failed.";
                 return false;
-            } else if (token_cmp) {
+            }
+            else if (token_cmp) {
                 failure_mssg = "vrfy_ns_grp_d: root_oinfo.token != lnk_info.u.token";
                 return false;
             }
-        } else {
-            void *elinkval;
+        }
+        else {
+            void *      elinkval;
             const char *file = NULL;
             const char *path = NULL;
 
             HDassert(2 == (u % 3));
 
             if (H5L_TYPE_EXTERNAL != lnk_info.type) {
-                failure_mssg =
-                    "vrfy_ns_grp_d: H5L_TYPE_EXTERNAL != lnk_info.type";
+                failure_mssg = "vrfy_ns_grp_d: H5L_TYPE_EXTERNAL != lnk_info.type";
                 return false;
             }
 
@@ -914,25 +925,24 @@ vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
                 return false;
             }
 
-            ret = H5Lget_val(gid, linkname, elinkval, lnk_info.u.val_size,
-                H5P_DEFAULT);
+            ret = H5Lget_val(gid, linkname, elinkval, lnk_info.u.val_size, H5P_DEFAULT);
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_d: H5Lget_val failed.";
                 return false;
             }
 
-            ret = H5Lunpack_elink_val(elinkval, lnk_info.u.val_size, NULL,
-                &file, &path);
+            ret = H5Lunpack_elink_val(elinkval, lnk_info.u.val_size, NULL, &file, &path);
             if (ret < 0) {
                 failure_mssg = "vrfy_ns_grp_d: H5Lunpack_elink_val failed.";
                 HDfree(elinkval);
                 return false;
-            } else if (0 != HDstrcmp(file, "external.h5")) {
-                failure_mssg =
-                    "vrfy_ns_grp_d: 0 != HDstrcmp(file, \"external.h5\").";
+            }
+            else if (0 != HDstrcmp(file, "external.h5")) {
+                failure_mssg = "vrfy_ns_grp_d: 0 != HDstrcmp(file, \"external.h5\").";
                 HDfree(elinkval);
                 return false;
-            } else if (0 != HDstrcmp(path, "/ext")) {
+            }
+            else if (0 != HDstrcmp(path, "/ext")) {
                 failure_mssg = "vrfy_ns_grp_d: 0 != HDstrcmp(path, \"/ext\")";
                 HDfree(elinkval);
                 return false;
@@ -951,7 +961,6 @@ vrfy_ns_grp_d(hid_t fid, const char *group_name, unsigned nlinks)
     return true;
 
 } /* vrfy_ns_grp_d() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    os_grp_0
@@ -984,52 +993,52 @@ rm_os_grp_0(hid_t fid, const char *group_name)
 bool
 os_grp_0(hid_t fid, const char *group_name)
 {
-    hid_t gid = -1;
-    hid_t fapl = -1;
+    hid_t        gid  = -1;
+    hid_t        fapl = -1;
     H5F_libver_t low, high;
 
     herr_t ret;
 
     /* get the file's file access property list */
     fapl = H5Fget_access_plist(fid);
-    if ( fapl <= 0 ) {
+    if (fapl <= 0) {
         failure_mssg = "os_grp_0: H5Fget_access_plist() failed.";
         return false;
     }
 
     /* get low and high bounds from fapl */
     ret = H5Pget_libver_bounds(fapl, &low, &high);
-    if ( ret < 0 ) {
+    if (ret < 0) {
         failure_mssg = "os_grp_0: H5Pget_libver_bounds() failed(1).";
         return false;
     }
 
     /* turn file format latest off */
-    if(low >= H5F_LIBVER_V18) {
+    if (low >= H5F_LIBVER_V18) {
         ret = H5Fset_libver_bounds(fid, H5F_LIBVER_EARLIEST, high);
-        if ( ret < 0 ) {
+        if (ret < 0) {
             failure_mssg = "os_grp_0: H5Fset_libver_bounds() failed(1).";
             return false;
         }
     }
 
     gid = H5Gcreate2(fid, group_name, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-    if ( gid <= 0 ) {
+    if (gid <= 0) {
         failure_mssg = "os_grp_0: H5Gcreate2() failed.";
         return false;
     }
 
     ret = H5Gclose(gid);
 
-    if ( ret < 0 ) {
+    if (ret < 0) {
         failure_mssg = "os_grp_0: H5Gclose() failed.";
         return false;
     }
 
     /* restore low and high bounds */
-    if(low >= H5F_LIBVER_V18) {
+    if (low >= H5F_LIBVER_V18) {
         ret = H5Fset_libver_bounds(fid, low, high);
-        if ( ret < 0 ) {
+        if (ret < 0) {
             failure_mssg = "os_grp_0: H5Fset_libver_bounds() failed(1).";
             return false;
         }
@@ -1037,7 +1046,6 @@ os_grp_0(hid_t fid, const char *group_name)
 
     return true;
 } /* os_grp_0() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    vrfy_os_grp_0
@@ -1058,11 +1066,11 @@ os_grp_0(hid_t fid, const char *group_name)
 bool
 vrfy_os_grp_0(hid_t fid, const char *group_name)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t      gid  = -1;
+    hid_t      gcpl = -1;
     H5G_info_t grp_info;
-    unsigned crt_order_flags = 0;
-    herr_t ret;
+    unsigned   crt_order_flags = 0;
+    herr_t     ret;
 
     gid = H5Gopen2(fid, group_name, H5P_DEFAULT);
 
@@ -1083,7 +1091,8 @@ vrfy_os_grp_0(hid_t fid, const char *group_name)
     if (ret < 0) {
         failure_mssg = "vrfy_os_grp_0: H5Pget_link_creation_order() failed";
         return false;
-    } else if (0 != crt_order_flags) {
+    }
+    else if (0 != crt_order_flags) {
         failure_mssg = "vrfy_os_grp_0: 0 != crt_order_flags";
         return false;
     }
@@ -1101,16 +1110,20 @@ vrfy_os_grp_0(hid_t fid, const char *group_name)
     if (ret < 0) {
         failure_mssg = "vrfy_os_grp_0: H5Gget_info() failed.";
         return false;
-    } else if (H5G_STORAGE_TYPE_SYMBOL_TABLE != grp_info.storage_type) {
+    }
+    else if (H5G_STORAGE_TYPE_SYMBOL_TABLE != grp_info.storage_type) {
         failure_mssg = "vrfy_os_grp_0: H5G_STORAGE_TYPE_SYMBOL_TABLE != grp_info.storage_type";
         return false;
-    } else if (0 != grp_info.nlinks) {
+    }
+    else if (0 != grp_info.nlinks) {
         failure_mssg = "vrfy_os_grp_0: 0 != grp_info.nlinks";
         return false;
-    } else if (0 != grp_info.max_corder) {
+    }
+    else if (0 != grp_info.max_corder) {
         failure_mssg = "vrfy_os_grp_0: 0 != grp_info.max_corder";
         return false;
-    } else if ( FALSE != grp_info.mounted) {
+    }
+    else if (FALSE != grp_info.mounted) {
         failure_mssg = "vrfy_os_grp_0: FALSE != grp_info.mounted";
         return false;
     }
@@ -1124,7 +1137,6 @@ vrfy_os_grp_0(hid_t fid, const char *group_name)
 
     return true;
 } /* vrfy_os_grp_0() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    os_grp_n
@@ -1145,14 +1157,13 @@ vrfy_os_grp_0(hid_t fid, const char *group_name)
 
 static bool
 missing_os_grp_n(hid_t fid, const char *group_name, int H5_ATTR_UNUSED proc_num,
-    unsigned H5_ATTR_UNUSED nlinks)
+                 unsigned H5_ATTR_UNUSED nlinks)
 {
     return file_has_no_path(fid, group_name);
 }
 
 static bool
-rm_os_grp_n(hid_t fid, const char *group_name, int H5_ATTR_UNUSED proc_num,
-    unsigned H5_ATTR_UNUSED nlinks)
+rm_os_grp_n(hid_t fid, const char *group_name, int H5_ATTR_UNUSED proc_num, unsigned H5_ATTR_UNUSED nlinks)
 {
     return remove_from_file_path(fid, group_name);
 }
@@ -1160,37 +1171,37 @@ rm_os_grp_n(hid_t fid, const char *group_name, int H5_ATTR_UNUSED proc_num,
 bool
 os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
 {
-    hid_t gid = -1;
-    unsigned u;
-    hid_t fapl = -1;
+    hid_t        gid = -1;
+    unsigned     u;
+    hid_t        fapl = -1;
     H5F_libver_t low, high;
-    herr_t ret;
+    herr_t       ret;
 
     /* get the file's file access property list */
     fapl = H5Fget_access_plist(fid);
-    if ( fapl <= 0 ) {
+    if (fapl <= 0) {
         failure_mssg = "os_grp_n: H5Fget_access_plist() failed.";
         return false;
     }
 
     /* get low and high bounds from fapl */
     ret = H5Pget_libver_bounds(fapl, &low, &high);
-    if ( ret < 0 ) {
+    if (ret < 0) {
         failure_mssg = "os_grp_0: H5Pget_libver_bounds() failed(1).";
         return false;
     }
 
     /* turn file format latest off */
-    if(low >= H5F_LIBVER_V18) {
+    if (low >= H5F_LIBVER_V18) {
         ret = H5Fset_libver_bounds(fid, H5F_LIBVER_EARLIEST, high);
-        if ( ret < 0 ) {
+        if (ret < 0) {
             failure_mssg = "os_grp_0: H5Fset_libver_bounds() failed(1).";
             return false;
         }
     }
 
     gid = H5Gcreate2(fid, group_name, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-    if ( gid <= 0 ) {
+    if (gid <= 0) {
         failure_mssg = "os_grp_n: H5Gcreate2() failed.";
         return false;
     }
@@ -1202,17 +1213,18 @@ os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
 
         HDsprintf(linkname, "ln%d_%u", proc_num, u);
 
-        if(0 == (u % 2)) {
+        if (0 == (u % 2)) {
             ret = H5Lcreate_soft(group_name, gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
-            if ( ret < 0 ) {
+            if (ret < 0) {
                 failure_mssg = "os_grp_n: H5Lcreate_soft() failed.";
                 return false;
             }
-        } else {
+        }
+        else {
             HDassert(1 == (u % 2));
 
             ret = H5Lcreate_hard(fid, "/", gid, linkname, H5P_DEFAULT, H5P_DEFAULT);
-            if ( ret < 0 ) {
+            if (ret < 0) {
                 failure_mssg = "os_grp_n: H5Lcreate_hard() failed.";
                 return false;
             }
@@ -1221,15 +1233,15 @@ os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
 
     ret = H5Gclose(gid);
 
-    if ( ret < 0 ) {
+    if (ret < 0) {
         failure_mssg = "os_grp_n: H5Gclose() failed.";
         return false;
     }
 
     /* restore low and high bounds */
-    if(low >= H5F_LIBVER_V18) {
+    if (low >= H5F_LIBVER_V18) {
         ret = H5Fset_libver_bounds(fid, low, high);
-        if ( ret < 0 ) {
+        if (ret < 0) {
             failure_mssg = "os_grp_n: H5Fset_libver_bounds() failed(2).";
             return false;
         }
@@ -1237,7 +1249,6 @@ os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
 
     return true;
 } /* os_grp_n() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    vrfy_os_grp_n
@@ -1258,12 +1269,12 @@ os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
 bool
 vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
 {
-    hid_t gid = -1;
-    hid_t gcpl = -1;
+    hid_t      gid  = -1;
+    hid_t      gcpl = -1;
     H5G_info_t grp_info;
-    unsigned crt_order_flags = 0;
-    unsigned u;
-    herr_t ret;
+    unsigned   crt_order_flags = 0;
+    unsigned   u;
+    herr_t     ret;
 
     gid = H5Gopen2(fid, group_name, H5P_DEFAULT);
 
@@ -1284,7 +1295,8 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
     if (ret < 0) {
         failure_mssg = "vrfy_os_grp_n: H5Pget_link_creation_order";
         return false;
-    } else if (0 != crt_order_flags) {
+    }
+    else if (0 != crt_order_flags) {
         failure_mssg = "vrfy_os_grp_n: 0 != crt_order_flags";
         return false;
     }
@@ -1303,24 +1315,28 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
     if (ret < 0) {
         failure_mssg = "vrfy_os_grp_n: H5Gget_info() failed";
         return false;
-    } else if (H5G_STORAGE_TYPE_SYMBOL_TABLE != grp_info.storage_type) {
+    }
+    else if (H5G_STORAGE_TYPE_SYMBOL_TABLE != grp_info.storage_type) {
         failure_mssg = "vrfy_os_grp_n: H5G_STORAGE_TYPE_SYMBOL_TABLE != grp_info.storage_type";
         return false;
-    } else if (nlinks != grp_info.nlinks) {
+    }
+    else if (nlinks != grp_info.nlinks) {
         failure_mssg = "vrfy_os_grp_n: nlinks != grp_info.nlinks";
         return false;
-    } else if (0 != grp_info.max_corder) {
+    }
+    else if (0 != grp_info.max_corder) {
         failure_mssg = "vrfy_os_grp_n: 0 != grp_info.max_corder";
         return false;
-    } else if ( FALSE != grp_info.mounted) {
+    }
+    else if (FALSE != grp_info.mounted) {
         failure_mssg = "vrfy_os_grp_n: FALSE != grp_info.mounted";
         return false;
     }
 
     for (u = 0; u < nlinks; u++) {
         H5L_info2_t lnk_info;
-        char linkname[32];
-        htri_t link_exists;
+        char        linkname[32];
+        htri_t      link_exists;
 
         HDsprintf(linkname, "ln%d_%u", proc_num, u);
         link_exists = H5Lexists(gid, linkname, H5P_DEFAULT);
@@ -1338,7 +1354,7 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
             failure_mssg = "vrfy_os_grp_n: H5Lget_info() failed";
             return false;
         }
-        else if ( FALSE != lnk_info.corder_valid) {
+        else if (FALSE != lnk_info.corder_valid) {
             failure_mssg = "vrfy_os_grp_n: FALSE != lnk_info.corder_valid";
             return false;
         }
@@ -1353,7 +1369,8 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
             if (H5L_TYPE_SOFT != lnk_info.type) {
                 failure_mssg = "vrfy_os_grp_n: H5L_TYPE_SOFT != lnk_info.type";
                 return false;
-            } else if ((HDstrlen(group_name) + 1) != lnk_info.u.val_size) {
+            }
+            else if ((HDstrlen(group_name) + 1) != lnk_info.u.val_size) {
                 failure_mssg = "vrfy_os_grp_n: (HDstrlen(group_name) + 1) != lnk_info.u.val_size";
                 return false;
             }
@@ -1365,22 +1382,23 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
                 return false;
             }
 
-            ret = H5Lget_val(gid, linkname, slinkval, lnk_info.u.val_size,
-                H5P_DEFAULT);
+            ret = H5Lget_val(gid, linkname, slinkval, lnk_info.u.val_size, H5P_DEFAULT);
 
             if (ret < 0) {
                 failure_mssg = "vrfy_os_grp_n: H5Lget_val() failed";
                 HDfree(slinkval);
                 return false;
-            } else if (0 != HDstrcmp(slinkval, group_name)) {
+            }
+            else if (0 != HDstrcmp(slinkval, group_name)) {
                 failure_mssg = "vrfy_os_grp_n: 0 != HDstrcmp(slinkval, group_name)";
                 HDfree(slinkval);
                 return false;
             }
             HDfree(slinkval);
-        } else {
+        }
+        else {
             H5O_info2_t root_oinfo;
-            int token_cmp = 0;
+            int         token_cmp = 0;
 
             HDassert(1 == (u % 2));
 
@@ -1395,10 +1413,12 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
             if (ret < 0) {
                 failure_mssg = "vrfy_os_grp_n: H5Oget_info() failed.";
                 return false;
-            } else if(H5Otoken_cmp(fid, &root_oinfo.token, &lnk_info.u.token, &token_cmp) < 0) {
+            }
+            else if (H5Otoken_cmp(fid, &root_oinfo.token, &lnk_info.u.token, &token_cmp) < 0) {
                 failure_mssg = "vrfy_os_grp_n: H5Otoken_cmp() failed.";
                 return false;
-            } else if (token_cmp) {
+            }
+            else if (token_cmp) {
                 failure_mssg = "vrfy_os_grp_n: root_oinfo.token != lnk_info.u.token";
                 return false;
             }
@@ -1414,7 +1434,6 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
 
     return true;
 } /* vrfy_os_grp_n() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    ds_ctg_i
@@ -1434,8 +1453,7 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
  *-------------------------------------------------------------------------
  */
 static bool
-missing_ds_ctg_i(hid_t fid, const char *dset_name,
-    hbool_t H5_ATTR_UNUSED write_data)
+missing_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 {
     return file_has_no_path(fid, dset_name);
 }
@@ -1449,12 +1467,12 @@ rm_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 bool
 ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    int *wdata = NULL;
+    int *    wdata = NULL;
     unsigned u;
-    hid_t dsid = -1;
-    hid_t sid = -1;
-    hsize_t dims[1] = { DSET_DIMS };
-    herr_t ret;
+    hid_t    dsid    = -1;
+    hid_t    sid     = -1;
+    hsize_t  dims[1] = {DSET_DIMS};
+    herr_t   ret;
 
     sid = H5Screate_simple(1, dims, NULL);
 
@@ -1463,8 +1481,7 @@ ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
         return false;
     }
 
-    dsid = H5Dcreate2(fid, dset_name, H5T_NATIVE_INT, sid, H5P_DEFAULT,
-    H5P_DEFAULT, H5P_DEFAULT);
+    dsid = H5Dcreate2(fid, dset_name, H5T_NATIVE_INT, sid, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     if (dsid <= 0) {
         failure_mssg = "ds_ctg_i: H5Dcreate2() failed";
@@ -1487,10 +1504,9 @@ ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
         }
 
         for (u = 0; u < DSET_DIMS; u++)
-            wdata[u] = (int) u;
+            wdata[u] = (int)u;
 
-        ret = H5Dwrite(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-            wdata);
+        ret = H5Dwrite(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, wdata);
 
         HDfree(wdata);
 
@@ -1509,7 +1525,6 @@ ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
 
     return true;
 } /* ds_ctg_i */
-
 
 /*-------------------------------------------------------------------------
  * Function:    vrfy_ds_ctg_i
@@ -1530,18 +1545,18 @@ ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
 bool
 vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    int *rdata = NULL;
-    unsigned u;
-    hid_t dsid = -1;
-    hid_t sid = -1;
-    hid_t tid = -1;
-    hid_t dcpl = -1;
+    int *              rdata = NULL;
+    unsigned           u;
+    hid_t              dsid = -1;
+    hid_t              sid  = -1;
+    hid_t              tid  = -1;
+    hid_t              dcpl = -1;
     H5D_space_status_t allocation;
-    H5D_layout_t layout;
-    int ndims;
-    hsize_t dims[1], max_dims[1];
-    htri_t type_equal;
-    herr_t ret;
+    H5D_layout_t       layout;
+    int                ndims;
+    hsize_t            dims[1], max_dims[1];
+    htri_t             type_equal;
+    herr_t             ret;
 
     dsid = H5Dopen2(fid, dset_name, H5P_DEFAULT);
 
@@ -1569,10 +1584,12 @@ vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_ctg_i: H5Sget_simple_extent_dims() failed";
         return false;
-    } else if ( DSET_DIMS != dims[0]) {
+    }
+    else if (DSET_DIMS != dims[0]) {
         failure_mssg = "vrfy_ds_ctg_i: DSET_DIMS != dims[0]";
         return false;
-    } else if ( DSET_DIMS != max_dims[0]) {
+    }
+    else if (DSET_DIMS != max_dims[0]) {
         failure_mssg = "vrfy_ds_ctg_i: DSET_DIMS != max_dims[0]";
         return false;
     }
@@ -1610,13 +1627,15 @@ vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_ctg_i: H5Dget_space_status() failed.";
         return false;
-    } else if (write_data && (allocation != H5D_SPACE_STATUS_ALLOCATED)) {
+    }
+    else if (write_data && (allocation != H5D_SPACE_STATUS_ALLOCATED)) {
         failure_mssg = "vrfy_ds_ctg_i: "
-            "write_data && allocation != H5D_SPACE_STATUS_ALLOCATED";
+                       "write_data && allocation != H5D_SPACE_STATUS_ALLOCATED";
         return false;
-    } else if (!write_data && (allocation != H5D_SPACE_STATUS_NOT_ALLOCATED)) {
+    }
+    else if (!write_data && (allocation != H5D_SPACE_STATUS_NOT_ALLOCATED)) {
         failure_mssg = "vrfy_ds_ctg_i: "
-            "!write_data && allocation != H5D_SPACE_STATUS_NOT_ALLOCATED";
+                       "!write_data && allocation != H5D_SPACE_STATUS_NOT_ALLOCATED";
         return false;
     }
 
@@ -1649,15 +1668,14 @@ vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
             return false;
         }
 
-        ret = H5Dread(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-            rdata);
+        ret = H5Dread(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, rdata);
         if (ret < 0) {
             failure_mssg = "vrfy_ds_ctg_i: H5Dread() failed.";
             return false;
         }
 
         for (u = 0; u < DSET_DIMS; u++) {
-            if ((int) u != rdata[u]) {
+            if ((int)u != rdata[u]) {
                 failure_mssg = "vrfy_ds_ctg_i: u != rdata[u].";
                 HDfree(rdata);
                 return false;
@@ -1677,7 +1695,6 @@ vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
 
 } /* vrfy_ds_ctg_i() */
 
-
 /*-------------------------------------------------------------------------
  * Function:    ds_chk_i
  *
@@ -1696,8 +1713,7 @@ vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 static bool
-missing_ds_chk_i(hid_t fid, const char *dset_name,
-    hbool_t H5_ATTR_UNUSED write_data)
+missing_ds_chk_i(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 {
     return file_has_no_path(fid, dset_name);
 }
@@ -1711,14 +1727,14 @@ rm_ds_chk_i(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 bool
 ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    int *wdata = NULL;
+    int *    wdata = NULL;
     unsigned u;
-    hid_t dsid = -1;
-    hid_t dcpl = -1;
-    hid_t sid = -1;
-    hsize_t dims[1] = { DSET_DIMS };
-    hsize_t chunk_dims[1] = { DSET_CHUNK_DIMS };
-    herr_t ret;
+    hid_t    dsid          = -1;
+    hid_t    dcpl          = -1;
+    hid_t    sid           = -1;
+    hsize_t  dims[1]       = {DSET_DIMS};
+    hsize_t  chunk_dims[1] = {DSET_CHUNK_DIMS};
+    herr_t   ret;
 
     sid = H5Screate_simple(1, dims, NULL);
 
@@ -1741,8 +1757,7 @@ ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
         return false;
     }
 
-    dsid = H5Dcreate2(fid, dset_name, H5T_NATIVE_INT, sid, H5P_DEFAULT, dcpl,
-        H5P_DEFAULT);
+    dsid = H5Dcreate2(fid, dset_name, H5T_NATIVE_INT, sid, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
     if (dsid <= 0) {
         failure_mssg = "ds_chk_i: H5Dcreate2() failed";
@@ -1772,10 +1787,9 @@ ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
         }
 
         for (u = 0; u < DSET_DIMS; u++)
-            wdata[u] = (int) u;
+            wdata[u] = (int)u;
 
-        ret = H5Dwrite(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-            wdata);
+        ret = H5Dwrite(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, wdata);
         HDfree(wdata);
         if (ret < 0) {
             failure_mssg = "ds_chk_i: H5Dwrite() failed.";
@@ -1792,7 +1806,6 @@ ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
 
     return true;
 } /* ds_chk_i */
-
 
 /*-------------------------------------------------------------------------
  * Function:    vrfy_ds_chk_i
@@ -1813,18 +1826,18 @@ ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
 bool
 vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    int *rdata = NULL;
-    unsigned u;
-    hid_t dsid = -1;
-    hid_t sid = -1;
-    hid_t tid = -1;
-    hid_t dcpl = -1;
+    int *              rdata = NULL;
+    unsigned           u;
+    hid_t              dsid = -1;
+    hid_t              sid  = -1;
+    hid_t              tid  = -1;
+    hid_t              dcpl = -1;
     H5D_space_status_t allocation;
-    H5D_layout_t layout;
-    int ndims;
-    hsize_t dims[1], max_dims[1], chunk_dims[1];
-    htri_t type_equal;
-    herr_t ret;
+    H5D_layout_t       layout;
+    int                ndims;
+    hsize_t            dims[1], max_dims[1], chunk_dims[1];
+    htri_t             type_equal;
+    herr_t             ret;
 
     dsid = H5Dopen2(fid, dset_name, H5P_DEFAULT);
 
@@ -1852,10 +1865,12 @@ vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_chk_i: H5Sget_simple_extent_dims() failed";
         return false;
-    } else if ( DSET_DIMS != dims[0]) {
+    }
+    else if (DSET_DIMS != dims[0]) {
         failure_mssg = "vrfy_ds_chk_i: DSET_DIMS != dims[0]";
         return false;
-    } else if ( DSET_DIMS != max_dims[0]) {
+    }
+    else if (DSET_DIMS != max_dims[0]) {
         failure_mssg = "vrfy_ds_chk_i: DSET_DIMS != max_dims[0]";
         return false;
     }
@@ -1893,10 +1908,12 @@ vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_chk_i: H5Dget_space_status() failed.";
         return false;
-    } else if (write_data && (allocation != H5D_SPACE_STATUS_ALLOCATED)) {
+    }
+    else if (write_data && (allocation != H5D_SPACE_STATUS_ALLOCATED)) {
         failure_mssg = "vrfy_ds_chk_i: write_data && allocation != H5D_SPACE_STATUS_ALLOCATED";
         return false;
-    } else if (!write_data && (allocation != H5D_SPACE_STATUS_NOT_ALLOCATED)) {
+    }
+    else if (!write_data && (allocation != H5D_SPACE_STATUS_NOT_ALLOCATED)) {
         failure_mssg = "vrfy_ds_chk_i: !write_data && allocation != H5D_SPACE_STATUS_NOT_ALLOCATED";
         return false;
     }
@@ -1920,7 +1937,8 @@ vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_chk_i: H5Pget_chunk";
         return false;
-    } else if ( DSET_CHUNK_DIMS != chunk_dims[0]) {
+    }
+    else if (DSET_CHUNK_DIMS != chunk_dims[0]) {
         failure_mssg = "vrfy_ds_chk_i: ";
         return false;
     }
@@ -1940,15 +1958,14 @@ vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
             return false;
         }
 
-        ret = H5Dread(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-            rdata);
+        ret = H5Dread(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, rdata);
         if (ret < 0) {
             failure_mssg = "vrfy_ds_chk_i: H5Dread() failed.";
             return false;
         }
 
         for (u = 0; u < DSET_DIMS; u++) {
-            if ((int) u != rdata[u]) {
+            if ((int)u != rdata[u]) {
                 failure_mssg = "vrfy_ds_chk_i: u != rdata[u]";
                 HDfree(rdata);
                 return false;
@@ -1966,7 +1983,6 @@ vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
 
     return true;
 } /* vrfy_ds_chk_i() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    ds_cpt_i
@@ -1986,8 +2002,7 @@ vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 static bool
-missing_ds_cpt_i(hid_t fid, const char *dset_name,
-    hbool_t H5_ATTR_UNUSED write_data)
+missing_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 {
     return file_has_no_path(fid, dset_name);
 }
@@ -2001,13 +2016,13 @@ rm_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 bool
 ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    int *wdata = NULL;
+    int *    wdata = NULL;
     unsigned u;
-    hid_t dsid = -1;
-    hid_t dcpl = -1;
-    hid_t sid = -1;
-    hsize_t dims[1] = { DSET_COMPACT_DIMS };
-    herr_t ret;
+    hid_t    dsid    = -1;
+    hid_t    dcpl    = -1;
+    hid_t    sid     = -1;
+    hsize_t  dims[1] = {DSET_COMPACT_DIMS};
+    herr_t   ret;
 
     sid = H5Screate_simple(1, dims, NULL);
 
@@ -2030,8 +2045,7 @@ ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
         return false;
     }
 
-    dsid = H5Dcreate2(fid, dset_name, H5T_NATIVE_INT, sid, H5P_DEFAULT, dcpl,
-        H5P_DEFAULT);
+    dsid = H5Dcreate2(fid, dset_name, H5T_NATIVE_INT, sid, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
     if (dsid <= 0) {
         failure_mssg = "ds_cpt_i: H5Dcreate2() failed.";
@@ -2061,10 +2075,9 @@ ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
         }
 
         for (u = 0; u < DSET_COMPACT_DIMS; u++)
-            wdata[u] = (int) u;
+            wdata[u] = (int)u;
 
-        ret = H5Dwrite(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-            wdata);
+        ret = H5Dwrite(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, wdata);
         HDfree(wdata);
 
         if (ret < 0) {
@@ -2083,7 +2096,6 @@ ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
     return true;
 
 } /* ds_cpt_i() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    vrfy_ds_cpt_i
@@ -2104,18 +2116,18 @@ ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
 bool
 vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    int *rdata = NULL;
-    unsigned u;
-    hid_t dsid = -1;
-    hid_t sid = -1;
-    hid_t tid = -1;
-    hid_t dcpl = -1;
+    int *              rdata = NULL;
+    unsigned           u;
+    hid_t              dsid = -1;
+    hid_t              sid  = -1;
+    hid_t              tid  = -1;
+    hid_t              dcpl = -1;
     H5D_space_status_t allocation;
-    H5D_layout_t layout;
-    int ndims;
-    hsize_t dims[1], max_dims[1];
-    htri_t type_equal;
-    herr_t ret;
+    H5D_layout_t       layout;
+    int                ndims;
+    hsize_t            dims[1], max_dims[1];
+    htri_t             type_equal;
+    herr_t             ret;
 
     dsid = H5Dopen2(fid, dset_name, H5P_DEFAULT);
 
@@ -2143,10 +2155,12 @@ vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_cpt_i: H5Sget_simple_extent_dims() failed";
         return false;
-    } else if ( DSET_COMPACT_DIMS != dims[0]) {
+    }
+    else if (DSET_COMPACT_DIMS != dims[0]) {
         failure_mssg = "vrfy_ds_cpt_i: DSET_COMPACT_DIMS != dims[0]";
         return false;
-    } else if ( DSET_COMPACT_DIMS != max_dims[0]) {
+    }
+    else if (DSET_COMPACT_DIMS != max_dims[0]) {
         failure_mssg = "vrfy_ds_cpt_i: DSET_COMPACT_DIMS != max_dims[0]";
         return false;
     }
@@ -2184,9 +2198,9 @@ vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_cpt_i: H5Dget_space_status() failed.";
         return false;
-    } else if (H5D_SPACE_STATUS_ALLOCATED != allocation) {
-        failure_mssg =
-                "vrfy_ds_cpt_i: H5D_SPACE_STATUS_ALLOCATED != allocation";
+    }
+    else if (H5D_SPACE_STATUS_ALLOCATED != allocation) {
+        failure_mssg = "vrfy_ds_cpt_i: H5D_SPACE_STATUS_ALLOCATED != allocation";
         return false;
     }
 
@@ -2219,15 +2233,14 @@ vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
             return false;
         }
 
-        ret = H5Dread(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT,
-            rdata);
+        ret = H5Dread(dsid, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, rdata);
         if (ret < 0) {
             failure_mssg = "vrfy_ds_cpt_i: H5Dread() failed.";
             return false;
         }
 
         for (u = 0; u < DSET_COMPACT_DIMS; u++) {
-            if ((int) u != rdata[u]) {
+            if ((int)u != rdata[u]) {
                 failure_mssg = "vrfy_ds_cpt_i: (int)u != rdata[u]";
                 HDfree(rdata);
                 return false;
@@ -2245,7 +2258,6 @@ vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
 
     return true;
 } /* vrfy_ds_cpt_i() */
-
 
 /*-------------------------------------------------------------------------
  * Function:    ds_ctg_v
@@ -2265,8 +2277,7 @@ vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 static bool
-missing_ds_ctg_v(hid_t fid, const char *dset_name,
-    hbool_t H5_ATTR_UNUSED write_data)
+missing_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 {
     return file_has_no_path(fid, dset_name);
 }
@@ -2280,12 +2291,12 @@ rm_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t H5_ATTR_UNUSED write_data)
 bool
 ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    hid_t dsid = -1;
-    hid_t sid = -1;
-    hid_t tid = -1;
-    hsize_t dims[1] = { DSET_SMALL_DIMS };
-    herr_t ret;
-    hvl_t *wdata = NULL;
+    hid_t    dsid    = -1;
+    hid_t    sid     = -1;
+    hid_t    tid     = -1;
+    hsize_t  dims[1] = {DSET_SMALL_DIMS};
+    herr_t   ret;
+    hvl_t *  wdata = NULL;
     unsigned u;
 
     sid = H5Screate_simple(1, dims, NULL);
@@ -2302,8 +2313,7 @@ ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
         return false;
     }
 
-    dsid = H5Dcreate2(fid, dset_name, tid, sid, H5P_DEFAULT,
-    H5P_DEFAULT, H5P_DEFAULT);
+    dsid = H5Dcreate2(fid, dset_name, tid, sid, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     if (dsid <= 0) {
         failure_mssg = "ds_ctg_v: H5Dcreate2() failed.";
@@ -2319,11 +2329,11 @@ ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
         }
 
         for (u = 0; u < DSET_SMALL_DIMS; u++) {
-            int *tdata;
+            int *    tdata;
             unsigned len;
             unsigned v;
 
-            len = (u % 10) + 1;
+            len   = (u % 10) + 1;
             tdata = HDmalloc(sizeof(int) * len);
 
             if (!tdata) {
@@ -2335,10 +2345,10 @@ ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
             }
 
             for (v = 0; v < len; v++)
-                tdata[v] = (int) (u + v);
+                tdata[v] = (int)(u + v);
 
             wdata[u].len = len;
-            wdata[u].p = tdata;
+            wdata[u].p   = tdata;
         }
 
         ret = H5Dwrite(dsid, tid, H5S_ALL, H5S_ALL, H5P_DEFAULT, wdata);
@@ -2385,7 +2395,6 @@ ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
     return true;
 } /* ds_ctg_v() */
 
-
 /*-------------------------------------------------------------------------
  * Function:    vrfy_ds_ctg_v
  *
@@ -2405,19 +2414,19 @@ ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
 bool
 vrfy_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
 {
-    hid_t dsid = -1;
-    hid_t sid = -1;
-    hid_t tid = -1;
-    hid_t tmp_tid = -1;
-    hid_t dcpl = -1;
+    hid_t              dsid    = -1;
+    hid_t              sid     = -1;
+    hid_t              tid     = -1;
+    hid_t              tmp_tid = -1;
+    hid_t              dcpl    = -1;
     H5D_space_status_t allocation;
-    H5D_layout_t layout;
-    int ndims;
-    hsize_t dims[1], max_dims[1];
-    htri_t type_equal;
-    hvl_t *rdata = NULL;
-    unsigned u;
-    herr_t ret;
+    H5D_layout_t       layout;
+    int                ndims;
+    hsize_t            dims[1], max_dims[1];
+    htri_t             type_equal;
+    hvl_t *            rdata = NULL;
+    unsigned           u;
+    herr_t             ret;
 
     dsid = H5Dopen2(fid, dset_name, H5P_DEFAULT);
 
@@ -2445,10 +2454,12 @@ vrfy_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_ctg_v: H5Sget_simple_extent_dims() failed.";
         return false;
-    } else if ( DSET_SMALL_DIMS != dims[0]) {
+    }
+    else if (DSET_SMALL_DIMS != dims[0]) {
         failure_mssg = "vrfy_ds_ctg_v: DSET_SMALL_DIMS != dims[0]";
         return false;
-    } else if ( DSET_SMALL_DIMS != max_dims[0]) {
+    }
+    else if (DSET_SMALL_DIMS != max_dims[0]) {
         failure_mssg = "vrfy_ds_ctg_v: DSET_SMALL_DIMS != max_dims[0]";
         return false;
     }
@@ -2486,14 +2497,13 @@ vrfy_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
     if (ret < 0) {
         failure_mssg = "vrfy_ds_ctg_v: H5Dget_space_status() failed";
         return false;
-    } else if (write_data && (allocation != H5D_SPACE_STATUS_ALLOCATED)) {
-        failure_mssg =
-                "vrfy_ds_ctg_v: write_data && allocation != H5D_SPACE_STATUS_ALLOCATED";
+    }
+    else if (write_data && (allocation != H5D_SPACE_STATUS_ALLOCATED)) {
+        failure_mssg = "vrfy_ds_ctg_v: write_data && allocation != H5D_SPACE_STATUS_ALLOCATED";
         return false;
-    } else if (!write_data
-            && (allocation != H5D_SPACE_STATUS_NOT_ALLOCATED)) {
-        failure_mssg =
-                "vrfy_ds_ctg_v: !write_data && allocation != H5D_SPACE_STATUS_NOT_ALLOCATED";
+    }
+    else if (!write_data && (allocation != H5D_SPACE_STATUS_NOT_ALLOCATED)) {
+        failure_mssg = "vrfy_ds_ctg_v: !write_data && allocation != H5D_SPACE_STATUS_NOT_ALLOCATED";
         return false;
     }
 
@@ -2537,14 +2547,15 @@ vrfy_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
             unsigned len;
             unsigned v;
 
-            len = (unsigned) rdata[u].len;
+            len = (unsigned)rdata[u].len;
             for (v = 0; v < len; v++) {
-                int *tdata = (int *) rdata[u].p;
+                int *tdata = (int *)rdata[u].p;
 
                 if (!tdata) {
                     failure_mssg = "vrfy_ds_ctg_v: !tdata";
                     return false;
-                } else if ((int) (u + v) != tdata[v]) {
+                }
+                else if ((int)(u + v) != tdata[v]) {
                     failure_mssg = "vrfy_ds_ctg_v: (int)(u + v) != tdata[v]";
                     return false;
                 }
@@ -2599,89 +2610,88 @@ vrfy_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
  *
  * The program may also fail an assert()ion if the selected objects cannot
  * be created/validated.
- * 
+ *
  * Return `true` if the selector was valid, `false` if it was not.
  */
 
 static bool
-create_or_validate_selection(hid_t fid, const char *full_path,
-    int selector, zoo_config_t config, phase_t phase, bool *okp)
+create_or_validate_selection(hid_t fid, const char *full_path, int selector, zoo_config_t config,
+                             phase_t phase, bool *okp)
 {
     bool ok;
 
     switch (selector) {
-    case 0: /* Add & verify an empty "new style" group */
-        ok = ns_grp_0_fntbl[phase](fid, full_path);
-        break;
-    case 1: /* Add & verify a compact "new style" group (3 link messages) */
-        ok = ns_grp_c_fntbl[phase](fid, full_path, 3);
-        break;
-    case 2:
-        /* Add & verify a dense "new style" group (w/300 links,
-         * in v2 B-tree & fractal heap)
-         */
-        ok = ns_grp_d_fntbl[phase](fid, full_path, 300);
-        break;
-    case 3: /* Add & verify an empty "old style" group to file */
-        ok = os_grp_0_fntbl[phase](fid, full_path);
-        break;
-    case 4:
-        /* Add & verify an "old style" group (w/300 links, in
-         * v1 B-tree & local heap) to file
-         */
-        ok = os_grp_n_fntbl[phase](fid, full_path, config.proc_num, 300);
-        break;
-    case 5:
-        /* Add & verify a contiguous dataset w/integer datatype (but no data)
-         * to file
-         */
-        ok = ds_ctg_i_fntbl[phase](fid, full_path, false);
-        break;
-    case 6:
-        /* Add & verify a contiguous dataset w/integer datatype (with data)
-         * to file
-         */
-        ok = ds_ctg_i_fntbl[phase](fid, full_path, true);
-        break;
-    case 7:
-        /* Add & verify a chunked dataset w/integer datatype (but no data)
-         * to file
-         */
-        ok = ds_chk_i_fntbl[phase](fid, full_path, false);
-        break;
-    case 8:
-        /* Add & verify a chunked dataset w/integer datatype (and data)
-         * to file
-         */
-        ok = ds_chk_i_fntbl[phase](fid, full_path, true);
-        break;
-    case 9:
-        /* Add & verify a compact dataset w/integer datatype (but no data)
-         * to file
-         */
-        ok = config.skip_compact ||
-             ds_cpt_i_fntbl[phase](fid, full_path, false);
-        break;
-    case 10:
-        /* Add & verify a compact dataset w/integer datatype (and data)
-         * to file
-         */
-        ok = config.skip_compact || ds_cpt_i_fntbl[phase](fid, full_path, true);
-        break;
-    case 11:
-        /* Add & verify a contiguous dataset w/variable-length datatype
-         * (but no data) to file
-         */
-        ok = config.skip_varlen || ds_ctg_v_fntbl[phase](fid, full_path, false);
-        break;
-    case 12:
-        /* Add & verify a contiguous dataset w/variable-length datatype
-         * (and data) to file
-         */
-        ok = config.skip_varlen || ds_ctg_v_fntbl[phase](fid, full_path, true);
-        break;
-    default:
-        return false;
+        case 0: /* Add & verify an empty "new style" group */
+            ok = ns_grp_0_fntbl[phase](fid, full_path);
+            break;
+        case 1: /* Add & verify a compact "new style" group (3 link messages) */
+            ok = ns_grp_c_fntbl[phase](fid, full_path, 3);
+            break;
+        case 2:
+            /* Add & verify a dense "new style" group (w/300 links,
+             * in v2 B-tree & fractal heap)
+             */
+            ok = ns_grp_d_fntbl[phase](fid, full_path, 300);
+            break;
+        case 3: /* Add & verify an empty "old style" group to file */
+            ok = os_grp_0_fntbl[phase](fid, full_path);
+            break;
+        case 4:
+            /* Add & verify an "old style" group (w/300 links, in
+             * v1 B-tree & local heap) to file
+             */
+            ok = os_grp_n_fntbl[phase](fid, full_path, config.proc_num, 300);
+            break;
+        case 5:
+            /* Add & verify a contiguous dataset w/integer datatype (but no data)
+             * to file
+             */
+            ok = ds_ctg_i_fntbl[phase](fid, full_path, false);
+            break;
+        case 6:
+            /* Add & verify a contiguous dataset w/integer datatype (with data)
+             * to file
+             */
+            ok = ds_ctg_i_fntbl[phase](fid, full_path, true);
+            break;
+        case 7:
+            /* Add & verify a chunked dataset w/integer datatype (but no data)
+             * to file
+             */
+            ok = ds_chk_i_fntbl[phase](fid, full_path, false);
+            break;
+        case 8:
+            /* Add & verify a chunked dataset w/integer datatype (and data)
+             * to file
+             */
+            ok = ds_chk_i_fntbl[phase](fid, full_path, true);
+            break;
+        case 9:
+            /* Add & verify a compact dataset w/integer datatype (but no data)
+             * to file
+             */
+            ok = config.skip_compact || ds_cpt_i_fntbl[phase](fid, full_path, false);
+            break;
+        case 10:
+            /* Add & verify a compact dataset w/integer datatype (and data)
+             * to file
+             */
+            ok = config.skip_compact || ds_cpt_i_fntbl[phase](fid, full_path, true);
+            break;
+        case 11:
+            /* Add & verify a contiguous dataset w/variable-length datatype
+             * (but no data) to file
+             */
+            ok = config.skip_varlen || ds_ctg_v_fntbl[phase](fid, full_path, false);
+            break;
+        case 12:
+            /* Add & verify a contiguous dataset w/variable-length datatype
+             * (and data) to file
+             */
+            ok = config.skip_varlen || ds_ctg_v_fntbl[phase](fid, full_path, true);
+            break;
+        default:
+            return false;
     }
     *okp = ok;
     return true;
@@ -2692,16 +2702,16 @@ static void
 random_pause(unsigned int max_pause_msecs)
 {
     struct timespec delay;
-    const uint64_t nsecs_per_sec = 1000 * 1000 * 1000;
-    uint64_t nsecs_per_msec, nsecs;
+    const uint64_t  nsecs_per_sec = 1000 * 1000 * 1000;
+    uint64_t        nsecs_per_msec, nsecs;
 
     if (max_pause_msecs == 0)
         return;
 
     nsecs_per_msec = 1 + (uint64_t)random() % (1000 * 1000);
-    nsecs = max_pause_msecs * nsecs_per_msec;
+    nsecs          = max_pause_msecs * nsecs_per_msec;
 
-    delay.tv_sec = (time_t)(nsecs / nsecs_per_sec);
+    delay.tv_sec  = (time_t)(nsecs / nsecs_per_sec);
     delay.tv_nsec = (long)(nsecs % nsecs_per_sec);
     for (;;) {
         if (nanosleep(&delay, &delay) == 0)
@@ -2721,14 +2731,14 @@ random_pause(unsigned int max_pause_msecs)
  */
 
 static bool
-tend_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
-    zoo_config_t config, const phase_t *phase, size_t nphases)
+tend_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime, zoo_config_t config,
+         const phase_t *phase, size_t nphases)
 {
-    char full_path[1024];
-    int i, nwritten;
+    char   full_path[1024];
+    int    i, nwritten;
     size_t j;
-    char *leafp;
-    bool ok = true;
+    char * leafp;
+    bool   ok = true;
 
     nwritten = snprintf(full_path, sizeof(full_path), "%s/*", base_path);
     if (nwritten < 0 || (size_t)nwritten >= sizeof(full_path)) {
@@ -2745,8 +2755,7 @@ tend_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
         assert('A' + i <= 'Z');
         *leafp = (char)('A' + i);
         for (j = 0; j < nphases; j++) {
-            if (!create_or_validate_selection(fid, full_path, i, config,
-                    phase[j], &ok))
+            if (!create_or_validate_selection(fid, full_path, i, config, phase[j], &ok))
                 goto out;
             if (phase[j] == PHASE_CREATE || phase[j] == PHASE_DELETE)
                 zoo_create_hook(fid);
@@ -2788,8 +2797,7 @@ out:
  */
 
 bool
-create_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
-    zoo_config_t config)
+create_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime, zoo_config_t config)
 {
     const phase_t phase[] = {PHASE_CREATE, PHASE_VALIDATE};
 
@@ -2816,8 +2824,7 @@ create_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
  */
 
 bool
-validate_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
-    zoo_config_t config)
+validate_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime, zoo_config_t config)
 {
     const phase_t phase[] = {PHASE_VALIDATE};
 
@@ -2825,8 +2832,7 @@ validate_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
 }
 
 bool
-delete_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
-    zoo_config_t config)
+delete_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime, zoo_config_t config)
 {
     const phase_t phase[] = {PHASE_DELETE};
 
@@ -2834,11 +2840,9 @@ delete_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime,
 }
 
 bool
-validate_deleted_zoo(hid_t fid, const char *base_path,
-    struct timespec *lastmsgtime, zoo_config_t config)
+validate_deleted_zoo(hid_t fid, const char *base_path, struct timespec *lastmsgtime, zoo_config_t config)
 {
     const phase_t phase[] = {PHASE_VALIDATE_DELETION};
 
     return tend_zoo(fid, base_path, lastmsgtime, config, phase, NELMTS(phase));
 }
-

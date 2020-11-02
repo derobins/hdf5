@@ -28,14 +28,14 @@
 /* The maximum # of records to add/remove from the dataset in one step,
  * used by vfd_swmr_addrem_writer and vfd_swmr_remove_reader.
  */
-#define MAX_SIZE_CHANGE     10
+#define MAX_SIZE_CHANGE 10
 
-#define NLEVELS         5   /* # of datasets in the SWMR test file */
+#define NLEVELS 5 /* # of datasets in the SWMR test file */
 
-#define NMAPPING        9   
+#define NMAPPING 9
 
-#define COMMON_FILENAME        "vfd_swmr_data.h5"  /* SWMR test file name */
-#define DTYPE_SIZE      150             /* Data size in opaque type */
+#define COMMON_FILENAME "vfd_swmr_data.h5" /* SWMR test file name */
+#define DTYPE_SIZE      150                /* Data size in opaque type */
 
 /* The message sent by writer that the file open is done--releasing the file lock */
 #define WRITER_MESSAGE "VFD_SWMR_WRITER_MESSAGE"
@@ -46,33 +46,29 @@
 
 typedef struct _estack_state {
     H5E_auto_t efunc;
-    void *edata;
+    void *     edata;
 } estack_state_t;
 
 /* Information about a symbol/dataset */
 typedef struct {
-    char *name;         /* Dataset name for symbol */
-    hid_t dsid;         /* Dataset ID for symbol */
-    hsize_t nrecords;   /* Number of records for the symbol */
+    char *  name;     /* Dataset name for symbol */
+    hid_t   dsid;     /* Dataset ID for symbol */
+    hsize_t nrecords; /* Number of records for the symbol */
 } symbol_info_t;
 
 /* A symbol's record */
 typedef struct {
-    uint64_t rec_id;    /* ID for this record (unique in symbol) */
-    uint8_t info[DTYPE_SIZE];   /* "Other" information for this record */
+    uint64_t rec_id;           /* ID for this record (unique in symbol) */
+    uint8_t  info[DTYPE_SIZE]; /* "Other" information for this record */
 } symbol_t;
 
-typedef enum _testsel {
-  TEST_NONE = 0
-, TEST_NULL
-, TEST_OOB
-} testsel_t;
+typedef enum _testsel { TEST_NONE = 0, TEST_NULL, TEST_OOB } testsel_t;
 
 /********************/
 /* Global Variables */
 /********************/
 H5TEST_DLLVAR symbol_info_t *symbol_info[NLEVELS];
-H5TEST_DLLVAR unsigned symbol_count[NLEVELS];
+H5TEST_DLLVAR unsigned       symbol_count[NLEVELS];
 
 /**************/
 /* Prototypes */
@@ -85,25 +81,23 @@ H5TEST_DLL bool below_speed_limit(struct timespec *, const struct timespec *);
 
 H5TEST_DLL estack_state_t estack_get_state(void);
 H5TEST_DLL estack_state_t disable_estack(void);
-H5TEST_DLL void restore_estack(estack_state_t);
+H5TEST_DLL void           restore_estack(estack_state_t);
 
-H5TEST_DLL symbol_info_t * choose_dataset(unsigned *, unsigned *);
-H5TEST_DLL hid_t create_symbol_datatype(void);
-H5TEST_DLL int generate_name(char *name_buf, unsigned level, unsigned count);
-H5TEST_DLL int generate_symbols(void);
-H5TEST_DLL int shutdown_symbols(void);
-H5TEST_DLL int print_metadata_retries_info(hid_t fid);
+H5TEST_DLL symbol_info_t *choose_dataset(unsigned *, unsigned *);
+H5TEST_DLL hid_t          create_symbol_datatype(void);
+H5TEST_DLL int            generate_name(char *name_buf, unsigned level, unsigned count);
+H5TEST_DLL int            generate_symbols(void);
+H5TEST_DLL int            shutdown_symbols(void);
+H5TEST_DLL int            print_metadata_retries_info(hid_t fid);
 
-H5TEST_DLL void block_signals(sigset_t *);
-H5TEST_DLL void restore_signals(sigset_t *);
-H5TEST_DLL void await_signal(hid_t);
-H5TEST_DLL hid_t vfd_swmr_create_fapl(bool, bool, bool, const char *, ...)
-    H5_ATTR_FORMAT(printf, 4, 5);
+H5TEST_DLL void  block_signals(sigset_t *);
+H5TEST_DLL void  restore_signals(sigset_t *);
+H5TEST_DLL void  await_signal(hid_t);
+H5TEST_DLL hid_t vfd_swmr_create_fapl(bool, bool, bool, const char *, ...) H5_ATTR_FORMAT(printf, 4, 5);
 
 H5TEST_DLL void dbgf(int, const char *, ...) H5_ATTR_FORMAT(printf, 2, 3);
 H5TEST_DLL void evsnprintf(char *, size_t, const char *, va_list);
-H5TEST_DLL void esnprintf(char *, size_t, const char *, ...)
-    H5_ATTR_FORMAT(printf, 3, 4);
+H5TEST_DLL void esnprintf(char *, size_t, const char *, ...) H5_ATTR_FORMAT(printf, 3, 4);
 
 H5TEST_DLL int fetch_env_ulong(const char *, unsigned long, unsigned long *);
 

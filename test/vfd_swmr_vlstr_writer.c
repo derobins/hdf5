@@ -12,11 +12,11 @@
  */
 
 #include <err.h>
-#include <time.h> /* nanosleep(2) */
+#include <time.h>   /* nanosleep(2) */
 #include <unistd.h> /* getopt(3) */
 
-#define H5C_FRIEND              /*suppress error about including H5Cpkg   */
-#define H5F_FRIEND              /*suppress error about including H5Fpkg   */
+#define H5C_FRIEND /*suppress error about including H5Cpkg   */
+#define H5F_FRIEND /*suppress error about including H5Fpkg   */
 
 #include "hdf5.h"
 
@@ -29,16 +29,10 @@
 #include "testhdf5.h"
 #include "vfd_swmr_common.h"
 
-enum _step {
-  CREATE = 0
-, LENGTHEN
-, SHORTEN
-, DELETE
-, NSTEPS
-} step_t;
+enum _step { CREATE = 0, LENGTHEN, SHORTEN, DELETE, NSTEPS } step_t;
 
-static const hid_t badhid = H5I_INVALID_HID; // abbreviate
-static bool caught_out_of_bounds = false;
+static const hid_t badhid               = H5I_INVALID_HID; // abbreviate
+static bool        caught_out_of_bounds = false;
 
 static void
 write_vl_dset(hid_t dset, hid_t type, hid_t space, char *data)
@@ -86,8 +80,7 @@ create_vl_dset(hid_t file, hid_t type, hid_t space, const char *name)
 {
     hid_t dset;
 
-    dset = H5Dcreate2(file, name, type, space, H5P_DEFAULT, H5P_DEFAULT,
-        H5P_DEFAULT);
+    dset = H5Dcreate2(file, name, type, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
     if (dset == badhid)
         errx(EXIT_FAILURE, "H5Dcreate2");
@@ -102,13 +95,15 @@ print_cache_hits(H5C_t *cache)
     int i;
 
     for (i = 0; i < H5AC_NTYPES; i++) {
-        dbgf(3, "type-%d cache hits %" PRId64 "%s\n",
-            i, cache->hits[i], (i == H5AC_GHEAP_ID) ? " *" : "");
+        dbgf(3, "type-%d cache hits %" PRId64 "%s\n", i, cache->hits[i], (i == H5AC_GHEAP_ID) ? " *" : "");
     }
     dbgf(3, "\n");
 }
 #else
-print_cache_hits(H5C_t H5_ATTR_UNUSED *cache) { return; }
+print_cache_hits(H5C_t H5_ATTR_UNUSED *cache)
+{
+    return;
+}
 #endif
 
 static void
@@ -117,11 +112,11 @@ usage(const char *progname)
     fprintf(stderr, "usage: %s [-W] [-V]\n", progname);
     fprintf(stderr, "\n  -W: do not wait for SIGINT or SIGUSR1\n");
     fprintf(stderr, "\n  -S: do not use VFD SWMR\n");
-    fprintf(stderr,   "  -f: use fixed-length string\n");
-    fprintf(stderr,   "      (default: variable-length string)\n");
-    fprintf(stderr,   "  -n: number of test steps to perform\n");
-    fprintf(stderr,   "  -q: be quiet: few/no progress messages\n");
-    fprintf(stderr,   "  -t (oob|null): select out-of-bounds or NULL test\n");
+    fprintf(stderr, "  -f: use fixed-length string\n");
+    fprintf(stderr, "      (default: variable-length string)\n");
+    fprintf(stderr, "  -n: number of test steps to perform\n");
+    fprintf(stderr, "  -q: be quiet: few/no progress messages\n");
+    fprintf(stderr, "  -t (oob|null): select out-of-bounds or NULL test\n");
     exit(EXIT_FAILURE);
 }
 
@@ -138,62 +133,61 @@ H5HG_trap(const char *reason)
 int
 main(int argc, char **argv)
 {
-    hid_t fapl, fcpl, fid, space, type;
-    hid_t dset[2];
-    char content[2][96];
-    char name[2][96];
-    H5F_t *f;
-    H5C_t *cache;
-    sigset_t oldsigs;
-    herr_t ret;
-    bool variable = true, wait_for_signal = true;
-    const hsize_t dims = 1;
-    int ch, i, ntimes = 100;
-    unsigned long tmp;
-    char *end;
-    bool use_vfd_swmr = true;
-    const struct timespec delay =
-        {.tv_sec = 0, .tv_nsec = 1000 * 1000 * 1000 / 10};
-    testsel_t sel = TEST_NONE;
+    hid_t                 fapl, fcpl, fid, space, type;
+    hid_t                 dset[2];
+    char                  content[2][96];
+    char                  name[2][96];
+    H5F_t *               f;
+    H5C_t *               cache;
+    sigset_t              oldsigs;
+    herr_t                ret;
+    bool                  variable = true, wait_for_signal = true;
+    const hsize_t         dims = 1;
+    int                   ch, i, ntimes = 100;
+    unsigned long         tmp;
+    char *                end;
+    bool                  use_vfd_swmr = true;
+    const struct timespec delay        = {.tv_sec = 0, .tv_nsec = 1000 * 1000 * 1000 / 10};
+    testsel_t             sel          = TEST_NONE;
 
     assert(H5T_C_S1 != badhid);
 
     while ((ch = getopt(argc, argv, "SWfn:qt:")) != -1) {
-        switch(ch) {
-        case 'S':
-            use_vfd_swmr = false;
-            break;
-        case 'W':
-            wait_for_signal = false;
-            break;
-        case 'f':
-            variable = false;
-            break;
-        case 'n':
-            errno = 0;
-            tmp = strtoul(optarg, &end, 0);
-            if (end == optarg || *end != '\0')
-                errx(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
-            else if (errno != 0)
-                err(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
-            else if (tmp > INT_MAX)
-                errx(EXIT_FAILURE, "`-n` argument `%lu` too large", tmp);
-            ntimes = (int)tmp;
-            break;
-        case 'q':
-            verbosity = 1;
-            break;
-        case 't':
-            if (strcmp(optarg, "oob") == 0)
-                sel = TEST_OOB;
-            else if (strcmp(optarg, "null") == 0)
-                sel = TEST_NULL;
-            else
+        switch (ch) {
+            case 'S':
+                use_vfd_swmr = false;
+                break;
+            case 'W':
+                wait_for_signal = false;
+                break;
+            case 'f':
+                variable = false;
+                break;
+            case 'n':
+                errno = 0;
+                tmp   = strtoul(optarg, &end, 0);
+                if (end == optarg || *end != '\0')
+                    errx(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
+                else if (errno != 0)
+                    err(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
+                else if (tmp > INT_MAX)
+                    errx(EXIT_FAILURE, "`-n` argument `%lu` too large", tmp);
+                ntimes = (int)tmp;
+                break;
+            case 'q':
+                verbosity = 1;
+                break;
+            case 't':
+                if (strcmp(optarg, "oob") == 0)
+                    sel = TEST_OOB;
+                else if (strcmp(optarg, "null") == 0)
+                    sel = TEST_NULL;
+                else
+                    usage(argv[0]);
+                break;
+            default:
                 usage(argv[0]);
-            break;
-        default:
-            usage(argv[0]);
-            break;
+                break;
         }
     }
     argv += optind;
@@ -202,8 +196,7 @@ main(int argc, char **argv)
     if (argc > 0)
         errx(EXIT_FAILURE, "unexpected command-line arguments");
 
-    fapl = vfd_swmr_create_fapl(true, sel == TEST_OOB, use_vfd_swmr,
-        "./vlstr-shadow");
+    fapl = vfd_swmr_create_fapl(true, sel == TEST_OOB, use_vfd_swmr, "./vlstr-shadow");
     if (fapl < 0)
         errx(EXIT_FAILURE, "vfd_swmr_create_fapl");
 
@@ -226,7 +219,8 @@ main(int argc, char **argv)
         if (H5Tset_size(type, 32) < 0)
             errx(EXIT_FAILURE, "H5Tset_size");
         space = H5Screate_simple(1, &dims, NULL);
-    } else {
+    }
+    else {
         if (H5Tset_size(type, H5T_VARIABLE) < 0)
             errx(EXIT_FAILURE, "H5Tset_size");
         space = H5Screate(H5S_SCALAR);
@@ -253,43 +247,36 @@ main(int argc, char **argv)
      */
     for (i = 0; i < ntimes; i++) {
         const int ndsets = 2;
-        const int step = i % NSTEPS;
-        const int which = (i / NSTEPS) % ndsets;
-        const int seq = i / (ndsets * NSTEPS);
-        dbgf(2, "iteration %d which %d step %d seq %d\n",
-            i, which, step, seq);
+        const int step   = i % NSTEPS;
+        const int which  = (i / NSTEPS) % ndsets;
+        const int seq    = i / (ndsets * NSTEPS);
+        dbgf(2, "iteration %d which %d step %d seq %d\n", i, which, step, seq);
         switch (step) {
-        case CREATE:
-            (void)snprintf(name[which], sizeof(name[which]),
-                "dset-%d", which);
-            (void)snprintf(content[which], sizeof(content[which]),
-                "content %d seq %d short", which, seq);
-            dset[which] =
-                create_vl_dset(fid, type, space, name[which]);
-            write_vl_dset(dset[which], type, space, content[which]);
-            break;
-        case LENGTHEN:
-            (void)snprintf(content[which], sizeof(content[which]),
-                "content %d seq %d long long long long long long long long",
-                which, seq);
-            write_vl_dset(dset[which], type, space, content[which]);
-            break;
-        case SHORTEN:
-            (void)snprintf(content[which], sizeof(content[which]),
-                "content %d seq %d medium medium medium",
-                which, seq);
-            write_vl_dset(dset[which], type, space, content[which]);
-            break;
-        case DELETE:
-            if (H5Dclose(dset[which]) < 0)
-                errx(EXIT_FAILURE, "H5Dclose");
-            if (H5Ldelete(fid, name[which], H5P_DEFAULT) < 0) {
-                errx(EXIT_FAILURE, "%s: H5Ldelete(, \"%s\", ) failed",
-                    __func__, name[which]);
-            }
-            break;
-        default:
-            errx(EXIT_FAILURE, "%s: unknown step %d", __func__, step);
+            case CREATE:
+                (void)snprintf(name[which], sizeof(name[which]), "dset-%d", which);
+                (void)snprintf(content[which], sizeof(content[which]), "content %d seq %d short", which, seq);
+                dset[which] = create_vl_dset(fid, type, space, name[which]);
+                write_vl_dset(dset[which], type, space, content[which]);
+                break;
+            case LENGTHEN:
+                (void)snprintf(content[which], sizeof(content[which]),
+                               "content %d seq %d long long long long long long long long", which, seq);
+                write_vl_dset(dset[which], type, space, content[which]);
+                break;
+            case SHORTEN:
+                (void)snprintf(content[which], sizeof(content[which]),
+                               "content %d seq %d medium medium medium", which, seq);
+                write_vl_dset(dset[which], type, space, content[which]);
+                break;
+            case DELETE:
+                if (H5Dclose(dset[which]) < 0)
+                    errx(EXIT_FAILURE, "H5Dclose");
+                if (H5Ldelete(fid, name[which], H5P_DEFAULT) < 0) {
+                    errx(EXIT_FAILURE, "%s: H5Ldelete(, \"%s\", ) failed", __func__, name[which]);
+                }
+                break;
+            default:
+                errx(EXIT_FAILURE, "%s: unknown step %d", __func__, step);
         }
         if (caught_out_of_bounds) {
             fprintf(stderr, "caught out of bounds\n");

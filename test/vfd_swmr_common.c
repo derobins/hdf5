@@ -19,7 +19,7 @@
 /* Headers */
 /***********/
 
-#include <err.h>    /* for err(3) */
+#include <err.h> /* for err(3) */
 
 #include "h5test.h"
 #include "vfd_swmr_common.h"
@@ -41,7 +41,7 @@ bool
 below_speed_limit(struct timespec *last, const struct timespec *ival)
 {
     struct timespec now;
-    bool result;
+    bool            result;
 
     assert(0 <= last->tv_nsec && last->tv_nsec < 1000000000L);
     assert(0 <= ival->tv_nsec && ival->tv_nsec < 1000000000L);
@@ -144,8 +144,7 @@ block_signals(sigset_t *oldset)
     sigset_t fullset;
 
     if (sigfillset(&fullset) == -1) {
-        err(EXIT_FAILURE, "%s.%d: could not initialize signal masks",
-            __func__, __LINE__);
+        err(EXIT_FAILURE, "%s.%d: could not initialize signal masks", __func__, __LINE__);
     }
 
     if (sigprocmask(SIG_BLOCK, &fullset, oldset) == -1)
@@ -185,12 +184,11 @@ strsignal(int signum)
 void
 await_signal(hid_t fid)
 {
-    sigset_t sleepset;
+    sigset_t        sleepset;
     struct timespec tick = {.tv_sec = 0, .tv_nsec = 1000000000 / 100};
 
     if (sigfillset(&sleepset) == -1) {
-        err(EXIT_FAILURE, "%s.%d: could not initialize signal mask",
-            __func__, __LINE__);
+        err(EXIT_FAILURE, "%s.%d: could not initialize signal mask", __func__, __LINE__);
     }
 
     /* Avoid deadlock: flush the file before waiting for the reader's
@@ -205,10 +203,10 @@ await_signal(hid_t fid)
         const int rc = sigtimedwait(&sleepset, NULL, &tick);
 
         if (rc != -1) {
-            fprintf(stderr, "Received %s, wrapping things up.\n",
-                strsignal(rc));
+            fprintf(stderr, "Received %s, wrapping things up.\n", strsignal(rc));
             break;
-        } else if (rc == -1 && errno == EAGAIN) {
+        }
+        else if (rc == -1 && errno == EAGAIN) {
             estack_state_t es;
 
             /* Avoid deadlock with peer: periodically enter the API so that
@@ -219,10 +217,10 @@ await_signal(hid_t fid)
              * so squelch errors.
              */
             es = disable_estack();
-            (void)H5Aexists_by_name(fid, "nonexistent", "nonexistent",
-                H5P_DEFAULT);
+            (void)H5Aexists_by_name(fid, "nonexistent", "nonexistent", H5P_DEFAULT);
             restore_estack(es);
-        } else if (rc == -1)
+        }
+        else if (rc == -1)
             err(EXIT_FAILURE, "%s: sigtimedwait", __func__);
     }
 }
@@ -231,21 +229,20 @@ await_signal(hid_t fid)
  * configure page buffering, set reasonable VFD SWMR defaults.
  */
 hid_t
-vfd_swmr_create_fapl(bool writer, bool only_meta_pages, bool use_vfd_swmr,
-    const char *mdfile_fmtstr, ...)
+vfd_swmr_create_fapl(bool writer, bool only_meta_pages, bool use_vfd_swmr, const char *mdfile_fmtstr, ...)
 {
     H5F_vfd_swmr_config_t config;
-    hid_t fapl;
-    va_list ap;
+    hid_t                 fapl;
+    va_list               ap;
 
     /* Create file access property list */
-    if((fapl = h5_fileaccess()) < 0) {
+    if ((fapl = h5_fileaccess()) < 0) {
         warnx("h5_fileaccess");
         return badhid;
     }
 
     /* FOR NOW: set to use latest format, the "old" parameter is not used */
-    if(H5Pset_libver_bounds(fapl, H5F_LIBVER_LATEST, H5F_LIBVER_LATEST) < 0) {
+    if (H5Pset_libver_bounds(fapl, H5F_LIBVER_LATEST, H5F_LIBVER_LATEST) < 0) {
         warnx("H5Pset_libver_bounds");
         return badhid;
     }
@@ -255,25 +252,24 @@ vfd_swmr_create_fapl(bool writer, bool only_meta_pages, bool use_vfd_swmr,
      */
 
     /* Enable page buffering */
-    if(H5Pset_page_buffer_size(fapl, 4096, only_meta_pages ? 100 : 0, 0) < 0) {
+    if (H5Pset_page_buffer_size(fapl, 4096, only_meta_pages ? 100 : 0, 0) < 0) {
         warnx("H5Pset_page_buffer_size");
         return badhid;
     }
 
     memset(&config, 0, sizeof(config));
 
-    config.version = H5F__CURR_VFD_SWMR_CONFIG_VERSION;
-    config.tick_len = 4;
-    config.max_lag = 7;
-    config.writer = writer;
+    config.version           = H5F__CURR_VFD_SWMR_CONFIG_VERSION;
+    config.tick_len          = 4;
+    config.max_lag           = 7;
+    config.writer            = writer;
     config.md_pages_reserved = 128;
     va_start(ap, mdfile_fmtstr);
-    evsnprintf(config.md_file_path, sizeof(config.md_file_path),
-        mdfile_fmtstr, ap);
+    evsnprintf(config.md_file_path, sizeof(config.md_file_path), mdfile_fmtstr, ap);
     va_end(ap);
 
     /* Enable VFD SWMR configuration */
-    if(use_vfd_swmr && H5Pset_vfd_swmr_config(fapl, &config) < 0) {
+    if (use_vfd_swmr && H5Pset_vfd_swmr_config(fapl, &config) < 0) {
         warnx("H5Pset_vfd_swmr_config");
         return badhid;
     }
@@ -288,15 +284,15 @@ vfd_swmr_create_fapl(bool writer, bool only_meta_pages, bool use_vfd_swmr,
 int
 fetch_env_ulong(const char *varname, unsigned long limit, unsigned long *valp)
 {
-    char *end;
+    char *        end;
     unsigned long ul;
-    char *tmp;
+    char *        tmp;
 
     if ((tmp = getenv(varname)) == NULL)
         return 0;
 
     errno = 0;
-    ul = strtoul(tmp, &end, 0);
+    ul    = strtoul(tmp, &end, 0);
     if (ul == ULONG_MAX && errno != 0) {
         fprintf(stderr, "could not parse %s: %s\n", varname, strerror(errno));
         return -1;

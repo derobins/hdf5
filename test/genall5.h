@@ -11,26 +11,25 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* 
+/*
  * This file contains declarations of all functions defined in genall5.c
  */
 
 typedef struct _zoo_config {
-    int proc_num;
-    bool continue_on_failure;
-    bool skip_compact;
-    bool skip_varlen;
-    unsigned max_pause_msecs;
-    struct timespec msgival;    /* minimum interval between warning-message
-                                 * repetitions
-                                 */
+    int             proc_num;
+    bool            continue_on_failure;
+    bool            skip_compact;
+    bool            skip_varlen;
+    unsigned        max_pause_msecs;
+    struct timespec msgival; /* minimum interval between warning-message
+                              * repetitions
+                              */
 } zoo_config_t;
 
 bool create_zoo(hid_t, const char *, struct timespec *, zoo_config_t);
 bool validate_zoo(hid_t, const char *, struct timespec *, zoo_config_t);
 bool delete_zoo(hid_t, const char *, struct timespec *, zoo_config_t);
-bool validate_deleted_zoo(hid_t, const char *, struct timespec *,
-    zoo_config_t);
+bool validate_deleted_zoo(hid_t, const char *, struct timespec *, zoo_config_t);
 
 bool ns_grp_0(hid_t fid, const char *group_name);
 bool vrfy_ns_grp_0(hid_t fid, const char *group_name);
@@ -45,8 +44,7 @@ bool os_grp_0(hid_t fid, const char *group_name);
 bool vrfy_os_grp_0(hid_t fid, const char *group_name);
 
 bool os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks);
-bool vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num,
-    unsigned nlinks);
+bool vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks);
 
 bool ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data);
 bool vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data);
