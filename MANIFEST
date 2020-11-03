@@ -34,7 +34,10 @@
 ./configure.ac
 
 ./.clang-format
+./.github/CODEOWNERS  _DO_NOT_DISTRIBUTE_
+./.github/workflows/clang-format-check.yml  _DO_NOT_DISTRIBUTE_
 ./.github/workflows/main.yml  _DO_NOT_DISTRIBUTE_
+./.github/workflows/pr-check.yml  _DO_NOT_DISTRIBUTE_
 
 ./m4/aclocal_cxx.m4
 ./m4/aclocal_fc.m4
@@ -709,6 +712,7 @@
 ./src/H5FDlog.h
 ./src/H5FDmirror.c
 ./src/H5FDmirror.h
+./src/H5FDmirror_priv.h
 ./src/H5FDmodule.h
 ./src/H5FDmpi.c
 ./src/H5FDmpi.h

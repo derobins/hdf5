@@ -3059,7 +3059,6 @@ test_rw_noupdate(void)
 **      test_userblock_alignment() test, to handle common testing
 **
 **  Programmer: Quincey Koziol
-**              koziol@hdfgroup.org
 **              Septmber 10, 2009
 **
 *****************************************************************/
@@ -3121,7 +3120,6 @@ test_userblock_alignment_helper1(hid_t fcpl, hid_t fapl)
 **      test_userblock_alignment() test, to handle common testing
 **
 **  Programmer: Quincey Koziol
-**              koziol@hdfgroup.org
 **              Septmber 10, 2009
 **
 *****************************************************************/
@@ -3191,7 +3189,6 @@ test_userblock_alignment_helper2(hid_t fapl, hbool_t open_rw)
 **      object [allocation] alignment size set interact properly.
 **
 **  Programmer: Quincey Koziol
-**              koziol@hdfgroup.org
 **              Septmber 8, 2009
 **
 *****************************************************************/
@@ -4198,7 +4195,7 @@ set_multi_split(hid_t fapl, hsize_t pagesize, hbool_t split)
 
     /* Free memb_name */
     for (mt = H5FD_MEM_DEFAULT; mt < H5FD_MEM_NTYPES; mt++)
-        free(memb_name[mt]);
+        HDfree(memb_name[mt]);
 
     return 0;
 

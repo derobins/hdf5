@@ -11,7 +11,7 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* Programmer:  Robb Matzke <matzke@llnl.gov>
+/* Programmer:  Robb Matzke
  *    Friday, October 30, 1998
  *
  * Purpose:  This file is included by all HDF5 library source files to
@@ -297,6 +297,10 @@
  *
  * Note that Solaris Studio supports attribute, but does not support the
  * attributes we use.
+ *
+ * When using H5_ATTR_FALLTHROUGH, you should also include a comment that
+ * says FALLTHROUGH to reduce warnings on compilers that don't use
+ * attributes but do respect fall-through comments.
  *
  * H5_ATTR_CONST is redefined in tools/h5repack/dynlib_rpk.c to quiet
  * gcc warnings (it has to use the public API and can't include this
@@ -1516,6 +1520,9 @@ H5_DLL int64_t HDstrtoll(const char *s, const char **rest, int base);
 #ifndef HDstrtoull
 #define HDstrtoull(S, R, N) strtoull(S, R, N)
 #endif /* HDstrtoul */
+#ifndef HDstrtoumax
+#define HDstrtoumax(S, R, N) strtoumax(S, R, N)
+#endif /* HDstrtoumax */
 #ifndef HDstrxfrm
 #define HDstrxfrm(X, Y, Z) strxfrm(X, Y, Z)
 #endif /* HDstrxfrm */

@@ -28,6 +28,8 @@
 
 #ifdef H5_HAVE_MIRROR_VFD
 
+#include "H5FDmirror_priv.h" /* Private header for the mirror VFD */
+
 /* For future consideration, IP address and port number might be
  * environment variables?
  */
@@ -61,8 +63,8 @@ static unsigned int g_verbosity = DEFAULT_VERBOSITY;
 #define LOGPRINT(lvl, ...)                                                                                   \
     do {                                                                                                     \
         if ((lvl) <= g_verbosity) {                                                                          \
-            fprintf(g_log_stream, __VA_ARGS__);                                                              \
-            fflush(g_log_stream);                                                                            \
+            HDfprintf(g_log_stream, __VA_ARGS__);                                                            \
+            HDfflush(g_log_stream);                                                                          \
         }                                                                                                    \
     } while (0)
 
@@ -80,6 +82,8 @@ struct mirrortest_filenames {
     char wo[H5FD_SPLITTER_PATH_MAX + 1];
     char log[H5FD_SPLITTER_PATH_MAX + 1];
 };
+
+static struct timespec lastmsgtime = {.tv_sec = 0, .tv_nsec = 0};
 
 static FILE *g_log_stream = NULL; /* initialized at runtime */
 
@@ -148,7 +152,7 @@ _populate_filepath(const char *dirname, const char *_basename, hid_t fapl_id, ch
     }
 
     if (HDsnprintf(_path, H5FD_SPLITTER_PATH_MAX, "%s%s%s", dirname,
-                   (dirname[strlen(dirname)] == '/') ? "" : "/", /* slash iff needed */
+                   (dirname[HDstrlen(dirname)] == '/') ? "" : "/", /* slash iff needed */
                    _basename) > H5FD_SPLITTER_PATH_MAX) {
         TEST_ERROR;
     }
@@ -2167,7 +2171,8 @@ test_on_disk_zoo(void)
      */
 
     if (pass) {
-        create_zoo(file_id, grp_name, 0);
+        create_zoo(file_id, grp_name, &lastmsgtime,
+            (zoo_config_t){.proc_num = 0, .skip_varlen = false, .skip_compact = false, .msgival = {0, 0}});
     }
     if (pass) {
         if (H5Fclose(file_id) == FAIL) {
@@ -2179,7 +2184,9 @@ test_on_disk_zoo(void)
         }
     }
     if (pass) {
-        validate_zoo(file_id, grp_name, 0); /* sanity-check */
+        /* sanity check */
+        validate_zoo(file_id, grp_name, &lastmsgtime,
+            (zoo_config_t){.proc_num = 0, .skip_varlen = false, .skip_compact = false, .msgival = {0, 0}});
     }
     if (!pass) {
         HDprintf(failure_mssg);
@@ -2339,7 +2346,7 @@ test_vanishing_datasets(void)
         TEST_ERROR;
     }
     if (group_info.nlinks > 0) {
-        HDfprintf(stderr, "links in rw file: %d\n", group_info.nlinks);
+        HDfprintf(stderr, "links in rw file: %" PRIuHSIZE "\n", group_info.nlinks);
         HDfflush(stderr);
         TEST_ERROR;
     }
@@ -2354,7 +2361,7 @@ test_vanishing_datasets(void)
         TEST_ERROR;
     }
     if (group_info.nlinks > 0) {
-        HDfprintf(stderr, "links in wo file: %d\n", group_info.nlinks);
+        HDfprintf(stderr, "links in wo file: %" PRIuHSIZE "\n", group_info.nlinks);
         HDfflush(stderr);
         TEST_ERROR;
     }

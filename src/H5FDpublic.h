@@ -12,7 +12,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Robb Matzke <matzke@llnl.gov>
+ * Programmer:  Robb Matzke
  *              Monday, July 26, 1999
  */
 #ifndef _H5FDpublic_H
@@ -316,18 +316,17 @@ typedef struct H5FD_free_t {
  * are declared here and the driver appends private fields in memory.
  */
 struct H5FD_t {
-    hid_t               driver_id; /*driver ID for this file   */
-    const H5FD_class_t *cls;       /*constant class info       */
-
+    hid_t               driver_id;     /*driver ID for this file   */
+    const H5FD_class_t *cls;           /*constant class info       */
     TAILQ_ENTRY(H5FD_t) link;    /* Linkage for list of all VFs. */
     H5FD_t *exc_owner;           /* Pointer to an exclusive owner
                                   * or NULL if none.
                                   */
-    unsigned long fileno;        /* File 'serial' number     */
-    unsigned      access_flags;  /* File access flags (from create or open) */
-    unsigned long feature_flags; /* VFL Driver feature Flags */
-    haddr_t       maxaddr;       /* For this file, overrides class */
-    haddr_t       base_addr;     /* Base address for HDF5 data w/in file */
+    unsigned long       fileno;        /* File 'serial' number     */
+    unsigned            access_flags;  /* File access flags (from create or open) */
+    unsigned long       feature_flags; /* VFL Driver feature Flags */
+    haddr_t             maxaddr;       /* For this file, overrides class */
+    haddr_t             base_addr;     /* Base address for HDF5 data w/in file */
 
     /* Space allocation management fields */
     hsize_t threshold;  /* Threshold for alignment  */

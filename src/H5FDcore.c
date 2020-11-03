@@ -12,7 +12,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Robb Matzke <matzke@llnl.gov>
+ * Programmer:  Robb Matzke
  *              Tuesday, August 10, 1999
  *
  * Purpose:     A driver which stores the HDF5 data in main memory  using
@@ -56,7 +56,7 @@ typedef struct H5FD_core_t {
     hbool_t        backing_store;    /* write to file name on flush          */
     hbool_t        write_tracking;   /* Whether to track writes              */
     size_t         bstore_page_size; /* backing store page size              */
-    int            fd;               /* backing store file descriptor        */
+    int            fd; /* backing store file descriptor        */
     /* Information for determining uniqueness of a file with a backing store */
 #ifndef H5_HAVE_WIN32_API
     /* On most systems the combination of device and i-node number uniquely
@@ -142,8 +142,8 @@ static herr_t  H5FD__core_write(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, h
                                 const void *buf);
 static herr_t  H5FD__core_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
 static herr_t  H5FD__core_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD_core_lock(H5FD_t *_file, hbool_t rw);
-static herr_t  H5FD_core_unlock(H5FD_t *_file);
+static herr_t  H5FD__core_lock(H5FD_t *_file, hbool_t rw);
+static herr_t  H5FD__core_unlock(H5FD_t *_file);
 
 static const H5FD_class_t H5FD_core_g = {
     "core",                   /* name                 */
@@ -175,8 +175,8 @@ static const H5FD_class_t H5FD_core_g = {
     H5FD__core_write,         /* write                */
     H5FD__core_flush,         /* flush                */
     H5FD__core_truncate,      /* truncate             */
-    H5FD_core_lock,           /* lock                 */
-    H5FD_core_unlock,         /* unlock               */
+    H5FD__core_lock,          /* lock                 */
+    H5FD__core_unlock,        /* unlock               */
     NULL,                     /* dedup                */
     H5FD_FLMAP_DICHOTOMY      /* fl_map               */
 };
@@ -278,13 +278,13 @@ H5FD__core_add_dirty_region(H5FD_core_t *file, haddr_t start, haddr_t end)
         else {
             /* Store the new item endpoint if it's bigger */
             item->end = (item->end < end) ? end : item->end;
-        } /* end else */
-    }     /* end if */
+        }
+    }
     else {
         /* Update the size of the before region */
         if (b_item->end < end)
             b_item->end = end;
-    } /* end else */
+    }
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -342,7 +342,7 @@ H5FD__core_write_to_bstore(H5FD_core_t *file, haddr_t addr, size_t size)
     HDoff_t offset    = (HDoff_t)addr;     /* Offset to write at */
     herr_t  ret_value = SUCCEED;           /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_STATIC
 
     HDassert(file);
 
@@ -414,9 +414,9 @@ done:
 static herr_t
 H5FD__init_package(void)
 {
-    herr_t ret_value = SUCCEED;
+    herr_t ret_value    = SUCCEED;
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_STATIC
 
     if (H5FD_core_init() < 0)
         HGOTO_ERROR(H5E_VFL, H5E_CANTINIT, FAIL, "unable to initialize core VFD")
@@ -1502,7 +1502,7 @@ done:
  *              If we are not closing, we realloc the buffer to size equal
  *              to the smallest multiple of the allocation increment that
  *              equals or exceeds the eoa and set the eof accordingly.
- *              Note that we no longer truncate	the backing store to the
+ *              Note that we no longer truncate the backing store to the
  *              new eof if applicable.
  *                                                                  -- JRM
  *
@@ -1601,12 +1601,12 @@ done:
 } /* end H5FD__core_truncate() */
 
 /*-------------------------------------------------------------------------
- * Function:    H5FD_core_lock
+ * Function:    H5FD__core_lock
  *
  * Purpose:     To place an advisory lock on a file.
- *		The lock type to apply depends on the parameter "rw":
- *			TRUE--opens for write: an exclusive lock
- *			FALSE--opens for read: a shared lock
+ *        The lock type to apply depends on the parameter "rw":
+ *            TRUE--opens for write: an exclusive lock
+ *            FALSE--opens for read: a shared lock
  *
  * Return:      SUCCEED/FAIL
  *
@@ -1615,13 +1615,13 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_core_lock(H5FD_t *_file, hbool_t rw)
+H5FD__core_lock(H5FD_t *_file, hbool_t rw)
 {
     H5FD_core_t *file = (H5FD_core_t *)_file; /* VFD file struct          */
     int          lock_flags;                  /* file locking flags       */
     herr_t       ret_value = SUCCEED;         /* Return value             */
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_STATIC
 
     HDassert(file);
 
@@ -1629,7 +1629,6 @@ H5FD_core_lock(H5FD_t *_file, hbool_t rw)
      * descriptor, this is a no-op.
      */
     if (file->fd >= 0) {
-
         /* Set exclusive or shared lock based on rw status */
         lock_flags = rw ? LOCK_EX : LOCK_SH;
 
@@ -1642,15 +1641,14 @@ H5FD_core_lock(H5FD_t *_file, hbool_t rw)
             else
                 HSYS_GOTO_ERROR(H5E_FILE, H5E_BADFILE, FAIL, "unable to lock file")
         } /* end if */
-
-    } /* end if */
+    }     /* end if */
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FD_core_lock() */
+} /* end H5FD__core_lock() */
 
 /*-------------------------------------------------------------------------
- * Function:    H5FD_core_unlock
+ * Function:    H5FD__core_unlock
  *
  * Purpose:     To remove the existing lock on the file
  *
@@ -1661,17 +1659,16 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_core_unlock(H5FD_t *_file)
+H5FD__core_unlock(H5FD_t *_file)
 {
     H5FD_core_t *file      = (H5FD_core_t *)_file; /* VFD file struct */
     herr_t       ret_value = SUCCEED;              /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_STATIC
 
     HDassert(file);
 
-    if (file->fd >= 0) {
-
+    if (file->fd >= 0)
         if (HDflock(file->fd, LOCK_UN) < 0) {
             if (ENOSYS == errno)
                 HSYS_GOTO_ERROR(H5E_FILE, H5E_BADFILE, FAIL,
@@ -1679,10 +1676,8 @@ H5FD_core_unlock(H5FD_t *_file)
                                 "environment variable to override)")
             else
                 HSYS_GOTO_ERROR(H5E_FILE, H5E_BADFILE, FAIL, "unable to unlock file")
-        } /* end if */
-
-    } /* end if */
+        }
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FD_core_unlock() */
+} /* end H5FD__core_unlock() */
