@@ -1963,10 +1963,10 @@ test_random_write(H5F_t *f)
 
     /* Choose random # seed */
     seed = (unsigned)HDtime(NULL);
-#ifdef QAK
-    /* seed = (unsigned)1155438845; */
-    HDfprintf(stderr, "Random # seed was: %u\n", seed);
-#endif /* QAK */
+#if 0
+/* seed = (unsigned)1155438845; */
+HDfprintf(stderr, "Random # seed was: %u\n", seed);
+#endif
     HDsrandom(seed);
 
     /* Allocate space for the segment length buffer */
@@ -2243,7 +2243,7 @@ test_swmr_write_big(hbool_t newest_format)
         char *const new_argv[]    = {swmr_reader, NULL};
         /* Run the reader */
         status = HDexecv(SWMR_READER, new_argv);
-        HDprintf("errno from execv = %s\n", strerror(errno));
+        HDprintf("errno from execv = %s\n", HDstrerror(errno));
         FAIL_STACK_ERROR;
     } /* end if */
 
@@ -2329,16 +2329,18 @@ accum_printf(const H5F_t *f)
         HDprintf("=====================================================\n");
         HDprintf(" accumulator allocated size == %zu\n", accum->alloc_size);
         HDprintf(" accumulated data size      == %zu\n", accum->size);
-        HDfprintf(stdout, " accumulator dirty?         == %t\n", accum->dirty);
+        HDfprintf(stdout, " accumulator dirty?         == %s\n", accum->dirty ? "TRUE" : "FALSE");
         HDprintf("=====================================================\n");
-        HDfprintf(stdout, " start of accumulated data, loc = %a\n", accum->loc);
+        HDfprintf(stdout, " start of accumulated data, loc = %" PRIuHADDR "\n", accum->loc);
         if (accum->dirty) {
-            HDfprintf(stdout, " start of dirty region, loc = %a\n", (haddr_t)(accum->loc + accum->dirty_off));
-            HDfprintf(stdout, " end of dirty region,   loc = %a\n",
+            HDfprintf(stdout, " start of dirty region, loc = %" PRIuHADDR "\n",
+                      (haddr_t)(accum->loc + accum->dirty_off));
+            HDfprintf(stdout, " end of dirty region,   loc = %" PRIuHADDR "\n",
                       (haddr_t)(accum->loc + accum->dirty_off + accum->dirty_len));
         } /* end if */
-        HDfprintf(stdout, " end of accumulated data,   loc = %a\n", (haddr_t)(accum->loc + accum->size));
-        HDfprintf(stdout, " end of accumulator allocation,   loc = %a\n",
+        HDfprintf(stdout, " end of accumulated data,   loc = %" PRIuHADDR "\n",
+                  (haddr_t)(accum->loc + accum->size));
+        HDfprintf(stdout, " end of accumulator allocation,   loc = %" PRIuHADDR "\n",
                   (haddr_t)(accum->loc + accum->alloc_size));
         HDprintf("=====================================================\n");
     }

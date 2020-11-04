@@ -168,22 +168,27 @@ check_stats(const H5F_t *f, const H5FS_t *frsp, H5FS_stat_t *state)
         FAIL_STACK_ERROR
 
     if (frspace_stats.tot_space != state->tot_space) {
-        HDfprintf(stdout, "frspace_stats.tot_space = %Hu, state->tot_space = %Zu\n", frspace_stats.tot_space,
-                  state->tot_space);
+        HDfprintf(stdout, "frspace_stats.tot_space = %" PRIuHSIZE ", state->tot_space = %" PRIuHSIZE "\n",
+                  frspace_stats.tot_space, state->tot_space);
         TEST_ERROR
     } /* end if */
     if (frspace_stats.tot_sect_count != state->tot_sect_count) {
-        HDfprintf(stdout, "frspace_stats.tot_sect_count = %Hu, state->tot_sect_count = %Hu\n",
+        HDfprintf(stdout,
+                  "frspace_stats.tot_sect_count = %" PRIuHSIZE ", state->tot_sect_count = %" PRIuHSIZE "\n",
                   frspace_stats.tot_sect_count, state->tot_sect_count);
         TEST_ERROR
     } /* end if */
     if (frspace_stats.serial_sect_count != state->serial_sect_count) {
-        HDfprintf(stdout, "frspace_stats.serial_sect_count = %Hu, state->serial_sect_count = %Hu\n",
+        HDfprintf(stdout,
+                  "frspace_stats.serial_sect_count = %" PRIuHSIZE ", state->serial_sect_count = %" PRIuHSIZE
+                  "\n",
                   frspace_stats.serial_sect_count, state->serial_sect_count);
         TEST_ERROR
     } /* end if */
     if (frspace_stats.ghost_sect_count != state->ghost_sect_count) {
-        HDfprintf(stdout, "frspace_stats.ghost_sect_count = %Hu, state->ghost_sect_count = %Hu\n",
+        HDfprintf(stdout,
+                  "frspace_stats.ghost_sect_count = %" PRIuHSIZE ", state->ghost_sect_count = %" PRIuHSIZE
+                  "\n",
                   frspace_stats.ghost_sect_count, state->ghost_sect_count);
         TEST_ERROR
     } /* end if */
@@ -6107,7 +6112,7 @@ test_mf_bug1(const char *env_h5_drvr, hid_t fapl)
 
             /* Free memb_name */
             for (mt = H5FD_MEM_DEFAULT; mt < H5FD_MEM_NTYPES; mt++)
-                free(memb_name[mt]);
+                HDfree(memb_name[mt]);
         } /* end else */
 
         /* Close memb_fapl */
@@ -7680,7 +7685,7 @@ set_multi_split(hid_t fapl, hsize_t pagesize, hbool_t is_multi_or_split)
 
     /* Free memb_name */
     for (mt = H5FD_MEM_DEFAULT; mt < H5FD_MEM_NTYPES; mt++)
-        free(memb_name[mt]);
+        HDfree(memb_name[mt]);
 
     return 0;
 
@@ -7819,6 +7824,8 @@ test_page_alloc_xfree(const char *env_h5_drvr, hid_t fapl)
                 TEST_ERROR
 
             if (fs_persist) {
+                haddr_t prv_tag = HADDR_UNDEF;
+
                 /* Re-open the file */
                 if ((fid = H5Fopen(filename, H5F_ACC_RDWR, fapl_new)) < 0)
                     TEST_ERROR
@@ -7826,6 +7833,9 @@ test_page_alloc_xfree(const char *env_h5_drvr, hid_t fapl)
                 /* Get a pointer to the internal file object */
                 if (NULL == (f = (H5F_t *)H5VL_object(fid)))
                     TEST_ERROR
+
+                /* Set the freespace tag for the metadata cache */
+                H5AC_tag(H5AC__FREESPACE_TAG, &prv_tag);
 
                 /* Verify that the large generic manager is there */
                 H5MF__alloc_to_fs_type(f->shared, H5FD_MEM_DRAW, TBLOCK_SIZE5000, (H5F_mem_page_t *)&fs_type);
@@ -7881,6 +7891,9 @@ test_page_alloc_xfree(const char *env_h5_drvr, hid_t fapl)
                     TEST_ERROR
                 if (found_addr != gaddr1)
                     TEST_ERROR
+
+                /* Reset the previous tag */
+                H5AC_tag(prv_tag, NULL);
 
                 /* Close file */
                 if (H5Fclose(fid) < 0)
@@ -8828,7 +8841,7 @@ test_page_alignment(const char *env_h5_drvr, hid_t fapl)
 
             /* Free memb_name */
             for (mt = H5FD_MEM_DEFAULT; mt < H5FD_MEM_NTYPES; mt++)
-                free(memb_name[mt]);
+                HDfree(memb_name[mt]);
 
             /* Close memb_fapl */
             if (H5Pclose(memb_fapl) < 0)

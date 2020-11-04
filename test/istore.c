@@ -11,7 +11,7 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* Programmer:    Robb Matzke <matzke@llnl.gov>
+/* Programmer:    Robb Matzke
  *        Wednesday, October 15, 1997
  *
  * Purpose:    Tests various aspects of indexed raw data storage.
@@ -284,7 +284,8 @@ test_extend(hid_t f, const char *prefix, size_t nx, size_t ny, size_t nz)
         HDsprintf(dims, "%lux%lux%lu", (unsigned long)nx, (unsigned long)ny, (unsigned long)nz);
     }
 
-    TESTING("istore extend: %s", dims);
+    HDsprintf(s, "istore extend: %s", dims);
+    TESTING(s);
     buf   = (uint8_t *)HDmalloc(nx * ny * nz);
     check = (uint8_t *)HDmalloc(nx * ny * nz);
     whole = (uint8_t *)HDcalloc((size_t)1, nx * ny * nz);
@@ -499,7 +500,8 @@ test_sparse(hid_t f, const char *prefix, size_t nblocks, size_t nx, size_t ny, s
         HDsprintf(dims, "%lux%lux%lu", (unsigned long)nx, (unsigned long)ny, (unsigned long)nz);
     }
 
-    TESTING("istore sparse: %s", dims);
+    HDsprintf(s, "istore sparse: %s", dims);
+    TESTING(s);
     if (skip_test) {
         SKIPPED()
         return SUCCEED;
@@ -617,13 +619,13 @@ main(int argc, char *argv[])
     else {
         int i;
         for (i = 1, size_of_test = 0; i < argc; i++) {
-            if (!strcmp(argv[i], "small")) {
+            if (!HDstrcmp(argv[i], "small")) {
                 size_of_test |= TEST_SMALL;
             }
-            else if (!strcmp(argv[i], "medium")) {
+            else if (!HDstrcmp(argv[i], "medium")) {
                 size_of_test |= TEST_MEDIUM;
             }
-            else if (!strcmp(argv[i], "large")) {
+            else if (!HDstrcmp(argv[i], "large")) {
                 size_of_test |= TEST_LARGE;
             }
             else {
