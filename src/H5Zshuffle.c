@@ -53,8 +53,6 @@ const H5Z_class2_t H5Z_SHUFFLE[1] = {{
  * Programmer:	Quincey Koziol
  *              Monday, April  7, 2003
  *
- * Modifications:
- *
  *-------------------------------------------------------------------------
  */
 static herr_t
@@ -110,10 +108,6 @@ done:
  *
  * Programmer:	Kent Yang
  *              Wednesday, November 13, 2002
- *
- * Modifications:
- *              Quincey Koziol, November 13, 2002
- *              Cleaned up code.
  *
  *-------------------------------------------------------------------------
  */
@@ -183,24 +177,31 @@ H5Z_filter_shuffle(unsigned flags, size_t cd_nelmts, const unsigned cd_values[],
                         case 0:
                             do {
                                 DUFF_GUTS
+                                /* FALLTHROUGH */
                                 H5_ATTR_FALLTHROUGH
                                 case 7:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 6:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 5:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 4:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 3:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 2:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 1:
                                     DUFF_GUTS
@@ -247,24 +248,31 @@ H5Z_filter_shuffle(unsigned flags, size_t cd_nelmts, const unsigned cd_values[],
                         case 0:
                             do {
                                 DUFF_GUTS
+                                /* FALLTHROUGH */
                                 H5_ATTR_FALLTHROUGH
                                 case 7:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 6:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 5:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 4:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 3:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 2:
                                     DUFF_GUTS
+                                    /* FALLTHROUGH */
                                     H5_ATTR_FALLTHROUGH
                                 case 1:
                                     DUFF_GUTS

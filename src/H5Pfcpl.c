@@ -15,7 +15,7 @@
  *
  * Created:		H5Pfcpl.c
  *			January  6 1998
- *			Robb Matzke <matzke@llnl.gov>
+ *			Robb Matzke
  *
  * Purpose:		File creation property list class routines
  *
@@ -363,11 +363,6 @@ done:
  * Programmer:	Robb Matzke
  *		Wednesday, January  7, 1998
  *
- * Modifications:
- *
- *		Raymond Lu, Oct 14, 2001
- *		Changed to the new generic property list.
- *
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -518,11 +513,6 @@ done:
  * Programmer:	Robb Matzke
  *		Tuesday, January  6, 1998
  *
- * Modifications:
- *
- *		Raymond Lu, Oct 14, 2001
- *         	Changed to the new generic property list.
- *
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -571,11 +561,6 @@ done:
  * Programmer:	Robb Matzke
  *		Wednesday, January  7, 1998
  *
- * Modifications:
- *
- *		Raymond Lu
- *		Changed to the new generic property list.
- *
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -617,11 +602,6 @@ done:
  *
  * Programmer:	Robb Matzke
  *		Tuesday, January  6, 1998
- *
- * Modifications:
- *
- *		Raymond Lu, Oct 14, 2001
- *		Changed to the new generic property list.
  *
  *-------------------------------------------------------------------------
  */
@@ -670,11 +650,6 @@ done:
  *
  * Programmer:	Robb Matzke
  *		Wednesday, January  7, 1998
- *
- * Modifications:
- *
- *		Raymond Lu, Oct 14, 2001
- *		Changed to the new generic property list.
  *
  *-------------------------------------------------------------------------
  */

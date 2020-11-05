@@ -12,7 +12,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Robb Matzke <matzke@llnl.gov>
+ * Programmer:  Robb Matzke
  *              Monday, March 23, 1998
  */
 
@@ -3069,6 +3069,7 @@ main(int argc, const char *argv[])
             }
             else if (vfd_swmr_poll_g)
                 break;
+
             /* Shorten the file name; lengthen the object name */
             x     = oname;
             oname = HDstrrchr(fname, '/');

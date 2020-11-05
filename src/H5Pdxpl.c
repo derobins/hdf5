@@ -15,7 +15,7 @@
  *
  * Created:		H5Pdxpl.c
  *			March 16 1998
- *			Robb Matzke <matzke@llnl.gov>
+ *			Robb Matzke
  *
  * Purpose:		Data transfer property list class routines
  *
@@ -782,7 +782,7 @@ done:
  *
  * Return: Success: SUCCEED, Failure: FAIL
  *
- * Programmer: Leon Arber larber@uiuc.edu
+ * Programmer: Leon Arber
  *
  * Date: April 9, 2004
  *
@@ -813,7 +813,7 @@ done:
  *
  * Return: Success: SUCCEED, Failure: FAIL
  *
- * Programmer: Leon Arber larber@uiuc.edu
+ * Programmer: Leon Arber
  *
  * Date: April 9, 2004
  *
@@ -903,7 +903,7 @@ done:
  *
  * Return: Success: SUCCEED, Failure: FAIL
  *
- * Programmer: Leon Arber larber@uiuc.edu
+ * Programmer: Leon Arber
  *
  * Date: April 9, 2004
  *
@@ -1304,8 +1304,6 @@ done:
  * Programmer:	Raymond Lu
  *              Jan 14, 2003
  *
- * Modifications:
- *
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -1345,8 +1343,6 @@ done:
  * Programmer:	Raymond Lu
  *              April 15, 2004
  *
- * Modifications:
- *
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -1385,8 +1381,6 @@ done:
  *
  * Programmer:	Raymond Lu
  *              April 15, 2004
- *
- * Modifications:
  *
  *-------------------------------------------------------------------------
  */

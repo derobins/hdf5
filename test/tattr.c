@@ -6754,13 +6754,6 @@ attr_iterate2_cb(hid_t loc_id, const char *attr_name, const H5A_info_t *info, vo
     char              attrname[NAME_BUF_SIZE];                /* Object name */
     H5A_info_t        my_info;                                /* Local attribute info */
 
-#ifdef QAK
-    HDfprintf(stderr, "attr_name = '%s'\n", attr_name);
-    if (info)
-        HDfprintf(stderr, "info->corder = %u\n", (unsigned)info->corder);
-    HDfprintf(stderr, "op_data->curr = %Hd\n", op_data->curr);
-#endif /* QAK */
-
     /* Increment # of times the callback was called */
     op_data->ncalled++;
 

@@ -11,7 +11,7 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* Programmer: Robb Matzke <matzke@llnl.gov>
+/* Programmer: Robb Matzke
  *	       Friday, September 19, 1997
  *
  */
@@ -294,7 +294,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Robb Matzke
- *		matzke@llnl.gov
  *		Aug  1 1997
  *
  *-------------------------------------------------------------------------
@@ -833,7 +832,6 @@ done:
  * Return:	Non-negative (TRUE/FALSE) on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Sep 20 2005
  *
  *-------------------------------------------------------------------------
@@ -933,7 +931,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Nov  7 2006
  *
  *-------------------------------------------------------------------------
@@ -1015,7 +1012,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Neil Fortner
- *		nfortne2@hdfgroup.org
  *		Mar 17, 2009
  *
  *-------------------------------------------------------------------------

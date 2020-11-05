@@ -12,7 +12,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Pedro Vicente <pvn@ncsa.uiuc.edu>
+ * Programmer:  Pedro Vicente
  *              April 12, 2002
  *
  * Purpose:     Tests the H5Dset_extent call
@@ -2621,7 +2621,7 @@ test_random_rank4_vl(hid_t fapl, hid_t dcpl, hbool_t do_fillvalue, hbool_t disab
         TEST_ERROR
     if (H5Treclaim(type, mspace, H5P_DEFAULT, wbuf) < 0)
         TEST_ERROR
-    free(fill_value.p);
+    HDfree(fill_value.p);
     if (H5Sclose(mspace) < 0)
         TEST_ERROR
     if (H5Pclose(my_dcpl) < 0)
