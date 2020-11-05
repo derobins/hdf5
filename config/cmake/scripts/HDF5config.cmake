@@ -21,6 +21,7 @@ cmake_minimum_required (VERSION 3.12)
 #     ctest -S HDF5config.cmake,OPTION=VALUE -C Release -VV -O test.log
 # where valid options for OPTION are:
 #     BUILD_GENERATOR - The cmake build generator:
+#            MinGW     * MinGW Makefiles
 #            Unix      * Unix Makefiles
 #            VS2019    * Visual Studio 16 2019
 #            VS201964  * Visual Studio 16 2019
@@ -167,7 +168,11 @@ if (NOT DEFINED HPC)
   ##  Set the following to unique id your computer  ##
     set (CTEST_SITE "WIN7${BUILD_GENERATOR}.XXXX")
   else ()
-    set (CTEST_CMAKE_GENERATOR "Unix Makefiles")
+    if (MINGW)
+      set (CTEST_CMAKE_GENERATOR "MinGW Makefiles")
+    else ()
+      set (CTEST_CMAKE_GENERATOR "Unix Makefiles")
+    endif ()
   ##  Set the following to unique id your computer  ##
     if (APPLE)
      set (CTEST_SITE "MAC.XXXX")
@@ -199,7 +204,7 @@ endif ()
 #set (LOCAL_NO_PACKAGE "TRUE")
 #####       Following controls source update                  #####
 #set (LOCAL_UPDATE "TRUE")
-set (REPOSITORY_URL "https://git@bitbucket.hdfgroup.org/scm/hdffv/hdf5.git")
+set (REPOSITORY_URL "https://github.com/HDFGroup/hdf5.git")
 set (REPOSITORY_BRANCH "develop")
 
 #uncomment to use a compressed source file: *.tar on linux or mac *.zip on windows

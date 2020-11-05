@@ -145,11 +145,11 @@
 #else /* H5_HAVE_WIN32_API */
 #define HDfileno(F) fileno(F)
 #endif /* H5_HAVE_WIN32_API */
-#define HDfloor(X)        floor(X)
-#define HDfmod(X, Y)      fmod(X, Y)
-#define HDfopen(S, M)     fopen(S, M)
-#define HDfork()          fork()
-#define HDfpathconf(F, N) fpathconf(F, N)
+#define HDfloor(X)          floor(X)
+#define HDfmod(X, Y)        fmod(X, Y)
+#define HDfopen(S, M)       fopen(S, M)
+#define HDfork()            fork()
+#define HDfpathconf(F, N)   fpathconf(F, N)
 H5_DLL int HDfprintf(FILE *stream, const char *fmt, ...);
 #define HDfputc(C, F)       fputc(C, F)
 #define HDfputs(S, F)       fputs(S, F)
