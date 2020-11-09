@@ -15,7 +15,7 @@
  *
  * Created:             H5Oainfo.c
  *                      Mar  6 2007
- *                      Quincey Koziol <koziol@hdfgroup.org>
+ *                      Quincey Koziol
  *
  * Purpose:             Attribute Information messages.
  *

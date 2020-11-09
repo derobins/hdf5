@@ -15,7 +15,7 @@
  *
  * Created:		H5Bcache.c
  *			Oct 31 2005
- *			Quincey Koziol <koziol@ncsa.uiuc.edu>
+ *			Quincey Koziol
  *
  * Purpose:		Implement B-tree metadata cache methods.
  *
@@ -90,7 +90,6 @@ const H5AC_class_t H5AC_BT[1] = {{
  * Return:      Non-negative on success/Negative on failure
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              May 18, 2010
  *
  *-------------------------------------------------------------------------
@@ -126,7 +125,6 @@ H5B__cache_get_initial_load_size(void *_udata, size_t *image_len)
  *		Failure:	NULL
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Mar 24, 2008
  *
  *-------------------------------------------------------------------------
@@ -231,7 +229,6 @@ done:
  * Return:      Non-negative on success/Negative on failure
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              May 20, 2010
  *
  *-------------------------------------------------------------------------
@@ -266,7 +263,6 @@ H5B__cache_image_len(const void *_thing, size_t *image_len)
  * Return:      Non-negative on success/Negative on failure
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Mar 24, 2008
  *
  *-------------------------------------------------------------------------
@@ -350,7 +346,6 @@ done:
  * Return:      Non-negative on success/Negative on failure
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Mar 26, 2008
  *
  *-------------------------------------------------------------------------

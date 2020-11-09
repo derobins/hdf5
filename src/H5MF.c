@@ -15,7 +15,7 @@
  *
  * Created:             H5MF.c
  *                      Jul 11 1997
- *                      Robb Matzke <matzke@llnl.gov>
+ *                      Robb Matzke
  *
  * Purpose:             File memory management functions.
  *

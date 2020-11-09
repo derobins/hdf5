@@ -15,7 +15,7 @@
  *
  * Created:             H5Olink.c
  *                      Aug 29 2005
- *                      Quincey Koziol <koziol@ncsa.uiuc.edu>
+ *                      Quincey Koziol
  *
  * Purpose:             Link messages.
  *

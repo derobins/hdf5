@@ -15,7 +15,7 @@
  *
  * Created:             H5ACmpio.c
  *                      Jun 20 2015
- *                      Quincey Koziol <koziol@hdfgroup.org>
+ *                      Quincey Koziol
  *
  * Purpose:             Functions in this file implement support for parallel
  *                      I/O cache functionality
@@ -1848,6 +1848,8 @@ done:
  * Programmer:  John Mainzer
  *              April 28, 2010
  *
+ * Changes:     None.
+ *
  *-------------------------------------------------------------------------
  */
 static herr_t
@@ -1876,9 +1878,12 @@ H5AC__rsp__p0_only__flush(H5F_t *f)
      * However, when flushing from within the close operation from a file,
      * it's possible to skip this barrier (on the second flush of the cache).
      */
-    if (!H5CX_get_mpi_file_flushing())
+    if (!H5CX_get_mpi_file_flushing()) {
+
         if (MPI_SUCCESS != (mpi_result = MPI_Barrier(aux_ptr->mpi_comm)))
+
             HMPI_GOTO_ERROR(FAIL, "MPI_Barrier failed", mpi_result)
+    }
 
     /* Flush data to disk, from rank 0 process */
     if (aux_ptr->mpi_rank == 0) {
@@ -1895,22 +1900,28 @@ H5AC__rsp__p0_only__flush(H5F_t *f)
 
         /* Check for error on the write operation */
         if (result < 0)
+
             HGOTO_ERROR(H5E_CACHE, H5E_CANTFLUSH, FAIL, "Can't flush.")
 
         /* this code exists primarily for the test bed -- it allows us to
          * enforce POSIX semantics on the server that pretends to be a
          * file system in our parallel tests.
          */
-        if (aux_ptr->write_done)
+        if (aux_ptr->write_done) {
+
             (aux_ptr->write_done)();
+        }
     } /* end if */
 
     /* Propagate cleaned entries to other ranks. */
     if (H5AC__propagate_flushed_and_still_clean_entries_list(f) < 0)
+
         HGOTO_ERROR(H5E_CACHE, H5E_CANTFLUSH, FAIL, "Can't propagate clean entries list.")
 
 done:
+
     FUNC_LEAVE_NOAPI(ret_value)
+
 } /* H5AC__rsp__p0_only__flush() */
 
 /*-------------------------------------------------------------------------
@@ -2075,9 +2086,13 @@ H5AC__run_sync_point(H5F_t *f, int sync_point_op)
 
     /* Sanity checks */
     HDassert(f != NULL);
+
     cache_ptr = f->shared->cache;
+
     HDassert(cache_ptr != NULL);
+
     aux_ptr = (H5AC_aux_t *)H5C_get_aux_ptr(cache_ptr);
+
     HDassert(aux_ptr != NULL);
     HDassert(aux_ptr->magic == H5AC__H5AC_AUX_T_MAGIC);
     HDassert((sync_point_op == H5AC_SYNC_POINT_OP__FLUSH_TO_MIN_CLEAN) ||

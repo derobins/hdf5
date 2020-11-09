@@ -14,8 +14,8 @@
 /*-------------------------------------------------------------------------
  *
  * Created:        H5Aint.c
- *            Dec 18 2006
- *            Quincey Koziol <koziol@hdfgroup.org>
+ *                 Dec 18 2006
+ *                 Quincey Koziol
  *
  * Purpose:        Internal routines for managing attributes.
  *
@@ -2380,7 +2380,6 @@ done:
  *              Failure:        Negative
  *
  * Programmer:  Peter Cao
- *              xcao@hdfgroup.org
  *              July 20, 2007
  *
  *-------------------------------------------------------------------------

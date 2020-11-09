@@ -15,7 +15,7 @@
  *
  * Created:             H5Olinfo.c
  *                      Aug 23 2005
- *                      Quincey Koziol <koziol@ncsa.uiuc.edu>
+ *                      Quincey Koziol
  *
  * Purpose:             Link Information messages.
  *

@@ -15,7 +15,7 @@
  *
  * Created:     H5HFtiny.c
  *              Aug 14 2006
- *              Quincey Koziol <koziol@hdfgroup.org>
+ *              Quincey Koziol
  *
  * Purpose:     Routines for "tiny" objects in fractal heap
  *
@@ -80,7 +80,6 @@ static herr_t H5HF_tiny_op_real(H5HF_hdr_t *hdr, const uint8_t *id, H5HF_operato
  * Return:      SUCCEED/FAIL
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Aug 14 2006
  *
  *-------------------------------------------------------------------------
@@ -126,7 +125,6 @@ H5HF_tiny_init(H5HF_hdr_t *hdr)
  * Return:      SUCCEED/FAIL
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Aug 14 2006
  *
  *-------------------------------------------------------------------------
@@ -188,7 +186,6 @@ done:
  * Return:      SUCCEED (Can't fail)
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Aug 14 2006
  *
  *-------------------------------------------------------------------------
@@ -230,7 +227,6 @@ H5HF_tiny_get_obj_len(H5HF_hdr_t *hdr, const uint8_t *id, size_t *obj_len_p)
  * Return:      SUCCEED/FAIL
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Sep 11 2006
  *
  *-------------------------------------------------------------------------
@@ -281,7 +277,6 @@ done:
  * Return:      SUCCEED/FAIL
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Aug  8 2006
  *
  *-------------------------------------------------------------------------
@@ -316,7 +311,6 @@ done:
  * Return:      SUCCEED/FAIL
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Sept 11 2006
  *
  *-------------------------------------------------------------------------
@@ -351,7 +345,6 @@ done:
  * Return:      SUCCEED/FAIL
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Aug 14 2006
  *
  *-------------------------------------------------------------------------

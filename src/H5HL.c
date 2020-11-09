@@ -15,7 +15,7 @@
  *
  * Created:         H5HL.c
  *                  Jul 16 1997
- *                  Robb Matzke <matzke@llnl.gov>
+ *                  Robb Matzke
  *
  * Purpose:         Heap functions for the local heaps used by symbol
  *                  tables to store names (among other things).
@@ -392,7 +392,7 @@ BEGIN_FUNC(PRIV, ERR, void *, NULL, NULL, H5HL_offset_into(const H5HL_t *heap, s
     ret_value = heap->dblk_image + offset;
 
     CATCH
-    /* No special processing on errors */
+/* No special processing on errors */
 END_FUNC(PRIV) /* end H5HL_offset_into() */
 
 /*-------------------------------------------------------------------------
