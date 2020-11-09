@@ -15,7 +15,7 @@
  *
  * Created:		H5HFhdr.c
  *			Apr 10 2006
- *			Quincey Koziol <koziol@ncsa.uiuc.edu>
+ *			Quincey Koziol
  *
  * Purpose:		Heap header routines for fractal heaps.
  *
@@ -92,7 +92,6 @@ H5FL_DEFINE_STATIC(H5HF_hdr_t);
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Mar 21 2006
  *
  *-------------------------------------------------------------------------
@@ -513,7 +512,6 @@ done:
  * Return:	Pointer to indirect block on success, NULL on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		May  5 2010
  *
  *-------------------------------------------------------------------------
@@ -562,7 +560,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Mar 27 2006
  *
  *-------------------------------------------------------------------------
@@ -597,7 +594,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Mar 27 2006
  *
  *-------------------------------------------------------------------------
@@ -635,7 +631,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Oct  1 2006
  *
  *-------------------------------------------------------------------------
@@ -662,7 +657,6 @@ H5HF_hdr_fuse_incr(H5HF_hdr_t *hdr)
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Oct  1 2006
  *
  *-------------------------------------------------------------------------
@@ -1152,7 +1146,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		May 23 2006
  *
  *-------------------------------------------------------------------------
@@ -1191,7 +1184,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		May 31 2006
  *
  *-------------------------------------------------------------------------
@@ -1343,7 +1335,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		May 17 2006
  *
  *-------------------------------------------------------------------------
@@ -1359,10 +1350,9 @@ H5HF__hdr_empty(H5HF_hdr_t *hdr)
     HDassert(hdr);
 
     /* Reset block iterator, if necessary */
-    if (H5HF_man_iter_ready(&hdr->next_block)) {
+    if (H5HF_man_iter_ready(&hdr->next_block))
         if (H5HF_man_iter_reset(&hdr->next_block) < 0)
             HGOTO_ERROR(H5E_HEAP, H5E_CANTRELEASE, FAIL, "can't reset block iterator")
-    } /* end if */
 
     /* Shrink managed heap size */
     hdr->man_size       = 0;
@@ -1394,7 +1384,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Oct 27 2009
  *
  *-------------------------------------------------------------------------
@@ -1435,7 +1424,6 @@ done:
  * Return:	SUCCEED/FAIL
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Jan  5 2007
  *
  *-------------------------------------------------------------------------

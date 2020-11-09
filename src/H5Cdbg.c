@@ -284,6 +284,7 @@ H5C_dump_cache_skip_list(H5C_t *cache_ptr, char *calling_fcn)
     HDfprintf(stdout, "	slist size = %zu.\n", cache_ptr->slist_size);
 
     if (cache_ptr->slist_len > 0) {
+
         /* If we get this far, all entries in the cache are listed in the
          * skip list -- scan the skip list generating the desired output.
          */
@@ -375,31 +376,36 @@ H5C_dump_coll_write_list(H5C_t *cache_ptr, char *calling_fcn)
 
         node_ptr = H5SL_first(cache_ptr->coll_write_list);
 
-        if (node_ptr != NULL)
+        if (node_ptr != NULL) {
 
             entry_ptr = (H5C_cache_entry_t *)H5SL_item(node_ptr);
-
-        else
+        }
+        else {
 
             entry_ptr = NULL;
+        }
 
         while (entry_ptr != NULL) {
 
             HDassert(entry_ptr->magic == H5C__H5C_CACHE_ENTRY_T_MAGIC);
 
-            HDfprintf(stdout, "%s%d       0x%016" PRIxHADDR "  %4%zu    %d/%d       %d    %s\n",
-                      cache_ptr->prefix, i, entry_ptr->addr, entry_ptr->size, (int)(entry_ptr->is_protected),
-                      (int)(entry_ptr->is_pinned), (int)(entry_ptr->is_dirty), entry_ptr->type->name);
+            HDfprintf(stdout, "%s%d       0x%016llx  %4lld    %d/%d       %d    %s\n", cache_ptr->prefix, i,
+                      (long long)(entry_ptr->addr), (long long)(entry_ptr->size),
+                      (int)(entry_ptr->is_protected), (int)(entry_ptr->is_pinned), (int)(entry_ptr->is_dirty),
+                      entry_ptr->type->name);
+
+            /* increment node_ptr before we delete its target */
 
             node_ptr = H5SL_next(node_ptr);
 
-            if (node_ptr != NULL)
+            if (node_ptr != NULL) {
 
                 entry_ptr = (H5C_cache_entry_t *)H5SL_item(node_ptr);
-
-            else
+            }
+            else {
 
                 entry_ptr = NULL;
+            }
 
             i++;
 

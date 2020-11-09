@@ -117,7 +117,7 @@ done:
 } /* end H5MP_create() */
 
 /*-------------------------------------------------------------------------
- * Function:	H5MP_new_page
+ * Function:	H5MP__new_page
  *
  * Purpose:	Allocate new page for a memory pool
  *
@@ -129,13 +129,13 @@ done:
  *-------------------------------------------------------------------------
  */
 static H5MP_page_t *
-H5MP_new_page(H5MP_pool_t *mp, size_t page_size)
+H5MP__new_page(H5MP_pool_t *mp, size_t page_size)
 {
     H5MP_page_t *    new_page;         /* New page created */
     H5MP_page_blk_t *first_blk;        /* Pointer to first block in page */
     H5MP_page_t *    ret_value = NULL; /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_STATIC
 
     /* Sanity check */
     HDassert(mp);
@@ -179,7 +179,7 @@ H5MP_new_page(H5MP_pool_t *mp, size_t page_size)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5MP_new_page() */
+} /* end H5MP__new_page() */
 
 /*-------------------------------------------------------------------------
  * Function:	H5MP_malloc
@@ -257,7 +257,7 @@ H5MP_malloc(H5MP_pool_t *mp, size_t request)
             (needed > mp->max_size) ? (needed + H5MP_BLOCK_ALIGN(sizeof(H5MP_page_t))) : mp->page_size;
 
         /* Allocate new page */
-        if (NULL == (alloc_page = H5MP_new_page(mp, page_size)))
+        if (NULL == (alloc_page = H5MP__new_page(mp, page_size)))
             HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, NULL, "memory allocation failed for page")
 
         /* Set the block to allocate from */
