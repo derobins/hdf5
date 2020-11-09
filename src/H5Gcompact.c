@@ -15,7 +15,7 @@
  *
  * Created:		H5Gcompact.c
  *			Sep  5 2005
- *			Quincey Koziol <koziol@ncsa.uiuc.edu>
+ *			Quincey Koziol
  *
  * Purpose:		Functions for handling compact storage.
  *
@@ -72,7 +72,6 @@ static herr_t H5G__compact_lookup_cb(const void *_mesg, unsigned H5_ATTR_UNUSED 
  * Return:      SUCCEED/FAIL
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Sep  5 2005
  *
  *-------------------------------------------------------------------------
@@ -173,7 +172,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Sep  6 2005
  *
  *-------------------------------------------------------------------------
@@ -257,7 +255,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Sep  5 2005
  *
  *-------------------------------------------------------------------------
@@ -427,7 +424,6 @@ done:
  * Return:      SUCCEED/FAIL
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Sep 20 2005
  *
  *-------------------------------------------------------------------------
@@ -472,7 +468,6 @@ done:
  * Return:	Non-negative (TRUE/FALSE) on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Sep 20 2005
  *
  *-------------------------------------------------------------------------
@@ -517,7 +512,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Nov  6 2006
  *
  *-------------------------------------------------------------------------

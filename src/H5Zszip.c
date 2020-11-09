@@ -115,14 +115,6 @@ done:
  * Programmer:	Quincey Koziol
  *              Monday, April  7, 2003
  *
- * Modifications: Used new logic to set the size of the scanline parameter.
- *                Now SZIP compression can be applied to the chunk
- *                of any shape and size with only one restriction: the number
- *                of elements in the chunk has to be not less than number
- *                of elements (pixels) in the block (cd_values[H5Z_SZIP_PARM_PPB]
- *                parameter).
- *                           Elena Pourmal, July 20, 2004
- *
  *-------------------------------------------------------------------------
  */
 static herr_t

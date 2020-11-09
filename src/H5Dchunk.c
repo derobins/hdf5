@@ -11,7 +11,7 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* Programmer:     Quincey Koziol <koziol@hdfgroup.org>
+/* Programmer:     Quincey Koziol
  *               Thursday, April 24, 2008
  *
  * Purpose:    Abstract indexed (chunked) I/O functions.  The logical
@@ -319,6 +319,7 @@ static herr_t H5D__chunk_collective_fill(const H5D_t *dset, H5D_chunk_coll_info_
 static int    H5D__chunk_cmp_addr(const void *addr1, const void *addr2);
 #endif /* H5_HAVE_PARALLEL */
 
+/* Debugging helper routine callback */
 static int H5D__chunk_dump_index_cb(const H5D_chunk_rec_t *chunk_rec, void *_udata);
 
 /*********************/
@@ -2986,7 +2987,7 @@ done:
 static herr_t
 H5D__chunk_cinfo_cache_reset(H5D_chunk_cached_t *last)
 {
-    FUNC_ENTER_PACKAGE_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity check */
     HDassert(last);
@@ -3605,10 +3606,10 @@ H5D__chunk_cache_prune(const H5D_t *dset, size_t size)
 {
     const H5D_rdcc_t *rdcc  = &(dset->shared->cache.chunk);
     size_t            total = rdcc->nbytes_max;
-    const int         nmeth = 2;           /*number of methods        */
-    int               w[1];                /*weighting as an interval    */
-    H5D_rdcc_ent_t *  p[2], *cur;          /*list pointers            */
-    H5D_rdcc_ent_t *  n[2];                /*list next pointers        */
+    const int         nmeth = 2;           /* Number of methods */
+    int               w[1];                /* Weighting as an interval */
+    H5D_rdcc_ent_t *  p[2], *cur;          /* List pointers */
+    H5D_rdcc_ent_t *  n[2];                /* List next pointers */
     int               nerrors   = 0;       /* Accumulated error count during preemptions */
     herr_t            ret_value = SUCCEED; /* Return value */
 
@@ -4546,9 +4547,8 @@ H5D__chunk_allocate(const H5D_io_info_t *io_info, hbool_t full_overwrite, hsize_
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, FAIL, "error looking up chunk address")
 #ifndef NDEBUG
             /* None of the chunks should be allocated */
-            if (H5D_CHUNK_IDX_NONE != sc->idx_type) {
+            if (H5D_CHUNK_IDX_NONE != sc->idx_type)
                 HDassert(!H5F_addr_defined(udata.chunk_block.offset));
-            }
 
             /* Make sure the chunk is really in the dataset and outside the
              * original dimensions */
@@ -5122,8 +5122,8 @@ H5D__chunk_cmp_addr(const void *addr1, const void *addr2)
  *
  * Return:    Non-negative on success/Negative on failure
  *
- * Programmer:    Pedro Vicente, pvn@ncsa.uiuc.edu
- *         March 26, 2002
+ * Programmer:    Pedro Vicente
+ *              March 26, 2002
  *
  *-------------------------------------------------------------------------
  */
@@ -5244,7 +5244,7 @@ done:
  *
  * Return:    Non-negative on success/Negative on failure
  *
- * Programmer:    Pedro Vicente, pvn@ncsa.uiuc.edu
+ * Programmer:    Pedro Vicente
  * Algorithm:    Robb Matzke
  *         March 27, 2002
  *
@@ -5694,7 +5694,7 @@ H5D__chunk_addrmap_cb(const H5D_chunk_rec_t *chunk_rec, void *_udata)
     /* Set it in the userdata to return */
     udata->chunk_addr[chunk_index] = chunk_rec->chunk_addr;
 
-    FUNC_LEAVE_NOAPI(ret_value)
+    FUNC_LEAVE_NOAPI(H5_ITER_CONT)
 } /* H5D__chunk_addrmap_cb() */
 
 /*-------------------------------------------------------------------------
@@ -6576,10 +6576,11 @@ H5D__chunk_dump_index_cb(const H5D_chunk_rec_t *chunk_rec, void *_udata)
         } /* end if */
 
         /* Print information about this chunk */
-        HDfprintf(udata->stream, "        0x%08x %8Zu %10a [", chunk_rec->filter_mask, chunk_rec->nbytes,
-                  chunk_rec->chunk_addr);
+        HDfprintf(udata->stream, "        0x%08x %8" PRIu32 " %10" PRIuHADDR " [", chunk_rec->filter_mask,
+                  chunk_rec->nbytes, chunk_rec->chunk_addr);
         for (u = 0; u < udata->ndims; u++)
-            HDfprintf(udata->stream, "%s%Hu", (u ? ", " : ""), (chunk_rec->scaled[u] * udata->chunk_dim[u]));
+            HDfprintf(udata->stream, "%s%" PRIuHSIZE, (u ? ", " : ""),
+                      (chunk_rec->scaled[u] * udata->chunk_dim[u]));
         HDfputs("]\n", udata->stream);
     } /* end if */
 

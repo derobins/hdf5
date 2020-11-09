@@ -15,7 +15,7 @@
  *
  * Created:		H5B2leaf.c
  *			Dec 01 2016
- *			Quincey Koziol <koziol@lbl.gov>
+ *			Quincey Koziol
  *
  * Purpose:		Routines for managing v2 B-tree leaf ndoes.
  *
@@ -78,7 +78,6 @@ H5FL_DEFINE(H5B2_leaf_t);
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Feb  2 2005
  *
  *-------------------------------------------------------------------------
@@ -166,7 +165,6 @@ done:
  * Return:	Pointer to leaf node on success/NULL on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		May  5 2010
  *
  *-------------------------------------------------------------------------
@@ -260,7 +258,6 @@ done:
  * Return:	Non-negative on success, negative on failure.
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Mar  9 2005
  *
  *-------------------------------------------------------------------------
@@ -332,7 +329,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Mar  3 2005
  *
  *-------------------------------------------------------------------------
@@ -447,7 +443,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Dec 23 2015
  *
  *-------------------------------------------------------------------------
@@ -604,7 +599,6 @@ done:
  *		Failure:	Negative
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Mar  4 2005
  *
  *-------------------------------------------------------------------------
@@ -762,7 +756,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Mar  3 2005
  *
  *-------------------------------------------------------------------------
@@ -871,7 +864,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Nov 14 2006
  *
  *-------------------------------------------------------------------------
@@ -972,7 +964,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Feb 2 2005
  *
  *-------------------------------------------------------------------------
@@ -1017,7 +1008,6 @@ done:
  * Return:	Non-negative on success, negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Feb 19 2005
  *
  *-------------------------------------------------------------------------
@@ -1039,7 +1029,6 @@ H5B2__assert_leaf(const H5B2_hdr_t H5_ATTR_NDEBUG_UNUSED *hdr, const H5B2_leaf_t
  * Return:	Non-negative on success, negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Feb 19 2005
  *
  *-------------------------------------------------------------------------

@@ -46,7 +46,7 @@
  * or decrease it if appropriate.  Its purposes is to detect corrupt
  * object sizes, so it probably doesn't matter if it is a bit big.
  *
- *					JRM - 5/17/04
+ *                    JRM - 5/17/04
  */
 #define H5C_MAX_ENTRY_SIZE ((size_t)(32 * 1024 * 1024))
 

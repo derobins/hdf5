@@ -681,7 +681,7 @@ MpioTest2G(MPI_Comm comm)
     H5Fclose(file_id);
 
     free(data);
-    HDprintf("Proc %d - MpioTest2G test succeeded\n", mpi_rank, data_size_bytes);
+    HDprintf("Proc %d - MpioTest2G test succeeded\n", mpi_rank);
 
     if (mpi_rank == 0)
         HDremove(FILENAME[1]);
@@ -3861,9 +3861,7 @@ actual_io_mode_tests(void)
  * Programmer: Jonathan Kim
  * Date: Aug, 2012
  */
-#define DSET_NOCOLCAUSE "nocolcause"
-#define NELM            2
-#define FILE_EXTERNAL   "nocolcause_extern.data"
+#define FILE_EXTERNAL "nocolcause_extern.data"
 static void
 test_no_collective_cause_mode(int selection_mode)
 {

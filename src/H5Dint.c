@@ -92,6 +92,7 @@ static herr_t H5D__vlen_get_buf_size_cb(void *elem, hid_t type_id, unsigned ndim
                                         void *op_data);
 static herr_t H5D__vlen_get_buf_size_gen_cb(void *elem, hid_t type_id, unsigned ndim, const hsize_t *point,
                                             void *op_data);
+static herr_t H5D__check_filters(H5D_t *dataset);
 
 /*********************/
 /* Package Variables */
@@ -2952,13 +2953,13 @@ done:
  * Return:   Non-negative on success/Negative on failure
  *-------------------------------------------------------------------------
  */
-herr_t
+static herr_t
 H5D__check_filters(H5D_t *dataset)
 {
     H5O_fill_t *fill;                /* Dataset's fill value */
     herr_t      ret_value = SUCCEED; /* Return value */
 
-    FUNC_ENTER_PACKAGE
+    FUNC_ENTER_STATIC
 
     /* Check args */
     HDassert(dataset);

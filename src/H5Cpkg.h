@@ -76,7 +76,7 @@
  * to the HGOTO_ERROR macro, which may not be appropriate in all cases.
  * If so, we will need versions of the insertion and deletion macros which
  * do not reference the sanity checking macros.
- *							JRM - 5/5/04
+ *                            JRM - 5/5/04
  *
  * Changes:
  *
@@ -151,14 +151,14 @@
  *    sanity checking macros.  These macro are used to update the size of
  *    a DLL when one of its entries changes size.
  *
- *							JRM - 9/8/05
+ *                            JRM - 9/8/05
  *
  *  - Added macros supporting the index list -- a doubly liked list of
  *    all entries in the index.  This list is necessary to reduce the
  *    cost of visiting all entries in the cache, which was previously
  *    done via a scan of the hash table.
  *
- *							JRM - 10/15/15
+ *                            JRM - 10/15/15
  *
  ****************************************************************************/
 
@@ -586,7 +586,7 @@ if ( ( ( ( (head_ptr) == NULL ) || ( (tail_ptr) == NULL ) ) &&             \
     H5C__IL_DLL_SC(head_ptr, tail_ptr, len, Size, fv)                       \
 } /* H5C__IL_DLL_REMOVE() */
 
-
+
 /***********************************************************************
  *
  * Stats collection macros

@@ -2172,6 +2172,7 @@ H5AC__run_sync_point(H5F_t *f, int sync_point_op)
 #endif /* H5AC_DEBUG_DIRTY_BYTES_CREATION */
 
 done:
+
     FUNC_LEAVE_NOAPI(ret_value)
 } /* H5AC__run_sync_point() */
 
@@ -2267,7 +2268,6 @@ H5AC__tidy_cache_0_lists(H5AC_t *cache_ptr, unsigned num_candidates, haddr_t *ca
  *              request to flush all items and something was protected.
  *
  * Programmer:  Quincey Koziol
- *              koziol@hdfgroup.org
  *              Aug 22 2009
  *
  *-------------------------------------------------------------------------

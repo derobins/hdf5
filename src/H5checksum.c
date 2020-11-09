@@ -141,7 +141,7 @@ H5_checksum_fletcher32(const void *_data, size_t _len)
 } /* end H5_checksum_fletcher32() */
 
 /*-------------------------------------------------------------------------
- * Function:	H5_checksum_crc_make_table
+ * Function:	H5__checksum_crc_make_table
  *
  * Purpose:	Compute the CRC table for the CRC checksum algorithm
  *
@@ -153,12 +153,12 @@ H5_checksum_fletcher32(const void *_data, size_t _len)
  *-------------------------------------------------------------------------
  */
 static void
-H5_checksum_crc_make_table(void)
+H5__checksum_crc_make_table(void)
 {
     uint32_t c;    /* Checksum for each byte value */
     unsigned n, k; /* Local index variables */
 
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     /* Compute the checksum for each possible byte value */
     for (n = 0; n < 256; n++) {
@@ -173,10 +173,10 @@ H5_checksum_crc_make_table(void)
     H5_crc_table_computed = TRUE;
 
     FUNC_LEAVE_NOAPI_VOID
-} /* end H5_checksum_crc_make_table() */
+} /* end H5__checksum_crc_make_table() */
 
 /*-------------------------------------------------------------------------
- * Function:	H5_checksum_crc_make_table
+ * Function:	H5__checksum_crc_update
  *
  * Purpose:	Update a running CRC with the bytes buf[0..len-1]--the CRC
  *              should be initialized to all 1's, and the transmitted value
@@ -191,22 +191,22 @@ H5_checksum_crc_make_table(void)
  *-------------------------------------------------------------------------
  */
 static uint32_t
-H5_checksum_crc_update(uint32_t crc, const uint8_t *buf, size_t len)
+H5__checksum_crc_update(uint32_t crc, const uint8_t *buf, size_t len)
 {
     size_t n; /* Local index variable */
 
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     /* Initialize the CRC table if necessary */
     if (!H5_crc_table_computed)
-        H5_checksum_crc_make_table();
+        H5__checksum_crc_make_table();
 
     /* Update the CRC with the results from this buffer */
     for (n = 0; n < len; n++)
         crc = H5_crc_table[(crc ^ buf[n]) & 0xff] ^ (crc >> 8);
 
     FUNC_LEAVE_NOAPI(crc)
-} /* end H5_checksum_crc_update() */
+} /* end H5__checksum_crc_update() */
 
 /*-------------------------------------------------------------------------
  * Function:	H5_checksum_crc
@@ -234,7 +234,8 @@ H5_checksum_crc(const void *_data, size_t len)
     HDassert(_data);
     HDassert(len > 0);
 
-    FUNC_LEAVE_NOAPI(H5_checksum_crc_update((uint32_t)0xffffffffL, (const uint8_t *)_data, len) ^ 0xffffffffL)
+    FUNC_LEAVE_NOAPI(H5__checksum_crc_update((uint32_t)0xffffffffL, (const uint8_t *)_data, len) ^
+                     0xffffffffL)
 } /* end H5_checksum_crc() */
 
 /*

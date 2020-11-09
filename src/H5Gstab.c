@@ -117,7 +117,6 @@ typedef struct H5G_bt_it_lbi_t {
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@ncsa.uiuc.edu
  *		Nov  7 2005
  *
  *-------------------------------------------------------------------------
@@ -183,7 +182,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Robb Matzke
- *		matzke@llnl.gov
  *		Aug  1 1997
  *
  *-------------------------------------------------------------------------
@@ -240,7 +238,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@uiuc.edu
  *		Nov  7 2005
  *
  *-------------------------------------------------------------------------

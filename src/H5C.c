@@ -531,18 +531,18 @@ H5C_def_auto_resize_rpt_fcn(H5C_t *cache_ptr,
             HDfprintf(stdout, "%sAuto cache resize -- hit rate (%lf) out of bounds low (%6.5lf).\n",
                       cache_ptr->prefix, hit_rate, (cache_ptr->resize_ctl).lower_hr_threshold);
 
-            HDfprintf(stdout, "%s	cache size increased from (%Zu/%Zu) to (%Zu/%Zu).\n", cache_ptr->prefix,
+            HDfprintf(stdout, "%scache size increased from (%zu/%zu) to (%zu/%zu).\n", cache_ptr->prefix,
                       old_max_cache_size, old_min_clean_size, new_max_cache_size, new_min_clean_size);
             break;
 
         case flash_increase:
             HDassert(old_max_cache_size < new_max_cache_size);
 
-            HDfprintf(stdout, "%sflash cache resize(%d) -- size threshold = %Zu.\n", cache_ptr->prefix,
+            HDfprintf(stdout, "%sflash cache resize(%d) -- size threshold = %zu.\n", cache_ptr->prefix,
                       (int)((cache_ptr->resize_ctl).flash_incr_mode),
                       cache_ptr->flash_size_increase_threshold);
 
-            HDfprintf(stdout, "%s cache size increased from (%Zu/%Zu) to (%Zu/%Zu).\n", cache_ptr->prefix,
+            HDfprintf(stdout, "%s cache size increased from (%zu/%zu) to (%zu/%zu).\n", cache_ptr->prefix,
                       old_max_cache_size, old_min_clean_size, new_max_cache_size, new_min_clean_size);
             break;
 
@@ -583,21 +583,20 @@ H5C_def_auto_resize_rpt_fcn(H5C_t *cache_ptr,
                               cache_ptr->prefix, hit_rate);
             }
 
-            HDfprintf(stdout, "%s	cache size decreased from (%Zu/%Zu) to (%Zu/%Zu).\n",
-                      cache_ptr->prefix, old_max_cache_size, old_min_clean_size, new_max_cache_size,
-                      new_min_clean_size);
+            HDfprintf(stdout, "%s    cache size decreased from (%zu/%zu) to (%zu/%zu).\n", cache_ptr->prefix,
+                      old_max_cache_size, old_min_clean_size, new_max_cache_size, new_min_clean_size);
             break;
 
         case at_max_size:
             HDfprintf(stdout, "%sAuto cache resize -- hit rate (%lf) out of bounds low (%6.5lf).\n",
                       cache_ptr->prefix, hit_rate, (cache_ptr->resize_ctl).lower_hr_threshold);
-            HDfprintf(stdout, "%s	cache already at maximum size so no change.\n", cache_ptr->prefix);
+            HDfprintf(stdout, "%s    cache already at maximum size so no change.\n", cache_ptr->prefix);
             break;
 
         case at_min_size:
             HDfprintf(stdout, "%sAuto cache resize -- hit rate (%lf) -- can't decrease.\n", cache_ptr->prefix,
                       hit_rate);
-            HDfprintf(stdout, "%s	cache already at minimum size.\n", cache_ptr->prefix);
+            HDfprintf(stdout, "%s    cache already at minimum size.\n", cache_ptr->prefix);
             break;
 
         case increase_disabled:
@@ -615,7 +614,7 @@ H5C_def_auto_resize_rpt_fcn(H5C_t *cache_ptr,
 
             HDfprintf(stdout, "%sAuto cache resize -- hit rate (%lf) out of bounds low (%6.5lf).\n",
                       cache_ptr->prefix, hit_rate, (cache_ptr->resize_ctl).lower_hr_threshold);
-            HDfprintf(stdout, "%s	cache not full so no increase in size.\n", cache_ptr->prefix);
+            HDfprintf(stdout, "%s    cache not full so no increase in size.\n", cache_ptr->prefix);
             break;
 
         default:

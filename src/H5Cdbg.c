@@ -687,8 +687,8 @@ H5C_stats(H5C_t *cache_ptr, const char *cache_name,
               (long long)(cache_ptr->slist_scan_restarts), (long long)(cache_ptr->LRU_scan_restarts),
               (long long)(cache_ptr->index_scan_restarts));
 
-    HDfprintf(stdout, "%s  cache image creations/reads/loads/size = %d / %d /%d / %Hu\n", cache_ptr->prefix,
-              cache_ptr->images_created, cache_ptr->images_read, cache_ptr->images_loaded,
+    HDfprintf(stdout, "%s  cache image creations/reads/loads/size = %d / %d /%d / %" PRIuHSIZE "\n",
+              cache_ptr->prefix, cache_ptr->images_created, cache_ptr->images_read, cache_ptr->images_loaded,
               cache_ptr->last_image_size);
 
     HDfprintf(stdout, "%s  prefetches / dirty prefetches      = %lld / %lld\n", cache_ptr->prefix,
