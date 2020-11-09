@@ -11,7 +11,7 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* Programmer:  Quincey Koziol <koziol@ncsa.uiuc.edu>
+/* Programmer:  Quincey Koziol
  *              Friday, February 24, 2006
  */
 #include "h5test.h"
@@ -20,9 +20,9 @@
  * This file needs to access private datatypes from the H5HF package.
  * This file also needs to access the fractal heap testing code.
  */
-#define H5HF_FRIEND /*suppress error about including H5HFpkg	  */
+#define H5HF_FRIEND /*suppress error about including H5HFpkg      */
 #define H5HF_TESTING
-#include "H5HFpkg.h" /* Fractal heaps			*/
+#include "H5HFpkg.h" /* Fractal heaps            */
 
 #define H5F_FRIEND /*suppress error about including H5Fpkg   */
 #define H5F_TESTING
@@ -30,9 +30,9 @@
 
 /* Other private headers that this test requires */
 #include "H5CXprivate.h" /* API Contexts                         */
-#include "H5MMprivate.h" /* Memory management			*/
+#include "H5MMprivate.h" /* Memory management            */
 #include "H5VLprivate.h" /* Virtual Object Layer                     */
-#include "H5VMprivate.h" /* Vectors and arrays 			*/
+#include "H5VMprivate.h" /* Vectors and arrays             */
 
 /* Max. testfile name length */
 #define FHEAP_FILENAME_LEN 1024
@@ -69,19 +69,22 @@
 /* #define ALL_INSERT_TESTS */
 
 /* Heap metadata macros */
-#define MAX_HEAP_ID_LEN        64                             /* Max. # of bytes to use for heap ID */
-#define HEAP_ID_LEN            7                              /* # of bytes to use for heap ID */
-#define SMALL_HEAP_ID_LEN      7                              /* # of bytes to use for "small" heap's IDs */
-#define LARGE_HEAP_ID_LEN      12                             /* # of bytes to use for "large" heap's IDs */
-#define HEAP_MAX_ROOT_ROWS(fh) H5HF_get_max_root_rows(fh)     /* Max. # of rows in root indirect block */
-#define DTABLE_WIDTH(fh)       H5HF_get_dtable_width_test(fh) /* Width of doubling table for heap */
-#define DTABLE_MAX_DROWS(fh)                                                                                 \
-    H5HF_get_dtable_max_drows_test(fh) /* Max. # of direct block rows in any indirect block */
-#define IBLOCK_MAX_DROWS(fh, pos)                                                                            \
-    H5HF_get_iblock_max_drows_test(fh, pos) /* Max. # of direct block rows in a indirect block */
-#define DBLOCK_SIZE(fh, r) H5HF_get_dblock_size_test(fh, r) /* Size of a direct block in a given row */
-#define DBLOCK_FREE(fh, r) H5HF_get_dblock_free_test(fh, r) /* Free space in a direct block of a given row   \
-                                                             */
+#define MAX_HEAP_ID_LEN   64 /* Max. # of bytes to use for heap ID */
+#define HEAP_ID_LEN       7  /* # of bytes to use for heap ID */
+#define SMALL_HEAP_ID_LEN 7  /* # of bytes to use for "small" heap's IDs */
+#define LARGE_HEAP_ID_LEN 12 /* # of bytes to use for "large" heap's IDs */
+/* Max. # of rows in root indirect block */
+#define HEAP_MAX_ROOT_ROWS(fh) H5HF_get_max_root_rows(fh)
+/* Width of doubling table for heap */
+#define DTABLE_WIDTH(fh) H5HF_get_dtable_width_test(fh)
+/* Max. # of direct block rows in any indirect block */
+#define DTABLE_MAX_DROWS(fh) H5HF_get_dtable_max_drows_test(fh)
+/* Max. # of direct block rows in a indirect block */
+#define IBLOCK_MAX_DROWS(fh, pos) H5HF_get_iblock_max_drows_test(fh, pos)
+/* Size of a direct block in a given row */
+#define DBLOCK_SIZE(fh, r) H5HF_get_dblock_size_test(fh, r)
+/* Free space in a direct block of a given row */
+#define DBLOCK_FREE(fh, r) H5HF_get_dblock_free_test(fh, r)
 
 /* The number of settings for testing: page buffering, file space strategy and persisting free-space */
 #define NUM_PB_FS             6
@@ -175,16 +178,16 @@ static int del_objs(H5F_t *f, H5HF_t **fh, fheap_test_param_t *tparam, fheap_hea
                     fheap_heap_ids_t *keep_ids);
 
 /*-------------------------------------------------------------------------
- * Function:	init_small_cparam
+ * Function:  init_small_cparam
  *
- * Purpose:	Initialize heap creation parameter structure with small
+ * Purpose:   Initialize heap creation parameter structure with small
  *              settings
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 21, 2006
  *
  *-------------------------------------------------------------------------
@@ -211,16 +214,16 @@ init_small_cparam(H5HF_create_t *cparam)
 } /* init_small_cparam() */
 
 /*-------------------------------------------------------------------------
- * Function:	init_large_cparam
+ * Function:  init_large_cparam
  *
- * Purpose:	Initialize heap creation parameter structure with large
+ * Purpose:   Initialize heap creation parameter structure with large
  *              settings
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 21, 2006
  *
  *-------------------------------------------------------------------------
@@ -247,15 +250,15 @@ init_large_cparam(H5HF_create_t *cparam)
 } /* init_large_cparam() */
 
 /*-------------------------------------------------------------------------
- * Function:	check_stats
+ * Function:  check_stats
  *
- * Purpose:	Verify stats for a heap
+ * Purpose:   Verify stats for a heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -317,15 +320,15 @@ error:
 } /* check_stats() */
 
 /*-------------------------------------------------------------------------
- * Function:	op_memcpy
+ * Function:  op_memcpy
  *
- * Purpose:	Perform 'memcpy' for an object
+ * Purpose:   Perform 'memcpy' for an object
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, September 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -340,9 +343,9 @@ op_memcpy(const void *obj, size_t obj_len, void *op_data)
 } /* op_memcpy() */
 
 /*-------------------------------------------------------------------------
- * Function:	add_obj
+ * Function:  add_obj
  *
- * Purpose:	Add an object to heap
+ * Purpose:   Add an object to heap
  *
  * Note:        The following fields in the 'state' structure are set to
  *              the values expected _after_ any block created for the object:
@@ -354,11 +357,11 @@ op_memcpy(const void *obj, size_t obj_len, void *op_data)
  *              the current state, before any block has been created:
  *                      nobjs
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -462,15 +465,15 @@ error:
 } /* add_obj() */
 
 /*-------------------------------------------------------------------------
- * Function:	get_del_string
+ * Function:  get_del_string
  *
- * Purpose:	Return string describing the kind of deletion to perform
+ * Purpose:   Return string describing the kind of deletion to perform
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, June  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -498,14 +501,14 @@ get_del_string(const fheap_test_param_t *tparam)
 } /* get_del_string() */
 
 /*-------------------------------------------------------------------------
- * Function:	get_fill_size
+ * Function:    get_fill_size
  *
- * Purpose:	Retrieve the size of objects to "bulk" fill blocks with
+ * Purpose:     Retrieve the size of objects to "bulk" fill blocks with
  *
- * Return:	Size of object to pass down to "fill_heap" routine on
+ * Return:      Size of object to pass down to "fill_heap" routine on
  *              success/can't fail
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Thursday, July 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -529,15 +532,15 @@ get_fill_size(const fheap_test_param_t *tparam)
 } /* get_fill_size() */
 
 /*-------------------------------------------------------------------------
- * Function:	begin_test
+ * Function:  begin_test
  *
- * Purpose:	Perform common "test being" operations
+ * Purpose:   Perform common "test being" operations
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August  4, 2006
  *
  *-------------------------------------------------------------------------
@@ -576,14 +579,14 @@ begin_test(fheap_test_param_t *tparam, const char *base_desc, fheap_heap_ids_t *
 H5_GCC_DIAG_ON("format-nonliteral")
 
 /*-------------------------------------------------------------------------
- * Function:	reopen_file
+ * Function:  reopen_file
  *
- * Purpose:	Perform common "re-open" operations on file & heap for testing
+ * Purpose:   Perform common "re-open" operations on file & heap for testing
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -631,15 +634,15 @@ error:
 } /* end reopen_file() */
 
 /*-------------------------------------------------------------------------
- * Function:	open_heap
+ * Function:  open_heap
  *
- * Purpose:	Perform common "open" operations on file & heap for testing
+ * Purpose:   Perform common "open" operations on file & heap for testing
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August  4, 2006
  *
  *-------------------------------------------------------------------------
@@ -742,15 +745,15 @@ error:
 } /* end open_heap() */
 
 /*-------------------------------------------------------------------------
- * Function:	reopen_heap
+ * Function:  reopen_heap
  *
- * Purpose:	Perform common "re-open" operations on heap for testing
+ * Purpose:   Perform common "re-open" operations on heap for testing
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August  4, 2006
  *
  *-------------------------------------------------------------------------
@@ -778,14 +781,14 @@ error:
 } /* end reopen_heap() */
 
 /*-------------------------------------------------------------------------
- * Function:	close_heap
+ * Function:  close_heap
  *
- * Purpose:	Perform common "close" operations on file & heap for testing
+ * Purpose:   Perform common "close" operations on file & heap for testing
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August  4, 2006
  *
  *-------------------------------------------------------------------------
@@ -843,15 +846,15 @@ error:
 } /* end close_heap() */
 
 /*-------------------------------------------------------------------------
- * Function:	del_objs_half_refill
+ * Function:  del_objs_half_refill
  *
- * Purpose:	Remove half of objects from heap and refill
+ * Purpose:   Remove half of objects from heap and refill
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, June  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -935,15 +938,15 @@ error:
 } /* del_objs_half_refill() */
 
 /*-------------------------------------------------------------------------
- * Function:	del_objs
+ * Function:  del_objs
  *
- * Purpose:	Remove objects from heap
+ * Purpose:   Remove objects from heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, June  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -1016,9 +1019,9 @@ error:
 } /* del_objs() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_heap
+ * Function:  fill_heap
  *
- * Purpose:	Insert (small) objects to fill up the free space in a heap block
+ * Purpose:   Insert (small) objects to fill up the free space in a heap block
  *
  * Note:        The following fields in the 'state' structure are set to
  *              the values expected _after_ the block has been created:
@@ -1030,11 +1033,11 @@ error:
  *              the current state, before the block has been created:
  *                      nobjs
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March  7, 2006
  *
  *-------------------------------------------------------------------------
@@ -1226,15 +1229,15 @@ error:
 } /* fill_heap() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_root_row
+ * Function:  fill_root_row
  *
- * Purpose:	Fill up a row of direct blocks in the root indirect block
+ * Purpose:   Fill up a row of direct blocks in the root indirect block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1322,15 +1325,15 @@ error:
 } /* fill_root_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_partial row
+ * Function:  fill_partial row
  *
- * Purpose:	Fill up part of a row of direct blocks in an non-root indirect block
+ * Purpose:   Fill up part of a row of direct blocks in an non-root indirect block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, July 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -1367,15 +1370,15 @@ error:
 } /* fill_partial_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_row
+ * Function:  fill_row
  *
- * Purpose:	Fill up entire row of direct blocks in an non-root indirect block
+ * Purpose:   Fill up entire row of direct blocks in an non-root indirect block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1399,18 +1402,18 @@ error:
 } /* fill_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_root_direct
+ * Function:  fill_root_direct
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in the root indirect block
  *              (Generally used to create & fill up direct blocks in a new
  *              indirect block)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April  3, 2006
  *
  *-------------------------------------------------------------------------
@@ -1438,17 +1441,17 @@ error:
 } /* fill_root_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_2nd_indirect
+ * Function:  fill_2nd_indirect
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in a second-level indirect block (which only has
  *              direct blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1477,16 +1480,16 @@ error:
 } /* fill_2nd_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_all_direct
+ * Function:  fill_all_direct
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks up to the maximum direct block size
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1514,17 +1517,17 @@ error:
 } /* fill_all_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_2nd_indirect_row
+ * Function:  fill_2nd_indirect_row
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in a row of second-level indirect block (which only
  *              have direct blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1552,17 +1555,17 @@ error:
 } /* fill_2nd_direct_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_all_2nd_indirect_rows
+ * Function:  fill_all_2nd_indirect_rows
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in all rows of second-level indirect blocks (which only
  *              have direct blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1589,17 +1592,17 @@ error:
 } /* fill_2nd_direct_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_3rd_indirect
+ * Function:  fill_3rd_indirect
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in a third-level indirect block (which
  *              has one more level of indirect blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -1627,17 +1630,17 @@ error:
 } /* fill_3rd_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_3rd_indirect_row
+ * Function:  fill_3rd_indirect_row
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in a row of third-level indirect block (which
  *              have one more level of indirect blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1666,17 +1669,17 @@ error:
 } /* fill_3rd_direct_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_all_3rd_indirect_rows
+ * Function:  fill_all_3rd_indirect_rows
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in all rows of third-level indirect blocks (which
  *              have one more level of indirect blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1704,17 +1707,17 @@ error:
 } /* fill_all_3rd_direct_rows() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_4th_indirect_row
+ * Function:  fill_4th_indirect_row
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in a row of fourth-level indirect blocks (which
  *              have two more levels of indirect blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1753,17 +1756,17 @@ error:
 } /* fill_4th_direct_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	fill_all_4th_indirect_rows
+ * Function:  fill_all_4th_indirect_rows
  *
- * Purpose:	Insert (small) objects to fill up the free space in all direct
+ * Purpose:   Insert (small) objects to fill up the free space in all direct
  *              heap blocks in all rows of fourth-level indirect blocks (which
  *              have two more levels of indirect blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -1809,14 +1812,14 @@ error:
 } /* fill_all_4th_direct_rows() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_create
+ * Function:  test_create
  *
- * Purpose:	Create fractal heap
+ * Purpose:   Create fractal heap
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, February 24, 2006
  *
  *-------------------------------------------------------------------------
@@ -1928,14 +1931,14 @@ error:
 } /* test_create() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_reopen
+ * Function:  test_reopen
  *
- * Purpose:	Create & reopen a fractal heap
+ * Purpose:   Create & reopen a fractal heap
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -2081,14 +2084,14 @@ error:
 } /* test_reopen() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_open_twice
+ * Function:  test_open_twice
  *
- * Purpose:	Open a fractal heap twice
+ * Purpose:   Open a fractal heap twice
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -2259,14 +2262,14 @@ error:
 } /* test_open_twice() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_delete_open
+ * Function:  test_delete_open
  *
- * Purpose:	Delete opened fractal heap (& open deleted heap)
+ * Purpose:   Delete opened fractal heap (& open deleted heap)
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, January  5, 2007
  *
  *-------------------------------------------------------------------------
@@ -2431,14 +2434,14 @@ error:
 } /* test_delete_open() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_id_limits
+ * Function:  test_id_limits
  *
- * Purpose:	Test limits for heap ID lengths
+ * Purpose:   Test limits for heap ID lengths
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, August 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -2763,14 +2766,14 @@ error:
 } /* test_id_limits() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_filtered_create
+ * Function:  test_filtered_create
  *
- * Purpose:	Test creating a heap with I/O filters
+ * Purpose:   Test creating a heap with I/O filters
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, August 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -2885,14 +2888,14 @@ error:
 } /* test_filtered_create() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_size
+ * Function:  test_size
  *
- * Purpose:	Test querying heap size
+ * Purpose:   Test querying heap size
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, August 14, 2007
  *
  *-------------------------------------------------------------------------
@@ -3158,17 +3161,15 @@ error:
     return (1);
 } /* test_reopen_hdr() */
 
-#ifndef QAK2
-
 /*-------------------------------------------------------------------------
- * Function:	test_man_insert_weird
+ * Function:  test_man_insert_weird
  *
- * Purpose:	Test inserting "weird" sized objects into absolute heap
+ * Purpose:   Test inserting "weird" sized objects into absolute heap
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -3272,15 +3273,15 @@ error:
 #ifdef ALL_INSERT_TESTS
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_insert_first
+ * Function:  test_man_insert_first
  *
- * Purpose:	Test inserting first object into absolute heap
+ * Purpose:   Test inserting first object into absolute heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, February 24, 2006
  *
  *-------------------------------------------------------------------------
@@ -3373,15 +3374,15 @@ error:
 } /* test_man_insert_first() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_insert_second
+ * Function:  test_man_insert_second
  *
- * Purpose:	Test inserting two objects into absolute heap
+ * Purpose:   Test inserting two objects into absolute heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -3468,16 +3469,16 @@ error:
 } /* test_man_insert_second() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_insert_root_mult
+ * Function:  test_man_insert_root_mult
  *
- * Purpose:	Test inserting mult. objects into absolute heap, up to the
+ * Purpose:   Test inserting mult. objects into absolute heap, up to the
  *              limit of a root direct block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -3566,17 +3567,17 @@ error:
 } /* test_man_insert_root_mult() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_insert_force_indirect
+ * Function:  test_man_insert_force_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, filling the
+ * Purpose:   Test inserting mult. objects into absolute heap, filling the
  *              root direct block and forcing the root block to be converted
  *              into an indirect block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -3672,17 +3673,17 @@ error:
 } /* test_man_insert_force_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_insert_fill_second
+ * Function:  test_man_insert_fill_second
  *
- * Purpose:	Test inserting mult. objects into absolute heap, filling the
+ * Purpose:   Test inserting mult. objects into absolute heap, filling the
  *              root direct block, forcing the root block to be converted
  *              into an indirect block and filling the secnod indirect block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March  7, 2006
  *
  *-------------------------------------------------------------------------
@@ -3778,18 +3779,18 @@ error:
 } /* test_man_insert_fill_second() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_insert_third_direct
+ * Function:  test_man_insert_third_direct
  *
- * Purpose:	Test inserting mult. objects into absolute heap, filling the
+ * Purpose:   Test inserting mult. objects into absolute heap, filling the
  *              root direct block, forcing the root block to be converted
  *              into an indirect block, filling the secnod indirect block and
  *              creating a third direct block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March  7, 2006
  *
  *-------------------------------------------------------------------------
@@ -3890,17 +3891,17 @@ error:
 } /* test_man_insert_third_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_first_row
+ * Function:  test_man_fill_first_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill first row of root indirect
  *              block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 13, 2006
  *
  *-------------------------------------------------------------------------
@@ -3986,17 +3987,17 @@ error:
 } /* test_man_fill_first_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_start_second_row
+ * Function:  test_man_start_second_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill first row of root indirect
  *              block, then add another object to start second row.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -4089,17 +4090,17 @@ error:
 } /* test_man_start_second_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_second_row
+ * Function:  test_man_fill_second_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill first row of root indirect
  *              block, then fill the second row also.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -4189,18 +4190,18 @@ error:
 } /* test_man_fill_second_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_start_third_row
+ * Function:  test_man_start_third_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill first row of root indirect
  *              block, fill the second row also, then add another object to
  *              start the third row.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 20, 2006
  *
  *-------------------------------------------------------------------------
@@ -4300,17 +4301,17 @@ error:
 } /* test_man_start_third_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_fourth_row
+ * Function:  test_man_fill_fourth_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill first four rows of root indirect
  *              block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 20, 2006
  *
  *-------------------------------------------------------------------------
@@ -4398,17 +4399,17 @@ error:
 } /* test_man_fill_fourth_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_all_root_direct
+ * Function:  test_man_fill_all_root_direct
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 20, 2006
  *
  *-------------------------------------------------------------------------
@@ -4494,17 +4495,17 @@ error:
 } /* test_man_fill_all_root_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_first_recursive_indirect
+ * Function:  test_man_first_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block and create first recursive indirect block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 20, 2006
  *
  *-------------------------------------------------------------------------
@@ -4595,18 +4596,18 @@ error:
 } /* test_man_first_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_second_direct_recursive_indirect
+ * Function:  test_man_second_direct_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, create first recursive indirect block and start second
  *              direct block in that indirect block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 21, 2006
  *
  *-------------------------------------------------------------------------
@@ -4705,18 +4706,18 @@ error:
 } /* test_man_second_direct_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_first_recursive_indirect
+ * Function:  test_man_fill_first_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, create first recursive indirect block and filling all
  *              direct blocks in that indirect block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 21, 2006
  *
  *-------------------------------------------------------------------------
@@ -4807,19 +4808,19 @@ error:
 } /* test_man_fill_first_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_second_recursive_indirect
+ * Function:  test_man_second_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, create first recursive indirect block, filling all
  *              direct blocks in that indirect block and adding another
  *              object to force creation of second recursive indirect block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 21, 2006
  *
  *-------------------------------------------------------------------------
@@ -4917,20 +4918,20 @@ error:
 } /* test_man_second_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_second_recursive_indirect
+ * Function:  test_man_fill_second_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, create first recursive indirect block, filling all
  *              direct blocks in that indirect block and then create second
  *              recursive indirect block and fill all direct blocks in that
  *              indirect block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 21, 2006
  *
  *-------------------------------------------------------------------------
@@ -5025,20 +5026,20 @@ error:
 } /* test_man_fill_second_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_recursive_indirect_row
+ * Function:  test_man_fill_recursive_indirect_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, create first recursive indirect block, filling all
  *              direct blocks in that indirect block and then create second
  *              recursive indirect block and fill all direct blocks in that
  *              indirect block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 21, 2006
  *
  *-------------------------------------------------------------------------
@@ -5125,18 +5126,18 @@ error:
 } /* test_man_fill_recursive_indirect_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_start_2nd_recursive_indirect
+ * Function:  test_man_start_2nd_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the first row of indirect
  *              blocks and start on first block in second row of indirect blocks
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -5234,18 +5235,18 @@ error:
 } /* test_man_start_2nd_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_recursive_indirect_two_deep
+ * Function:  test_man_recursive_indirect_two_deep
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -5336,19 +5337,19 @@ error:
 } /* test_man_recursive_indirect_two_deep() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_start_3rd_recursive_indirect
+ * Function:  test_man_start_3rd_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep and start first direct block
  *              in 3rd level of indirect blocks
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -5446,19 +5447,19 @@ error:
 } /* test_man_start_3rd_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_first_3rd_recursive_indirect
+ * Function:  test_man_fill_first_3rd_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep and fill first indirect block
  *              in 3rd level of indirect blocks
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -5557,19 +5558,19 @@ error:
 } /* test_man_fill_first_3rd_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_3rd_recursive_indirect_row
+ * Function:  test_man_fill_3rd_recursive_indirect_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep and fill all indirect blocks
  *              first row of 3rd level of indirect blocks
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -5665,19 +5666,19 @@ error:
 } /* test_man_fill_3rd_recursive_indirect_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_all_3rd_recursive_indirect
+ * Function:  test_man_fill_all_3rd_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep and fill all indirect blocks
  *              that are three levels deep
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -5773,20 +5774,20 @@ error:
 } /* test_man_fill_all_3rd_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_start_4th_recursive_indirect
+ * Function:  test_man_start_4th_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep, fill all indirect blocks
  *              that are three levels deep and start first direct block that
  *              is four levels deep
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -5888,20 +5889,20 @@ error:
 } /* test_man_start_4th_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_first_4th_recursive_indirect
+ * Function:  test_man_fill_first_4th_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep, fill all indirect blocks
  *              that are three levels deep and fill the first (3rd level)
  *              indirect block that is four levels deep
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -6009,20 +6010,20 @@ error:
 } /* test_man_fill_first_4th_recursive_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_4th_recursive_indirect_row
+ * Function:  test_man_fill_4th_recursive_indirect_row
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep, fill all indirect blocks
  *              that are three levels deep and fill the first row of
  *              indirect block that is four levels deep
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -6121,20 +6122,20 @@ error:
 } /* test_man_fill_4th_recursive_indirect_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_all_4th_recursive_indirect
+ * Function:  test_man_fill_all_4th_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep, fill all indirect blocks
  *              that are three levels deep and fill all rows of
  *              indirect blocks that are four levels deep
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -6233,12 +6234,10 @@ error:
 } /* test_man_fill_all_4th_recursive_indirect() */
 #endif /* ALL_INSERT_TESTS */
 
-#ifndef QAK
-
 /*-------------------------------------------------------------------------
- * Function:	test_man_start_5th_recursive_indirect
+ * Function:  test_man_start_5th_recursive_indirect
  *
- * Purpose:	Test inserting mult. objects into absolute heap, creating
+ * Purpose:   Test inserting mult. objects into absolute heap, creating
  *              enough direct blocks to fill all direct rows of root indirect
  *              block, fill all direct blocks in the row of indirect
  *              blocks that are 2 levels deep, fill all indirect blocks
@@ -6246,11 +6245,11 @@ error:
  *              that are four levels deep and start first direct block in
  *              indirect blocks five levels deep
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -6367,20 +6366,17 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_man_start_5th_recursive_indirect() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_bogus
+ * Function:  test_man_remove_bogus
  *
- * Purpose:	Test removing bogus heap IDs
+ * Purpose:   Test removing bogus heap IDs
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, May 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -6446,10 +6442,10 @@ test_man_remove_bogus(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpa
 
     /* Choose random # seed */
     seed = (unsigned long)HDtime(NULL);
-#ifdef QAK
-    /* seed = (unsigned long)1155438845; */
-    HDfprintf(stderr, "Random # seed was: %lu\n", seed);
-#endif /* QAK */
+#if 0
+/* seed = (unsigned long)1155438845; */
+HDfprintf(stderr, "Random # seed was: %lu\n", seed);
+#endif
     HDsrandom((unsigned)seed);
 
     /* Set heap ID to random (non-null) value */
@@ -6523,15 +6519,15 @@ error:
 } /* test_man_remove_bogus() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_one
+ * Function:  test_man_remove_one
  *
- * Purpose:	Test removing single object from heap
+ * Purpose:   Test removing single object from heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, May 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -6687,15 +6683,15 @@ error:
 } /* test_man_remove_one() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_two
+ * Function:  test_man_remove_two
  *
- * Purpose:	Test removing two objects from heap
+ * Purpose:   Test removing two objects from heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, May 22, 2006
  *
  *-------------------------------------------------------------------------
@@ -6880,16 +6876,16 @@ error:
 } /* test_man_remove_two() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_one_larger
+ * Function:  test_man_remove_one_larger
  *
- * Purpose:	Test removing single larger (but < standalone size) object
+ * Purpose:   Test removing single larger (but < standalone size) object
  *              from heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, June  6, 2006
  *
  *-------------------------------------------------------------------------
@@ -7049,16 +7045,16 @@ error:
 } /* test_man_remove_one_larger() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_two_larger
+ * Function:  test_man_remove_two_larger
  *
- * Purpose:	Test removing two larger (but < standalone size) objects
+ * Purpose:   Test removing two larger (but < standalone size) objects
  *              from heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Saturday, June 10, 2006
  *
  *-------------------------------------------------------------------------
@@ -7268,11 +7264,7 @@ test_man_remove_two_larger(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
 
-        /* Verify the file is correct size */
-#ifdef QAK
-    HDfprintf(stderr, "empty_size = %lu\n", (unsigned long)empty_size);
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
+    /* Verify the file is correct size */
     if (file_size != empty_size)
         TEST_ERROR
 
@@ -7293,16 +7285,16 @@ error:
 } /* test_man_remove_two_larger() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_three_larger
+ * Function:  test_man_remove_three_larger
  *
- * Purpose:	Test removing three larger (but < standalone size) objects
+ * Purpose:   Test removing three larger (but < standalone size) objects
  *              from heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, June 12, 2006
  *
  *-------------------------------------------------------------------------
@@ -7572,11 +7564,7 @@ test_man_remove_three_larger(hid_t fapl, H5HF_create_t *cparam, fheap_test_param
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
 
-        /* Verify the file is correct size */
-#ifdef QAK
-    HDfprintf(stderr, "empty_size = %lu\n", (unsigned long)empty_size);
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
+    /* Verify the file is correct size */
     if (file_size != empty_size)
         TEST_ERROR
 
@@ -7597,14 +7585,14 @@ error:
 } /* test_man_remove_three_larger() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_incr_insert_remove
+ * Function:  test_man_incr_insert_remove
  *
- * Purpose:	Test incremental insert & removal of objects in heap
+ * Purpose:   Test incremental insert & removal of objects in heap
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Sunday, April 1, 2012
  *
  *-------------------------------------------------------------------------
@@ -7723,21 +7711,18 @@ error:
 
     return 1;
 } /* test_man_incr_insert_remove() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_root_direct
+ * Function:  test_man_remove_root_direct
  *
- * Purpose:	Test filling and removing all objects from root direct block in
+ * Purpose:   Test filling and removing all objects from root direct block in
  *              heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, May 22, 2006
  *
  *-------------------------------------------------------------------------
@@ -7754,8 +7739,8 @@ test_man_remove_root_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from root direct block of absolute heap %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "removing all objects from root direct block of absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -7801,16 +7786,16 @@ error:
 } /* test_man_remove_root_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_two_direct
+ * Function:  test_man_remove_two_direct
  *
- * Purpose:	Test filling and removing all objects from (first) two direct
+ * Purpose:   Test filling and removing all objects from (first) two direct
  *              blocks in heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, May 22, 2006
  *
  *-------------------------------------------------------------------------
@@ -7827,8 +7812,8 @@ test_man_remove_two_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from two direct blocks of absolute heap %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "removing all objects from two direct blocks of absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -7889,16 +7874,16 @@ error:
 } /* test_man_remove_two_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_first_row
+ * Function:  test_man_remove_first_row
  *
- * Purpose:	Test filling and removing all objects from first row of direct
+ * Purpose:   Test filling and removing all objects from first row of direct
  *              blocks in heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, June  5, 2006
  *
  *-------------------------------------------------------------------------
@@ -7915,8 +7900,8 @@ test_man_remove_first_row(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t 
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from first row of direct blocks of absolute heap %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "removing all objects from first row of direct blocks of absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -7959,16 +7944,16 @@ error:
 } /* test_man_remove_first_row() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_first_two_rows
+ * Function:  test_man_remove_first_two_rows
  *
- * Purpose:	Test filling and removing all objects from first two rows of
+ * Purpose:   Test filling and removing all objects from first two rows of
  *              direct blocks in heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, June 12, 2006
  *
  *-------------------------------------------------------------------------
@@ -7985,9 +7970,8 @@ test_man_remove_first_two_rows(hid_t fapl, H5HF_create_t *cparam, fheap_test_par
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from first two rows of direct blocks of absolute heap %s"; /* Test description
-                                                                                          */
+    /* Test description */
+    const char *base_desc = "removing all objects from first two rows of direct blocks of absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -8032,16 +8016,16 @@ error:
 } /* test_man_remove_first_two_rows() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_first_four_rows
+ * Function:  test_man_remove_first_four_rows
  *
- * Purpose:	Test filling and removing all objects from first four rows of
+ * Purpose:   Test filling and removing all objects from first four rows of
  *              direct blocks in heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, June 13, 2006
  *
  *-------------------------------------------------------------------------
@@ -8058,9 +8042,8 @@ test_man_remove_first_four_rows(hid_t fapl, H5HF_create_t *cparam, fheap_test_pa
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from first four rows of direct blocks of absolute heap %s"; /* Test description
-                                                                                           */
+    /* Test description */
+    const char *base_desc = "removing all objects from first four rows of direct blocks of absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -8109,16 +8092,16 @@ error:
 } /* test_man_remove_first_four_rows() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_all_root_direct
+ * Function:  test_man_remove_all_root_direct
  *
- * Purpose:	Test filling and removing all objects from all direct blocks
+ * Purpose:   Test filling and removing all objects from all direct blocks
  *              in root indirect block of heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, June 13, 2006
  *
  *-------------------------------------------------------------------------
@@ -8135,9 +8118,8 @@ test_man_remove_all_root_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_pa
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from all direct blocks of root group in absolute heap %s"; /* Test description
-                                                                                          */
+    /* Test description */
+    const char *base_desc = "removing all objects from all direct blocks of root group in absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -8180,16 +8162,16 @@ error:
 } /* test_man_remove_all_root_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_2nd_indirect
+ * Function:  test_man_remove_2nd_indirect
  *
- * Purpose:	Test filling and removing all objects up to 2nd level indirect
+ * Purpose:   Test filling and removing all objects up to 2nd level indirect
  *              blocks of heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, June 13, 2006
  *
  *-------------------------------------------------------------------------
@@ -8206,8 +8188,8 @@ test_man_remove_2nd_indirect(hid_t fapl, H5HF_create_t *cparam, fheap_test_param
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from 2nd level indirect blocks of absolute heap %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "removing all objects from 2nd level indirect blocks of absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -8254,16 +8236,16 @@ error:
 } /* test_man_remove_2nd_indirect() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_remove_3rd_indirect
+ * Function:  test_man_remove_3rd_indirect
  *
- * Purpose:	Test filling and removing all objects up to 3rd level indirect
+ * Purpose:   Test filling and removing all objects up to 3rd level indirect
  *              blocks of heap
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, July 24, 2006
  *
  *-------------------------------------------------------------------------
@@ -8280,8 +8262,8 @@ test_man_remove_3rd_indirect(hid_t fapl, H5HF_create_t *cparam, fheap_test_param
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "removing all objects from 3rd level indirect blocks of absolute heap %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "removing all objects from 3rd level indirect blocks of absolute heap %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -8330,24 +8312,21 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_man_remove_3rd_indirect() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_skip_start_block
+ * Function:  test_man_skip_start_block
  *
- * Purpose:	Test inserting object into absolute heap which is too large
+ * Purpose:   Test inserting object into absolute heap which is too large
  *              for starting block size, which forces root indirect block
  *              creation
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, March 27, 2006
  *
  *-------------------------------------------------------------------------
@@ -8364,9 +8343,9 @@ test_man_skip_start_block(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t 
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             obj_size;                     /* Size of object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "inserting object that is too large for starting block, then remove all objects %s"; /* Test
-                                                                                                description */
+    /* Test description */
+    const char *base_desc =
+        "inserting object that is too large for starting block, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -8416,17 +8395,17 @@ error:
 } /* test_man_skip_start_block() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_skip_start_block_add_back
+ * Function:  test_man_skip_start_block_add_back
  *
- * Purpose:	Test inserting object into absolute heap which is too large
+ * Purpose:   Test inserting object into absolute heap which is too large
  *              for starting block size, which forces root indirect block
  *              creation, then add object which fits in skipped direct block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 28, 2006
  *
  *-------------------------------------------------------------------------
@@ -8443,10 +8422,9 @@ test_man_skip_start_block_add_back(hid_t fapl, H5HF_create_t *cparam, fheap_test
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             obj_size;                     /* Size of object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "skipping starting block, then adding object back to first block, then remove all objects %s"; /* Test
-                                                                                                          description
-                                                                                                        */
+    /* Test description */
+    const char *base_desc =
+        "skipping starting block, then adding object back to first block, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -8515,18 +8493,18 @@ error:
 } /* test_man_skip_start_block_add_back() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_skip_start_block_add_skipped
+ * Function:  test_man_skip_start_block_add_skipped
  *
- * Purpose:	Test inserting object into absolute heap which is too large
+ * Purpose:   Test inserting object into absolute heap which is too large
  *              for starting block size, which forces root indirect block
  *              creation, then add objects to fill skipped direct blocks
  *              and add another object to start on next "normal" block
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, March 28, 2006
  *
  *-------------------------------------------------------------------------
@@ -8544,8 +8522,9 @@ test_man_skip_start_block_add_skipped(hid_t fapl, H5HF_create_t *cparam, fheap_t
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *base_desc = "skipping starting block, then adding objects to backfill and extend, then "
-                            "remove all objects %s"; /* Test description */
+    /* Test description */
+    const char *base_desc =
+        "skipping starting block, then adding objects to backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -8624,18 +8603,18 @@ error:
 } /* test_man_skip_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_skip_2nd_block
+ * Function:  test_man_skip_2nd_block
  *
- * Purpose:	Test inserting object into absolute heap which is small
+ * Purpose:   Test inserting object into absolute heap which is small
  *              enough for starting block size, then add object too large
  *              for any blocks in first row of direct blocks, to force
  *              early creation of indirect block (and range of skipped blocks)
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Saturday, April  1, 2006
  *
  *-------------------------------------------------------------------------
@@ -8652,8 +8631,9 @@ test_man_skip_2nd_block(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *t
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             obj_size;                     /* Size of object */
     fheap_heap_state_t state;                        /* State of fractal heap */
+    /* Test description */
     const char *base_desc = "insert object to initial block, then add object too large for starting direct "
-                            "blocks, then remove all objects %s"; /* Test description */
+                            "blocks, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -8717,9 +8697,9 @@ error:
 } /* test_man_skip_2nd_block() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_skip_2nd_block_add_skipped
+ * Function:  test_man_skip_2nd_block_add_skipped
  *
- * Purpose:	Test inserting object into absolute heap which is small
+ * Purpose:   Test inserting object into absolute heap which is small
  *              enough for starting block size, then add object too large
  *              for any blocks in first row of direct blocks, to force
  *              early creation of indirect block (and range of skipped blocks).
@@ -8727,11 +8707,11 @@ error:
  *              block and all the skipped blocks, and one more object (to
  *              start next "normal" block).
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Saturday, April  1, 2006
  *
  *-------------------------------------------------------------------------
@@ -8749,10 +8729,10 @@ test_man_skip_2nd_block_add_skipped(hid_t fapl, H5HF_create_t *cparam, fheap_tes
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "insert object to initial block, then add object too large for starting direct blocks, then backfill "
-        "and extend, then remove all objects %s"; /* Test description */
-    unsigned v;                                   /* Local index variables */
+    unsigned           v;                            /* Local index variables */
+    /* Test description */
+    const char *base_desc = "insert object to initial block, then add object too large for starting direct "
+                            "blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -8860,9 +8840,9 @@ error:
 } /* test_man_skip_2nd_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_one_partial_skip_2nd_block_add_skipped
+ * Function:  test_man_fill_one_partial_skip_2nd_block_add_skipped
  *
- * Purpose:	Test filling initial direct block, then add object small enough
+ * Purpose:   Test filling initial direct block, then add object small enough
  *              for initial block size (to create root indirect block), then
  *              add object too large for any blocks in first three rows of
  *              direct blocks, to force extension of indirect block (and range
@@ -8872,11 +8852,11 @@ error:
  *              block and all the skipped blocks, and one more object (to
  *              start next "normal" block).
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April  3, 2006
  *
  *-------------------------------------------------------------------------
@@ -8895,11 +8875,10 @@ test_man_fill_one_partial_skip_2nd_block_add_skipped(hid_t fapl, H5HF_create_t *
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "skipping blocks with indirect root, then backfill and extend, then remove all objects %s"; /* Test
-                                                                                                       description
-                                                                                                     */
-    unsigned u; /* Local index variable */
+    unsigned           u;                            /* Local index variable */
+    /* Test description */
+    const char *base_desc =
+        "skipping blocks with indirect root, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -9029,9 +9008,9 @@ error:
 } /* test_man_fill_one_partial_skip_2nd_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_row_skip_add_skipped
+ * Function:  test_man_fill_row_skip_add_skipped
  *
- * Purpose:	Test filling first row of direct blocks, then
+ * Purpose:   Test filling first row of direct blocks, then
  *              add object too large for any blocks in first three rows of
  *              direct blocks, to force extension of indirect block (and range
  *              of skipped blocks).
@@ -9040,11 +9019,11 @@ error:
  *              block and all the skipped blocks, and one more object (to
  *              start next "normal" block).
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, May 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -9062,10 +9041,9 @@ test_man_fill_row_skip_add_skipped(hid_t fapl, H5HF_create_t *cparam, fheap_test
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "filling first row, then skipping rows, then backfill and extend, then remove all objects %s"; /* Test
-                                                                                                          description
-                                                                                                        */
+    /* Test description */
+    const char *base_desc =
+        "filling first row, then skipping rows, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -9160,19 +9138,19 @@ error:
 } /* test_man_fill_row_skip_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_skip_direct_skip_indirect_two_rows_add_skipped
+ * Function:  test_man_skip_direct_skip_indirect_two_rows_add_skipped
  *
- * Purpose:	Test adding object too large for all but the last row in the
+ * Purpose:   Test adding object too large for all but the last row in the
  *              direct blocks in root indirect block, then
  *              add object too large for initial block in first two rows of
  *              indirect blocks, to force extension of non-root
  *              indirect block (and range of skipped blocks).
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Saturday, April 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -9192,10 +9170,10 @@ test_man_skip_direct_skip_indirect_two_rows_add_skipped(hid_t fapl, H5HF_create_
     h5_stat_size_t     empty_size;      /* Size of a file with an empty heap */
     size_t             obj_size;        /* Size of object */
     fheap_heap_state_t state;           /* State of fractal heap */
-    const char *       base_desc =
-        "skipping direct blocks to last row and skipping two rows of root indirect block, then backfill and "
-        "extend, then remove all objects %s"; /* Test description */
-    unsigned v;                               /* Local index variables */
+    unsigned           v;               /* Local index variables */
+    /* Test description */
+    const char *base_desc = "skipping direct blocks to last row and skipping two rows of root indirect "
+                            "block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -9289,18 +9267,18 @@ error:
 } /* test_man_skip_direct_skip_indirect_two_rows_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_direct_skip_indirect_start_block_add_skipped
+ * Function:  test_man_fill_direct_skip_indirect_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block, then
+ * Purpose:   Test filling all direct blocks in root indirect block, then
  *              add object too large for initial block in first row of direct
  *              blocks in indirect block, to force extension of non-root
  *              indirect block (and range of skipped blocks).
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April  3, 2006
  *
  *-------------------------------------------------------------------------
@@ -9319,8 +9297,9 @@ test_man_fill_direct_skip_indirect_start_block_add_skipped(hid_t fapl, H5HF_crea
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
+    /* Test description */
     const char *base_desc = "filling direct blocks and skipping blocks in non-root indirect block, then "
-                            "backfill and extend, then remove all objects %s"; /* Test description */
+                            "backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -9412,19 +9391,19 @@ error:
 } /* test_man_fill_direct_skip_indirect_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_direct_skip_2nd_indirect_start_block_add_skipped
+ * Function:  test_man_fill_direct_skip_2nd_indirect_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block, then
+ * Purpose:   Test filling all direct blocks in root indirect block, then
  *              add object too large for all direct blocks in first row of
  *              indirect blocks, to force skipping a row of indirect blocks
  *              (and range of skipped blocks), then backfill all direct blocks
  *              skipped and extend to next "normal" direct block.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April  3, 2006
  *
  *-------------------------------------------------------------------------
@@ -9446,9 +9425,10 @@ test_man_fill_direct_skip_2nd_indirect_start_block_add_skipped(hid_t fapl, H5HF_
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc = "filling direct blocks and skipping row of non-root indirect blocks, then "
-                            "backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u;                                                                /* Local index variable */
+    unsigned           u;          /* Local index variable */
+    /* Test description */
+    const char *base_desc = "filling direct blocks and skipping row of non-root indirect blocks, then "
+                            "backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -9542,20 +9522,20 @@ error:
 } /* test_man_fill_direct_skip_2nd_indirect_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_2nd_direct_less_one_wrap_start_block_add_skipped
+ * Function:  test_man_fill_2nd_direct_less_one_wrap_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, except the last
  *              one, then insert object insert object that is too large to
  *              hold in row of 2nd level indirect blocks (forcing the use of
  *              the next row of 2nd level blocks), then backfill all skipped
  *              direct blocks & extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -9576,12 +9556,11 @@ test_man_fill_2nd_direct_less_one_wrap_start_block_add_skipped(hid_t fapl, H5HF_
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u;          /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, except last one, and insert object too "
-        "large for 2nd level indirect blocks, then backfill and extend, then remove all objects %s"; /* Test
-                                                                                                        description
-                                                                                                      */
-    unsigned u; /* Local index variables */
+        "large for 2nd level indirect blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -9617,9 +9596,6 @@ test_man_fill_2nd_direct_less_one_wrap_start_block_add_skipped(hid_t fapl, H5HF_
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -9689,9 +9665,9 @@ error:
 } /* test_man_fill_2nd_direct_less_one_wrap_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_direct_skip_2nd_indirect_skip_2nd_block_add_skipped
+ * Function:  test_man_fill_direct_skip_2nd_indirect_skip_2nd_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block, then
+ * Purpose:   Test filling all direct blocks in root indirect block, then
  *              add object too large for all direct blocks in first row of
  *              indirect blocks, to force skipping a row of indirect blocks
  *              (and range of skipped blocks), then add object that is too
@@ -9701,11 +9677,11 @@ error:
  *              too large for initial block size in skipped indirect block
  *              row's direct blocks).
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -9727,10 +9703,10 @@ test_man_fill_direct_skip_2nd_indirect_skip_2nd_block_add_skipped(hid_t fapl, H5
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
-        "filling direct blocks and skipping row of non-root indirect blocks, then skip row of direct blocks, "
-        "then backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u;                                                 /* Local index variable */
+    unsigned           u;          /* Local index variable */
+    /* Test description */
+    const char *base_desc = "filling direct blocks and skipping row of non-root indirect blocks, then skip "
+                            "row of direct blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -9756,9 +9732,6 @@ test_man_fill_direct_skip_2nd_indirect_skip_2nd_block_add_skipped(hid_t fapl, H5
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -9778,9 +9751,6 @@ test_man_fill_direct_skip_2nd_indirect_skip_2nd_block_add_skipped(hid_t fapl, H5
 
     /* Insert object too large for initial block size in skipped indirect blocks */
     obj_size = (size_t)DBLOCK_SIZE(fh, 3) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, 4);
     if (add_obj(fh, (size_t)10, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -9791,9 +9761,6 @@ test_man_fill_direct_skip_2nd_indirect_skip_2nd_block_add_skipped(hid_t fapl, H5
 
     /* Insert object to fill space in (medium) block just created */
     obj_size = (size_t)DBLOCK_FREE(fh, 4) - obj_size;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
 
@@ -9866,18 +9833,18 @@ error:
 } /* test_man_fill_direct_skip_2nd_indirect_skip_2nd_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_direct_skip_indirect_two_rows_add_skipped
+ * Function:  test_man_fill_direct_skip_indirect_two_rows_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block, then
+ * Purpose:   Test filling all direct blocks in root indirect block, then
  *              add object too large for initial block in first two rows of
  *              indirect blocks, to force extension of non-root
  *              indirect block (and range of skipped blocks).
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Saturday, April 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -9899,9 +9866,10 @@ test_man_fill_direct_skip_indirect_two_rows_add_skipped(hid_t fapl, H5HF_create_
     size_t             obj_size;        /* Size of object */
     size_t             fill_size;       /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;           /* State of fractal heap */
-    const char *       base_desc = "filling direct blocks and skipping two rows of root indirect block, then "
-                            "backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                                             /* Local index variables */
+    unsigned           u, v;            /* Local index variables */
+    /* Test description */
+    const char *base_desc = "filling direct blocks and skipping two rows of root indirect block, then "
+                            "backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -10019,20 +9987,20 @@ error:
 } /* test_man_fill_direct_skip_indirect_two_rows_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_direct_skip_indirect_two_rows_skip_indirect_row_add_skipped
+ * Function:  test_man_fill_direct_skip_indirect_two_rows_skip_indirect_row_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block, then
+ * Purpose:   Test filling all direct blocks in root indirect block, then
  *              add object too large for initial block in first two rows of
  *              indirect blocks, to force extension of non-root
  *              indirect block, then add object too large for first row of
  *              indirect blocks, (and ranges of skipped blocks), then backfill
  *              and extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, July 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -10054,10 +10022,11 @@ test_man_fill_direct_skip_indirect_two_rows_skip_indirect_row_add_skipped(hid_t 
     size_t             obj_size;        /* Size of object */
     size_t             fill_size;       /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;           /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u, v;            /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks and skipping two rows of root indirect block, skip one row of root indirect "
-        "block, then backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                                     /* Local index variables */
+        "block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -10203,19 +10172,19 @@ error:
 } /* test_man_fill_direct_skip_indirect_two_rows_skip_indirect_row_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_2nd_direct_skip_start_block_add_skipped
+ * Function:  test_man_fill_2nd_direct_skip_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, the insert object
  *              that is too large to hold in first row of direct blocks of
  *              3rd level indirect block, then backfill & extend all skipped
  *              3rd level indirect block's direct blocks.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -10234,10 +10203,10 @@ test_man_fill_2nd_direct_skip_start_block_add_skipped(hid_t fapl, H5HF_create_t 
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, and skip first rows of direct blocks of "
-        "3rd level indirect block, then backfill and extend, then remove all objects %s"; /* Test description
-                                                                                           */
+        "3rd level indirect block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -10332,9 +10301,9 @@ error:
 } /* test_man_fill_2nd_direct_skip_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_2nd_direct_skip_2nd_indirect_start_block_add_skipped
+ * Function:  test_man_fill_2nd_direct_skip_2nd_indirect_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks in 3rd level indirect block, then insert object
  *              that is too large to hold in first row of direct blocks of
@@ -10342,11 +10311,11 @@ error:
  *              backfill & extend all skipped 2nd level indirect block's direct
  *              blocks.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -10365,10 +10334,11 @@ test_man_fill_2nd_direct_skip_2nd_indirect_start_block_add_skipped(hid_t fapl, H
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
+                                                     /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect block's direct "
         "blocks, and skip first rows of direct blocks of 3rd level indirect block's 2nd level indirect "
-        "block, then backfill and extend, then remove all objects %s"; /* Test description */
+        "block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -10473,20 +10443,20 @@ error:
 } /* test_man_fill_2nd_direct_skip_2nd_indirect_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_block_add_skipped
+ * Function:  test_man_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks in 3rd level indirect block, then insert object
  *              that is too large to hold in first row of 2nd level indirect
  *              blocks of 3rd level indirect block, then backfill & extend all
  *              skipped direct blocks.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -10508,11 +10478,11 @@ test_man_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_block_add_skipped(h
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
-        "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect block's direct "
-        "blocks, and skip first row of indirect blocks of 3rd level indirect block, then backfill and "
-        "extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                            /* Local index variables */
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc = "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level "
+                            "indirect block's direct blocks, and skip first row of indirect blocks of 3rd "
+                            "level indirect block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -10554,9 +10524,6 @@ test_man_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_block_add_skipped(h
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -10628,21 +10595,21 @@ error:
 } /* test_man_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_2nd_direct_fill_direct_skip2_3rd_indirect_start_block_add_skipped
+ * Function:  test_man_fill_2nd_direct_fill_direct_skip2_3rd_indirect_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks in 3rd level indirect block, then insert object
  *              that is too large to hold in first & second rows of 2nd level
  *              indirect blocks (although this 3rd level indirect block only
  *              has one row of 2nd level indirect blocks) of 3rd level indirect
- *             block, then backfill & extend all skipped direct blocks.
+ *              block, then backfill & extend all skipped direct blocks.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, April 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -10664,11 +10631,11 @@ test_man_fill_2nd_direct_fill_direct_skip2_3rd_indirect_start_block_add_skipped(
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
-        "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect block's direct "
-        "blocks, and skip first two rows of indirect blocks of 3rd level indirect block, then backfill and "
-        "extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                            /* Local index variables */
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc = "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level "
+                            "indirect block's direct blocks, and skip first two rows of indirect blocks of "
+                            "3rd level indirect block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -10680,9 +10647,6 @@ test_man_fill_2nd_direct_fill_direct_skip2_3rd_indirect_start_block_add_skipped(
 
     /* Retrieve info about heap */
     num_first_indirect_rows = IBLOCK_MAX_DROWS(fh, 1);
-#ifdef QAK
-    HDfprintf(stderr, "num_first_indirect_rows = %u\n", num_first_indirect_rows);
-#endif /* QAK */
 
     /* Fill direct blocks in root indirect block */
     if (fill_root_direct(fh, fill_size, &state, &keep_ids))
@@ -10713,9 +10677,6 @@ test_man_fill_2nd_direct_fill_direct_skip2_3rd_indirect_start_block_add_skipped(
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows + 1);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -10726,9 +10687,6 @@ test_man_fill_2nd_direct_fill_direct_skip2_3rd_indirect_start_block_add_skipped(
 
     /* Insert object to fill space in (large) block created */
     obj_size = (size_t)DBLOCK_FREE(fh, num_first_indirect_rows + 1) - obj_size;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
 
@@ -10794,9 +10752,9 @@ error:
 } /* test_man_fill_2nd_direct_fill_direct_skip2_3rd_indirect_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_3rd_direct_less_one_fill_direct_wrap_start_block_add_skipped
+ * Function:  test_man_fill_3rd_direct_less_one_fill_direct_wrap_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, all 3rd level
  *              indirect blocks in first row except the last one, fill direct
  *              blocks in last 3rd level indirect block, then insert object
@@ -10805,11 +10763,11 @@ error:
  *              use of the next row of 3rd level blocks), then backfill all
  *              skipped direct blocks & extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tues, April 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -10830,12 +10788,12 @@ test_man_fill_3rd_direct_less_one_fill_direct_wrap_start_block_add_skipped(hid_t
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char
-        *base_desc = "filling direct blocks, filling 2nd level indirect blocks, filling first row of 3rd "
-                     "level indirect blocks, except last one, fill all direct blocks in last 3rd level "
-                     "indirect block, and insert object too large for it's 2nd level indirect blocks, then "
-                     "backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                                      /* Local index variables */
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc =
+        "filling direct blocks, filling 2nd level indirect blocks, filling first row of 3rd level indirect "
+        "blocks, except last one, fill all direct blocks in last 3rd level indirect block, and insert object "
+        "too large for it's 2nd level indirect blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -10887,9 +10845,6 @@ test_man_fill_3rd_direct_less_one_fill_direct_wrap_start_block_add_skipped(hid_t
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -10960,9 +10915,9 @@ error:
 } /* test_man_fill_3rd_direct_less_one_fill_direct_wrap_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_1st_row_3rd_direct_fill_2nd_direct_less_one_wrap_start_block_add_skipped
+ * Function:  test_man_fill_1st_row_3rd_direct_fill_2nd_direct_less_one_wrap_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, all 3rd level
  *              indirect blocks in first row, fill direct blocks in 2nd row 3rd
  *              level indirect block, fill all direct blocks in 1st row of
@@ -10972,11 +10927,11 @@ error:
  *              next row of 2nd level blocks), then backfill all skipped direct
  *              blocks & extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tues, April 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -10993,16 +10948,16 @@ test_man_fill_1st_row_3rd_direct_fill_2nd_direct_less_one_wrap_start_block_add_s
     fheap_heap_ids_t keep_ids;                     /* Structure to retain heap IDs */
     unsigned
                        num_first_indirect_rows; /* Number of rows (of direct blocks) in each of the first indirect blocks */
-    h5_stat_size_t     empty_size; /* Size of a file with an empty heap */
-    size_t             obj_size;   /* Size of object */
-    size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
-    fheap_heap_state_t state;      /* State of fractal heap */
+    h5_stat_size_t     empty_size;                    /* Size of a file with an empty heap */
+    size_t             obj_size;                      /* Size of object */
+    size_t             fill_size;                     /* Size of objects for "bulk" filled blocks */
+    fheap_heap_state_t state;                         /* State of fractal heap */
+    unsigned           u; /* Local index variables */ /* Test description */
     const char *       base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, filling first row of 3rd level indirect "
         "blocks, fill all direct blocks in next 3rd level indirect block, fill all 1st row of 2nd level "
         "indirect blocks, except last one, and insert object too large for 2nd level indirect block, then "
-        "backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u;                                            /* Local index variables */
+        "backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -11061,9 +11016,6 @@ test_man_fill_1st_row_3rd_direct_fill_2nd_direct_less_one_wrap_start_block_add_s
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -11133,9 +11085,9 @@ error:
 } /* test_man_fill_1st_row_3rd_direct_fill_2nd_direct_less_one_wrap_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_3rd_direct_fill_direct_skip_start_block_add_skipped
+ * Function:  test_man_fill_3rd_direct_fill_direct_skip_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks and indirect blocks in 3rd level indirect block, then
  *              fill all direct blocks in 4th level indirect block, then
@@ -11143,11 +11095,11 @@ error:
  *              level indirect blocks of 4th level indirect block, then
  *              backfill all skipped direct blocks & extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Saturday, April 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -11168,11 +11120,12 @@ test_man_fill_3rd_direct_fill_direct_skip_start_block_add_skipped(hid_t fapl, H5
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect blocks, fill "
         "4th level indirect block's direct blocks, and skip first row of 2nd indirect blocks of 4th level "
-        "indirect block, then backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                                              /* Local index variables */
+        "indirect block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -11222,9 +11175,6 @@ test_man_fill_3rd_direct_fill_direct_skip_start_block_add_skipped(hid_t fapl, H5
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -11296,9 +11246,9 @@ error:
 } /* test_man_fill_3rd_direct_fill_direct_skip_start_block_add_skipped() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_block_add_skipped
+ * Function:  test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks and indirect blocks in 3rd level indirect block, then
  *              fill all direct blocks and 2nd level indirect blocks in 4th
@@ -11308,11 +11258,11 @@ error:
  *              3rd level indirect block, then
  *              backfill all skipped direct blocks & extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 17, 2006
  *
  *-------------------------------------------------------------------------
@@ -11333,12 +11283,13 @@ test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_blo
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect blocks, fill "
         "4th level indirect block's direct, 2nd level indirect blocks and 3rd level direct block, and skip "
         "first row of 2nd indirect blocks of 4th level indirect block's 3rd level indirect block, then "
-        "backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                         /* Local index variables */
+        "backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -11404,9 +11355,6 @@ test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_start_blo
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -11481,7 +11429,7 @@ error:
  * Function:
  *test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_two_rows_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks and indirect blocks in 3rd level indirect block, fill all
  *              direct & indirect blocks in first row of 4th level indirect
@@ -11493,11 +11441,11 @@ error:
  *              3rd level indirect block (in 4th level indirect block), then
  *              backfill all skipped direct blocks & extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 17, 2006
  *
  *-------------------------------------------------------------------------
@@ -11518,13 +11466,14 @@ test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_two_rows_
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect blocks, fill "
         "first row of 4th level indirect blocks, fill 2nd row 4th level indirect block's direct, 2nd level "
         "indirect blocks, first row of 3rd level indirect blocks, 3rd level direct block in 2nd row, and "
         "skip first row of 2nd indirect blocks of 4th level indirect block's 3rd level indirect block, then "
-        "backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                         /* Local index variables */
+        "backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -11623,9 +11572,6 @@ test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_two_rows_
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -11701,7 +11647,7 @@ error:
  * Function:
  *test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_wrap_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks and indirect blocks in 3rd level indirect block, fill all
  *              direct & indirect blocks in 4th level indirect
@@ -11715,11 +11661,11 @@ error:
  *              4th level block), then backfill all skipped direct blocks &
  *              extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 17, 2006
  *
  *-------------------------------------------------------------------------
@@ -11740,14 +11686,13 @@ test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_wrap_star
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect blocks, fill "
         "first row of 3rd level indirect blocks in 4th level indirect block except last 3rd level block, "
         "fill direct blocks in 3rd level block, and skip row of 2nd indirect blocks of 4th level indirect "
-        "block's 3rd level indirect block, then backfill and extend, then remove all objects %s"; /* Test
-                                                                                                     description
-                                                                                                   */
-    unsigned u, v; /* Local index variables */
+        "block's 3rd level indirect block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -11828,9 +11773,6 @@ test_man_fill_3rd_direct_fill_2nd_direct_fill_direct_skip_3rd_indirect_wrap_star
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -11905,7 +11847,7 @@ error:
  * Function:
  *test_man_fill_4th_direct_less_one_fill_2nd_direct_fill_direct_skip_3rd_indirect_wrap_start_block_add_skipped
  *
- * Purpose:	Test filling all direct blocks in root indirect block and all
+ * Purpose:   Test filling all direct blocks in root indirect block and all
  *              direct blocks in 2nd level indirect blocks, fill all direct
  *              blocks and indirect blocks in 3rd level indirect block, fill all
  *              direct & indirect blocks in first row of 4th level indirect
@@ -11919,11 +11861,11 @@ error:
  *              next row of 4th level blocks), then backfill all skipped direct
  *              blocks & extend.
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, April 17, 2006
  *
  *-------------------------------------------------------------------------
@@ -11944,13 +11886,14 @@ test_man_fill_4th_direct_less_one_fill_2nd_direct_fill_direct_skip_3rd_indirect_
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "filling direct blocks, filling 2nd level indirect blocks, filling 3rd level indirect blocks, fill "
         "first row of 4th level indirect blocks, except last one, fill first row of 3rd level indirect "
         "blocks in last 4th level indirect block except last 3rd level block, fill direct blocks in 3rd "
         "level block, and skip row of 2nd indirect blocks of 4th level indirect block's 3rd level indirect "
-        "block, then backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                                     /* Local index variables */
+        "block, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -12067,9 +12010,6 @@ test_man_fill_4th_direct_less_one_fill_2nd_direct_fill_direct_skip_3rd_indirect_
      * object
      */
     obj_size = (size_t)DBLOCK_SIZE(fh, num_first_indirect_rows - 1) + 1;
-#ifdef QAK
-    HDfprintf(stderr, "obj_size = %Zu\n", obj_size);
-#endif /* QAK */
     state.man_alloc_size += DBLOCK_SIZE(fh, num_first_indirect_rows);
     if (add_obj(fh, (size_t)20, obj_size, &state, &keep_ids))
         TEST_ERROR
@@ -12140,25 +12080,22 @@ error:
     return (1);
 } /* test_man_fill_4th_direct_less_one_fill_2nd_direct_fill_direct_skip_3rd_indirect_wrap_start_block_add_skipped()
    */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_frag_simple
+ * Function:  test_man_frag_simple
  *
- * Purpose:	Test inserting objects small enough to fit into first row of
+ * Purpose:   Test inserting objects small enough to fit into first row of
  *              direct blocks, but not to share a block with another object,
  *              until start-block-size * 2 blocks are reached.  Then, go back
  *              and fill in the space in the blocks skipped.
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, July 24, 2006
  *
  *-------------------------------------------------------------------------
@@ -12175,10 +12112,9 @@ test_man_frag_simple(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             obj_size;                     /* Size of object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "fragmenting small blocks, then backfill and extend, then remove all objects %s"; /* Test description
-                                                                                           */
-    unsigned u; /* Local index variables */
+    unsigned           u;                            /* Local index variables */
+    /* Test description */
+    const char *base_desc = "fragmenting small blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -12278,19 +12214,19 @@ error:
 } /* test_man_frag_simple() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_frag_direct
+ * Function:  test_man_frag_direct
  *
- * Purpose:	Test inserting small object to fit into each direct block
+ * Purpose:   Test inserting small object to fit into each direct block
  *              in root block, but not to share a block with another object,
  *              Then, go back and fill in the space in the blocks skipped.
  *
  *              Then, go back and remove all objects
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, July 25, 2006
  *
  *-------------------------------------------------------------------------
@@ -12308,10 +12244,9 @@ test_man_frag_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
     size_t             obj_size;                     /* Size of object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "fragmenting direct blocks, then backfill and extend, then remove all objects %s"; /* Test description
-                                                                                            */
-    unsigned u, v; /* Local index variables */
+    unsigned           u, v;                         /* Local index variables */
+    /* Test description */
+    const char *base_desc = "fragmenting direct blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -12448,9 +12383,9 @@ error:
 } /* test_man_frag_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_frag_2nd_direct
+ * Function:  test_man_frag_2nd_direct
  *
- * Purpose:	Test filling all direct blocks in root indirect block, then
+ * Purpose:   Test filling all direct blocks in root indirect block, then
  *              inserting small object to fit into each direct block
  *              in 2nd level indirect block, but not to share a block with
  *              another object.
@@ -12458,11 +12393,11 @@ error:
  *
  *              Then, go back and remove all the objects
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, July 25, 2006
  *
  *-------------------------------------------------------------------------
@@ -12482,10 +12417,10 @@ test_man_frag_2nd_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *
     size_t             obj_size;   /* Size of object */
     size_t             fill_size;  /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;      /* State of fractal heap */
-    const char *       base_desc =
-        "fill root direct blocks, then fragment 2nd level indirect block's direct blocks, then backfill and "
-        "extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                            /* Local index variables */
+    unsigned           u, v;       /* Local index variables */
+    /* Test description */
+    const char *base_desc = "fill root direct blocks, then fragment 2nd level indirect block's direct "
+                            "blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -12497,9 +12432,6 @@ test_man_frag_2nd_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *
 
     /* Compute # of bits used in first row */
     num_first_indirect_rows = IBLOCK_MAX_DROWS(fh, 1);
-#ifdef QAK
-    HDfprintf(stderr, "num_first_indirect_rows = %u\n", num_first_indirect_rows);
-#endif /* QAK */
 
     /* Fill direct blocks in root indirect block */
     if (fill_root_direct(fh, fill_size, &state, &keep_ids))
@@ -12562,9 +12494,9 @@ error:
 } /* test_man_frag_2nd_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_man_frag_3rd_direct
+ * Function:  test_man_frag_3rd_direct
  *
- * Purpose:	Test filling all direct blocks in root indirect block and
+ * Purpose:   Test filling all direct blocks in root indirect block and
  *              all 2nd level indirect blocks, then
  *              inserting small object to fit into each direct block
  *              in 3rd level indirect block, but not to share a block with
@@ -12573,11 +12505,11 @@ error:
  *
  *              Then, go back and remove all objects
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, July 25, 2006
  *
  *-------------------------------------------------------------------------
@@ -12596,10 +12528,11 @@ test_man_frag_3rd_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *
     size_t             obj_size;                     /* Size of object */
     size_t             fill_size;                    /* Size of objects for "bulk" filled blocks */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
+    unsigned           u, v;                         /* Local index variables */
+    /* Test description */
+    const char *base_desc =
         "fill root direct blocks and 2nd level indirect blocks, then fragment 3rd level indirect block's "
-        "direct blocks, then backfill and extend, then remove all objects %s"; /* Test description */
-    unsigned u, v;                                                             /* Local index variables */
+        "direct blocks, then backfill and extend, then remove all objects %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, &fill_size) < 0)
@@ -12679,21 +12612,18 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_man_frag_3rd_direct() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_huge_insert_one
+ * Function:  test_huge_insert_one
  *
- * Purpose:	Test inserting one huge object in the heap
+ * Purpose:   Test inserting one huge object in the heap
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, August  7, 2006
  *
  *-------------------------------------------------------------------------
@@ -12715,7 +12645,8 @@ test_huge_insert_one(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     size_t             robj_size;                    /* Size of object read */
     unsigned char      obj_type;                     /* Type of storage for object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc = "insert one huge object, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert one huge object, then remove %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -12801,9 +12732,6 @@ test_huge_insert_one(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -12836,16 +12764,16 @@ error:
 } /* test_huge_insert_one() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_huge_insert_two
+ * Function:  test_huge_insert_two
  *
- * Purpose:	Test inserting two huge objects in the heap
+ * Purpose:   Test inserting two huge objects in the heap
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -12868,7 +12796,8 @@ test_huge_insert_two(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     size_t             robj_size;                    /* Size of object read */
     unsigned char      obj_type;                     /* Type of storage for object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc = "insert two huge objects, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert two huge objects, then remove %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -13031,9 +12960,6 @@ test_huge_insert_two(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -13068,16 +12994,16 @@ error:
 } /* test_huge_insert_two() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_huge_insert_three
+ * Function:  test_huge_insert_three
  *
- * Purpose:	Test inserting three huge objects in the heap
+ * Purpose:   Test inserting three huge objects in the heap
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -13101,7 +13027,8 @@ test_huge_insert_three(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tp
     size_t             robj_size;                    /* Size of object read */
     unsigned char      obj_type;                     /* Type of storage for object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc = "insert three huge objects, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert three huge objects, then remove %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -13336,9 +13263,6 @@ test_huge_insert_three(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tp
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -13375,16 +13299,16 @@ error:
 } /* test_huge_insert_three() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_huge_insert_mix
+ * Function:  test_huge_insert_mix
  *
- * Purpose:	Test inserting a mix of 'normal' & 'huge' objects in the heap
+ * Purpose:   Test inserting a mix of 'normal' & 'huge' objects in the heap
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, August 11, 2006
  *
  *-------------------------------------------------------------------------
@@ -13410,7 +13334,8 @@ test_huge_insert_mix(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     size_t             robj_size;                    /* Size of object read */
     unsigned char      obj_type;                     /* Type of storage for object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *base_desc = "insert mix of normal & huge objects, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert mix of normal & huge objects, then remove %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -13759,9 +13684,6 @@ test_huge_insert_mix(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -13802,14 +13724,14 @@ error:
 } /* test_huge_insert_mix() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_filtered_huge
+ * Function:  test_filtered_huge
  *
- * Purpose:	Test storing 'huge' object in a heap with I/O filters
+ * Purpose:   Test storing 'huge' object in a heap with I/O filters
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, August 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -13836,8 +13758,8 @@ test_filtered_huge(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tparam
     size_t             old_actual_id_len = 0;        /* Old actual ID length */
     hbool_t            huge_ids_direct;              /* Are 'huge' objects directly acccessed? */
     hbool_t            pline_init = FALSE;           /* Whether the I/O pipeline has been initialized */
-    const char *       base_desc =
-        "insert 'huge' object into heap with I/O filters, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert 'huge' object into heap with I/O filters, then remove %s";
 
     /* Copy heap creation properties */
     HDmemcpy(&tmp_cparam, cparam, sizeof(H5HF_create_t));
@@ -13982,10 +13904,6 @@ test_filtered_huge(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tparam
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "empty_size = %lu, file_size = %lu\n", (unsigned long)empty_size,
-              (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -14017,21 +13935,18 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_filtered_huge() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_tiny_insert_one
+ * Function:  test_tiny_insert_one
  *
- * Purpose:	Test inserting one tiny object in the heap
+ * Purpose:   Test inserting one tiny object in the heap
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, August 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -14053,7 +13968,8 @@ test_tiny_insert_one(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     size_t             robj_size;                    /* Size of object read */
     unsigned char      obj_type;                     /* Type of storage for object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc = "insert one tiny object, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert one tiny object, then remove %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -14139,9 +14055,6 @@ test_tiny_insert_one(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -14174,16 +14087,16 @@ error:
 } /* test_tiny_insert_one() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_tiny_insert_two
+ * Function:  test_tiny_insert_two
  *
- * Purpose:	Test inserting two tiny objects in the heap
+ * Purpose:   Test inserting two tiny objects in the heap
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, August 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -14206,7 +14119,8 @@ test_tiny_insert_two(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     size_t             robj_size;                    /* Size of object read */
     unsigned char      obj_type;                     /* Type of storage for object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc = "insert two tiny objects, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert two tiny objects, then remove %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -14369,9 +14283,6 @@ test_tiny_insert_two(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -14406,17 +14317,17 @@ error:
 } /* test_tiny_insert_two() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_tiny_insert_mix
+ * Function:  test_tiny_insert_mix
  *
- * Purpose:	Test inserting a mix of 'normal', 'huge' & 'tiny' objects in
+ * Purpose:   Test inserting a mix of 'normal', 'huge' & 'tiny' objects in
  *              the heap
  *
  *              Then, remove all the objects, in various ways
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, August 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -14444,8 +14355,8 @@ test_tiny_insert_mix(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     size_t             robj_size;                    /* Size of object read */
     unsigned char      obj_type;                     /* Type of storage for object */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    const char *       base_desc =
-        "insert mix of normal, huge & tiny objects, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert mix of normal, huge & tiny objects, then remove %s";
 
     /* Perform common test initialization operations */
     if (begin_test(tparam, base_desc, &keep_ids, NULL) < 0)
@@ -14969,9 +14880,6 @@ test_tiny_insert_mix(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tpar
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -15014,20 +14922,16 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_tiny_insert_mix() */
-#endif /* QAK */
-#endif /* QAK2 */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_filtered_man_root_direct
+ * Function:  test_filtered_man_root_direct
  *
- * Purpose:	Test storing one 'managed' object in a heap with I/O filters
+ * Purpose:   Test storing one 'managed' object in a heap with I/O filters
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, August 14, 2006
  *
  *-------------------------------------------------------------------------
@@ -15052,8 +14956,8 @@ test_filtered_man_root_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_para
     unsigned char      obj_type;             /* Type of storage for object */
     fheap_heap_state_t state;                /* State of fractal heap */
     unsigned           deflate_level;        /* Deflation level */
-    const char *       base_desc =
-        "insert one 'managed' object into heap with I/O filters, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert one 'managed' object into heap with I/O filters, then remove %s";
 
     /* Copy heap creation properties */
     HDmemcpy(&tmp_cparam, cparam, sizeof(H5HF_create_t));
@@ -15167,10 +15071,6 @@ test_filtered_man_root_direct(hid_t fapl, H5HF_create_t *cparam, fheap_test_para
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "empty_size = %lu, file_size = %lu\n", (unsigned long)empty_size,
-              (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -15197,14 +15097,14 @@ error:
 } /* test_filtered_man_root_direct() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_filtered_man_root_indirect
+ * Function:  test_filtered_man_root_indirect
  *
- * Purpose:	Test storing several objects in a 'managed heap with I/O filters
+ * Purpose:   Test storing several objects in a 'managed heap with I/O filters
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, October 24, 2006
  *
  *-------------------------------------------------------------------------
@@ -15230,8 +15130,8 @@ test_filtered_man_root_indirect(hid_t fapl, H5HF_create_t *cparam, fheap_test_pa
     unsigned char      obj_type;              /* Type of storage for object */
     fheap_heap_state_t state;                 /* State of fractal heap */
     unsigned           deflate_level;         /* Deflation level */
-    const char *       base_desc =
-        "insert two 'managed' objects into heap with I/O filters, then remove %s"; /* Test description */
+    /* Test description */
+    const char *base_desc = "insert two 'managed' objects into heap with I/O filters, then remove %s";
 
     /* Copy heap creation properties */
     HDmemcpy(&tmp_cparam, cparam, sizeof(H5HF_create_t));
@@ -15497,10 +15397,6 @@ test_filtered_man_root_indirect(hid_t fapl, H5HF_create_t *cparam, fheap_test_pa
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "empty_size = %lu, file_size = %lu\n", (unsigned long)empty_size,
-              (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -15525,23 +15421,20 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_filtered_man_root_indirect() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_random
+ * Function:  test_random
  *
- * Purpose:	Test inserting random sized objects into a heap, and read
+ * Purpose:   Test inserting random sized objects into a heap, and read
  *              them back.
  *
  *              Then, go back and remove all objects
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, May  9, 2006
  *
  *-------------------------------------------------------------------------
@@ -15613,10 +15506,10 @@ test_random(hsize_t size_limit, hid_t fapl, H5HF_create_t *cparam, fheap_test_pa
 
     /* Choose random # seed */
     seed = (unsigned long)HDtime(NULL);
-#ifdef QAK
-    /* seed = (unsigned long)1156158635; */
-    HDfprintf(stderr, "Random # seed was: %lu\n", seed);
-#endif /* QAK */
+#if 0
+/* seed = (unsigned long)1156158635; */
+HDfprintf(stderr, "Random # seed was: %lu\n", seed);
+#endif
     HDsrandom((unsigned)seed);
 
     /* Loop over adding objects to the heap, until the size limit is reached */
@@ -15637,10 +15530,6 @@ test_random(hsize_t size_limit, hid_t fapl, H5HF_create_t *cparam, fheap_test_pa
         /* Increment the amount of objects added */
         total_obj_added += obj_size;
     } /* end while */
-#ifdef QAK
-    HDfprintf(stderr, "keep_ids.num_ids = %Zu, total_obj_added = %Hu, size_limit = %Hu\n", keep_ids.num_ids,
-              total_obj_added, size_limit);
-#endif /* QAK */
 
     /* Randomize the order of the IDs kept */
     for (u = 0; u < keep_ids.num_ids; u++) {
@@ -15699,9 +15588,6 @@ test_random(hsize_t size_limit, hid_t fapl, H5HF_create_t *cparam, fheap_test_pa
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -15740,19 +15626,19 @@ error:
 } /* test_random() */
 
 /*-------------------------------------------------------------------------
- * Function:	test_random_pow2
+ * Function:  test_random_pow2
  *
- * Purpose:	Test inserting random sized objects with a "power of 2
+ * Purpose:   Test inserting random sized objects with a "power of 2
  *              distribution" (which favors small objects) into a heap,
  *              and read them back.
  *
  *              Then, go back and remove all objects
  *
- * Return:	Success:	0
+ * Return:    Success:    0
  *
- *		Failure:	1
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, May 15, 2006
  *
  *-------------------------------------------------------------------------
@@ -15826,10 +15712,10 @@ test_random_pow2(hsize_t size_limit, hid_t fapl, H5HF_create_t *cparam, fheap_te
 
     /* Choose random # seed */
     seed = (unsigned long)HDtime(NULL);
-#ifdef QAK
-    /* seed = (unsigned long)1155181717; */
-    HDfprintf(stderr, "Random # seed was: %lu\n", seed);
-#endif /* QAK */
+#if 0
+/* seed = (unsigned long)1155181717; */
+HDfprintf(stderr, "Random # seed was: %lu\n", seed);
+#endif
     HDsrandom((unsigned)seed);
 
     /* Loop over adding objects to the heap, until the size limit is reached */
@@ -15862,10 +15748,6 @@ test_random_pow2(hsize_t size_limit, hid_t fapl, H5HF_create_t *cparam, fheap_te
         /* Increment the amount of objects added */
         total_obj_added += obj_size;
     } /* end while */
-#ifdef QAK
-    HDfprintf(stderr, "keep_ids.num_ids = %Zu, total_obj_added = %Hu, size_limit = %Hu\n", keep_ids.num_ids,
-              total_obj_added, size_limit);
-#endif /* QAK */
 
     /* Randomize the order of the IDs kept */
     for (u = 0; u < keep_ids.num_ids; u++) {
@@ -15924,10 +15806,6 @@ test_random_pow2(hsize_t size_limit, hid_t fapl, H5HF_create_t *cparam, fheap_te
     /* Get the size of the file */
     if ((file_size = h5_get_file_size(filename, fapl)) < 0)
         TEST_ERROR
-#ifdef QAK
-    HDfprintf(stderr, "empty_size = %lu\n", (unsigned long)empty_size);
-    HDfprintf(stderr, "file_size = %lu\n", (unsigned long)file_size);
-#endif /* QAK */
 
     /* Verify the file is correct size */
     if (file_size != empty_size)
@@ -15963,19 +15841,16 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_random_pow2() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_write
+ * Function:  test_write
  *
- * Purpose:	Test inserting objects, then changing the value for them.
+ * Purpose:   Test inserting objects, then changing the value for them.
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Monday, December 18, 2006
  *
  *-------------------------------------------------------------------------
@@ -16251,21 +16126,18 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_write() */
-#endif /* QAK */
-
-#ifndef QAK
 
 /*-------------------------------------------------------------------------
- * Function:	test_bug1
+ * Function:  test_bug1
  *
- * Purpose:	Test inserting several objects, then deleting one and
+ * Purpose:   Test inserting several objects, then deleting one and
  *              re-inserting an object, along with opening and closing
  *              the file.
  *
- * Return:	Success:	0
- *		Failure:	1
+ * Return:    Success:    0
+ *            Failure:    1
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Tuesday, November 28, 2006
  *
  *-------------------------------------------------------------------------
@@ -16426,18 +16298,17 @@ error:
     H5E_END_TRY;
     return (1);
 } /* test_bug1() */
-#endif /* QAK */
 
 /*-------------------------------------------------------------------------
- * Function:	main
+ * Function:  main
  *
- * Purpose:	Test the fractal heap code
+ * Purpose:   Test the fractal heap code
  *
- * Return:	Success:
+ * Return:    Success:
  *
- *		Failure:
+ *            Failure:
  *
- * Programmer:	Quincey Koziol
+ * Programmer:    Quincey Koziol
  *              Friday, February 24, 2006
  *
  *-------------------------------------------------------------------------
