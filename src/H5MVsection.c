@@ -12,10 +12,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:	Quincey Koziol <koziol@hdfgroup.org>
- *              Tuesday, January  8, 2008
- *
- * Purpose:	Free space section callbacks for file.
+ * Purpose:     Free-space manager for VFD SWMR's metadata file
  *
  */
 
@@ -24,7 +21,7 @@
 /****************/
 
 #define H5F_FRIEND      /*suppress error about including H5Fpkg	  */
-#include "H5MVmodule.h" /* This source code file is part of the H5MF module */
+#include "H5MVmodule.h" /* This source code file is part of the H5MV module */
 
 /***********/
 /* Headers */

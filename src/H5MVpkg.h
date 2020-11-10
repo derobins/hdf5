@@ -12,9 +12,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Quincey Koziol <koziol@hdfgroup.org>
- *              Tuesday, January 8, 2008
- *
  * Purpose:     This file contains declarations which are visible only within
  *              the H5MV package.  Source files outside the H5MV package should
  *              include H5MVprivate.h instead.

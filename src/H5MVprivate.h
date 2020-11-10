@@ -15,7 +15,7 @@
  *
  * Created:             H5MVprivate.h
  *
- * Purpose:             Private header file for file memory management.
+ * Purpose:             Private header file for VFD SWMR metadata file.
  *
  *-------------------------------------------------------------------------
  */
