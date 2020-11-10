@@ -46,10 +46,11 @@
 
 /* Size of a symbol table node on disk */
 #define H5G_NODE_SIZE(f)                                                                                     \
-    (                    /* General metadata fields */                                                       \
-     H5_SIZEOF_MAGIC + 1 /* Version */                                                                       \
-     + 1                 /* Reserved */                                                                      \
-     + 2                 /* Number of symbols */                                                             \
+    (                /* General metadata fields */                                                           \
+     H5_SIZEOF_MAGIC /*magic number */                                                                       \
+     + 1             /* Version */                                                                           \
+     + 1             /* Reserved */                                                                          \
+     + 2             /* Number of symbols */                                                                 \
                                                                                                              \
      /* Entries */                                                                                           \
      + ((2 * H5F_SYM_LEAF_K(f)) * (unsigned)H5G_SIZEOF_ENTRY_FILE(f)))

@@ -15,7 +15,7 @@
  *
  * Created:	H5Gdeprec.c
  *		June 21 2006
- *		James Laird <jlaird@ncsa.uiuc.edu>
+ *		James Laird
  *
  * Purpose:	Deprecated functions from the H5G interface.  These
  *              functions are here for compatibility purposes and may be
@@ -971,7 +971,7 @@ H5G__get_objinfo_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char *name, 
     H5G_trav_goi_t *udata     = (H5G_trav_goi_t *)_udata; /* User data passed in */
     herr_t          ret_value = SUCCEED;                  /* Return value */
 
-    FUNC_ENTER_STATIC;
+    FUNC_ENTER_STATIC
 
     /* Check if the name in this group resolved to a valid link */
     if (lnk == NULL && obj_loc == NULL)

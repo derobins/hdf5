@@ -90,7 +90,6 @@ H5FL_SEQ_DEFINE(H5HF_indirect_ptr_t);
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Aug 17 2006
  *
  *-------------------------------------------------------------------------
