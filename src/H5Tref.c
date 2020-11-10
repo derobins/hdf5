@@ -628,6 +628,7 @@ H5T__ref_mem_write(H5VL_object_t *src_file, const void *src_buf, size_t src_size
             /* Pass the correct encoding version for the selection depending on the
              * file libver bounds, this is later retrieved in H5S hyper decode */
             H5CX_set_libver_bounds(src_f);
+            /* FALLTHROUGH */
             H5_ATTR_FALLTHROUGH
         case H5R_OBJECT2:
         case H5R_ATTR:
@@ -1205,7 +1206,7 @@ done:
 } /* end H5T__ref_dsetreg_disk_read() */
 
 /*-------------------------------------------------------------------------
- * Function:    H5T_ref_reclaim
+ * Function:    H5T__ref_reclaim
  *
  * Purpose: Internal routine to free reference datatypes
  *
@@ -1214,11 +1215,11 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5T_ref_reclaim(void *elem, const H5T_t *dt)
+H5T__ref_reclaim(void *elem, const H5T_t *dt)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_PACKAGE
 
     /* Sanity checks */
     HDassert(elem);
@@ -1229,4 +1230,4 @@ H5T_ref_reclaim(void *elem, const H5T_t *dt)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5T_ref_reclaim() */
+} /* end H5T__ref_reclaim() */
