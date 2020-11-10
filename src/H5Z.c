@@ -163,7 +163,7 @@ H5Z_term_package(void)
                                  H5Z_stat_table_g[i].stats[dir].times.elapsed);
 
                     /* Print the statistics */
-                    HDfprintf(H5DEBUG(Z), "   %s%-15s %10Hd %10Hd %8T %8T %8T %10s\n", (dir ? "<" : ">"),
+                    HDfprintf(H5DEBUG(Z), "   %s%-15s %10" PRIdHSIZE " %10" PRIdHSIZE " %8T %8T %8T %10s\n", (dir ? "<" : ">"),
                               comment, H5Z_stat_table_g[i].stats[dir].total,
                               H5Z_stat_table_g[i].stats[dir].errors,
                               H5Z_stat_table_g[i].stats[dir].times.user,

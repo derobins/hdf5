@@ -244,7 +244,7 @@ done:
 } /* end H5Ocopy() */
 
 /*-------------------------------------------------------------------------
- * Function:    H5O_copy
+ * Function:    H5O__copy
  *
  * Purpose:     Private version of H5Ocopy
  *
@@ -256,8 +256,8 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5O_copy(const H5G_loc_t *loc, const char *src_name, H5G_loc_t *dst_loc, const char *dst_name,
-         hid_t ocpypl_id, hid_t lcpl_id)
+H5O__copy(const H5G_loc_t *loc, const char *src_name, H5G_loc_t *dst_loc, const char *dst_name,
+          hid_t ocpypl_id, hid_t lcpl_id)
 {
     H5G_loc_t  src_loc;             /* Source object group location */
     H5G_name_t src_path;            /* Opened source object hier. path */
@@ -267,7 +267,7 @@ H5O_copy(const H5G_loc_t *loc, const char *src_name, H5G_loc_t *dst_loc, const c
     hbool_t    obj_open  = FALSE;   /* Entry at 'name' found */
     herr_t     ret_value = SUCCEED; /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT
+    FUNC_ENTER_PACKAGE
 
     /* Check arguments */
     HDassert(loc);
@@ -307,7 +307,7 @@ done:
         HDONE_ERROR(H5E_OHDR, H5E_CLOSEERROR, FAIL, "unable to release object header")
 
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5O_copy() */
+} /* end H5O__copy() */
 
 /*-------------------------------------------------------------------------
  * Function:    H5O__copy_header_real
