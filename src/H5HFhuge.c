@@ -160,7 +160,7 @@ done:
 } /* end H5HF__huge_bt2_create() */
 
 /*-------------------------------------------------------------------------
- * Function:	H5HF_huge_init
+ * Function:	H5HF__huge_init
  *
  * Purpose:	Initialize information for tracking 'huge' objects
  *
@@ -172,9 +172,9 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5HF_huge_init(H5HF_hdr_t *hdr)
+H5HF__huge_init(H5HF_hdr_t *hdr)
 {
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_PACKAGE_NOERR
 
     /*
      * Check arguments.
@@ -225,7 +225,7 @@ H5HF_huge_init(H5HF_hdr_t *hdr)
     hdr->huge_bt2 = NULL;
 
     FUNC_LEAVE_NOAPI(SUCCEED)
-} /* end H5HF_huge_init() */
+} /* end H5HF__huge_init() */
 
 /*-------------------------------------------------------------------------
  * Function:	H5HF__huge_new_id
@@ -453,7 +453,7 @@ H5HF__huge_insert(H5HF_hdr_t *hdr, size_t obj_size, void *obj, void *_id)
     hdr->huge_nobjs++;
 
     /* Mark heap header as modified */
-    if (H5HF_hdr_dirty(hdr) < 0)
+    if (H5HF__hdr_dirty(hdr) < 0)
         HGOTO_ERROR(H5E_HEAP, H5E_CANTDIRTY, FAIL, "can't mark heap header as dirty")
 
 done:
@@ -1030,7 +1030,7 @@ H5HF__huge_remove(H5HF_hdr_t *hdr, const uint8_t *id)
     hdr->huge_nobjs--;
 
     /* Mark heap header as modified */
-    if (H5HF_hdr_dirty(hdr) < 0)
+    if (H5HF__hdr_dirty(hdr) < 0)
         HGOTO_ERROR(H5E_HEAP, H5E_CANTDIRTY, FAIL, "can't mark heap header as dirty")
 
 done:
@@ -1090,7 +1090,7 @@ H5HF__huge_term(H5HF_hdr_t *hdr)
         hdr->huge_ids_wrapped = FALSE;
 
         /* Mark heap header as modified */
-        if (H5HF_hdr_dirty(hdr) < 0)
+        if (H5HF__hdr_dirty(hdr) < 0)
             HGOTO_ERROR(H5E_HEAP, H5E_CANTDIRTY, FAIL, "can't mark heap header as dirty")
     } /* end if */
 
