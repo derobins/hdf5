@@ -67,7 +67,7 @@ done:
 
 /*--------------------------------------------------------------------------
  NAME
-    H5ST_close_internal
+    H5ST__close_internal
  PURPOSE
     Close a TST, deallocating it.
  USAGE
@@ -84,21 +84,21 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 static herr_t
-H5ST_close_internal(H5ST_ptr_t p)
+H5ST__close_internal(H5ST_ptr_t p)
 {
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     /* Recursively free TST */
     if (p) {
-        H5ST_close_internal(p->lokid);
+        H5ST__close_internal(p->lokid);
         if (p->splitchar)
-            H5ST_close_internal(p->eqkid);
-        H5ST_close_internal(p->hikid);
+            H5ST__close_internal(p->eqkid);
+        H5ST__close_internal(p->hikid);
         p = H5FL_FREE(H5ST_node_t, p);
     } /* end if */
 
     FUNC_LEAVE_NOAPI(SUCCEED)
-} /* end H5ST_close_internal() */
+} /* end H5ST__close_internal() */
 
 /*--------------------------------------------------------------------------
  NAME
@@ -130,7 +130,7 @@ H5ST_close(H5ST_tree_t *tree)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "invalid TST")
 
     /* Free the TST itself */
-    if (H5ST_close_internal(tree->root) < 0)
+    if (H5ST__close_internal(tree->root) < 0)
         HGOTO_ERROR(H5E_TST, H5E_CANTFREE, FAIL, "can't free TST")
 
     /* Free root node itself */
@@ -264,7 +264,7 @@ done:
 
 /*--------------------------------------------------------------------------
  NAME
-    H5ST_find_internal
+    H5ST__find_internal
  PURPOSE
     Find the node matching a particular key string
  USAGE
@@ -283,11 +283,11 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 static H5ST_ptr_t
-H5ST_find_internal(H5ST_ptr_t p, const char *s)
+H5ST__find_internal(H5ST_ptr_t p, const char *s)
 {
     H5ST_ptr_t ret_value = NULL; /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     while (p) {
         if (*s < p->splitchar)
@@ -303,7 +303,7 @@ H5ST_find_internal(H5ST_ptr_t p, const char *s)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5ST_find_internal() */
+} /* end H5ST__find_internal() */
 
 /*--------------------------------------------------------------------------
  NAME
@@ -332,7 +332,7 @@ H5ST_find(H5ST_tree_t *tree, const char *s)
 
     FUNC_ENTER_NOAPI(NULL)
 
-    if (NULL == (ret_value = H5ST_find_internal(tree->root, s)))
+    if (NULL == (ret_value = H5ST__find_internal(tree->root, s)))
         HGOTO_ERROR(H5E_TST, H5E_NOTFOUND, NULL, "key not found in TST")
 
 done:
@@ -367,7 +367,7 @@ H5ST_locate(H5ST_tree_t *tree, const char *s)
     FUNC_ENTER_NOAPI(NULL)
 
     /* Locate the node to remove */
-    if (NULL == (node = H5ST_find_internal(tree->root, s)))
+    if (NULL == (node = H5ST__find_internal(tree->root, s)))
         HGOTO_ERROR(H5E_TST, H5E_NOTFOUND, NULL, "key not found in TST")
 
     /* Get the pointer to the object to return */
@@ -379,11 +379,11 @@ done:
 
 /*--------------------------------------------------------------------------
  NAME
-    H5ST_findfirst_internal
+    H5ST__findfirst_internal
  PURPOSE
     Find the first node in a TST
  USAGE
-    H5ST_ptr_t H5ST_findfirst_internal(p)
+    H5ST_ptr_t H5ST__findfirst_internal(p)
         H5ST_ptr_t p;      IN: TST to locate first node within
  RETURNS
     Success: Non-NULL
@@ -396,11 +396,11 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 static H5ST_ptr_t
-H5ST_findfirst_internal(H5ST_ptr_t p)
+H5ST__findfirst_internal(H5ST_ptr_t p)
 {
     H5ST_ptr_t ret_value = NULL; /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     while (p) {
         /* Find least node in current tree */
@@ -420,7 +420,7 @@ H5ST_findfirst_internal(H5ST_ptr_t p)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5ST_findfirst_internal() */
+} /* end H5ST__findfirst_internal() */
 
 /*--------------------------------------------------------------------------
  NAME
@@ -447,7 +447,7 @@ H5ST_findfirst(H5ST_tree_t *tree)
 
     FUNC_ENTER_NOAPI(NULL)
 
-    if (NULL == (ret_value = H5ST_findfirst_internal(tree->root)))
+    if (NULL == (ret_value = H5ST__findfirst_internal(tree->root)))
         HGOTO_ERROR(H5E_TST, H5E_NOTFOUND, NULL, "no nodes in TST");
 
 done:
@@ -456,11 +456,11 @@ done:
 
 /*--------------------------------------------------------------------------
  NAME
-    H5ST_getnext
+    H5ST__getnext
  PURPOSE
     Internal routine to find the next node in a given level of a TST
  USAGE
-    H5ST_ptr_t H5ST_getnext(p)
+    H5ST_ptr_t H5ST__getnext(p)
         H5ST_ptr_t *p;       IN: Pointer to node to find next node from
  RETURNS
     Success: Non-NULL
@@ -473,11 +473,11 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 static H5ST_ptr_t
-H5ST_getnext(H5ST_ptr_t p)
+H5ST__getnext(H5ST_ptr_t p)
 {
     H5ST_ptr_t ret_value = NULL; /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     /* If the node to continue from has higher-valued nodes attached */
     if (p->hikid) {
@@ -509,7 +509,7 @@ H5ST_getnext(H5ST_ptr_t p)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5ST_getnext() */
+} /* end H5ST__getnext() */
 
 /*--------------------------------------------------------------------------
  NAME
@@ -539,9 +539,9 @@ H5ST_findnext(H5ST_ptr_t p)
 
     /* Find the next node at the current level, or go back up the tree */
     do {
-        q = H5ST_getnext(p);
+        q = H5ST__getnext(p);
         if (q) {
-            HGOTO_DONE(H5ST_findfirst_internal(q->eqkid));
+            HGOTO_DONE(H5ST__findfirst_internal(q->eqkid));
         } /* end if */
         else
             p = p->up;
@@ -553,11 +553,11 @@ done:
 
 /*--------------------------------------------------------------------------
  NAME
-    H5ST_delete_internal
+    H5ST__delete_internal
  PURPOSE
     Delete a node from a TST
  USAGE
-    herr_t H5ST_delete_internal(root,p)
+    herr_t H5ST__delete_internal(root,p)
         H5ST_ptr_t *root;       IN/OUT: Root of TST to delete node from
         H5ST_ptr_t p;       IN: Node to delete
  RETURNS
@@ -572,12 +572,12 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 static herr_t
-H5ST_delete_internal(H5ST_ptr_t *root, H5ST_ptr_t p)
+H5ST__delete_internal(H5ST_ptr_t *root, H5ST_ptr_t p)
 {
     H5ST_ptr_t q, /* Temporary pointer to TST node */
         newp;     /* Pointer to node which will replace deleted node in tree */
 
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     /* Find node to replace one being deleted */
     if (p->lokid) {
@@ -616,7 +616,7 @@ H5ST_delete_internal(H5ST_ptr_t *root, H5ST_ptr_t p)
 
             /* If we deleted the last node in the TST, delete the upper node also */
             if (NULL == newp)
-                H5ST_delete_internal(root, p->up);
+                H5ST__delete_internal(root, p->up);
         }    /* end if */
         else /* Deleted last node at top level of tree */
             *root = newp;
@@ -625,7 +625,7 @@ H5ST_delete_internal(H5ST_ptr_t *root, H5ST_ptr_t p)
     p = H5FL_FREE(H5ST_node_t, p);
 
     FUNC_LEAVE_NOAPI(SUCCEED)
-} /* end H5ST_delete_internal() */
+} /* end H5ST__delete_internal() */
 
 /*--------------------------------------------------------------------------
  NAME
@@ -654,7 +654,7 @@ H5ST_delete(H5ST_tree_t *tree, H5ST_ptr_t p)
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    if (H5ST_delete_internal(&tree->root, p) < 0)
+    if (H5ST__delete_internal(&tree->root, p) < 0)
         HGOTO_ERROR(H5E_TST, H5E_CANTDELETE, FAIL, "can't delete node from TST")
 
 done:
@@ -689,14 +689,14 @@ H5ST_remove(H5ST_tree_t *tree, const char *s)
     FUNC_ENTER_NOAPI(NULL)
 
     /* Locate the node to remove */
-    if (NULL == (node = H5ST_find_internal(tree->root, s)))
+    if (NULL == (node = H5ST__find_internal(tree->root, s)))
         HGOTO_ERROR(H5E_TST, H5E_NOTFOUND, NULL, "key not found in TST")
 
     /* Get the pointer to the object to return */
     ret_value = node->eqkid;
 
     /* Remove the node from the TST */
-    if (H5ST_delete_internal(&tree->root, node) < 0)
+    if (H5ST__delete_internal(&tree->root, node) < 0)
         HGOTO_ERROR(H5E_TST, H5E_CANTDELETE, NULL, "can't delete node from TST")
 
 done:

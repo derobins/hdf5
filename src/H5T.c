@@ -2037,12 +2037,6 @@ done:
  * Programmer:    Robb Matzke
  *        Friday, January     9, 1998
  *
- * Modifications:
- *
- *     Robb Matzke, 1 Jun 1998
- *    It is illegal to lock a named datatype since we must allow named
- *    types to be closed (to release file resources) but locking a type
- *    prevents that.
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -2112,9 +2106,6 @@ done:
  *
  * Programmer:    Robb Matzke
  *        Monday, December  8, 1997
- *
- * Modifications:
- *      Broke out from H5Tget_class - QAK - 6/4/99
  *
  *-------------------------------------------------------------------------
  */
@@ -3134,10 +3125,6 @@ done:
  * Programmer:    Raymond Lu
  *              July 14, 2004
  *
- * Modification:Raymond Lu
- *              17 February 2011
- *              I changed the value for the APP_REF parameter of H5I_register
- *              from FALSE to TRUE.
  *-------------------------------------------------------------------------
  */
 hid_t
@@ -3297,10 +3284,6 @@ done:
  * Programmer:    Robb Matzke
  *        Friday, December  5, 1997
  *
- * Modifications:
- *              Raymond Lu
- *              19 May 2011
- *              We support fixed size or variable-length string now.
  *-------------------------------------------------------------------------
  */
 H5T_t *
@@ -5302,11 +5285,6 @@ H5T_path_noop(const H5T_path_t *p)
  * Programmer:    Raymond Lu
  *        8 June 2007
  *
- * Modifications:  Neil Fortner
- *      19 September 2008
- *      Changed return value to H5T_subset_info_t
- *      (to allow it to return copy_size)
- *
  *-------------------------------------------------------------------------
  */
 H5T_subset_info_t *
@@ -6026,7 +6004,7 @@ done:
 } /* end H5T_is_vl_storage() */
 
 /*-------------------------------------------------------------------------
- * Function:    H5T_upgrade_version_cb
+ * Function:    H5T__upgrade_version_cb
  *
  * Purpose:     H5T__visit callback to Upgrade the version of a datatype
  *              (if there's any benefit to doing so)
@@ -6043,9 +6021,9 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T_upgrade_version_cb(H5T_t *dt, void *op_value)
+H5T__upgrade_version_cb(H5T_t *dt, void *op_value)
 {
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     /* Sanity check */
     HDassert(dt);
@@ -6080,7 +6058,7 @@ H5T_upgrade_version_cb(H5T_t *dt, void *op_value)
     } /* end switch */
 
     FUNC_LEAVE_NOAPI(SUCCEED)
-} /* end H5T_upgrade_version_cb() */
+} /* end H5T__upgrade_version_cb() */
 
 /*-------------------------------------------------------------------------
  * Function:    H5T__upgrade_version
@@ -6107,7 +6085,8 @@ H5T__upgrade_version(H5T_t *dt, unsigned new_version)
     HDassert(dt);
 
     /* Iterate over entire datatype, upgrading the version of components, if it's useful */
-    if (H5T__visit(dt, (H5T_VISIT_SIMPLE | H5T_VISIT_COMPLEX_LAST), H5T_upgrade_version_cb, &new_version) < 0)
+    if (H5T__visit(dt, (H5T_VISIT_SIMPLE | H5T_VISIT_COMPLEX_LAST), H5T__upgrade_version_cb, &new_version) <
+        0)
         HGOTO_ERROR(H5E_DATATYPE, H5E_BADITER, FAIL, "iteration to upgrade datatype encoding version failed")
 
 done:

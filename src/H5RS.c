@@ -37,11 +37,11 @@ H5FL_BLK_DEFINE(str_buf);
 
 /*--------------------------------------------------------------------------
  NAME
-    H5RS_xstrdup
+    H5RS__xstrdup
  PURPOSE
     Duplicate the string being reference counted
  USAGE
-    char *H5RS_xstrdup(s)
+    char *H5RS__xstrdup(s)
         const char *s;          IN: String to duplicate
 
  RETURNS
@@ -55,11 +55,11 @@ H5FL_BLK_DEFINE(str_buf);
  REVISION LOG
 --------------------------------------------------------------------------*/
 static char *
-H5RS_xstrdup(const char *s)
+H5RS__xstrdup(const char *s)
 {
     char *ret_value; /* Return value */
 
-    FUNC_ENTER_NOAPI_NOINIT_NOERR
+    FUNC_ENTER_STATIC_NOERR
 
     if (s) {
         size_t len = HDstrlen(s) + 1;
@@ -72,7 +72,7 @@ H5RS_xstrdup(const char *s)
         ret_value = NULL;
 
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5RS_xstrdup() */
+} /* end H5RS__xstrdup() */
 
 /*--------------------------------------------------------------------------
  NAME
@@ -105,7 +105,7 @@ H5RS_create(const char *s)
         HGOTO_ERROR(H5E_RS, H5E_NOSPACE, NULL, "memory allocation failed")
 
     /* Set the internal fields */
-    ret_value->s       = H5RS_xstrdup(s);
+    ret_value->s       = H5RS__xstrdup(s);
     ret_value->wrapped = 0;
     ret_value->n       = 1;
 
@@ -263,7 +263,7 @@ H5RS_incr(H5RS_str_t *rs)
      * scope appropriately.
      */
     if (rs->wrapped) {
-        rs->s       = H5RS_xstrdup(rs->s);
+        rs->s       = H5RS__xstrdup(rs->s);
         rs->wrapped = 0;
     } /* end if */
 

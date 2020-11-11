@@ -278,25 +278,23 @@ static ssize_t H5D__nonexistent_readvv(const H5D_io_info_t *io_info, size_t chun
                                        hsize_t chunk_offset_arr[], size_t mem_max_nseq, size_t *mem_curr_seq,
                                        size_t mem_len_arr[], hsize_t mem_offset_arr[]);
 
-/* format convert cb */
+/* Format convert cb */
 static int H5D__chunk_format_convert_cb(const H5D_chunk_rec_t *chunk_rec, void *_udata);
 
 /* Helper routines */
-static herr_t  H5D__chunk_set_info_real(H5O_layout_chunk_t *layout, unsigned ndims, const hsize_t *curr_dims,
-                                        const hsize_t *max_dims);
-static void *  H5D__chunk_mem_alloc(size_t size, const H5O_pline_t *pline);
-static void *  H5D__chunk_mem_xfree(void *chk, const void *pline);
-static void *  H5D__chunk_mem_realloc(void *chk, size_t size, const H5O_pline_t *pline);
-static herr_t  H5D__chunk_cinfo_cache_reset(H5D_chunk_cached_t *last);
-static herr_t  H5D__chunk_cinfo_cache_update(H5D_chunk_cached_t *last, const H5D_chunk_ud_t *udata);
-static hbool_t H5D__chunk_cinfo_cache_found(const H5D_chunk_cached_t *last, H5D_chunk_ud_t *udata);
-static herr_t  H5D__free_chunk_info(void *item, void *key, void *opdata);
-static herr_t  H5D__create_chunk_map_single(H5D_chunk_map_t *fm, const H5D_io_info_t *io_info);
-static herr_t  H5D__create_chunk_file_map_all(H5D_chunk_map_t *fm, const H5D_io_info_t *io_info);
-static herr_t  H5D__create_chunk_file_map_hyper(H5D_chunk_map_t *fm, const H5D_io_info_t *io_info);
-
-static herr_t H5D__create_chunk_mem_map_1d(const H5D_chunk_map_t *fm);
-
+static herr_t   H5D__chunk_set_info_real(H5O_layout_chunk_t *layout, unsigned ndims, const hsize_t *curr_dims,
+                                         const hsize_t *max_dims);
+static void *   H5D__chunk_mem_alloc(size_t size, const H5O_pline_t *pline);
+static void *   H5D__chunk_mem_xfree(void *chk, const void *pline);
+static void *   H5D__chunk_mem_realloc(void *chk, size_t size, const H5O_pline_t *pline);
+static herr_t   H5D__chunk_cinfo_cache_reset(H5D_chunk_cached_t *last);
+static herr_t   H5D__chunk_cinfo_cache_update(H5D_chunk_cached_t *last, const H5D_chunk_ud_t *udata);
+static hbool_t  H5D__chunk_cinfo_cache_found(const H5D_chunk_cached_t *last, H5D_chunk_ud_t *udata);
+static herr_t   H5D__free_chunk_info(void *item, void *key, void *opdata);
+static herr_t   H5D__create_chunk_map_single(H5D_chunk_map_t *fm, const H5D_io_info_t *io_info);
+static herr_t   H5D__create_chunk_file_map_all(H5D_chunk_map_t *fm, const H5D_io_info_t *io_info);
+static herr_t   H5D__create_chunk_file_map_hyper(H5D_chunk_map_t *fm, const H5D_io_info_t *io_info);
+static herr_t   H5D__create_chunk_mem_map_1d(const H5D_chunk_map_t *fm);
 static herr_t   H5D__create_chunk_mem_map_hyper(const H5D_chunk_map_t *fm);
 static herr_t   H5D__chunk_file_cb(void *elem, const H5T_t *type, unsigned ndims, const hsize_t *coords,
                                    void *fm);

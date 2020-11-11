@@ -103,7 +103,6 @@ static herr_t H5G__obj_remove_update_linfo(const H5O_loc_t *oloc, H5O_linfo_t *l
  * Return:      Non-negative on success/Negative on failure
  *
  * Programmer:  Quincey Koziol
- *              koziol@ncsa.uiuc.edu
  *              Sep 29 2005
  *
  *-------------------------------------------------------------------------
@@ -686,7 +685,6 @@ done:
  * Return:	Non-negative on success/Negative on failure
  *
  * Programmer:	Quincey Koziol
- *		koziol@hdfgroup.org
  *		Nov 27 2006
  *
  *-------------------------------------------------------------------------

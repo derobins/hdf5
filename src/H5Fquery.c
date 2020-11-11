@@ -1228,8 +1228,8 @@ H5F_get_null_fsm_addr(const H5F_t *f)
  *
  * Return:   VOL class pointer for file, can't fail
  *
- * Programmer:	Quincey Koziol
- *		Saturday, August 17, 2019
+ * Programmer:    Quincey Koziol
+ *        Saturday, August 17, 2019
  *
  *-------------------------------------------------------------------------
  */
