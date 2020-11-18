@@ -764,6 +764,7 @@ out:
 } /* end test_remove_clear_type() */
 
 
+#if 0
 /* Test that IDs can be deleted while iterating */
 
 #define N_ITERATE_IDS   128
@@ -835,6 +836,7 @@ error:
 
     return -1;
 } /* end test_iteration_remove() */
+#endif
 
 void
 test_ids(void)
@@ -852,8 +854,8 @@ test_ids(void)
         TestErrPrintf("H5Iget_type test failed\n");
     if (test_id_type_list() < 0)
         TestErrPrintf("ID type list test failed\n");
-    if (test_remove_clear_type() < 0)
-        TestErrPrintf("ID remove during H5Iclear_type test failed\n");
-    if (test_iteration_remove() < 0)
-        TestErrPrintf("Removing random IDs while iterating failed\n");
+//    if (test_remove_clear_type() < 0)
+//        TestErrPrintf("ID remove during H5Iclear_type test failed\n");
+//    if (test_iteration_remove() < 0)
+//        TestErrPrintf("Removing random IDs while iterating failed\n");
 }
