@@ -586,6 +586,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 static htri_t
 H5I__clear_type_cb(void *_id, void H5_ATTR_UNUSED *key, void *_udata)
 {
@@ -638,6 +639,7 @@ H5I__clear_type_cb(void *_id, void H5_ATTR_UNUSED *key, void *_udata)
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I__clear_type_cb() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5Idestroy_type
@@ -893,6 +895,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 void *
 H5I_subst(hid_t id, const void *new_object)
 {
@@ -914,6 +917,7 @@ H5I_subst(hid_t id, const void *new_object)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I_subst() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5I_object
@@ -927,6 +931,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 void *
 H5I_object(hid_t id)
 {
@@ -943,6 +948,7 @@ H5I_object(hid_t id)
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I_object() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5Iobject_verify
@@ -992,6 +998,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 void *
 H5I_object_verify(hid_t id, H5I_type_t id_type)
 {
@@ -1010,6 +1017,7 @@ H5I_object_verify(hid_t id, H5I_type_t id_type)
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* H5I_object_verify() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5I_get_type
@@ -1206,6 +1214,7 @@ H5I__remove_verify(hid_t id, H5I_type_t id_type)
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 static void *
 H5I__remove_common(H5I_id_type_t *type_ptr, hid_t id)
 {
@@ -1237,6 +1246,7 @@ H5I__remove_common(H5I_id_type_t *type_ptr, hid_t id)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I__remove_common() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5I_remove
@@ -1325,6 +1335,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 int
 H5I_dec_ref(hid_t id)
 {
@@ -1378,6 +1389,7 @@ H5I_dec_ref(hid_t id)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I_dec_ref() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5I_dec_app_ref
@@ -2030,6 +2042,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 static int
 H5I__iterate_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
 {
@@ -2065,6 +2078,7 @@ H5I__iterate_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I__iterate_cb() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5I_iterate
@@ -2280,6 +2294,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 static int
 H5I__find_id_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
 {
@@ -2296,7 +2311,7 @@ H5I__find_id_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
     HDassert(udata);
 
     /* Get a pointer to the VOL connector's data */
-    obj_ptr = H5I__unwrap(item->obj_ptr, type);
+    obj_ptr = H5I__unwrap((void *)item->obj_ptr, type); /* (Casting away const OK -DER) */
 
     /* Check for a match */
     if (obj_ptr == udata->object) {
@@ -2306,6 +2321,7 @@ H5I__find_id_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5I__find_id_cb() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5I_find_id
@@ -2371,6 +2387,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
+H5_GCC_DIAG_OFF("cast-qual")
 static int
 H5I__id_dump_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
 {
@@ -2445,6 +2462,7 @@ H5I__id_dump_cb(void *_item, void H5_ATTR_UNUSED *_key, void *_udata)
 
     FUNC_LEAVE_NOAPI(H5_ITER_CONT)
 } /* end H5I__id_dump_cb() */
+H5_GCC_DIAG_ON("cast-qual")
 
 /*-------------------------------------------------------------------------
  * Function:    H5I_dump_ids_for_type
