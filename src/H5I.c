@@ -422,7 +422,7 @@ done:
  *
  *              Failure:    Negative
  *
- * Programmer:    Robb Matzke
+ * Programmer:  Robb Matzke
  *              Wednesday, March 24, 1999
  *
  *-------------------------------------------------------------------------
@@ -500,8 +500,8 @@ H5I__unwrap(void *obj_ptr, H5I_type_t type)
  *
  * Return:      SUCCEED/FAIL
  *
- * Programmer:    James Laird
- *        Nathaniel Furrer
+ * Programmer:  James Laird
+ *              Nathaniel Furrer
  *              Friday, April 23, 2004
  *
  *-------------------------------------------------------------------------
@@ -531,7 +531,7 @@ done:
  *
  * Return:      SUCCEED/FAIL
  *
- * Programmer:    Robb Matzke
+ * Programmer:  Robb Matzke
  *              Wednesday, March 24, 1999
  *
  *-------------------------------------------------------------------------
@@ -650,8 +650,8 @@ H5I__clear_type_cb(void *_id, void H5_ATTR_UNUSED *key, void *_udata)
  *
  * Return:      SUCCEED/FAIL
  *
- * Programmer:    Nathaniel Furrer
- *        James Laird
+ * Programmer:  Nathaniel Furrer
+ *              James Laird
  *
  *-------------------------------------------------------------------------
  */
@@ -682,8 +682,8 @@ done:
  *
  * Return:      SUCCEED/FAIL
  *
- * Programmer:    Nathaniel Furrer
- *        James Laird
+ * Programmer:  Nathaniel Furrer
+ *              James Laird
  *
  *-------------------------------------------------------------------------
  */
@@ -888,8 +888,8 @@ done:
  *                          with the specified ID.
  *              Failure:    NULL
  *
- * Programmer:    Quincey Koziol
- *        Saturday, February 27, 2010
+ * Programmer:  Quincey Koziol
+ *              Saturday, February 27, 2010
  *
  *-------------------------------------------------------------------------
  */
@@ -987,8 +987,8 @@ done:
  *                          specified ID.
  *              Failure:    NULL
  *
- * Programmer:    Quincey Koziol
- *        Wednesday, July 31, 2002
+ * Programmer:  Quincey Koziol
+ *              Wednesday, July 31, 2002
  *
  *-------------------------------------------------------------------------
  */
@@ -1024,8 +1024,8 @@ H5I_object_verify(hid_t id, H5I_type_t id_type)
  *                          ID types).
  *              Failure:    H5I_BADID
  *
- * Programmer:    Robb Matzke
- *        Friday, February 19, 1999
+ * Programmer:  Robb Matzke
+ *              Friday, February 19, 1999
  *
  *-------------------------------------------------------------------------
  */
@@ -1136,8 +1136,8 @@ done:
  *                          calling H5I_object().
  *              Failure:    NULL
  *
- * Programmer:    James Laird
- *        Nathaniel Furrer
+ * Programmer:  James Laird
+ *              Nathaniel Furrer
  *
  *-------------------------------------------------------------------------
  */
@@ -1170,8 +1170,8 @@ done:
  *                          calling H5I_object().
  *              Failure:    NULL
  *
- * Programmer:    James Laird
- *        Nat Furrer
+ * Programmer:  James Laird
+ *              Nat Furrer
  *
  *-------------------------------------------------------------------------
  */
@@ -1247,8 +1247,6 @@ done:
  *                          same pointer which would have been found by
  *                          calling H5I_object().
  *              Failure:    NULL
- *
- * Programmer:    Unknown
  *
  *-------------------------------------------------------------------------
  */
