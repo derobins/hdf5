@@ -682,8 +682,8 @@ test_remove_clear_type(void)
                 CHECK(ret, FAIL, "H5Iinc_ref");
                 if (ret == FAIL)
                     goto out;
-            } /* end if */
-        }     /* end for */
+            }
+        }
 
         /* Clear the type */
         ret = H5Iclear_type(obj_type, FALSE);
@@ -700,11 +700,11 @@ test_remove_clear_type(void)
                 VERIFY(list[j].nfrees, (long)1, "list[j].nfrees");
                 if (list[j].nfrees != (long)1)
                     goto out;
-            } /* end else */
+            }
             VERIFY(list[j].freeing, FALSE, "list[j].freeing");
             if (list[j].freeing != FALSE)
                 goto out;
-        } /* end for */
+        }
 
         /* Verify number of objects */
         VERIFY(obj_list.nobjs_rem, nobjs_found, "obj_list.nobjs_rem");
@@ -732,7 +732,7 @@ test_remove_clear_type(void)
             VERIFY(list[j].freeing, FALSE, "list[j].freeing");
             if (list[j].freeing != FALSE)
                 goto out;
-        } /* end for */
+        }
 
         /* Verify number of objects is 0 */
         VERIFY(obj_list.nobjs_rem, (long)0, "obj_list.nobjs_rem");
@@ -745,7 +745,7 @@ test_remove_clear_type(void)
         VERIFY(nmembers, (size_t)0, "H5Inmembers");
         if (nmembers != (size_t)0)
             goto out;
-    } /* end for */
+    }
 
     /* Destroy type */
     ret = H5Idestroy_type(obj_type);

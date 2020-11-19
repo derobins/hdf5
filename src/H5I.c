@@ -373,8 +373,8 @@ done:
  *
  * Return:      SUCCEED/FAIL
  *
- * Programmer:    James Laird
- *        Nathaniel Furrer
+ * Programmer:  James Laird
+ *              Nathaniel Furrer
  *              Friday, April 23, 2004
  *
  *-------------------------------------------------------------------------
