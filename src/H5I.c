@@ -60,20 +60,20 @@
 
 /* Atom information structure used */
 typedef struct H5I_id_info_t {
-    hid_t          id;        /* ID for this info                */
-    unsigned       count;     /* ref. count for this atom            */
-    unsigned       app_count; /* ref. count of application visible atoms  */
-    const void *   obj_ptr;   /* pointer associated with the atom        */
+    hid_t          id;        /* ID for this info */
+    unsigned       count;     /* ref. count for this atom */
+    unsigned       app_count; /* ref. count of application visible atoms */
+    const void *   obj_ptr;   /* pointer associated with the atom */
     UT_hash_handle hh;        /* Hash table handle (must be LAST) */
 } H5I_id_info_t;
 
 /* ID type structure used */
 typedef struct {
-    const H5I_class_t *cls;        /* Pointer to ID class                      */
-    unsigned           init_count; /* # of times this type has been initialized*/
-    uint64_t           id_count;   /* Current number of IDs held            */
-    uint64_t           nextid;     /* ID to use for the next atom            */
-    H5I_id_info_t *    last_info;  /* Info for most recent ID looked up        */
+    const H5I_class_t *cls;        /* Pointer to ID class */
+    unsigned           init_count; /* # of times this type has been initialized */
+    uint64_t           id_count;   /* Current number of IDs held */
+    uint64_t           nextid;     /* ID to use for the next atom */
+    H5I_id_info_t *    last_info;  /* Info for most recent ID looked up */
     H5I_id_info_t *    hash_table; /* Hash table pointer for this ID type */
 } H5I_id_type_t;
 
@@ -771,10 +771,10 @@ done:
 hid_t
 H5I_register(H5I_type_t type, const void *object, hbool_t app_ref)
 {
-    H5I_id_type_t *type_ptr  = NULL;            /* ptr to the type                  */
-    H5I_id_info_t *id_ptr    = NULL;            /* ptr to the new ID information    */
-    hid_t          new_id    = -1;              /* new ID                           */
-    hid_t          ret_value = H5I_INVALID_HID; /* return value             */
+    H5I_id_type_t *type_ptr  = NULL;            /* ptr to the type */
+    H5I_id_info_t *id_ptr    = NULL;            /* ptr to the new ID information */
+    hid_t          new_id    = -1;              /* new ID */
+    hid_t          ret_value = H5I_INVALID_HID; /* return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -833,9 +833,9 @@ done:
 herr_t
 H5I_register_using_existing_id(H5I_type_t type, void *object, hbool_t app_ref, hid_t existing_id)
 {
-    H5I_id_type_t *type_ptr;            /* ptr to the type                  */
-    H5I_id_info_t *id_ptr;              /* ptr to the new ID information    */
-    herr_t         ret_value = SUCCEED; /* return value                     */
+    H5I_id_type_t *type_ptr;            /* ptr to the type */
+    H5I_id_info_t *id_ptr;              /* ptr to the new ID information */
+    herr_t         ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -935,8 +935,8 @@ H5_GCC_DIAG_OFF("cast-qual")
 void *
 H5I_object(hid_t id)
 {
-    H5I_id_info_t *id_ptr;           /* Pointer to the new atom  */
-    void *         ret_value = NULL; /* Return value             */
+    H5I_id_info_t *id_ptr;           /* Pointer to the new atom */
+    void *         ret_value = NULL; /* Return value */
 
     FUNC_ENTER_NOAPI_NOERR
 
@@ -1002,8 +1002,8 @@ H5_GCC_DIAG_OFF("cast-qual")
 void *
 H5I_object_verify(hid_t id, H5I_type_t id_type)
 {
-    H5I_id_info_t *id_ptr    = NULL; /* Pointer to the new atom  */
-    void *         ret_value = NULL; /* Return value             */
+    H5I_id_info_t *id_ptr    = NULL; /* Pointer to the new atom */
+    void *         ret_value = NULL; /* Return value */
 
     FUNC_ENTER_NOAPI_NOERR
 
@@ -1366,7 +1366,7 @@ H5I_dec_ref(hid_t id)
      * file.  We have to close the dataset anyway. (SLU - 2010/9/7)
      */
     if (1 == id_ptr->count) {
-        H5I_id_type_t *type_ptr; /*ptr to the type    */
+        H5I_id_type_t *type_ptr; /* Pointer to the type */
 
         /* Get the ID's type */
         type_ptr = H5I_id_type_list_g[H5I_TYPE(id)];
@@ -2109,7 +2109,7 @@ herr_t
 H5I_iterate(H5I_type_t type, H5I_search_func_t func, void *udata, hbool_t app_ref)
 {
     H5I_id_type_t *type_ptr;            /* Pointer to the type  */
-    herr_t         ret_value = SUCCEED; /* Return value         */
+    herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -2160,8 +2160,8 @@ done:
 static H5I_id_info_t *
 H5I__find_id(hid_t id)
 {
-    H5I_type_t     type;             /*ID's type        */
-    H5I_id_type_t *type_ptr;         /*ptr to the type    */
+    H5I_type_t     type;             /* ID's type */
+    H5I_id_type_t *type_ptr;         /* Pointer to the type */
     H5I_id_info_t *ret_value = NULL; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
@@ -2337,8 +2337,8 @@ H5_GCC_DIAG_ON("cast-qual")
 herr_t
 H5I_find_id(const void *object, H5I_type_t type, hid_t *id)
 {
-    H5I_id_type_t *type_ptr;            /* Pointer to the type  */
-    herr_t         ret_value = SUCCEED; /* Return value         */
+    H5I_id_type_t *type_ptr;            /* Pointer to the type */
+    herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
