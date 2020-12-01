@@ -22,10 +22,11 @@ include $(top_srcdir)/config/commence.am
 AM_CPPFLAGS+=-I$(top_srcdir)/src -I$(top_srcdir)/tools/lib
 
 # These are our main targets, the tools
-bin_PROGRAMS=h5debug h5repart h5mkgrp h5clear
+bin_PROGRAMS=h5debug h5delete h5repart h5mkgrp h5clear
 
-# Add h5debug, h5repart, and h5mkgrp specific linker flags here
+# Add tool-specific linker flags here
 h5debug_LDFLAGS = $(LT_STATIC_EXEC) $(AM_LDFLAGS)
+h5delete_LDFLAGS = $(LT_STATIC_EXEC) $(AM_LDFLAGS)
 h5repart_LDFLAGS = $(LT_STATIC_EXEC) $(AM_LDFLAGS)
 h5mkgrp_LDFLAGS = $(LT_STATIC_EXEC) $(AM_LDFLAGS)
 h5clear_LDFLAGS = $(LT_STATIC_EXEC) $(AM_LDFLAGS)
