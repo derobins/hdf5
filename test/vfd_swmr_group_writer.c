@@ -12,7 +12,6 @@
  */
 
 #include <err.h>
-#include <libgen.h>
 #include <time.h>   /* nanosleep(2) */
 #include <unistd.h> /* getopt(3) */
 
@@ -86,7 +85,7 @@ state_init(state_t *s, int argc, char **argv)
 
     *s = ALL_HID_INITIALIZER;
     esnprintf(tfile, sizeof(tfile), "%s", argv[0]);
-    esnprintf(s->progname, sizeof(s->progname), "%s", basename(tfile));
+    esnprintf(s->progname, sizeof(s->progname), "%s", HDbasename(tfile));
 
     while ((ch = getopt(argc, argv, "SWa:bn:qu:")) != -1) {
         switch (ch) {

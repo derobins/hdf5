@@ -81,6 +81,15 @@
 #endif
 
 /*
+ * Needed for dirname and basename
+ */
+#ifndef __cplusplus
+#ifdef H5_HAVE_LIBGEN_H
+#include <libgen.h>
+#endif
+#endif
+
+/*
  * The `struct stat' data type for stat() and fstat(). This is a Posix file
  * but often apears on non-Posix systems also.  The `struct stat' is required
  * for hdf5 to compile, although only a few fields are actually used.
@@ -728,7 +737,10 @@ typedef struct {
 #endif /* HDatol */
 #ifndef HDatoll
 #define HDatoll(S) atoll(S)
-#endif /* HDatol */
+#endif /* HDatoll */
+#ifndef HDbasename
+#define HDbasename(P) basename(P)
+#endif /* HDbasename */
 #ifndef HDbind
 #define HDbind(A, B, C) bind((A), (B), (C)) /* mirror VFD */
 #endif                                      /* HDbind */
@@ -805,6 +817,9 @@ typedef struct {
 #define HDdifftime(X, Y) ((double)(X) - (double)(Y))
 #endif /* H5_HAVE_DIFFTIME */
 #endif /* HDdifftime */
+#ifndef HDdirname
+#define HDdirname(P) dirname(P)
+#endif /* HDdirname */
 #ifndef HDdiv
 #define HDdiv(X, Y) div(X, Y)
 #endif /* HDdiv */

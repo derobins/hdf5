@@ -12,7 +12,6 @@
  */
 
 #include <err.h>
-#include <libgen.h> /* basename(3) */
 #include <time.h>   /* nanosleep(2) */
 #include <unistd.h> /* getopt(3) */
 
@@ -223,7 +222,7 @@ main(int argc, char **argv)
     const char *    seedvar      = "H5_ZOO_STEP_SEED";
     bool            use_vfd_swmr = true;
     bool            print_estack = false;
-    const char *    progname     = basename(argv[0]);
+    const char *    progname     = HDbasename(argv[0]);
     const char *    personality  = strstr(progname, "vfd_swmr_zoo_");
     estack_state_t  es;
     char            step = 'b';

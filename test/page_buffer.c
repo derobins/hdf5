@@ -20,7 +20,6 @@
  *************************************************************/
 
 #include <err.h>
-#include <libgen.h>
 
 #include "h5test.h"
 
@@ -135,19 +134,19 @@ swmr_fapl_augment(hid_t fapl, const char *filename, uint32_t max_lag)
     const char *          bname, *dname;
     char *                tname[2];
 
-    if ((tname[0] = strdup(filename)) == NULL) {
+    if ((tname[0] = HDstrdup(filename)) == NULL) {
         HDfprintf(stderr, "temporary string allocation failed\n");
         return -1;
     }
-    if ((tname[1] = strdup(filename)) == NULL) {
+    if ((tname[1] = HDstrdup(filename)) == NULL) {
         HDfprintf(stderr, "temporary string allocation failed\n");
         return -1;
     }
-    dname = dirname(tname[0]);
-    bname = basename(tname[1]);
-    snprintf(config.md_file_path, sizeof(config.md_file_path), "%s/%s.shadow", dname, bname);
-    free(tname[0]);
-    free(tname[1]);
+    dname = HDdirname(tname[0]);
+    bname = HDbasename(tname[1]);
+    HDsnprintf(config.md_file_path, sizeof(config.md_file_path), "%s/%s.shadow", dname, bname);
+    HDfree(tname[0]);
+    HDfree(tname[1]);
 
     /* Enable VFD SWMR configuration */
     if (H5Pset_vfd_swmr_config(fapl, &config) < 0) {
