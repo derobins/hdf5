@@ -356,6 +356,23 @@ New Features
 
     Library:
     --------
+    - Removed empty stubs from ros3 and hdfs VFDs
+
+      The ros3 and hdfs VFDs have lock, unlock, write, and truncate
+      callbacks, even though they are read-only VFDs. These have been
+      removed. The check for a write callback in H5FD_register() has
+      also been removed.
+
+      (DER - 2021/01/07 - HDFFV-11202)
+
+    - Removed the check for a VFD write callback in H5FD_register()
+
+      In builds with asserts on, H5FD_register() would assert if a
+      VFD without a write callback was registered. Since we have
+      read-only VFDs now, this check has been removed.
+
+      (DER - 2021/01/07 - HDFFV-11202)
+
     - Replaced H5E_ATOM with H5E_ID in H5Epubgen.h
 
       The term "atom" is archaic and not in line with current HDF5 library
