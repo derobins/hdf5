@@ -277,7 +277,8 @@ H5FD_register(const void *_cls, size_t size, hbool_t app_ref)
     HDassert(cls->open && cls->close);
     HDassert(cls->get_eoa && cls->set_eoa);
     HDassert(cls->get_eof);
-    HDassert(cls->read && cls->write);
+    HDassert(cls->read);
+    /* No assert on write - some VFDs are read-only */
     for (type = H5FD_MEM_DEFAULT; type < H5FD_MEM_NTYPES; type++) {
         HDassert(cls->fl_map[type] >= H5FD_MEM_NOLIST && cls->fl_map[type] < H5FD_MEM_NTYPES);
     }
