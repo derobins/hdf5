@@ -11,10 +11,6 @@
  * help@hdfgroup.org.
  */
 
-#include <err.h>
-#include <time.h>   /* nanosleep(2) */
-#include <unistd.h> /* getopt(3) */
-
 #define H5C_FRIEND /*suppress error about including H5Cpkg   */
 #define H5F_FRIEND /*suppress error about including H5Fpkg   */
 
@@ -22,7 +18,6 @@
 
 #include "H5Cpkg.h"
 #include "H5Fpkg.h"
-// #include "H5Iprivate.h"
 #include "H5HGprivate.h"
 #include "H5VLprivate.h"
 
@@ -31,16 +26,19 @@
 
 enum _step { CREATE = 0, LENGTHEN, SHORTEN, DELETE, NSTEPS } step_t;
 
-static const hid_t badhid               = H5I_INVALID_HID; // abbreviate
-static bool        caught_out_of_bounds = false;
+static hbool_t caught_out_of_bounds = FALSE;
 
 static void
 write_vl_dset(hid_t dset, hid_t type, hid_t space, char *data)
 {
-    if (H5Dwrite(dset, type, space, space, H5P_DEFAULT, &data) < 0)
-        errx(EXIT_FAILURE, "%s: H5Dwrite", __func__);
-    if (H5Dflush(dset) < 0)
-        errx(EXIT_FAILURE, "%s: H5Dflush", __func__);
+    if (H5Dwrite(dset, type, space, space, H5P_DEFAULT, &data) < 0) {
+        HDfprintf(stderr, "%s: H5Dwrite\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
+    if (H5Dflush(dset) < 0) {
+        HDfprintf(stderr, "%s: H5Dflush\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 }
 
 #if 0
@@ -53,14 +51,20 @@ initialize_dset(hid_t file, hid_t type, hid_t space, const char *name,
     dset = H5Dcreate2(file, name, type, space, H5P_DEFAULT, H5P_DEFAULT,
         H5P_DEFAULT);
 
-    if (dset == badhid)
-        errx(EXIT_FAILURE, "H5Dcreate2");
+    if (dset == H5I_INVALID_HID) {
+        HDfprintf(stderr, "H5Dcreate2\n");
+        HDexit(EXIT_FAILURE);
+    }
 
-    if (H5Dwrite(dset, type, H5S_ALL, H5S_ALL, H5P_DEFAULT, data) < 0)
-        errx(EXIT_FAILURE, "H5Dwrite");
+    if (H5Dwrite(dset, type, H5S_ALL, H5S_ALL, H5P_DEFAULT, data) < 0) {
+        HDfprintf(stderr, "H5Dwrite\n");
+        HDexit(EXIT_FAILURE);
+    }
 
-    if (H5Dflush(dset) < 0)
-        errx(EXIT_FAILURE, "%s: H5Dflush", __func__);
+    if (H5Dflush(dset) < 0) {
+        HDfprintf(stderr, "%s: H5Dflush\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 
     return dset;
 }
@@ -68,10 +72,14 @@ initialize_dset(hid_t file, hid_t type, hid_t space, const char *name,
 static void
 rewrite_dset(hid_t dset, hid_t type, char *data)
 {
-    if (H5Dwrite(dset, type, H5S_ALL, H5S_ALL, H5P_DEFAULT, data) < 0)
-        errx(EXIT_FAILURE, "%s: H5Dwrite", __func__);
-    if (H5Dflush(dset) < 0)
-        errx(EXIT_FAILURE, "%s: H5Dflush", __func__);
+    if (H5Dwrite(dset, type, H5S_ALL, H5S_ALL, H5P_DEFAULT, data) < 0) {
+        HDfprintf(stderr, "%s: H5Dwrite\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
+    if (H5Dflush(dset) < 0) {
+        HDfprintf(stderr, "%s: H5Dflush\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 }
 #endif
 
@@ -81,9 +89,6 @@ create_vl_dset(hid_t file, hid_t type, hid_t space, const char *name)
     hid_t dset;
 
     dset = H5Dcreate2(file, name, type, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-
-    if (dset == badhid)
-        errx(EXIT_FAILURE, "H5Dcreate2");
 
     return dset;
 }
@@ -109,25 +114,25 @@ print_cache_hits(H5C_t H5_ATTR_UNUSED *cache)
 static void
 usage(const char *progname)
 {
-    fprintf(stderr, "usage: %s [-W] [-V]\n", progname);
-    fprintf(stderr, "\n  -W: do not wait for SIGINT or SIGUSR1\n");
-    fprintf(stderr, "\n  -S: do not use VFD SWMR\n");
-    fprintf(stderr, "  -f: use fixed-length string\n");
-    fprintf(stderr, "      (default: variable-length string)\n");
-    fprintf(stderr, "  -n: number of test steps to perform\n");
-    fprintf(stderr, "  -q: be quiet: few/no progress messages\n");
-    fprintf(stderr, "  -t (oob|null): select out-of-bounds or NULL test\n");
-    exit(EXIT_FAILURE);
+    HDfprintf(stderr, "usage: %s [-W] [-V]\n", progname);
+    HDfprintf(stderr, "\n  -W: do not wait for SIGINT or SIGUSR1\n");
+    HDfprintf(stderr, "\n  -S: do not use VFD SWMR\n");
+    HDfprintf(stderr, "  -f: use fixed-length string\n");
+    HDfprintf(stderr, "      (default: variable-length string)\n");
+    HDfprintf(stderr, "  -n: number of test steps to perform\n");
+    HDfprintf(stderr, "  -q: be quiet: few/no progress messages\n");
+    HDfprintf(stderr, "  -t (oob|null): select out-of-bounds or NULL test\n");
+    HDexit(EXIT_FAILURE);
 }
 
 bool
 H5HG_trap(const char *reason)
 {
-    if (strcmp(reason, "out of bounds") == 0) {
-        caught_out_of_bounds = true;
-        return false;
+    if (HDstrcmp(reason, "out of bounds") == 0) {
+        caught_out_of_bounds = TRUE;
+        return FALSE;
     }
-    return true;
+    return TRUE;
 }
 
 int
@@ -141,37 +146,37 @@ main(int argc, char **argv)
     H5C_t *               cache;
     sigset_t              oldsigs;
     herr_t                ret;
-    bool                  variable = true, wait_for_signal = true;
+    hbool_t               variable = TRUE, wait_for_signal = TRUE;
     const hsize_t         dims = 1;
     int                   ch, i, ntimes = 100;
     unsigned long         tmp;
     char *                end;
-    bool                  use_vfd_swmr = true;
+    hbool_t               use_vfd_swmr = TRUE;
     const struct timespec delay        = {.tv_sec = 0, .tv_nsec = 1000 * 1000 * 1000 / 10};
     testsel_t             sel          = TEST_NONE;
 
-    assert(H5T_C_S1 != badhid);
+    HDassert(H5T_C_S1 != H5I_INVALID_HID);
 
     while ((ch = getopt(argc, argv, "SWfn:qt:")) != -1) {
         switch (ch) {
             case 'S':
-                use_vfd_swmr = false;
+                use_vfd_swmr = FALSE;
                 break;
             case 'W':
-                wait_for_signal = false;
+                wait_for_signal = FALSE;
                 break;
             case 'f':
-                variable = false;
+                variable = FALSE;
                 break;
             case 'n':
                 errno = 0;
-                tmp   = strtoul(optarg, &end, 0);
+                tmp   = HDstrtoul(optarg, &end, 0);
                 if (end == optarg || *end != '\0')
-                    errx(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
+                    goto error;
                 else if (errno != 0)
-                    err(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
+                    goto error;
                 else if (tmp > INT_MAX)
-                    errx(EXIT_FAILURE, "`-n` argument `%lu` too large", tmp);
+                    goto error;
                 ntimes = (int)tmp;
                 break;
             case 'q':
@@ -194,48 +199,48 @@ main(int argc, char **argv)
     argc -= optind;
 
     if (argc > 0)
-        errx(EXIT_FAILURE, "unexpected command-line arguments");
+        goto error;
 
-    fapl = vfd_swmr_create_fapl(true, sel == TEST_OOB, use_vfd_swmr, "./vlstr-shadow");
+    fapl = vfd_swmr_create_fapl(TRUE, sel == TEST_OOB, use_vfd_swmr, "./vlstr-shadow");
     if (fapl < 0)
-        errx(EXIT_FAILURE, "vfd_swmr_create_fapl");
+        goto error;
 
     if ((fcpl = H5Pcreate(H5P_FILE_CREATE)) < 0)
-        errx(EXIT_FAILURE, "H5Pcreate");
+        goto error;
 
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, 1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, 1);
     if (ret < 0)
-        errx(EXIT_FAILURE, "H5Pset_file_space_strategy");
+        goto error;
 
     fid = H5Fcreate("vfd_swmr_vlstr.h5", H5F_ACC_TRUNC, fcpl, fapl);
 
     /* Create the VL string datatype and a scalar dataspace, or a
      * fixed-length string datatype and a simple dataspace.
      */
-    if ((type = H5Tcopy(H5T_C_S1)) == badhid)
-        errx(EXIT_FAILURE, "H5Tcopy");
+    if ((type = H5Tcopy(H5T_C_S1)) == H5I_INVALID_HID)
+        goto error;
 
     if (!variable) {
         if (H5Tset_size(type, 32) < 0)
-            errx(EXIT_FAILURE, "H5Tset_size");
+            goto error;
         space = H5Screate_simple(1, &dims, NULL);
     }
     else {
         if (H5Tset_size(type, H5T_VARIABLE) < 0)
-            errx(EXIT_FAILURE, "H5Tset_size");
+            goto error;
         space = H5Screate(H5S_SCALAR);
     }
 
-    if (space == badhid)
-        errx(EXIT_FAILURE, "H5Screate");
+    if (space == H5I_INVALID_HID)
+        goto error;
 
     if ((f = H5VL_object_verify(fid, H5I_FILE)) == NULL)
-        errx(EXIT_FAILURE, "H5VL_object_verify");
+        goto error;
 
     cache = f->shared->cache;
 
-    if (fid == badhid)
-        errx(EXIT_FAILURE, "H5Fcreate");
+    if (fid == H5I_INVALID_HID)
+        goto error;
 
     block_signals(&oldsigs);
 
@@ -253,36 +258,36 @@ main(int argc, char **argv)
         dbgf(2, "iteration %d which %d step %d seq %d\n", i, which, step, seq);
         switch (step) {
             case CREATE:
-                (void)snprintf(name[which], sizeof(name[which]), "dset-%d", which);
-                (void)snprintf(content[which], sizeof(content[which]), "content %d seq %d short", which, seq);
+                (void)HDsnprintf(name[which], sizeof(name[which]), "dset-%d", which);
+                (void)HDsnprintf(content[which], sizeof(content[which]), "content %d seq %d short", which, seq);
                 dset[which] = create_vl_dset(fid, type, space, name[which]);
                 write_vl_dset(dset[which], type, space, content[which]);
                 break;
             case LENGTHEN:
-                (void)snprintf(content[which], sizeof(content[which]),
+                (void)HDsnprintf(content[which], sizeof(content[which]),
                                "content %d seq %d long long long long long long long long", which, seq);
                 write_vl_dset(dset[which], type, space, content[which]);
                 break;
             case SHORTEN:
-                (void)snprintf(content[which], sizeof(content[which]),
+                (void)HDsnprintf(content[which], sizeof(content[which]),
                                "content %d seq %d medium medium medium", which, seq);
                 write_vl_dset(dset[which], type, space, content[which]);
                 break;
             case DELETE:
                 if (H5Dclose(dset[which]) < 0)
-                    errx(EXIT_FAILURE, "H5Dclose");
+                    goto error;
                 if (H5Ldelete(fid, name[which], H5P_DEFAULT) < 0) {
-                    errx(EXIT_FAILURE, "%s: H5Ldelete(, \"%s\", ) failed", __func__, name[which]);
+                    goto error;
                 }
                 break;
             default:
-                errx(EXIT_FAILURE, "%s: unknown step %d", __func__, step);
+                goto error;
         }
         if (caught_out_of_bounds) {
-            fprintf(stderr, "caught out of bounds\n");
+            HDfprintf(stderr, "caught out of bounds\n");
             break;
         }
-        nanosleep(&delay, NULL);
+        HDnanosleep(&delay, NULL);
     }
 
     if (use_vfd_swmr && wait_for_signal)
@@ -291,19 +296,22 @@ main(int argc, char **argv)
     restore_signals(&oldsigs);
 
     if (H5Pclose(fapl) < 0)
-        errx(EXIT_FAILURE, "H5Pclose(fapl)");
+        goto error;
 
     if (H5Pclose(fcpl) < 0)
-        errx(EXIT_FAILURE, "H5Pclose(fcpl)");
+        goto error;
 
     if (H5Tclose(type) < 0)
-        errx(EXIT_FAILURE, "H5Tclose");
+        goto error;
 
     if (H5Sclose(space) < 0)
-        errx(EXIT_FAILURE, "H5Sclose");
+        goto error;
 
     if (H5Fclose(fid) < 0)
-        errx(EXIT_FAILURE, "H5Fclose");
+        goto error;
 
     return EXIT_SUCCESS;
+
+error:
+    return EXIT_FAILURE;
 }

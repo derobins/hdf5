@@ -28,8 +28,6 @@
 /***********/
 /* Headers */
 /***********/
-#include <err.h>
-#include <signal.h>
 
 #include "h5test.h"
 #include "vfd_swmr_common.h"

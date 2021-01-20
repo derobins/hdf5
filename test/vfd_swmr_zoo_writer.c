@@ -11,10 +11,6 @@
  * help@hdfgroup.org.
  */
 
-#include <err.h>
-#include <time.h>   /* nanosleep(2) */
-#include <unistd.h> /* getopt(3) */
-
 #define H5C_FRIEND /* suppress error about including H5Cpkg */
 #define H5F_FRIEND /* suppress error about including H5Fpkg */
 
@@ -24,7 +20,6 @@
 #include "H5retry_private.h"
 #include "H5Cpkg.h"
 #include "H5Fpkg.h"
-// #include "H5Iprivate.h"
 #include "H5HGprivate.h"
 #include "H5VLprivate.h"
 
@@ -55,8 +50,7 @@ typedef struct _tick_stats {
 
 static H5F_vfd_swmr_config_t swmr_config;
 static tick_stats_t *        tick_stats = NULL;
-static const hid_t           badhid     = H5I_INVALID_HID;
-static bool                  writer;
+static hbool_t                  writer;
 
 static void
 #ifndef H5C_COLLECT_CACHE_STATS
@@ -101,27 +95,29 @@ usage(const char *progname)
 }
 
 bool
-vfd_swmr_writer_may_increase_tick_to(uint64_t new_tick, bool wait_for_reader)
+vfd_swmr_writer_may_increase_tick_to(uint64_t new_tick, hbool_t wait_for_reader)
 {
     static int     fd = -1;
     shared_ticks_t shared;
     ssize_t        nread;
     h5_retry_t     retry;
-    bool           do_try;
+    hbool_t           do_try;
 
     dbgf(3, "%s: enter\n", __func__);
 
     if (fd == -1) {
-        fd = open("./shared_tick_num", O_RDONLY);
+        fd = HDopen("./shared_tick_num", O_RDONLY);
         if (fd == -1) {
-            warn("%s: open", __func__); // TBD ratelimit/silence this warning
-            return true;
+            HDfprintf(stderr, "%s: open\n", __func__); // TBD ratelimit/silence this warning
+            return TRUE;
         }
-        assert(tick_stats == NULL);
+        HDassert(tick_stats == NULL);
         tick_stats = calloc(1, sizeof(*tick_stats) +
                                    (swmr_config.max_lag - 1) * sizeof(tick_stats->writer_lead_reader_by[0]));
-        if (tick_stats == NULL)
-            err(EXIT_FAILURE, "%s: calloc", __func__);
+        if (tick_stats == NULL) {
+            HDfprintf(stderr, "%s: calloc", __func__);
+            HDexit(EXIT_FAILURE);
+        }
     }
 
     tick_stats->writer_tried_increase++;
@@ -131,36 +127,42 @@ vfd_swmr_writer_may_increase_tick_to(uint64_t new_tick, bool wait_for_reader)
 
         tick_stats->writer_read_shared_file++;
 
-        if ((nread = pread(fd, &shared, sizeof(shared), 0)) == -1)
-            err(EXIT_FAILURE, "%s: pread", __func__);
+        if ((nread = HDpread(fd, &shared, sizeof(shared), 0)) == -1) {
+            HDfprintf(stderr, "%s: pread\n", __func__);
+            HDexit(EXIT_FAILURE);
+        }
 
-        if (nread != sizeof(shared))
-            errx(EXIT_FAILURE, "%s: pread", __func__);
+        if (nread != sizeof(shared)) {
+            HDfprintf(stderr, "%s: pread\n", __func__);
+            HDexit(EXIT_FAILURE);
+        }
 
         // TBD convert endianness
 
         if (shared.reader_tick == 0) {
             tick_stats->reader_tick_was_zero++;
-            return true;
+            return TRUE;
         }
 
         if (new_tick < shared.reader_tick) {
             tick_stats->reader_tick_lead_writer++;
-            return true;
+            return TRUE;
         }
         if (new_tick <= shared.reader_tick + swmr_config.max_lag - 1) {
             uint64_t lead = new_tick - shared.reader_tick;
-            assert(lead <= swmr_config.max_lag - 1);
+            HDassert(lead <= swmr_config.max_lag - 1);
             tick_stats->writer_lead_reader_by[lead]++;
-            return true;
+            return TRUE;
         }
     }
-    if (wait_for_reader && !do_try)
-        errx(EXIT_FAILURE, "%s: timed out waiting for reader", __func__);
+    if (wait_for_reader && !do_try) {
+        HDfprintf(stderr, "%s: timed out waiting for reader\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 
     tick_stats->writer_aborted_increase++;
 
-    return false;
+    return FALSE;
 }
 
 void
@@ -175,26 +177,34 @@ vfd_swmr_reader_did_increase_tick_to(uint64_t new_tick)
     if (fd == -1) {
         // TBD create a temporary file, here, and move it to its final path
         // after writing it.
-        fd = open("./shared_tick_num", O_RDWR | O_CREAT, 0600);
-        if (fd == -1)
-            err(EXIT_FAILURE, "%s: open", __func__);
+        fd = HDopen("./shared_tick_num", O_RDWR | O_CREAT, 0600);
+        if (fd == -1) {
+            HDfprintf(stderr, "%s: open\n", __func__);
+            HDexit(EXIT_FAILURE);
+        }
     }
 
     shared.reader_tick = new_tick;
 
     // TBD convert endianness
 
-    if ((nwritten = pwrite(fd, &shared, sizeof(shared), 0)) == -1)
-        errx(EXIT_FAILURE, "%s: pwrite", __func__);
+    if ((nwritten = HDpwrite(fd, &shared, sizeof(shared), 0)) == -1) {
+        HDfprintf(stderr, "%s: pwrite\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 
-    if (nwritten != sizeof(shared))
-        errx(EXIT_FAILURE, "%s: pwrite", __func__);
+    if (nwritten != sizeof(shared)) {
+        HDfprintf(stderr, "%s: pwrite\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 
     if (new_tick == 0) {
-        if (unlink("./shared_tick_num") == -1)
-            warn("%s: unlink", __func__);
-        if (close(fd) == -1)
-            err(EXIT_FAILURE, "%s: close", __func__);
+        if (HDunlink("./shared_tick_num") == -1)
+            HDfprintf(stderr, "%s: unlink\n", __func__);
+        if (HDclose(fd) == -1) {
+            HDfprintf(stderr, "%s: close", __func__);
+            HDexit(EXIT_FAILURE);
+        }
         fd = -1;
     }
 }
@@ -208,31 +218,32 @@ main(int argc, char **argv)
     sigset_t        oldsigs;
     herr_t          ret;
     zoo_config_t    config      = {.proc_num        = 0,
-                           .skip_compact    = false,
-                           .skip_varlen     = true,
+                           .skip_compact    = FALSE,
+                           .skip_varlen     = TRUE,
                            .max_pause_msecs = 0,
                            .msgival         = {.tv_sec = 5, .tv_nsec = 0}};
     struct timespec lastmsgtime = {.tv_sec = 0, .tv_nsec = 0};
-    bool            wait_for_signal;
+    hbool_t            wait_for_signal;
     int             ch;
     char            vector[8];
     unsigned        seed;
     unsigned long   tmpl;
     char *          end, *ostate;
     const char *    seedvar      = "H5_ZOO_STEP_SEED";
-    bool            use_vfd_swmr = true;
-    bool            print_estack = false;
+    hbool_t            use_vfd_swmr = TRUE;
+    hbool_t            print_estack = FALSE;
     const char *    progname     = HDbasename(argv[0]);
     const char *    personality  = strstr(progname, "vfd_swmr_zoo_");
     estack_state_t  es;
     char            step = 'b';
 
     if (personality != NULL && strcmp(personality, "vfd_swmr_zoo_writer") == 0)
-        writer = wait_for_signal = true;
+        writer = wait_for_signal = TRUE;
     else if (personality != NULL && strcmp(personality, "vfd_swmr_zoo_reader") == 0)
-        writer = false;
+        writer = FALSE;
     else {
-        errx(EXIT_FAILURE, "unknown personality, expected vfd_swmr_zoo_{reader,writer}");
+        HDfprintf(stderr, "unknown personality, expected vfd_swmr_zoo_{reader,writer}\n");
+        HDexit(EXIT_FAILURE);
     }
 
     if (writer)
@@ -241,29 +252,29 @@ main(int argc, char **argv)
     while ((ch = getopt(argc, argv, "CSWaem:qv")) != -1) {
         switch (ch) {
             case 'C':
-                config.skip_compact = true;
+                config.skip_compact = TRUE;
                 break;
             case 'S':
-                use_vfd_swmr = false;
+                use_vfd_swmr = FALSE;
                 break;
             case 'W':
-                wait_for_signal = false;
+                wait_for_signal = FALSE;
                 break;
             case 'a':
-                config.skip_varlen = false;
+                config.skip_varlen = FALSE;
                 break;
             case 'e':
-                print_estack = true;
+                print_estack = TRUE;
                 break;
             case 'm':
                 errno = 0;
-                tmpl  = strtoul(optarg, &end, 0);
+                tmpl  = HDstrtoul(optarg, &end, 0);
                 if (end == optarg || *end != '\0')
-                    errx(EXIT_FAILURE, "couldn't parse `-m` argument `%s`", optarg);
+                    HDexit(EXIT_FAILURE);
                 else if (errno != 0)
-                    err(EXIT_FAILURE, "couldn't parse `-m` argument `%s`", optarg);
+                    HDexit(EXIT_FAILURE);
                 else if (tmpl > UINT_MAX)
-                    errx(EXIT_FAILURE, "`-m` argument `%lu` too large", tmpl);
+                    HDexit(EXIT_FAILURE);
                 config.max_pause_msecs = (unsigned)tmpl;
                 break;
             case 'q':
@@ -281,37 +292,37 @@ main(int argc, char **argv)
     argc -= optind;
 
     if (argc > 0)
-        errx(EXIT_FAILURE, "unexpected command-line arguments");
+        HDexit(EXIT_FAILURE);
 
-    fapl = vfd_swmr_create_fapl(writer, true, use_vfd_swmr, "./zoo-shadow");
+    fapl = vfd_swmr_create_fapl(writer, TRUE, use_vfd_swmr, "./zoo-shadow");
 
     if (use_vfd_swmr && H5Pget_vfd_swmr_config(fapl, &swmr_config) < 0)
-        errx(EXIT_FAILURE, "H5Pget_vfd_swmr_config");
+        HDexit(EXIT_FAILURE);
 
     if (fapl < 0)
-        errx(EXIT_FAILURE, "vfd_swmr_create_fapl");
+        HDexit(EXIT_FAILURE);
 
     if (H5Pset_libver_bounds(fapl, H5F_LIBVER_EARLIEST, H5F_LIBVER_LATEST) < 0) {
-        errx(EXIT_FAILURE, "%s.%d: H5Pset_libver_bounds", __func__, __LINE__);
+        HDexit(EXIT_FAILURE);
     }
 
     if ((fcpl = H5Pcreate(H5P_FILE_CREATE)) < 0)
-        errx(EXIT_FAILURE, "H5Pcreate");
+        HDexit(EXIT_FAILURE);
 
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, 1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, 1);
     if (ret < 0)
-        errx(EXIT_FAILURE, "H5Pset_file_space_strategy");
+        HDexit(EXIT_FAILURE);
 
     if (writer)
         fid = H5Fcreate("vfd_swmr_zoo.h5", H5F_ACC_TRUNC, fcpl, fapl);
     else
         fid = H5Fopen("vfd_swmr_zoo.h5", H5F_ACC_RDONLY, fapl);
 
-    if (fid == badhid)
-        errx(EXIT_FAILURE, writer ? "H5Fcreate" : "H5Fopen");
+    if (fid == H5I_INVALID_HID)
+        HDexit(EXIT_FAILURE);
 
     if ((f = H5VL_object_verify(fid, H5I_FILE)) == NULL)
-        errx(EXIT_FAILURE, "H5VL_object_verify");
+        HDexit(EXIT_FAILURE);
 
     cache = f->shared->cache;
 
@@ -328,7 +339,8 @@ main(int argc, char **argv)
         /* get seed from environment or else from time(3) */
         switch (fetch_env_ulong(seedvar, UINT_MAX, &tmpl)) {
             case -1:
-                errx(EXIT_FAILURE, "%s: fetch_env_ulong", __func__);
+                HDfprintf(stderr, "%s: fetch_env_ulong\n", __func__);
+                HDexit(EXIT_FAILURE);
             case 0:
                 seed = (unsigned int)time(NULL);
                 break;
@@ -341,23 +353,33 @@ main(int argc, char **argv)
 
         ostate = initstate(seed, vector, _arraycount(vector));
 
-        if (!create_zoo(fid, ".", &lastmsgtime, config))
-            errx(EXIT_FAILURE, "create_zoo didn't pass self-check");
+        if (!create_zoo(fid, ".", &lastmsgtime, config)) {
+            HDfprintf(stderr, "create_zoo didn't pass self-check\n");
+            HDexit(EXIT_FAILURE);
+        }
 
         /* Avoid deadlock: flush the file before waiting for the reader's
          * message.
          */
-        if (H5Fflush(fid, H5F_SCOPE_GLOBAL) < 0)
-            errx(EXIT_FAILURE, "%s: H5Fflush failed", __func__);
+        if (H5Fflush(fid, H5F_SCOPE_GLOBAL) < 0) {
+            HDfprintf(stderr, "%s: H5Fflush failed\n", __func__);
+            HDexit(EXIT_FAILURE);
+        }
 
-        if (read(STDIN_FILENO, &step, sizeof(step)) == -1)
-            err(EXIT_FAILURE, "read");
+        if (HDread(STDIN_FILENO, &step, sizeof(step)) == -1) {
+            HDfprintf(stderr, "read\n");
+            HDexit(EXIT_FAILURE);
+        }
 
-        if (step != 'b')
-            errx(EXIT_FAILURE, "expected 'b' read '%c'", step);
+        if (step != 'b') {
+            HDfprintf(stderr, "expected 'b' read '%c'\n", step);
+            HDexit(EXIT_FAILURE);
+        }
 
-        if (!delete_zoo(fid, ".", &lastmsgtime, config))
-            errx(EXIT_FAILURE, "delete_zoo failed");
+        if (!delete_zoo(fid, ".", &lastmsgtime, config)) {
+            HDfprintf(stderr, "delete_zoo failed\n");
+            HDexit(EXIT_FAILURE);
+        }
         (void)setstate(ostate);
     }
     else {
@@ -366,8 +388,10 @@ main(int argc, char **argv)
         while (!validate_zoo(fid, ".", &lastmsgtime, config))
             ;
 
-        if (write(STDOUT_FILENO, &step, sizeof(step)) == -1)
-            err(EXIT_FAILURE, "write");
+        if (HDwrite(STDOUT_FILENO, &step, sizeof(step)) == -1) {
+            HDfprintf(stderr, "write\n");
+            HDexit(EXIT_FAILURE);
+        }
         while (!validate_deleted_zoo(fid, ".", &lastmsgtime, config))
             ;
     }
@@ -392,13 +416,13 @@ main(int argc, char **argv)
     }
 
     if (H5Pclose(fapl) < 0)
-        errx(EXIT_FAILURE, "H5Pclose(fapl)");
+        HDexit(EXIT_FAILURE);
 
     if (H5Pclose(fcpl) < 0)
-        errx(EXIT_FAILURE, "H5Pclose(fcpl)");
+        HDexit(EXIT_FAILURE);
 
     if (H5Fclose(fid) < 0)
-        errx(EXIT_FAILURE, "H5Fclose");
+        HDexit(EXIT_FAILURE);
 
     if (wait_for_signal)
         restore_signals(&oldsigs);

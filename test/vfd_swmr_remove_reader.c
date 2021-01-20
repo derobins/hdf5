@@ -27,9 +27,6 @@
 /* Headers */
 /***********/
 
-#include <err.h>    /* errx(3) */
-#include <stdlib.h> /* EXIT_FAILURE */
-
 #include "h5test.h"
 #include "vfd_swmr_common.h"
 
@@ -233,10 +230,10 @@ read_records(const char *filename, unsigned verbose, unsigned long nseconds, uns
     HDmemset(&record, 0, sizeof(record));
 
     if ((dapl = H5Pcreate(H5P_DATASET_ACCESS)) < 0)
-        errx(EXIT_FAILURE, "%s.%d: H5Pcreate failed", __func__, __LINE__);
+        goto error;
 
     if (H5Pset_chunk_cache(dapl, H5D_CHUNK_CACHE_NSLOTS_DEFAULT, 0, H5D_CHUNK_CACHE_W0_DEFAULT) < 0)
-        errx(EXIT_FAILURE, "H5Pset_chunk_cache failed");
+        goto error;
 
     /* Emit informational message */
     if (verbose)

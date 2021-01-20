@@ -66,8 +66,6 @@
  */
 
 #include <err.h>
-#include <time.h>   /* nanosleep(2) */
-#include <unistd.h> /* getopt(3) */
 
 #define H5C_FRIEND /*suppress error about including H5Cpkg   */
 #define H5F_FRIEND /*suppress error about including H5Fpkg   */
@@ -76,7 +74,6 @@
 
 #include "H5Cpkg.h"
 #include "H5Fpkg.h"
-// #include "H5Iprivate.h"
 #include "H5HGprivate.h"
 #include "H5VLprivate.h"
 
@@ -127,11 +124,11 @@ typedef struct {
     unsigned int cols, rows;
     unsigned int asteps;
     unsigned int nsteps;
-    bool         two_dee;
-    bool         wait_for_signal;
+    hbool_t         two_dee;
+    hbool_t         wait_for_signal;
     enum { vds_off, vds_single, vds_multi } vds;
-    bool    use_vfd_swmr;
-    bool    writer;
+    hbool_t    use_vfd_swmr;
+    hbool_t    writer;
     hsize_t chunk_dims[RANK];
     hsize_t one_dee_max_dims[RANK];
 } state_t;
@@ -151,11 +148,11 @@ state_initializer(void)
                      .asteps           = 10,
                      .nsteps           = 100,
                      .filename         = {"", "", "", ""},
-                     .two_dee          = false,
-                     .wait_for_signal  = true,
+                     .two_dee          = FALSE,
+                     .wait_for_signal  = TRUE,
                      .vds              = vds_off,
-                     .use_vfd_swmr     = true,
-                     .writer           = true,
+                     .use_vfd_swmr     = TRUE,
+                     .writer           = TRUE,
                      .one_dee_max_dims = {ROWS, H5S_UNLIMITED},
                      .chunk_dims       = {ROWS, COLS},
                      .update_interval =
@@ -164,14 +161,12 @@ state_initializer(void)
 
 static void state_init(state_t *, int, char **);
 
-static const hid_t badhid = H5I_INVALID_HID;
-
 static const hsize_t two_dee_max_dims[RANK] = {H5S_UNLIMITED, H5S_UNLIMITED};
 
 static uint32_t
 matget(const mat_t *mat, unsigned i, unsigned j)
 {
-    assert(i < mat->rows && j < mat->cols);
+    HDassert(i < mat->rows && j < mat->cols);
 
     return mat->elt[i * mat->cols + j];
 }
@@ -179,7 +174,7 @@ matget(const mat_t *mat, unsigned i, unsigned j)
 static void
 matset(mat_t *mat, unsigned i, unsigned j, uint32_t v)
 {
-    assert(i < mat->rows && j < mat->cols);
+    HDassert(i < mat->rows && j < mat->cols);
 
     mat->elt[i * mat->cols + j] = v;
 }
@@ -189,10 +184,10 @@ newmat(unsigned rows, unsigned cols)
 {
     mat_t *mat;
 
-    mat = malloc(sizeof(*mat) + (rows * cols - 1) * sizeof(mat->elt[0]));
+    mat = HDmalloc(sizeof(*mat) + (rows * cols - 1) * sizeof(mat->elt[0]));
 
     if (mat == NULL)
-        err(EXIT_FAILURE, "%s: malloc", __func__);
+        HDexit(EXIT_FAILURE);
 
     mat->rows = rows;
     mat->cols = cols;
@@ -203,7 +198,7 @@ newmat(unsigned rows, unsigned cols)
 static void
 usage(const char *progname)
 {
-    fprintf(stderr,
+    HDfprintf(stderr,
             "usage: %s [-S] [-W] [-a steps] [-b] [-c cols]\n"
             "    [-d dims]\n"
             "    [-n iterations] [-r rows] [-s datasets]\n"
@@ -228,7 +223,7 @@ usage(const char *progname)
             "                      to %s.h5\n"
             "\n",
             progname, progname);
-    exit(EXIT_FAILURE);
+    HDexit(EXIT_FAILURE);
 }
 
 static void
@@ -238,11 +233,14 @@ make_quadrant_dataspace(state_t *s, quadrant_t *q)
                                 s->two_dee ? two_dee_max_dims : s->one_dee_max_dims);
 
     if (q->space < 0) {
-        errx(EXIT_FAILURE, "%s.%d: H5Screate_simple failed", __func__, __LINE__);
+        HDfprintf(stderr, "%s.%d: H5Screate_simple failed\n", __func__, __LINE__);
+        HDexit(EXIT_FAILURE);
     }
 
-    if (H5Sselect_hyperslab(q->space, H5S_SELECT_SET, q->start, q->stride, q->count, q->block) < 0)
-        errx(EXIT_FAILURE, "%s: H5Sselect_hyperslab failed", __func__);
+    if (H5Sselect_hyperslab(q->space, H5S_SELECT_SET, q->start, q->stride, q->count, q->block) < 0) {
+        HDfprintf(stderr, "%s: H5Sselect_hyperslab failed\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 }
 
 static void
@@ -269,22 +267,23 @@ state_init(state_t *s, int argc, char **argv)
                 s->vds = vds_multi;
                 break;
             case 'S':
-                s->use_vfd_swmr = false;
+                s->use_vfd_swmr = FALSE;
                 break;
             case 'V':
                 s->vds = vds_single;
                 break;
             case 'W':
-                s->wait_for_signal = false;
+                s->wait_for_signal = FALSE;
                 break;
             case 'd':
                 if (strcmp(optarg, "1") == 0 || strcmp(optarg, "one") == 0)
-                    s->two_dee = false;
+                    s->two_dee = FALSE;
                 else if (strcmp(optarg, "2") == 0 || strcmp(optarg, "two") == 0 ||
                          strcmp(optarg, "both") == 0)
-                    s->two_dee = true;
+                    s->two_dee = TRUE;
                 else {
-                    errx(EXIT_FAILURE, "bad -d argument \"%s\"", optarg);
+                    HDfprintf(stderr, "bad -d argument \"%s\"\n", optarg);
+                    HDexit(EXIT_FAILURE);
                 }
                 break;
             case 'a':
@@ -446,8 +445,8 @@ state_init(state_t *s, int argc, char **argv)
         err(EXIT_FAILURE, "could not allocate quadrant dataset handles");
 
     for (i = 0; i < s->ndatasets; i++) {
-        s->dataset[i]    = badhid;
-        s->sources[i].ul = s->sources[i].ur = s->sources[i].bl = s->sources[i].br = badhid;
+        s->dataset[i]    = H5I_INVALID_HID;
+        s->sources[i].ul = s->sources[i].ur = s->sources[i].bl = s->sources[i].br = H5I_INVALID_HID;
     }
 
     s->memspace = H5Screate_simple(RANK, s->chunk_dims, NULL);
@@ -471,9 +470,9 @@ state_init(state_t *s, int argc, char **argv)
     personality = strstr(s->progname, "vfd_swmr_bigset_");
 
     if (personality != NULL && strcmp(personality, "vfd_swmr_bigset_writer") == 0)
-        s->writer = true;
+        s->writer = TRUE;
     else if (personality != NULL && strcmp(personality, "vfd_swmr_bigset_reader") == 0)
-        s->writer = false;
+        s->writer = FALSE;
     else {
         errx(EXIT_FAILURE, "unknown personality, expected vfd_swmr_bigset_{reader,writer}");
     }
@@ -496,7 +495,7 @@ state_destroy(state_t *s)
     if (H5Pclose(s->dapl) < 0)
         errx(EXIT_FAILURE, "H5Pclose(fapl)");
 
-    s->dapl = badhid;
+    s->dapl = H5I_INVALID_HID;
 
     if (s->vds != vds_off) {
         quadrant_t *const ul = &s->quadrants.ul, *const ur = &s->quadrants.ur, *const bl = &s->quadrants.bl,
@@ -506,12 +505,12 @@ state_destroy(state_t *s)
             H5Sclose(br->src_space) < 0)
             errx(EXIT_FAILURE, "H5Sclose failed");
 
-        ul->src_space = ur->src_space = bl->src_space = br->src_space = badhid;
+        ul->src_space = ur->src_space = bl->src_space = br->src_space = H5I_INVALID_HID;
 
         if (H5Pclose(s->quadrant_dcpl) < 0)
             errx(EXIT_FAILURE, "H5Pclose(dcpl)");
 
-        s->quadrant_dcpl = badhid;
+        s->quadrant_dcpl = H5I_INVALID_HID;
 
         /* TBD destroy spaces belonging to quadrants */
     }
@@ -519,7 +518,7 @@ state_destroy(state_t *s)
     for (i = 0; i < NELMTS(s->file); i++) {
         hid_t fid = s->file[i];
 
-        s->file[i] = badhid;
+        s->file[i] = H5I_INVALID_HID;
 
         if (s->vds != vds_multi && i > 0)
             continue;
@@ -540,7 +539,7 @@ create_extensible_dset(state_t *s, unsigned int which)
     hid_t dcpl, ds, filespace;
 
     assert(which < s->ndatasets);
-    assert(s->dataset[which] == badhid);
+    assert(s->dataset[which] == H5I_INVALID_HID);
 
     esnprintf(dname, sizeof(dname), "/dataset-%d", which);
 
@@ -632,7 +631,7 @@ close_extensible_dset(state_t *s, unsigned int which)
     if (H5Dclose(ds) < 0)
         errx(EXIT_FAILURE, "H5Dclose failed for \"%s\"", dname);
 
-    s->dataset[which] = badhid;
+    s->dataset[which] = H5I_INVALID_HID;
 
     if (s->vds != vds_off && s->writer) {
         sources_t *const srcs = &s->sources[which];
@@ -641,7 +640,7 @@ close_extensible_dset(state_t *s, unsigned int which)
             H5Dclose(srcs->br) < 0)
             errx(EXIT_FAILURE, "H5Dclose failed");
 
-        srcs->ul = srcs->ur = srcs->bl = srcs->br = badhid;
+        srcs->ul = srcs->ur = srcs->bl = srcs->br = H5I_INVALID_HID;
     }
 }
 
@@ -658,7 +657,7 @@ open_extensible_dset(state_t *s, unsigned int which)
     estack_state_t               es;
 
     assert(which < s->ndatasets);
-    assert(s->dataset[which] == badhid);
+    assert(s->dataset[which] == H5I_INVALID_HID);
 
     esnprintf(dname, sizeof(dname), "/dataset-%d", which);
 
@@ -672,49 +671,52 @@ open_extensible_dset(state_t *s, unsigned int which)
             break;
 
         if (below_speed_limit(&last, &ival)) {
-            warnx("H5Dopen(, \"%s\", ) transient failure, %d retries remain", dname, tries - i - 1);
+            HDfprintf(stderr, "H5Dopen(, \"%s\", ) transient failure, %d retries remain\n", dname, tries - i - 1);
         }
-        while (nanosleep(&one_tenth, &one_tenth) == -1 && errno == EINTR)
+        while (HDnanosleep(&one_tenth, &one_tenth) == -1 && errno == EINTR)
             ; // do nothing
     }
     restore_estack(es);
 
     if (i == tries) {
-        errx(EXIT_FAILURE, "H5Dopen(, \"%s\", ) failed after %d tries", dname, tries);
+        HDfprintf(stderr, "H5Dopen(, \"%s\", ) failed after %d tries\n", dname, tries);
+        HDexit(EXIT_FAILURE);
     }
 
     if ((ty = H5Dget_type(ds)) < 0)
-        errx(EXIT_FAILURE, "H5Dget_type failed");
+        HDexit(EXIT_FAILURE);
 
     if (H5Tequal(ty, s->filetype) <= 0)
-        errx(EXIT_FAILURE, "Unexpected data type");
+        HDexit(EXIT_FAILURE);
 
     if ((filespace = H5Dget_space(ds)) < 0)
-        errx(EXIT_FAILURE, "H5Dget_space failed");
+        HDexit(EXIT_FAILURE);
 
     if (H5Sget_simple_extent_ndims(filespace) != RANK)
-        errx(EXIT_FAILURE, "Unexpected rank");
+        HDexit(EXIT_FAILURE);
 
     if (H5Sget_simple_extent_dims(filespace, dims, maxdims) < 0)
-        errx(EXIT_FAILURE, "H5Sget_simple_extent_dims failed");
+        HDexit(EXIT_FAILURE);
 
     if (H5Sclose(filespace) < 0)
-        errx(EXIT_FAILURE, "H5Sclose failed");
+        HDexit(EXIT_FAILURE);
 
-    filespace = badhid;
+    filespace = H5I_INVALID_HID;
 
     if (s->two_dee) {
         if (maxdims[0] != two_dee_max_dims[0] || maxdims[1] != two_dee_max_dims[1] ||
             maxdims[0] != maxdims[1]) {
-            errx(EXIT_FAILURE, "Unexpected maximum dimensions %" PRIuHSIZE " x %" PRIuHSIZE, maxdims[0],
+            HDfprintf(stderr, "Unexpected maximum dimensions %" PRIuHSIZE " x %" PRIuHSIZE, maxdims[0],
                  maxdims[1]);
+            HDexit(EXIT_FAILURE);
         }
     }
     else if (maxdims[0] != s->one_dee_max_dims[0] || maxdims[1] != s->one_dee_max_dims[1] ||
              dims[0] != s->chunk_dims[0]) {
-        errx(EXIT_FAILURE,
+        HDfprintf(stderr,
              "Unexpected maximum dimensions %" PRIuHSIZE " x %" PRIuHSIZE " or columns %" PRIuHSIZE,
              maxdims[0], maxdims[1], dims[1]);
+        HDexit(EXIT_FAILURE);
     }
 
     s->dataset[which] = ds;
@@ -724,7 +726,7 @@ open_extensible_dset(state_t *s, unsigned int which)
  * `mat` is a "subview" of the `which`th dataset with origin
  * `(base.row, base.col)`.
  *
- * If `do_set` is true, write the pattern; otherwise, verify.
+ * If `do_set` is TRUE, write the pattern; otherwise, verify.
  *
  * The basic test pattern consists of increasing
  * integers written in nested corners of the dataset
@@ -747,7 +749,7 @@ open_extensible_dset(state_t *s, unsigned int which)
  * In an actual pattern, the dataset number, `which`, is added to each integer.
  */
 static void
-set_or_verify_matrix(mat_t *mat, unsigned int which, base_t base, bool do_set)
+set_or_verify_matrix(mat_t *mat, unsigned int which, base_t base, hbool_t do_set)
 {
     unsigned row, col;
 
@@ -779,13 +781,13 @@ set_or_verify_matrix(mat_t *mat, unsigned int which, base_t base, bool do_set)
 static void
 init_matrix(mat_t *mat, unsigned int which, base_t base)
 {
-    set_or_verify_matrix(mat, which, base, true);
+    set_or_verify_matrix(mat, which, base, TRUE);
 }
 
 static void
 verify_matrix(mat_t *mat, unsigned int which, base_t base)
 {
-    set_or_verify_matrix(mat, which, base, false);
+    set_or_verify_matrix(mat, which, base, FALSE);
 }
 
 static void
@@ -874,12 +876,14 @@ verify_extensible_dset(state_t *s, unsigned int which, mat_t *mat, unsigned *ste
 
     ds = s->dataset[which];
 
-    if (H5Drefresh(ds) < 0)
-        errx(EXIT_FAILURE, "H5Drefresh failed");
+    if (H5Drefresh(ds) < 0) {
+        HDfprintf(stderr, "H5Drefresh failed\n");
+        HDexit(EXIT_FAILURE);
+    }
 
     filespace = H5Dget_space(ds);
 
-    if (filespace == badhid)
+    if (filespace == H5I_INVALID_HID)
         errx(EXIT_FAILURE, "H5Dget_space failed");
 
     if (H5Sget_simple_extent_dims(filespace, size, NULL) < 0)
@@ -939,7 +943,7 @@ verify_extensible_dset(state_t *s, unsigned int which, mat_t *mat, unsigned *ste
 
 out:
     if (H5Sclose(filespace) < 0)
-        errx(EXIT_FAILURE, "H5Sclose failed");
+        HDexit(EXIT_FAILURE);
 }
 
 static void
@@ -1014,7 +1018,7 @@ write_extensible_dset(state_t *s, unsigned int which, unsigned int step, mat_t *
 
     filespace = H5Dget_space(ds);
 
-    if (filespace == badhid)
+    if (filespace == H5I_INVALID_HID)
         errx(EXIT_FAILURE, "H5Dget_space failed");
 
     if (s->two_dee) {
@@ -1057,7 +1061,7 @@ main(int argc, char **argv)
     if ((fcpl = H5Pcreate(H5P_FILE_CREATE)) < 0)
         errx(EXIT_FAILURE, "H5Pcreate");
 
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, 1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, 1);
     if (ret < 0)
         errx(EXIT_FAILURE, "H5Pset_file_space_strategy");
 
@@ -1069,7 +1073,7 @@ main(int argc, char **argv)
             continue;
         }
 
-        fapl = vfd_swmr_create_fapl(s.writer, true, s.use_vfd_swmr, "./bigset-shadow-%zu", i);
+        fapl = vfd_swmr_create_fapl(s.writer, TRUE, s.use_vfd_swmr, "./bigset-shadow-%zu", i);
 
         if (fapl < 0)
             errx(EXIT_FAILURE, "vfd_swmr_create_fapl");
@@ -1077,7 +1081,7 @@ main(int argc, char **argv)
         s.file[i] = s.writer ? H5Fcreate(s.filename[i], H5F_ACC_TRUNC, fcpl, fapl)
                              : H5Fopen(s.filename[i], H5F_ACC_RDONLY, fapl);
 
-        if (s.file[i] == badhid)
+        if (s.file[i] == H5I_INVALID_HID)
             errx(EXIT_FAILURE, s.writer ? "H5Fcreate" : "H5Fopen");
 
         if (H5Pclose(fapl) < 0)
@@ -1144,7 +1148,7 @@ main(int argc, char **argv)
 
     state_destroy(&s);
 
-    free(mat);
+    HDfree(mat);
 
     return EXIT_SUCCESS;
 }

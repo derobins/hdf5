@@ -3042,7 +3042,7 @@ test_shadow_index_lookup(void)
     char                       vector[8];
     unsigned                   seed = 1;
     unsigned                   i, j, failj = UINT_MAX;
-    bool                       have_failj = false;
+    hbool_t                       have_failj = FALSE;
     unsigned long              tmpl;
     char *                     ostate;
     const char *               seedvar = "H5_SHADOW_INDEX_SEED";
@@ -3072,7 +3072,7 @@ test_shadow_index_lookup(void)
             break;
         default:
             failj      = (unsigned int)tmpl;
-            have_failj = true;
+            have_failj = TRUE;
             break;
     }
 
@@ -3099,7 +3099,7 @@ test_shadow_index_lookup(void)
         for (j = 0; j < cursize; j++) {
             H5FD_vfd_swmr_idx_entry_t *found;
 
-            found = vfd_swmr_pageno_to_mdf_idx_entry(idx, cursize, idx[j].hdf5_page_offset, false);
+            found = vfd_swmr_pageno_to_mdf_idx_entry(idx, cursize, idx[j].hdf5_page_offset, FALSE);
             if ((have_failj && failj == j) || found != &idx[j])
                 break;
         }

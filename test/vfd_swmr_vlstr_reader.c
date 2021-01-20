@@ -11,10 +11,6 @@
  * help@hdfgroup.org.
  */
 
-#include <err.h>
-#include <time.h>   /* nanosleep(2) */
-#include <unistd.h> /* getopt(3) */
-
 #define H5C_FRIEND /*suppress error about including H5Cpkg   */
 #define H5F_FRIEND /*suppress error about including H5Fpkg   */
 
@@ -31,21 +27,20 @@
 
 typedef enum _step { CREATE = 0, LENGTHEN, SHORTEN, DELETE, NSTEPS } step_t;
 
-static const hid_t badhid               = H5I_INVALID_HID; // abbreviate
-static bool        caught_out_of_bounds = false;
-static bool        read_null            = false;
+static hbool_t        caught_out_of_bounds = FALSE;
+static hbool_t        read_null            = FALSE;
 
 static bool
 read_vl_dset(hid_t dset, hid_t type, char **data)
 {
-    bool           success;
+    hbool_t           success;
     estack_state_t es;
 
     es      = disable_estack();
     success = H5Dread(dset, type, H5S_ALL, H5S_ALL, H5P_DEFAULT, data) >= 0;
     if (*data == NULL) {
-        read_null = true;
-        return false;
+        read_null = TRUE;
+        return FALSE;
     }
     restore_estack(es);
 
@@ -66,13 +61,14 @@ usage(const char *progname)
 bool
 H5HG_trap(const char *reason)
 {
-    if (strcmp(reason, "out of bounds") == 0) {
-        caught_out_of_bounds = true;
-        return true;
+    if (HDstrcmp(reason, "out of bounds") == 0) {
+        caught_out_of_bounds = TRUE;
+        return TRUE;
     }
-    return false;
+    return FALSE;
 }
 
+/* TODO: Handle error cleanup properly */
 int
 main(int argc, char **argv)
 {
@@ -82,28 +78,30 @@ main(int argc, char **argv)
     char                  name[2][96];
     int                   ch, i, ntimes = 100;
     unsigned long         tmp;
-    bool                  use_vfd_swmr = true;
+    hbool_t                  use_vfd_swmr = TRUE;
     char *                end;
     const long            millisec_in_nanosecs = 1000 * 1000;
     const struct timespec delay                = {.tv_sec = 0, .tv_nsec = millisec_in_nanosecs * 11 / 10};
     testsel_t             sel                  = TEST_NONE;
 
-    assert(H5T_C_S1 != badhid);
+    assert(H5T_C_S1 != H5I_INVALID_HID);
 
     while ((ch = getopt(argc, argv, "Sn:qt:")) != -1) {
         switch (ch) {
             case 'S':
-                use_vfd_swmr = false;
+                use_vfd_swmr = FALSE;
                 break;
             case 'n':
                 errno = 0;
-                tmp   = strtoul(optarg, &end, 0);
+                tmp   = HDstrtoul(optarg, &end, 0);
                 if (end == optarg || *end != '\0')
-                    errx(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
-                else if (errno != 0)
-                    err(EXIT_FAILURE, "couldn't parse `-n` argument `%s`", optarg);
+                    HDexit(EXIT_FAILURE);
+                else if (errno != 0) {
+                    HDfprintf(stderr, "couldn't parse `-n` argument `%s`", optarg);
+                    HDexit(EXIT_FAILURE);
+                }
                 else if (tmp > INT_MAX)
-                    errx(EXIT_FAILURE, "`-n` argument `%lu` too large", tmp);
+                    HDexit(EXIT_FAILURE);
                 ntimes = (int)tmp;
                 break;
             case 'q':
@@ -126,27 +124,27 @@ main(int argc, char **argv)
     argc -= optind;
 
     if (argc > 0)
-        errx(EXIT_FAILURE, "unexpected command-line arguments");
+        HDexit(EXIT_FAILURE);
 
-    fapl = vfd_swmr_create_fapl(false, sel == TEST_OOB, use_vfd_swmr, "./vlstr-shadow");
+    fapl = vfd_swmr_create_fapl(FALSE, sel == TEST_OOB, use_vfd_swmr, "./vlstr-shadow");
     if (fapl < 0)
-        errx(EXIT_FAILURE, "vfd_swmr_create_fapl");
+        goto error;
 
     fid = H5Fopen("vfd_swmr_vlstr.h5", H5F_ACC_RDONLY, fapl);
 
     /* Create the VL string datatype and a scalar dataspace */
-    if ((type = H5Tcopy(H5T_C_S1)) == badhid)
-        errx(EXIT_FAILURE, "H5Tcopy");
+    if ((type = H5Tcopy(H5T_C_S1)) == H5I_INVALID_HID)
+        goto error;
 
     if (H5Tset_size(type, H5T_VARIABLE) < 0)
-        errx(EXIT_FAILURE, "H5Tset_size");
+        goto error;
     space = H5Screate(H5S_SCALAR);
 
-    if (space == badhid)
-        errx(EXIT_FAILURE, "H5Screate");
+    if (space == H5I_INVALID_HID)
+        goto error;
 
-    if (fid == badhid)
-        errx(EXIT_FAILURE, "H5Fcreate");
+    if (fid == H5I_INVALID_HID)
+        goto error;
 
     /* content 1 seq 1 short
      * content 1 seq 1 long long long long long long long long
@@ -168,7 +166,7 @@ main(int argc, char **argv)
         es          = disable_estack();
         dset[which] = H5Dopen(fid, name[which], H5P_DEFAULT);
         restore_estack(es);
-        if (caught_out_of_bounds || dset[which] == badhid) {
+        if (caught_out_of_bounds || dset[which] == H5I_INVALID_HID) {
             dbgf(2, ": couldn't open\n");
             continue;
         }
@@ -189,22 +187,22 @@ main(int argc, char **argv)
     }
 
     if (caught_out_of_bounds)
-        fprintf(stderr, "caught out of bounds\n");
+        HDfprintf(stderr, "caught out of bounds\n");
 
     if (read_null)
-        fprintf(stderr, "read NULL\n");
+        HDfprintf(stderr, "read NULL\n");
 
     if (H5Pclose(fapl) < 0)
-        errx(EXIT_FAILURE, "H5Pclose(fapl)");
+        goto error;
 
     if (H5Tclose(type) < 0)
-        errx(EXIT_FAILURE, "H5Tclose");
+        goto error;
 
     if (H5Sclose(space) < 0)
-        errx(EXIT_FAILURE, "H5Sclose");
+        goto error;
 
     if (H5Fclose(fid) < 0)
-        errx(EXIT_FAILURE, "H5Fclose");
+        goto error;
 
     if (sel == TEST_OOB)
         return caught_out_of_bounds ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -212,4 +210,7 @@ main(int argc, char **argv)
         return read_null ? EXIT_SUCCESS : EXIT_FAILURE;
 
     return EXIT_SUCCESS;
+
+error:
+    return EXIT_FAILURE;
 }

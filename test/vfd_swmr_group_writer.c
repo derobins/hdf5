@@ -11,16 +11,11 @@
  * help@hdfgroup.org.
  */
 
-#include <err.h>
-#include <time.h>   /* nanosleep(2) */
-#include <unistd.h> /* getopt(3) */
-
 #define H5F_FRIEND /*suppress error about including H5Fpkg   */
 
 #include "hdf5.h"
 
 #include "H5Fpkg.h"
-// #include "H5Iprivate.h"
 #include "H5HGprivate.h"
 #include "H5VLprivate.h"
 
@@ -34,24 +29,22 @@ typedef struct {
     struct timespec update_interval;
     unsigned int    asteps;
     unsigned int    nsteps;
-    bool            wait_for_signal;
-    bool            use_vfd_swmr;
+    hbool_t            wait_for_signal;
+    hbool_t            use_vfd_swmr;
 } state_t;
 
 #define ALL_HID_INITIALIZER                                                                                  \
     (state_t)                                                                                                \
     {                                                                                                        \
         .file = H5I_INVALID_HID, .one_by_one_sid = H5I_INVALID_HID, .filename = "",                          \
-        .filetype = H5T_NATIVE_UINT32, .asteps = 10, .nsteps = 100, .wait_for_signal = true,                 \
-        .use_vfd_swmr = true, .update_interval = (struct timespec)                                           \
+        .filetype = H5T_NATIVE_UINT32, .asteps = 10, .nsteps = 100, .wait_for_signal = TRUE,                 \
+        .use_vfd_swmr = TRUE, .update_interval = (struct timespec)                                           \
         {                                                                                                    \
             .tv_sec = 0, .tv_nsec = 1000000000UL / 30 /* 1/30 second */                                      \
         }                                                                                                    \
     }
 
 static void state_init(state_t *, int, char **);
-
-static const hid_t badhid = H5I_INVALID_HID;
 
 static void
 usage(const char *progname)
@@ -90,23 +83,27 @@ state_init(state_t *s, int argc, char **argv)
     while ((ch = getopt(argc, argv, "SWa:bn:qu:")) != -1) {
         switch (ch) {
             case 'S':
-                s->use_vfd_swmr = false;
+                s->use_vfd_swmr = FALSE;
                 break;
             case 'W':
-                s->wait_for_signal = false;
+                s->wait_for_signal = FALSE;
                 break;
             case 'a':
             case 'n':
                 errno = 0;
-                tmp   = strtoul(optarg, &end, 0);
+                tmp   = HDstrtoul(optarg, &end, 0);
                 if (end == optarg || *end != '\0') {
-                    errx(EXIT_FAILURE, "couldn't parse `-%c` argument `%s`", ch, optarg);
+                    HDfprintf(stderr, "couldn't parse `-%c` argument `%s`\n", ch, optarg);
+                    HDexit(EXIT_FAILURE);
                 }
                 else if (errno != 0) {
-                    err(EXIT_FAILURE, "couldn't parse `-%c` argument `%s`", ch, optarg);
+                    HDfprintf(stderr, "couldn't parse `-%c` argument `%s`\n", ch, optarg);
+                    HDexit(EXIT_FAILURE);
                 }
-                else if (tmp > UINT_MAX)
-                    errx(EXIT_FAILURE, "`-%c` argument `%lu` too large", ch, tmp);
+                else if (tmp > UINT_MAX) {
+                    HDfprintf(stderr, "`-%c` argument `%lu` too large\n", ch, tmp);
+                    HDexit(EXIT_FAILURE);
+                }
 
                 if (ch == 'a')
                     s->asteps = (unsigned)tmp;
@@ -121,12 +118,14 @@ state_init(state_t *s, int argc, char **argv)
                 break;
             case 'u':
                 errno  = 0;
-                millis = strtoul(optarg, &end, 0);
+                millis = HDstrtoul(optarg, &end, 0);
                 if (millis == ULONG_MAX && errno == ERANGE) {
-                    err(EXIT_FAILURE, "option -p argument \"%s\"", optarg);
+                    HDfprintf(stderr, "option -p argument \"%s\"\n", optarg);
+                    HDexit(EXIT_FAILURE);
                 }
                 else if (*end != '\0') {
-                    errx(EXIT_FAILURE, "garbage after -p argument \"%s\"", optarg);
+                    HDfprintf(stderr, "garbage after -p argument \"%s\"\n", optarg);
+                    HDexit(EXIT_FAILURE);
                 }
                 s->update_interval.tv_sec  = (time_t)(millis / 1000UL);
                 s->update_interval.tv_nsec = (long)((millis * 1000000UL) % 1000000000UL);
@@ -142,11 +141,15 @@ state_init(state_t *s, int argc, char **argv)
     argv += optind;
 
     /* space for attributes */
-    if ((s->one_by_one_sid = H5Screate_simple(1, &dims, &dims)) < 0)
-        errx(EXIT_FAILURE, "H5Screate_simple failed");
+    if ((s->one_by_one_sid = H5Screate_simple(1, &dims, &dims)) < 0) {
+        HDfprintf(stderr, "H5Screate_simple failed\n");
+        HDexit(EXIT_FAILURE);
+    }
 
-    if (argc > 0)
-        errx(EXIT_FAILURE, "unexpected command-line arguments");
+    if (argc > 0) {
+        HDfprintf(stderr, "unexpected command-line arguments\n");
+        HDexit(EXIT_FAILURE);
+    }
 
     esnprintf(s->filename, sizeof(s->filename), "vfd_swmr_group.h5");
 }
@@ -161,13 +164,19 @@ add_group_attribute(const state_t *s, hid_t g, hid_t sid, unsigned int which)
 
     dbgf(1, "setting attribute %s on group %u to %u\n", name, which, which);
 
-    if ((aid = H5Acreate2(g, name, s->filetype, sid, H5P_DEFAULT, H5P_DEFAULT)) < 0)
-        errx(EXIT_FAILURE, "H5Acreate2 failed");
+    if ((aid = H5Acreate2(g, name, s->filetype, sid, H5P_DEFAULT, H5P_DEFAULT)) < 0) {
+        HDfprintf(stderr, "H5Acreate2 failed\n");
+        HDexit(EXIT_FAILURE);
+    }
 
-    if (H5Awrite(aid, H5T_NATIVE_UINT, &which) < 0)
-        errx(EXIT_FAILURE, "H5Awrite failed");
-    if (H5Aclose(aid) < 0)
-        errx(EXIT_FAILURE, "H5Aclose failed");
+    if (H5Awrite(aid, H5T_NATIVE_UINT, &which) < 0) {
+        HDfprintf(stderr, "H5Awrite failed\n");
+        HDexit(EXIT_FAILURE);
+    }
+    if (H5Aclose(aid) < 0) {
+        HDfprintf(stderr, "H5Aclose failed\n");
+        HDexit(EXIT_FAILURE);
+    }
 }
 
 static void
@@ -176,20 +185,24 @@ write_group(state_t *s, unsigned int which)
     char  name[sizeof("/group-9999999999")];
     hid_t g;
 
-    assert(which < s->nsteps);
+    HDassert(which < s->nsteps);
 
     esnprintf(name, sizeof(name), "/group-%d", which);
 
     g = H5Gcreate2(s->file, name, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
-    if (g < 0)
-        errx(EXIT_FAILURE, "H5Gcreate(, \"%s\", ) failed", name);
+    if (g < 0) {
+        HDfprintf(stderr, "H5Gcreate(, \"%s\", ) failed\n", name);
+        HDexit(EXIT_FAILURE);
+    }
 
     if (s->asteps != 0 && which % s->asteps == 0)
         add_group_attribute(s, g, s->one_by_one_sid, which);
 
-    if (H5Gclose(g) < 0)
-        errx(EXIT_FAILURE, "H5Gclose failed");
+    if (H5Gclose(g) < 0) {
+        HDfprintf(stderr, "H5Gclose failed\n");
+        HDexit(EXIT_FAILURE);
+    }
 }
 
 static bool
@@ -207,20 +220,24 @@ verify_group_attribute(hid_t g, unsigned int which)
     es = disable_estack();
     if ((aid = H5Aopen(g, name, H5P_DEFAULT)) < 0) {
         restore_estack(es);
-        return false;
+        return FALSE;
     }
 
     if (H5Aread(aid, H5T_NATIVE_UINT, &read_which) < 0) {
         restore_estack(es);
-        if (H5Aclose(aid) < 0)
-            errx(EXIT_FAILURE, "H5Aclose failed");
-        return false;
+        if (H5Aclose(aid) < 0) {
+            HDfprintf(stderr, "H5Aclose failed\n");
+            HDexit(EXIT_FAILURE);
+        }
+        return FALSE;
     }
 
     restore_estack(es);
 
-    if (H5Aclose(aid) < 0)
-        errx(EXIT_FAILURE, "H5Aclose failed");
+    if (H5Aclose(aid) < 0) {
+        HDfprintf(stderr, "H5Aclose failed\n");
+        HDexit(EXIT_FAILURE);
+    }
 
     return read_which == which;
 }
@@ -231,7 +248,7 @@ verify_group(state_t *s, unsigned int which)
     char           name[sizeof("/group-9999999999")];
     hid_t          g;
     estack_state_t es;
-    bool           result;
+    hbool_t           result;
 
     assert(which < s->nsteps);
 
@@ -242,15 +259,17 @@ verify_group(state_t *s, unsigned int which)
     restore_estack(es);
 
     if (g < 0)
-        return false;
+        return FALSE;
 
     if (s->asteps != 0 && which % s->asteps == 0)
         result = verify_group_attribute(g, which);
     else
-        result = true;
+        result = TRUE;
 
-    if (H5Gclose(g) < 0)
-        errx(EXIT_FAILURE, "H5Gclose failed");
+    if (H5Gclose(g) < 0) {
+        HDfprintf(stderr, "H5Gclose failed\n");
+        HDexit(EXIT_FAILURE);
+    }
 
     return result;
 }
@@ -262,7 +281,7 @@ main(int argc, char **argv)
     sigset_t    oldsigs;
     herr_t      ret;
     unsigned    step;
-    bool        writer;
+    hbool_t        writer;
     state_t     s;
     const char *personality;
 
@@ -271,32 +290,33 @@ main(int argc, char **argv)
     personality = strstr(s.progname, "vfd_swmr_group_");
 
     if (personality != NULL && strcmp(personality, "vfd_swmr_group_writer") == 0)
-        writer = true;
+        writer = TRUE;
     else if (personality != NULL && strcmp(personality, "vfd_swmr_group_reader") == 0)
-        writer = false;
+        writer = FALSE;
     else {
-        errx(EXIT_FAILURE, "unknown personality, expected vfd_swmr_group_{reader,writer}");
+        HDfprintf(stderr, "unknown personality, expected vfd_swmr_group_{reader,writer}\n");
+        goto error;
     }
 
-    fapl = vfd_swmr_create_fapl(writer, true, s.use_vfd_swmr, "./group-shadow");
+    fapl = vfd_swmr_create_fapl(writer, TRUE, s.use_vfd_swmr, "./group-shadow");
 
     if (fapl < 0)
-        errx(EXIT_FAILURE, "vfd_swmr_create_fapl");
+        goto error;
 
     if ((fcpl = H5Pcreate(H5P_FILE_CREATE)) < 0)
-        errx(EXIT_FAILURE, "H5Pcreate");
+        goto error;
 
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, 1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, 1);
     if (ret < 0)
-        errx(EXIT_FAILURE, "H5Pset_file_space_strategy");
+        goto error;
 
     if (writer)
         s.file = H5Fcreate(s.filename, H5F_ACC_TRUNC, fcpl, fapl);
     else
         s.file = H5Fopen(s.filename, H5F_ACC_RDONLY, fapl);
 
-    if (s.file == badhid)
-        errx(EXIT_FAILURE, writer ? "H5Fcreate" : "H5Fopen");
+    if (s.file == H5I_INVALID_HID)
+        goto error;
 
     block_signals(&oldsigs);
 
@@ -322,13 +342,17 @@ main(int argc, char **argv)
     restore_signals(&oldsigs);
 
     if (H5Pclose(fapl) < 0)
-        errx(EXIT_FAILURE, "H5Pclose(fapl)");
+        goto error;
 
     if (H5Pclose(fcpl) < 0)
-        errx(EXIT_FAILURE, "H5Pclose(fcpl)");
+        goto error;
 
     if (H5Fclose(s.file) < 0)
-        errx(EXIT_FAILURE, "H5Fclose");
+        goto error;
 
     return EXIT_SUCCESS;
+
+error:
+    /* FIXME: Add cleanup after errx() removal... */
+    return EXIT_FAILURE;
 }

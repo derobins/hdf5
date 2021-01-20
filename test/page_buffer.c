@@ -19,8 +19,6 @@
  *
  *************************************************************/
 
-#include <err.h>
-
 #include "h5test.h"
 
 /*
@@ -106,17 +104,21 @@ print_elapsed_time(const struct timespec H5_ATTR_UNUSED *lastp, const char H5_AT
 #endif
     struct timespec now;
 
-    if (clock_gettime(CLOCK_MONOTONIC, &now) == -1)
-        err(EXIT_FAILURE, "%s: clock_gettime", __func__);
+    if (clock_gettime(CLOCK_MONOTONIC, &now) == -1) {
+        /* FIXME */
+        HDfprintf(stderr, "%s: clock_gettime\n", __func__);
+        HDexit(EXIT_FAILURE);
+    }
 
 #if 0
     last = (lastp == NULL) ? now : *lastp;
 
+    /* FIXME */
     timespecsub(&now, &last, &diff);
 
     elapsed_ns = (uint64_t)diff.tv_sec * (uint64_t)1000000000 + diff.tv_nsec;
 
-    printf("%5" PRIu64 ".%03" PRIu64 " %s.%d\n",
+    HDprintf("%5" PRIu64 ".%03" PRIu64 " %s.%d\n",
         elapsed_ns / 1000000000, (elapsed_ns / 1000000) % 1000, fn, ln);
 #endif
 
@@ -129,7 +131,7 @@ swmr_fapl_augment(hid_t fapl, const char *filename, uint32_t max_lag)
     H5F_vfd_swmr_config_t config = {.version           = H5F__CURR_VFD_SWMR_CONFIG_VERSION,
                                     .tick_len          = 4,
                                     .max_lag           = max_lag,
-                                    .writer            = true,
+                                    .writer            = TRUE,
                                     .md_pages_reserved = 128};
     const char *          bname, *dname;
     char *                tname[2];
@@ -167,13 +169,13 @@ pgbuf_read_each_equals(H5F_t *f, H5FD_mem_t ty, haddr_t addr, size_t nelts, int 
 
     for (i = 0; i < nelts; i++) {
         if (data[i] != val) {
-            printf("%s: read %d at data[%zu], expected %d\n", __func__, data[i], i, val);
-            return false;
+            HDprintf("%s: read %d at data[%zu], expected %d\n", __func__, data[i], i, val);
+            return FALSE;
         }
     }
-    return true;
+    return TRUE;
 error:
-    return false;
+    return FALSE;
 }
 
 static bool
@@ -188,15 +190,15 @@ vfd_read_each_equals(H5F_t *f, H5FD_mem_t ty, haddr_t addr, size_t nelts, int *d
     for (i = 0; i < nelts; i++) {
         if (data[i] != val) {
 #if 0
-            printf("%s: read %d at data[%d], expected %d\n", __func__,
+            HDprintf("%s: read %d at data[%d], expected %d\n", __func__,
                 data[i], i, val);
 #endif
-            return false;
+            return FALSE;
         }
     }
-    return true;
+    return TRUE;
 error:
-    return false;
+    return FALSE;
 }
 
 #ifndef H5_HAVE_PARALLEL
@@ -490,7 +492,7 @@ set_multi_split(const char *env_h5_drvr, hid_t fapl, hsize_t pagesize)
 
         /* Free memb_name */
         for (mt = H5FD_MEM_DEFAULT; mt < H5FD_MEM_NTYPES; mt++)
-            free(memb_name[mt]);
+            HDfree(memb_name[mt]);
     }
 
     return 0;
@@ -851,7 +853,7 @@ test_spmde_lru_evict_basic(hid_t orig_fapl, const char *env_h5_drvr)
     const hsize_t   pgsz    = sizeof(int) * 200;
     const hsize_t   pgbufsz = 10 * pgsz;
     hsize_t         ofs;
-    bool            flushed;
+    hbool_t            flushed;
     struct timespec last;
     haddr_t         addr;
     haddr_t         pressure;
@@ -927,7 +929,7 @@ test_spmde_lru_evict_basic(hid_t orig_fapl, const char *env_h5_drvr)
 
     last = print_elapsed_time(&last, __func__, __LINE__);
 
-    flushed = false;
+    flushed = FALSE;
     /* We are waiting for a single-page metadata buffer to
      * appear at the VFD layer, but it may reside in the LRU queue.
      * Dirty new blocks to apply pressure on the page buffer so that
@@ -940,9 +942,9 @@ test_spmde_lru_evict_basic(hid_t orig_fapl, const char *env_h5_drvr)
         if (H5F_block_write(f, H5FD_MEM_BTREE, pressure + ofs, sizeof(tmp), &tmp) < 0)
             FAIL_STACK_ERROR;
         if (!flushed && vfd_read_each_equals(f, H5FD_MEM_BTREE, addr, num_elements, data, -1)) {
-            flushed = true;
+            flushed = TRUE;
 #if 0
-            printf("Writing page %" PRIuHSIZE " flushed target page.\n",
+            HDprintf("Writing page %" PRIuHSIZE " flushed target page.\n",
                 ofs / pgsz);
 #endif
         }
@@ -1192,7 +1194,7 @@ error:
 
 /* Changes due to file space page size has a minimum size of 512 */
 static unsigned
-test_raw_data_handling(hid_t orig_fapl, const char *env_h5_drvr, bool vfd_swmr_mode)
+test_raw_data_handling(hid_t orig_fapl, const char *env_h5_drvr, hbool_t vfd_swmr_mode)
 {
     char           filename[FILENAME_LEN]; /* Filename to use */
     hid_t          file_id = -1;           /* File ID */
@@ -2951,7 +2953,7 @@ error:
 #define TOT_SYNTH_ENTRY_SIZES (HDR_SIZE + (3 * MD_PAGE_SIZE))
 
 static unsigned
-md_entry_splitting_smoke_check(hid_t orig_fapl, const char *env_h5_drvr, bool vfd_swmr_mode)
+md_entry_splitting_smoke_check(hid_t orig_fapl, const char *env_h5_drvr, hbool_t vfd_swmr_mode)
 {
     char           filename[FILENAME_LEN]; /* Filename to use */
     hid_t          file_id = -1;           /* File ID */
@@ -3240,7 +3242,7 @@ error:
  *************************************************************************/
 
 static unsigned
-md_entry_splitting_boundary_test(hid_t orig_fapl, const char *env_h5_drvr, bool vfd_swmr_mode)
+md_entry_splitting_boundary_test(hid_t orig_fapl, const char *env_h5_drvr, hbool_t vfd_swmr_mode)
 {
     char           filename[FILENAME_LEN]; /* Filename to use */
     hid_t          file_id = -1;           /* File ID */
@@ -4193,18 +4195,18 @@ main(void)
 #else /* H5_HAVE_PARALLEL */
 
     nerrors += test_args(fapl, env_h5_drvr);
-    nerrors += test_raw_data_handling(fapl, env_h5_drvr, false);
-    nerrors += test_raw_data_handling(fapl, env_h5_drvr, true);
+    nerrors += test_raw_data_handling(fapl, env_h5_drvr, FALSE);
+    nerrors += test_raw_data_handling(fapl, env_h5_drvr, TRUE);
     nerrors += test_spmde_delay_basic(fapl, env_h5_drvr);
     nerrors += test_mpmde_delay_basic(fapl, env_h5_drvr);
     nerrors += test_spmde_lru_evict_basic(fapl, env_h5_drvr);
     nerrors += test_lru_processing(fapl, env_h5_drvr);
     nerrors += test_min_threshold(fapl, env_h5_drvr);
     nerrors += test_stats_collection(fapl, env_h5_drvr);
-    nerrors += md_entry_splitting_smoke_check(fapl, env_h5_drvr, false);
-    nerrors += md_entry_splitting_smoke_check(fapl, env_h5_drvr, true);
-    nerrors += md_entry_splitting_boundary_test(fapl, env_h5_drvr, false);
-    nerrors += md_entry_splitting_boundary_test(fapl, env_h5_drvr, true);
+    nerrors += md_entry_splitting_smoke_check(fapl, env_h5_drvr, FALSE);
+    nerrors += md_entry_splitting_smoke_check(fapl, env_h5_drvr, TRUE);
+    nerrors += md_entry_splitting_boundary_test(fapl, env_h5_drvr, FALSE);
+    nerrors += md_entry_splitting_boundary_test(fapl, env_h5_drvr, TRUE);
 
 #endif /* H5_HAVE_PARALLEL */
 

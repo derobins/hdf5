@@ -624,6 +624,7 @@ if [ ${do_groups:-no} = yes ]; then
 	rm -f vfd_swmr_group_reader.*.{out,rc}
 fi
 
+: <<'END'
 for options in "-d 1" "-d 2" "-d 1 -V" "-d 1 -M"; do
 	if [ ${do_many_small:-no} = no ]; then
 		continue
@@ -672,6 +673,7 @@ for options in "-d 1" "-d 2" "-d 1 -V" "-d 1 -M"; do
 	rm -f vfd_swmr_bigset_writer.{out,rc}
 	rm -f vfd_swmr_bigset_reader.*.{out,rc}
 done
+END
 
 for options in "-d 1" "-d 2" "-d 1 -V" "-d 1 -M"; do
 	#

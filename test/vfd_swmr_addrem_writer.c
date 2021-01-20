@@ -32,9 +32,6 @@
 /* Headers */
 /***********/
 
-#include <err.h>    /* errx(3) */
-#include <stdlib.h> /* EXIT_FAILURE */
-
 #include "h5test.h"
 #include "vfd_swmr_common.h"
 
@@ -86,10 +83,10 @@ open_skeleton(const char *filename, unsigned verbose)
         goto error;
 
     if ((dapl = H5Pcreate(H5P_DATASET_ACCESS)) < 0)
-        errx(EXIT_FAILURE, "%s.%d: H5Pcreate failed", __func__, __LINE__);
+        goto error;
 
     if (H5Pset_chunk_cache(dapl, H5D_CHUNK_CACHE_NSLOTS_DEFAULT, 0, H5D_CHUNK_CACHE_W0_DEFAULT) < 0)
-        errx(EXIT_FAILURE, "H5Pset_chunk_cache failed");
+        goto error;
 
     /* Set to use the latest library format */
     if (H5Pset_libver_bounds(fapl, H5F_LIBVER_LATEST, H5F_LIBVER_LATEST) < 0)
@@ -339,21 +336,21 @@ error:
 static void
 usage(void)
 {
-    printf("\n");
-    printf("Usage error!\n");
-    printf("\n");
-    printf("Usage: vfd_swmr_addrem_writer [-q] [-f <# of operations between flushing\n");
-    printf("    file contents>] [-r <random seed>] <# of operations>\n");
-    printf("\n");
-    printf("<# of operations between flushing file contents> should be 0 (for\n");
-    printf("no flushing) or between 1 and (<# of operations> - 1).\n");
-    printf("\n");
-    printf("<# of operations> must be specified.\n");
-    printf("\n");
-    printf("Defaults to verbose (no '-q' given), flushing every 1000 operations\n");
-    printf("('-f 1000'), and will generate a random seed (no -r given).\n");
-    printf("\n");
-    HDexit(1);
+    HDprintf("\n");
+    HDprintf("Usage error!\n");
+    HDprintf("\n");
+    HDprintf("Usage: vfd_swmr_addrem_writer [-q] [-f <# of operations between flushing\n");
+    HDprintf("    file contents>] [-r <random seed>] <# of operations>\n");
+    HDprintf("\n");
+    HDprintf("<# of operations between flushing file contents> should be 0 (for\n");
+    HDprintf("no flushing) or between 1 and (<# of operations> - 1).\n");
+    HDprintf("\n");
+    HDprintf("<# of operations> must be specified.\n");
+    HDprintf("\n");
+    HDprintf("Defaults to verbose (no '-q' given), flushing every 1000 operations\n");
+    HDprintf("('-f 1000'), and will generate a random seed (no -r given).\n");
+    HDprintf("\n");
+    HDexit(EXIT_FAILURE);
 } /* usage() */
 
 int
@@ -457,7 +454,7 @@ main(int argc, const char *argv[])
     /* Open file skeleton */
     if ((fid = open_skeleton(COMMON_FILENAME, verbose)) < 0) {
         HDfprintf(stderr, "WRITER: Error opening skeleton file!\n");
-        HDexit(1);
+        HDexit(EXIT_FAILURE);
     } /* end if */
 
     /* Send a message to indicate "H5Fopen" is complete--releasing the file lock */
@@ -470,7 +467,7 @@ main(int argc, const char *argv[])
     /* Grow and shrink datasets */
     if (addrem_records(fid, verbose, (unsigned long)nops, (unsigned long)flush_count) < 0) {
         HDfprintf(stderr, "WRITER: Error adding and removing records from datasets!\n");
-        HDexit(1);
+        HDexit(EXIT_FAILURE);
     } /* end if */
 
     /* Emit informational message */
@@ -480,7 +477,7 @@ main(int argc, const char *argv[])
     /* Clean up the symbols */
     if (shutdown_symbols() < 0) {
         HDfprintf(stderr, "WRITER: Error releasing symbols!\n");
-        HDexit(1);
+        HDexit(EXIT_FAILURE);
     } /* end if */
 
     await_signal(fid);
@@ -494,7 +491,7 @@ main(int argc, const char *argv[])
     /* Close objects opened */
     if (H5Fclose(fid) < 0) {
         HDfprintf(stderr, "WRITER: Error closing file!\n");
-        HDexit(1);
+        HDexit(EXIT_FAILURE);
     } /* end if */
 
     return 0;
