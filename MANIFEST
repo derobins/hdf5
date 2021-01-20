@@ -50,6 +50,7 @@
 ./m4/ax_java_check_class.m4
 ./m4/ax_java_options.m4
 ./m4/ax_jni_include_dir.m4
+./m4/ax_prog_doxygen.m4
 ./m4/ax_prog_jar.m4
 ./m4/ax_prog_java_cc.m4
 ./m4/ax_prog_java_works.m4
@@ -138,6 +139,7 @@
 ./config/ibm-flags
 ./config/intel-fflags
 ./config/intel-flags
+./config/libhdf5.pc.in
 ./config/linux-gnu
 ./config/linux-gnuaout
 ./config/linux-gnueabihf
@@ -157,6 +159,7 @@
 ./config/clang-warnings/error-general
 ./config/clang-warnings/general
 ./config/clang-warnings/no-developer-general
+./config/clang-warnings/noerror-general
 ./config/gnu-warnings/4.8-4.last
 ./config/gnu-warnings/4.8
 ./config/gnu-warnings/4.9
@@ -165,14 +168,19 @@
 ./config/gnu-warnings/7
 ./config/gnu-warnings/8
 ./config/gnu-warnings/9
+./config/gnu-warnings/9.3
 ./config/gnu-warnings/cxx-general
+./config/gnu-warnings/cxx-4.8
 ./config/gnu-warnings/cxx-4.9
 ./config/gnu-warnings/cxx-5
 ./config/gnu-warnings/cxx-error-5
 ./config/gnu-warnings/cxx-error-general
+./config/gnu-warnings/cxx-noerror-5
+./config/gnu-warnings/cxx-noerror-general
 ./config/gnu-warnings/developer-4.8
 ./config/gnu-warnings/developer-7
 ./config/gnu-warnings/developer-8
+./config/gnu-warnings/developer-10
 ./config/gnu-warnings/developer-general
 ./config/gnu-warnings/error-5
 ./config/gnu-warnings/error-8
@@ -186,6 +194,9 @@
 ./config/gnu-warnings/no-developer-4.8
 ./config/gnu-warnings/no-developer-8
 ./config/gnu-warnings/no-developer-general
+./config/gnu-warnings/noerror-5
+./config/gnu-warnings/noerror-8
+./config/gnu-warnings/noerror-general
 ./config/intel-warnings/ifort-general
 ./config/intel-warnings/general
 
@@ -200,6 +211,33 @@
 ./doc/VFD_SWMR_RFC_200916.pdf
 ./doc/VFD_SWMR_RFC_2020-02-03.docx
 ./doc/vfd-swmr-user-guide.md
+
+
+./doxygen/aliases
+./doxygen/Doxyfile.in
+./doxygen/dox/api-compat-macros.dox
+./doxygen/dox/H5AC_cache_config_t.dox
+./doxygen/dox/H5Acreate.dox
+./doxygen/dox/H5Aiterate.dox
+./doxygen/dox/H5Fget_info.dox
+./doxygen/dox/H5Lget_info_by_idx.dox
+./doxygen/dox/H5Lget_info.dox
+./doxygen/dox/H5Literate_by_name.dox
+./doxygen/dox/H5Literate.dox
+./doxygen/dox/H5Lvisit_by_name.dox
+./doxygen/dox/H5Lvisit.dox
+./doxygen/dox/H5Oget_info_by_idx.dox
+./doxygen/dox/H5Oget_info_by_name.dox
+./doxygen/dox/H5Oget_info.dox
+./doxygen/dox/H5Ovisit_by_name.dox
+./doxygen/dox/H5Ovisit.dox
+./doxygen/dox/H5Sencode.dox
+./doxygen/dox/mainpage.dox
+./doxygen/dox/rm-template.dox
+./doxygen/examples/H5Fclose.c
+./doxygen/examples/H5Fcreate.c
+./doxygen/examples/hello_hdf5.c
+./doxygen/img/HDFG-logo.png
 
 ./examples/Attributes.txt
 ./examples/Makefile.am
@@ -516,9 +554,11 @@
 
 ./release_docs/COPYING
 ./release_docs/HISTORY-1_0-1_8_0_rc3.txt
+./release_docs/HISTORY-1_8_0-1_10_0.txt
+./release_docs/HISTORY-1_10_0-1_12_0.txt
 ./release_docs/HISTORY-1_8.txt
 ./release_docs/HISTORY-1_10.txt
-./release_docs/HISTORY-1_8_0-1_10_0.txt
+./release_docs/HISTORY-1_12.txt
 ./release_docs/INSTALL
 ./release_docs/INSTALL_CMake.txt
 ./release_docs/INSTALL_Cygwin.txt
@@ -1689,6 +1729,7 @@
 ./tools/src/misc/Makefile.am
 ./tools/src/misc/h5clear.c
 ./tools/src/misc/h5debug.c
+./tools/src/misc/h5delete.c
 ./tools/src/misc/h5mkgrp.c
 ./tools/src/misc/h5repart.c
 ./tools/test/misc/Makefile.am
@@ -3186,7 +3227,6 @@
 ./java/src/hdf/hdf5lib/callbacks/H5P_iterate_cb.java
 ./java/src/hdf/hdf5lib/callbacks/H5P_iterate_t.java
 
-./java/src/hdf/hdf5lib/exceptions/HDF5AtomException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5AttributeException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5BtreeException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5DataFiltersException.java
@@ -3200,6 +3240,7 @@
 ./java/src/hdf/hdf5lib/exceptions/HDF5FunctionArgumentException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5FunctionEntryExitException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5HeapException.java
+./java/src/hdf/hdf5lib/exceptions/HDF5IdException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5InternalErrorException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5JavaException.java
 ./java/src/hdf/hdf5lib/exceptions/HDF5LibraryException.java
@@ -3469,14 +3510,13 @@
 ./config/cmake/HDFCompilerFlags.cmake
 ./config/cmake/HDFCXXCompilerFlags.cmake
 ./config/cmake/HDFFortranCompilerFlags.cmake
-./config/cmake/HDF5_Process_Flex_Files.cmake
 ./config/cmake/HDF5Macros.cmake
 ./config/cmake/HDF5PluginMacros.cmake
+./config/cmake/HDF5PluginCache.cmake
 ./config/cmake/HDF5UseFortran.cmake
 ./config/cmake/jrunTest.cmake
 ./config/cmake/jvolTest.cmake
 ./config/cmake/libh5cc.in
-./config/cmake/libhdf5.pc.in
 ./config/cmake/libhdf5.settings.cmake.in
 ./config/cmake/mccacheinit.cmake
 ./config/cmake/patch.xml

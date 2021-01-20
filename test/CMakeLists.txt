@@ -540,6 +540,13 @@ if (HDF5_ENABLE_FORMATTERS)
   clang_format (HDF5_TEST_mirror_vfd_FORMAT mirror_vfd)
 endif ()
 
+#-----------------------------------------------------------------------------
+# Add Target to clang-format
+#-----------------------------------------------------------------------------
+if (HDF5_ENABLE_FORMATTERS)
+  clang_format (HDF5_TEST_event_set_FORMAT event_set)
+endif ()
+
 ##############################################################################
 ###           A D D I T I O N A L   T E S T S                              ###
 ##############################################################################
