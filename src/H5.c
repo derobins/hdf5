@@ -648,7 +648,7 @@ H5get_free_list_sizes(size_t *reg_size /*out*/, size_t *arr_size /*out*/, size_t
     herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE4("e", "*z*z*z*z", reg_size, arr_size, blk_size, fac_size);
+    H5TRACE4("e", "xxxx", reg_size, arr_size, blk_size, fac_size);
 
     /* Call the free list function to actually get the sizes */
     if (H5FL_get_free_list_sizes(reg_size, arr_size, blk_size, fac_size) < 0)
@@ -688,7 +688,7 @@ H5get_alloc_stats(H5_alloc_stats_t *stats /*out*/)
     herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE1("e", "*x", stats);
+    H5TRACE1("e", "x", stats);
 
     /* Call the internal allocation stat routine to get the values */
     if (H5MM_get_alloc_stats(stats) < 0)
@@ -851,7 +851,7 @@ H5get_libversion(unsigned *majnum /*out*/, unsigned *minnum /*out*/, unsigned *r
     herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "*Iu*Iu*Iu", majnum, minnum, relnum);
+    H5TRACE3("e", "xxx", majnum, minnum, relnum);
 
     /* Set the version information */
     if (majnum)
@@ -1196,7 +1196,7 @@ H5is_library_threadsafe(hbool_t *is_ts /*out*/)
     herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API_NOINIT
-    H5TRACE1("e", "*b", is_ts);
+    H5TRACE1("e", "x", is_ts);
 
     if (is_ts) {
 #ifdef H5_HAVE_THREADSAFE
