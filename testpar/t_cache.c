@@ -4181,7 +4181,7 @@ take_down_cache(hid_t fid, H5C_t *cache_ptr)
     }
 
     /* Pop API context */
-    H5CX_pop();
+    H5CX_pop(FALSE);
 
     if (success) {
 
@@ -6874,7 +6874,7 @@ main(int argc, char **argv)
     H5open();
 
     express_test = do_express_test();
-#if 0  /* JRM */
+#if 0 /* JRM */
     express_test = 0;
 #endif /* JRM */
     if (express_test) {
