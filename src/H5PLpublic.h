@@ -28,13 +28,19 @@
  */
 #define H5PL_NO_PLUGIN "::"
 
-/* Plugin type used by the plugin library */
+//! [H5PL_type_t_snip]
+
+/**
+ * Plugin type (bit-position) used by the plugin library
+ */
 typedef enum H5PL_type_t {
-    H5PL_TYPE_ERROR  = -1, /* Error                */
-    H5PL_TYPE_FILTER = 0,  /* Filter               */
-    H5PL_TYPE_VOL    = 1,  /* VOL driver           */
-    H5PL_TYPE_NONE   = 2   /* This must be last!   */
+    H5PL_TYPE_ERROR  = -1, /**< Error                */
+    H5PL_TYPE_FILTER = 0,  /**< Filter               */
+    H5PL_TYPE_VOL    = 1,  /**< VOL driver           */
+    H5PL_TYPE_NONE   = 2   /**< Sentinel: This must be last!   */
 } H5PL_type_t;
+
+//! [H5PL_type_t_snip]
 
 /* Common dynamic plugin type flags used by the set/get_loading_state functions */
 #define H5PL_FILTER_PLUGIN 0x0001

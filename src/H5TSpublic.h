@@ -10,26 +10,38 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* Purpose: This file contains declarations which define macros for the
- *          H5R package.  Including this header means that the source file
- *          is part of the H5R package.
- */
-#ifndef _H5Rmodule_H
-#define _H5Rmodule_H
-
-/* Define the proper control macros for the generic FUNC_ENTER/LEAVE and error
- *      reporting macros.
- */
-#define H5R_MODULE
-#define H5_MY_PKG      H5R
-#define H5_MY_PKG_ERR  H5E_REFERENCE
-#define H5_MY_PKG_INIT YES
-
-/**
- * \defgroup H5R H5R
- * \brief Reference Interface
- * \details The HDF5 Reference Interface, H5R, provides a mechanism for managing
- *          HDF5 referenced objects.
+/*
+ * This file contains public declarations for the H5TS (threadsafety) module.
  */
 
-#endif /* _H5Rmodule_H */
+#ifndef _H5TSpublic_H
+#define _H5TSpublic_H
+
+/* Public headers needed by this file */
+#include "H5public.h" /* Generic Functions                    */
+
+/*****************/
+/* Public Macros */
+/*****************/
+
+/*******************/
+/* Public Typedefs */
+/*******************/
+
+/********************/
+/* Public Variables */
+/********************/
+
+/*********************/
+/* Public Prototypes */
+/*********************/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _H5TSpublic_H */

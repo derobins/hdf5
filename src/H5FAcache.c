@@ -481,9 +481,9 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
             default:
 #ifdef NDEBUG
                 H5E_THROW(H5E_BADVALUE, "unknown action from metadata cache")
-#else     /* NDEBUG */
+#else /* NDEBUG */
                 HDassert(0 && "Unknown action?!?");
-#endif    /* NDEBUG */
+#endif /* NDEBUG */
         } /* end switch */
     }     /* end if */
     else
@@ -865,9 +865,9 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
             default:
 #ifdef NDEBUG
                 H5E_THROW(H5E_BADVALUE, "unknown action from metadata cache")
-#else     /* NDEBUG */
+#else /* NDEBUG */
                 HDassert(0 && "Unknown action?!?");
-#endif    /* NDEBUG */
+#endif /* NDEBUG */
         } /* end switch */
     }     /* end if */
 
@@ -1208,10 +1208,10 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
         default:
 #ifdef NDEBUG
             H5E_THROW(H5E_BADVALUE, "unknown action from metadata cache")
-#else  /* NDEBUG */
+#else /* NDEBUG */
             HDassert(0 && "Unknown action?!?");
 #endif /* NDEBUG */
-    }  /* end switch */
+    } /* end switch */
 
     CATCH
 

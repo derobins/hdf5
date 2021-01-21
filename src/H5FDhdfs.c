@@ -274,8 +274,6 @@ static herr_t  H5FD__hdfs_read(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, ha
 static herr_t  H5FD__hdfs_write(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, haddr_t addr, size_t size,
                                 const void *buf);
 static herr_t  H5FD__hdfs_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD__hdfs_lock(H5FD_t *_file, hbool_t rw);
-static herr_t  H5FD__hdfs_unlock(H5FD_t *_file);
 
 static herr_t H5FD__hdfs_validate_config(const H5FD_hdfs_fapl_t *fa);
 
@@ -309,8 +307,8 @@ static const H5FD_class_t H5FD_hdfs_g = {
     H5FD__hdfs_write,         /* write                */
     NULL,                     /* flush                */
     H5FD__hdfs_truncate,      /* truncate             */
-    H5FD__hdfs_lock,          /* lock                 */
-    H5FD__hdfs_unlock,        /* unlock               */
+    NULL,                     /* lock                 */
+    NULL,                     /* unlock               */
     NULL,                     /* dedup                */
     H5FD_FLMAP_DICHOTOMY      /* fl_map               */
 };
@@ -647,22 +645,21 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_fapl_hdfs(hid_t fapl_id, H5FD_hdfs_fapl_t *fa_out)
+H5Pget_fapl_hdfs(hid_t fapl_id, H5FD_hdfs_fapl_t *fa_dst /*out*/)
 {
-    const H5FD_hdfs_fapl_t *fa        = NULL;
+    const H5FD_hdfs_fapl_t *fa_src    = NULL;
     H5P_genplist_t *        plist     = NULL;
     herr_t                  ret_value = SUCCEED;
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", fapl_id, fa_out);
+    H5TRACE2("e", "ix", fapl_id, fa_dst);
 
 #if HDFS_DEBUG
     HDfprintf(stdout, "called %s.\n", FUNC);
 #endif
 
-    if (fa_out == NULL)
-        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "fa_out is NULL")
-
+    if (fa_dst == NULL)
+        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "fa_dst ptr is NULL")
     plist = H5P_object_verify(fapl_id, H5P_FILE_ACCESS);
     if (plist == NULL)
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access list")
@@ -670,12 +667,12 @@ H5Pget_fapl_hdfs(hid_t fapl_id, H5FD_hdfs_fapl_t *fa_out)
     if (H5FD_HDFS != H5P_peek_driver(plist))
         HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, FAIL, "incorrect VFL driver")
 
-    fa = (const H5FD_hdfs_fapl_t *)H5P_peek_driver_info(plist);
-    if (fa == NULL)
+    fa_src = (const H5FD_hdfs_fapl_t *)H5P_peek_driver_info(plist);
+    if (fa_src == NULL)
         HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, FAIL, "bad VFL driver info")
 
     /* Copy the hdfs fapl data out */
-    H5MM_memcpy(fa_out, fa, sizeof(H5FD_hdfs_fapl_t));
+    H5MM_memcpy(fa_dst, fa_src, sizeof(H5FD_hdfs_fapl_t));
 
 done:
     FUNC_LEAVE_API(ret_value)
@@ -1647,58 +1644,4 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5FD__hdfs_truncate() */
 
-/*-------------------------------------------------------------------------
- *
- * Function: H5FD__hdfs_lock()
- *
- * Purpose:
- *
- *     Place an advisory lock on a file.
- *     No effect on Read-Only S3 file.
- *
- *     Suggestion: remove lock/unlock from class
- *                 would result in error at H5FD_[un]lock() (H5FD.c)
- *
- * Return:
- *
- *     SUCCEED (No-op always succeeds)
- *
- * Programmer: Jacob Smith
- *             2017-11-03
- *
- *-------------------------------------------------------------------------
- */
-static herr_t
-H5FD__hdfs_lock(H5FD_t H5_ATTR_UNUSED *_file, hbool_t H5_ATTR_UNUSED rw)
-{
-    FUNC_ENTER_STATIC_NOERR
-
-    FUNC_LEAVE_NOAPI(SUCCEED)
-} /* end H5FD__hdfs_lock() */
-
-/*-------------------------------------------------------------------------
- *
- * Function: H5FD__hdfs_unlock()
- *
- * Purpose:
- *
- *     Remove the existing lock on the file.
- *     No effect on Read-Only S3 file.
- *
- * Return:
- *
- *     SUCCEED (No-op always succeeds)
- *
- * Programmer: Jacob Smith
- *             2017-11-03
- *
- *-------------------------------------------------------------------------
- */
-static herr_t
-H5FD__hdfs_unlock(H5FD_t H5_ATTR_UNUSED *_file)
-{
-    FUNC_ENTER_STATIC_NOERR
-
-    FUNC_LEAVE_NOAPI(SUCCEED)
-} /* end H5FD__hdfs_unlock() */
 #endif /* H5_HAVE_LIBHDFS */
