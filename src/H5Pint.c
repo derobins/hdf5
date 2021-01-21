@@ -459,9 +459,9 @@ H5P__init_package(void)
      * Initialize the Generic Property class & object groups.
      */
     if (H5I_register_type(H5I_GENPROPCLS_CLS) < 0)
-        HGOTO_ERROR(H5E_ATOM, H5E_CANTINIT, FAIL, "unable to initialize ID group")
+        HGOTO_ERROR(H5E_ID, H5E_CANTINIT, FAIL, "unable to initialize ID group")
     if (H5I_register_type(H5I_GENPROPLST_CLS) < 0)
-        HGOTO_ERROR(H5E_ATOM, H5E_CANTINIT, FAIL, "unable to initialize ID group")
+        HGOTO_ERROR(H5E_ID, H5E_CANTINIT, FAIL, "unable to initialize ID group")
 
     /* Repeatedly pass over the list of property list classes for the library,
      * initializing each class if its parent class is initialized, until no
@@ -3992,7 +3992,7 @@ H5P_object_verify(hid_t plist_id, hid_t pclass_id)
 
     /* Get the plist structure */
     if (NULL == (ret_value = (H5P_genplist_t *)H5I_object(plist_id)))
-        HGOTO_ERROR(H5E_ATOM, H5E_BADATOM, NULL, "can't find object for ID")
+        HGOTO_ERROR(H5E_ID, H5E_BADID, NULL, "can't find object for ID")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)

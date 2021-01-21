@@ -218,7 +218,7 @@ H5G__traverse_ud(const H5G_loc_t *grp_loc /*in,out*/, const H5O_link_t *lnk, H5G
         } /* end if */
         /* else, we really needed to open the object */
         else
-            HGOTO_ERROR(H5E_SYM, H5E_BADATOM, FAIL, "traversal callback returned invalid ID")
+            HGOTO_ERROR(H5E_SYM, H5E_BADID, FAIL, "traversal callback returned invalid ID")
     } /* end if */
 
     /* Get the object location information from the ID the user callback returned */

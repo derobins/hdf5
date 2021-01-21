@@ -2547,7 +2547,7 @@ H5F_try_close(H5F_t *f, hbool_t *was_closed /*out*/)
                 /* Try to close all the open objects in this file */
                 for (u = 0; u < obj_count; u++)
                     if (H5I_dec_ref(objs[u]) < 0)
-                        HGOTO_ERROR(H5E_ATOM, H5E_CLOSEERROR, FAIL, "can't close object")
+                        HGOTO_ERROR(H5E_ID, H5E_CLOSEERROR, FAIL, "can't close object")
             }
             if (result < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, FAIL, "H5F_get_obj_ids failed(1)")
@@ -2565,7 +2565,7 @@ H5F_try_close(H5F_t *f, hbool_t *was_closed /*out*/)
                 /* Try to close all the open objects in this file */
                 for (u = 0; u < obj_count; u++)
                     if (H5I_dec_ref(objs[u]) < 0)
-                        HGOTO_ERROR(H5E_ATOM, H5E_CLOSEERROR, FAIL, "can't close object")
+                        HGOTO_ERROR(H5E_ID, H5E_CLOSEERROR, FAIL, "can't close object")
             }
             if (result < 0)
                 HGOTO_ERROR(H5E_INTERNAL, H5E_BADITER, FAIL, "H5F_get_obj_ids failed(2)")
@@ -2668,13 +2668,13 @@ H5F_get_id(H5F_t *file)
     if (H5I_find_id(file, H5I_FILE, &ret_value) < 0 || H5I_INVALID_HID == ret_value) {
         /* resurrect the ID - Register an ID with the native connector */
         if ((ret_value = H5VL_wrap_register(H5I_FILE, file, FALSE)) < 0)
-            HGOTO_ERROR(H5E_ATOM, H5E_CANTREGISTER, H5I_INVALID_HID, "unable to register group")
+            HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, H5I_INVALID_HID, "unable to register group")
         file->id_exists = TRUE;
     }
     else {
         /* Increment reference count on existing ID */
         if (H5I_inc_ref(ret_value, FALSE) < 0)
-            HGOTO_ERROR(H5E_ATOM, H5E_CANTINC, H5I_INVALID_HID, "incrementing file ID failed")
+            HGOTO_ERROR(H5E_ID, H5E_CANTINC, H5I_INVALID_HID, "incrementing file ID failed")
     } /* end else */
 
 done:
@@ -3779,7 +3779,7 @@ H5F__start_swmr_write(H5F_t *f)
 
             /* Close the object */
             if (H5I_dec_ref(obj_ids[u]) < 0)
-                HGOTO_ERROR(H5E_ATOM, H5E_CANTCLOSEOBJ, FAIL, "decrementing object ID failed")
+                HGOTO_ERROR(H5E_ID, H5E_CANTCLOSEOBJ, FAIL, "decrementing object ID failed")
         } /* end for */
     }     /* end if */
 
@@ -3837,7 +3837,7 @@ H5F__start_swmr_write(H5F_t *f)
          * going to sweat it, now.
          */
         if (H5O_refresh_metadata_reopen(obj_ids[u], &obj_glocs[u], NULL, vol_connector, TRUE) < 0)
-            HGOTO_ERROR(H5E_ATOM, H5E_CLOSEERROR, FAIL, "can't refresh-close object")
+            HGOTO_ERROR(H5E_ID, H5E_CLOSEERROR, FAIL, "can't refresh-close object")
 
 done:
     if (ret_value < 0 && setup) {

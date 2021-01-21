@@ -142,10 +142,10 @@ H5Soffset_simple(hid_t space_id, const hssize_t *offset)
 
     /* Check args */
     if (NULL == (space = (H5S_t *)H5I_object_verify(space_id, H5I_DATASPACE)))
-        HGOTO_ERROR(H5E_ATOM, H5E_BADATOM, FAIL, "not a dataspace")
+        HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "not a dataspace")
     if (space->extent.rank == 0 ||
         (H5S_GET_EXTENT_TYPE(space) == H5S_SCALAR || H5S_GET_EXTENT_TYPE(space) == H5S_NULL))
-        HGOTO_ERROR(H5E_ATOM, H5E_UNSUPPORTED, FAIL, "can't set offset on scalar or null dataspace")
+        HGOTO_ERROR(H5E_ID, H5E_UNSUPPORTED, FAIL, "can't set offset on scalar or null dataspace")
     if (offset == NULL)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "no offset specified")
 
@@ -1671,7 +1671,7 @@ H5Sget_select_type(hid_t space_id)
 
     /* Check args */
     if (NULL == (space = (H5S_t *)H5I_object_verify(space_id, H5I_DATASPACE)))
-        HGOTO_ERROR(H5E_ATOM, H5E_BADATOM, H5S_SEL_ERROR, "not a dataspace")
+        HGOTO_ERROR(H5E_ID, H5E_BADID, H5S_SEL_ERROR, "not a dataspace")
 
     /* Set return value */
     ret_value = H5S_GET_SELECT_TYPE(space);
@@ -2853,7 +2853,7 @@ H5Sselect_project_intersection(hid_t src_space_id, hid_t dst_space_id, hid_t src
 
     /* Atomize */
     if ((ret_value = H5I_register(H5I_DATASPACE, proj_space, TRUE)) < 0)
-        HGOTO_ERROR(H5E_ATOM, H5E_CANTREGISTER, FAIL, "unable to register dataspace atom")
+        HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, FAIL, "unable to register dataspace atom")
 
 done:
     if (ret_value < 0)

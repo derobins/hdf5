@@ -1941,7 +1941,7 @@ done:
     /* If we got a type ID from a passed-in dataset, we need to close that */
     if (dset_tid != H5I_INVALID_HID)
         if (H5I_dec_app_ref(dset_tid) < 0)
-            HGOTO_ERROR(H5E_DATATYPE, H5E_BADATOM, FAIL, "problem freeing temporary dataset type ID")
+            HGOTO_ERROR(H5E_DATATYPE, H5E_BADID, FAIL, "problem freeing temporary dataset type ID")
 
     /* Close the new datatype on errors */
     if (H5I_INVALID_HID == ret_value)
@@ -1979,7 +1979,7 @@ H5Tclose(hid_t type_id)
 
     /* When the reference count reaches zero the resources are freed */
     if (H5I_dec_app_ref(type_id) < 0)
-        HGOTO_ERROR(H5E_ATOM, H5E_BADATOM, FAIL, "problem freeing id")
+        HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "problem freeing id")
 
 done:
     FUNC_LEAVE_API(ret_value)
