@@ -566,7 +566,8 @@ test_fapl_config_validation(void)
             JSVERIFY(config.stream_buffer_size, fa_fetch.stream_buffer_size, "streambuffer size mismatch")
             JSVERIFY_STR(config.namenode_name, fa_fetch.namenode_name, "node name mismatch")
             JSVERIFY_STR(config.user_name, fa_fetch.user_name, "user name mismatch")
-            JSVERIFY_STR(config.kerberos_ticket_cache, fa_fetch.kerberos_ticket_cache, "kerberos ticket cache mismatch")
+            JSVERIFY_STR(config.kerberos_ticket_cache, fa_fetch.kerberos_ticket_cache,
+                         "kerberos ticket cache mismatch")
         }
 
         /*-----------------------------
@@ -1428,15 +1429,6 @@ test_noops_and_autofails(void)
 
     H5E_BEGIN_TRY{
         JSVERIFY(FAIL, H5FDtruncate(file, H5P_DEFAULT, TRUE), "truncate must fail (closing)")} H5E_END_TRY;
-
-    /* no-op calls to `lock()` and `unlock()`
-     */
-    JSVERIFY(SUCCEED, H5FDlock(file, TRUE), "lock always succeeds; has no effect")
-    JSVERIFY(SUCCEED, H5FDlock(file, FALSE), "lock issue")
-    JSVERIFY(SUCCEED, H5FDunlock(file), "unlock issue")
-    /* Lock/unlock with null file or similar error crashes tests.
-     * HDassert in calling heirarchy, `H5FD[un]lock()` and `H5FD_[un]lock()`
-     */
 
     /************
      * TEARDOWN *

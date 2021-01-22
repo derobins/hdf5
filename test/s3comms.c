@@ -291,7 +291,7 @@ jserr_str(const char *expected, const char *actual, const char *reason)
     if ((long)(actual) == (long)(expected)) {                                                                \
         JSERR_LONG((expected), (actual), (reason))                                                           \
         goto error;                                                                                          \
-    }  /* JSVERIFY_NOT */
+    } /* JSVERIFY_NOT */
 #endif /* JSVERIFY_NOT unused */
 
 /*----------------------------------------------------------------------------
@@ -348,7 +348,7 @@ jserr_str(const char *expected, const char *actual, const char *reason)
     if ((long)(actual) == (long)(expected)) {                                                                \
         JSERR_LONG((expected), (actual), (reason))                                                           \
         goto error;                                                                                          \
-    }  /* JSVERIFY_NOT */
+    } /* JSVERIFY_NOT */
 #endif /* JSVERIFY_NOT unused */
 
 /*----------------------------------------------------------------------------
@@ -372,7 +372,7 @@ jserr_str(const char *expected, const char *actual, const char *reason)
 #define S3_TEST_RESOURCE_TEXT_PUBLIC     "Poe_Raven.txt"
 #define S3_TEST_RESOURCE_MISSING         "missing.csv"
 
-#define S3_TEST_RUN_TIMEOUT  0   /* run tests that might hang */
+#define S3_TEST_RUN_TIMEOUT  0 /* run tests that might hang */
 #define S3_TEST_MAX_URL_SIZE 256 /* char array size */
 
 /* Global variables for aws test profile.
@@ -1290,7 +1290,7 @@ test_HMAC_SHA256(void)
                 HDfprintf(stdout, "ERROR:\n!!! \"%s\"\n != \"%s\"\n", cases[i].exp, dest);
                 TEST_ERROR;
             }
-#else  /* VERBOSE not defined */
+#else /* VERBOSE not defined */
             /* simple pass/fail test
              */
             JSVERIFY(0, HDstrncmp(cases[i].exp, dest, HDstrlen(cases[i].exp)), NULL);
@@ -2538,9 +2538,9 @@ test_uriencode(void)
     dest = (char *)HDmalloc(sizeof(char) * 15);
     HDassert(dest != NULL);
 
-    JSVERIFY(FAIL, H5FD_s3comms_uriencode(NULL, "word$", 5, false, &dest_written),
+    JSVERIFY(FAIL, H5FD_s3comms_uriencode(NULL, "word$", 5, FALSE, &dest_written),
              "destination cannot be NULL");
-    JSVERIFY(FAIL, H5FD_s3comms_uriencode(dest, NULL, 5, false, &dest_written),
+    JSVERIFY(FAIL, H5FD_s3comms_uriencode(dest, NULL, 5, FALSE, &dest_written),
              "source string cannot be NULL");
 
     HDfree(dest);
