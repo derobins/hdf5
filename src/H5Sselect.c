@@ -602,13 +602,13 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
-H5Sget_select_bounds(hid_t spaceid, hsize_t start[], hsize_t end[])
+H5Sget_select_bounds(hid_t spaceid, hsize_t start[] /*out*/, hsize_t end[] /*out*/)
 {
     H5S_t *space;     /* Dataspace to modify selection of */
     herr_t ret_value; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "i*h*h", spaceid, start, end);
+    H5TRACE3("e", "ixx", spaceid, start, end);
 
     /* Check args */
     if (start == NULL || end == NULL)
@@ -2851,9 +2851,9 @@ H5Sselect_project_intersection(hid_t src_space_id, hid_t dst_space_id, hid_t src
     if (H5S_select_project_intersection(src_space, dst_space, src_intersect_space, &proj_space, FALSE) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTCLIP, FAIL, "can't project dataspace intersection")
 
-    /* Atomize */
+    /* Register */
     if ((ret_value = H5I_register(H5I_DATASPACE, proj_space, TRUE)) < 0)
-        HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, FAIL, "unable to register dataspace atom")
+        HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, FAIL, "unable to register dataspace ID")
 
 done:
     if (ret_value < 0)
@@ -3000,10 +3000,10 @@ H5Ssel_iter_create(hid_t space_id, size_t elmt_size, unsigned flags)
     if (H5S_select_iter_init(sel_iter, space, elmt_size, flags) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTINIT, H5I_INVALID_HID, "unable to initialize selection iterator")
 
-    /* Atomize */
+    /* Register */
     if ((ret_value = H5I_register(H5I_SPACE_SEL_ITER, sel_iter, TRUE)) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTREGISTER, H5I_INVALID_HID,
-                    "unable to register dataspace selection iterator atom")
+                    "unable to register dataspace selection iterator ID")
 
 done:
     FUNC_LEAVE_API(ret_value)
@@ -3056,14 +3056,14 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
-H5Ssel_iter_get_seq_list(hid_t sel_iter_id, size_t maxseq, size_t maxbytes, size_t *nseq, size_t *nbytes,
-                         hsize_t *off, size_t *len)
+H5Ssel_iter_get_seq_list(hid_t sel_iter_id, size_t maxseq, size_t maxbytes, size_t *nseq /*out*/,
+                         size_t *nbytes /*out*/, hsize_t *off /*out*/, size_t *len /*out*/)
 {
     H5S_sel_iter_t *sel_iter;            /* Dataspace selection iterator to operate on */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE7("e", "izz*z*z*h*z", sel_iter_id, maxseq, maxbytes, nseq, nbytes, off, len);
+    H5TRACE7("e", "izzxxxx", sel_iter_id, maxseq, maxbytes, nseq, nbytes, off, len);
 
     /* Check args */
     if (NULL == (sel_iter = (H5S_sel_iter_t *)H5I_object_verify(sel_iter_id, H5I_SPACE_SEL_ITER)))
@@ -3138,6 +3138,37 @@ H5Ssel_iter_reset(hid_t sel_iter_id, hid_t space_id)
 done:
     FUNC_LEAVE_API(ret_value)
 } /* end H5Ssel_iter_reset() */
+
+/*-------------------------------------------------------------------------
+ * Function:	H5S__sel_iter_close_cb
+ *
+ * Purpose:     Called when the ref count reaches zero on a selection iterator's ID
+ *
+ * Return:	Non-negative on success / Negative on failure
+ *
+ * Programmer:	Quincey Koziol
+ *	        Wednesday, April 8, 2020
+ *
+ *-------------------------------------------------------------------------
+ */
+herr_t
+H5S__sel_iter_close_cb(H5S_sel_iter_t *_sel_iter, void H5_ATTR_UNUSED **request)
+{
+    H5S_sel_iter_t *sel_iter  = (H5S_sel_iter_t *)_sel_iter; /* The selection iterator to close */
+    herr_t          ret_value = SUCCEED;                     /* Return value */
+
+    FUNC_ENTER_PACKAGE
+
+    /* Sanity check */
+    HDassert(sel_iter);
+
+    /* Close the selection iterator object */
+    if (H5S_sel_iter_close(sel_iter) < 0)
+        HGOTO_ERROR(H5E_DATASPACE, H5E_CLOSEERROR, FAIL, "unable to close selection iterator");
+
+done:
+    FUNC_LEAVE_NOAPI(ret_value)
+} /* end H5S__sel_iter_close_cb() */
 
 /*-------------------------------------------------------------------------
  * Function:	H5S_sel_iter_close
