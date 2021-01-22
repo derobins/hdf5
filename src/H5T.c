@@ -32,6 +32,7 @@
 #include "H5CXprivate.h" /* API Contexts                             */
 #include "H5Dprivate.h"  /* Datasets                                 */
 #include "H5Eprivate.h"  /* Error handling                           */
+#include "H5ESprivate.h" /* Event Sets                               */
 #include "H5Fprivate.h"  /* Files                                    */
 #include "H5FLprivate.h" /* Free Lists                               */
 #include "H5FOprivate.h" /* File objects                             */

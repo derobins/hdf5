@@ -365,6 +365,12 @@ H5_term_library(void)
         /* Try to organize these so the "higher" level components get shut
          * down before "lower" level components that they might rely on. -QAK
          */
+
+        /* Close the event sets first, so that all asynchronous operations
+         *  complete before anything else attempts to shut down.
+         */
+        pending += DOWN(ES);
+
         /* Close down the user-facing interfaces, after the event sets */
         if (pending == 0) {
             /* Close the interfaces dependent on others */

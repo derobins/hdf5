@@ -58,13 +58,14 @@ libhdf5_la_SOURCES= H5.c H5checksum.c H5dbg.c H5lib_settings.c H5system.c \
         H5E.c H5Edeprec.c H5Eint.c \
         H5EA.c H5EAcache.c H5EAdbg.c H5EAdblkpage.c H5EAdblock.c H5EAhdr.c \
         H5EAiblock.c H5EAint.c H5EAsblock.c H5EAstat.c H5EAtest.c \
+        H5ES.c H5ESevent.c H5ESint.c H5ESlist.c \
         H5F.c H5Faccum.c H5Fcwfs.c H5Fdbg.c H5Fdeprec.c H5Fefc.c H5Ffake.c \
         H5Fint.c H5Fio.c H5Fmount.c H5Fquery.c H5Fsfile.c H5Fspace.c \
         H5Fsuper.c H5Fsuper_cache.c H5Ftest.c \
         H5Fvfd_swmr.c \
         H5FA.c H5FAcache.c H5FAdbg.c H5FAdblock.c H5FAdblkpage.c H5FAhdr.c \
         H5FAint.c H5FAstat.c H5FAtest.c \
-        H5FD.c H5FDcore.c H5FDfamily.c H5FDhdfs.c H5FDint.c H5FDlog.c \
+        H5FD.c H5FDcore.c H5FDfamily.c H5FDint.c H5FDlog.c \
         H5FDmulti.c H5FDsec2.c H5FDspace.c \
         H5FDsplitter.c H5FDstdio.c H5FDtest.c \
         H5FDvfd_swmr.c H5FDvfd_swmr_instr.c \
@@ -149,13 +150,12 @@ endif
 
 # Public headers
 include_HEADERS = hdf5.h H5api_adpt.h H5overflow.h H5pubconf.h H5public.h \
-	H5queue.h \
-	H5version.h \
+        H5queue.h H5version.h \
         H5Apublic.h H5ACpublic.h \
         H5Cpublic.h H5Dpublic.h \
         H5Epubgen.h H5Epublic.h H5ESpublic.h H5Fpublic.h \
-        H5FDpublic.h H5FDcore.h H5FDdirect.h  H5FDfamily.h H5FDhdfs.h \
-        H5FDlog.h H5FDmirror.h H5FDmpi.h H5FDmpio.h  H5FDmulti.h H5FDros3.h \
+        H5FDpublic.h H5FDcore.h H5FDdirect.h H5FDfamily.h H5FDhdfs.h \
+        H5FDlog.h H5FDmirror.h H5FDmpi.h H5FDmpio.h H5FDmulti.h H5FDros3.h \
         H5FDsec2.h H5FDsplitter.h H5FDstdio.h H5FDwindows.h \
         H5FDvfd_swmr.h \
         H5Gpublic.h  H5Ipublic.h H5Lpublic.h \

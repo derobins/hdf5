@@ -60,11 +60,13 @@ typedef enum H5VL_get_connector_kind_t {
 /******************************/
 
 /* Utility functions */
-H5_DLL herr_t H5VL_init_phase1(void);
-H5_DLL herr_t H5VL_init_phase2(void);
-H5_DLL herr_t H5VL_cmp_connector_cls(int *cmp_value, const H5VL_class_t *cls1, const H5VL_class_t *cls2);
-H5_DLL herr_t H5VL_conn_copy(H5VL_connector_prop_t *value);
-H5_DLL herr_t H5VL_conn_free(const H5VL_connector_prop_t *info);
+H5_DLL herr_t  H5VL_init_phase1(void);
+H5_DLL herr_t  H5VL_init_phase2(void);
+H5_DLL herr_t  H5VL_cmp_connector_cls(int *cmp_value, const H5VL_class_t *cls1, const H5VL_class_t *cls2);
+H5_DLL herr_t  H5VL_conn_copy(H5VL_connector_prop_t *value);
+H5_DLL int64_t H5VL_conn_inc_rc(H5VL_t *connector);
+H5_DLL int64_t H5VL_conn_dec_rc(H5VL_t *connector);
+H5_DLL herr_t  H5VL_conn_free(const H5VL_connector_prop_t *info);
 
 /* Functions that deal with VOL connectors */
 H5_DLL hid_t H5VL_register_connector(const void *cls, hbool_t app_ref, hid_t vipl_id);
@@ -85,6 +87,7 @@ H5_DLL void *H5VL_object_data(const H5VL_object_t *vol_obj);
 H5_DLL void *H5VL_object_unwrap(const H5VL_object_t *vol_obj);
 H5_DLL void *H5VL_object_verify(hid_t id, H5I_type_t obj_type);
 H5_DLL H5VL_object_t *H5VL_vol_object(hid_t id);
+H5_DLL H5VL_object_t *H5VL_create_object(void *object, H5VL_t *vol_connector);
 H5_DLL H5VL_object_t *H5VL_create_object_using_vol_id(H5I_type_t type, void *obj, hid_t connector_id);
 H5_DLL herr_t         H5VL_free_object(H5VL_object_t *obj);
 H5_DLL herr_t         H5VL_object_is_native(const H5VL_object_t *obj, hbool_t *is_native);

@@ -24,6 +24,7 @@
 #include "H5CXprivate.h" /* API Contexts                             */
 #include "H5Mpkg.h"      /* Maps                                     */
 #include "H5Eprivate.h"  /* Error handling                           */
+#include "H5ESprivate.h" /* Event Sets                               */
 #include "H5Iprivate.h"  /* IDs                                      */
 #include "H5VLprivate.h" /* Virtual Object Layer                     */
 
