@@ -2099,10 +2099,7 @@ test_swmr_write_big(hbool_t newest_format)
     uint8_t *wbuf2 = NULL, *rbuf = NULL; /* Buffers for reading & writing */
     uint8_t  wbuf[1024];                 /* Buffer for reading & writing */
     unsigned u;                          /* Local index variable */
-#ifdef H5_HAVE_UNISTD_H
-    pid_t pid; /* Process ID */
-#endif /* H5_HAVE_UNISTD_H */
-    int     status;                 /* Status returned from child process */
+    hbool_t process_success = FALSE;
     char *  driver         = NULL;  /* VFD string (from env variable) */
     hbool_t api_ctx_pushed = FALSE; /* Whether API context pushed */
 
@@ -2111,13 +2108,14 @@ test_swmr_write_big(hbool_t newest_format)
     else
         TESTING("SWMR write of large metadata: with non-latest-format")
 
-#if !(defined(H5_HAVE_FORK) && defined(H5_HAVE_WAITPID))
+#if !(defined(H5_HAVE_FORK) && defined(H5_HAVE_WAITPID)) && !defined(WIN32)
 
+    /* Not a Windows system or a POSIX system with fork and waitpid */
     SKIPPED();
-    HDputs("    Test skipped due to fork or waitpid not defined.");
+    HDputs("    Test skipped: Either not Windows or fork or waitpid not defined.");
     return 0;
 
-#else /* defined(H5_HAVE_FORK && defined(H5_HAVE_WAITPID) */
+#else
 
     /* Skip this test if SWMR I/O is not supported for the VFD specified
      * by the environment variable.
@@ -2228,56 +2226,95 @@ test_swmr_write_big(hbool_t newest_format)
     if (HDmemcmp(wbuf2, rbuf, (size_t)BIG_BUF_SIZE) != 0)
         TEST_ERROR;
 
-    /* Fork child process to verify that the data at [1024, 2014] does get written to disk */
-    if ((pid = HDfork()) < 0) {
-        HDperror("fork");
-        FAIL_STACK_ERROR;
+#if defined(WIN32)
+    {
+        STARTUPINFO         si;
+        PROCESS_INFORMATION pi;
+        DWORD               exit_code = EXIT_FAILURE;
+
+        ZeroMemory(&si, sizeof(si));
+        si.cb = sizeof(si);
+        ZeroMemory(&pi, sizeof(pi));
+
+        if (!CreateProcess(NULL, SWMR_READER, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
+            HDprintf("CreateProcess failed (%d).\n", GetLastError());
+            FAIL_STACK_ERROR;
+        }
+
+        WaitForSingleObject(pi.hProcess, INFINITE);
+
+        if (FALSE == GetExitCodeProcess(pi.hProcess, &exit_code) || 0 == exit_code)
+            process_success = FALSE;
+        else {
+            process_success = TRUE;
+        }
+
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
     }
-    else if (0 == pid) { /* Child process */
-        /* By convention, argv[0] tells the name of program invoked.
-         *
-         * execv on NetBSD 8 will actually return EFAULT if there is a
-         * NULL at argv[0], so we follow the convention unconditionally.
-         */
-        char        swmr_reader[] = SWMR_READER;
-        char *const new_argv[]    = {swmr_reader, NULL};
-        /* Run the reader */
-        status = HDexecv(SWMR_READER, new_argv);
-        HDprintf("errno from execv = %s\n", HDstrerror(errno));
+#else  /* WIN32 */
+    {
+        pid_t pid; /* Process ID */
+        int   status; /* Status returned from child process */
+
+        /* Fork child process to verify that the data at [1024, 2014] does get written to disk */
+        if ((pid = HDfork()) < 0) {
+            HDperror("fork");
+            FAIL_STACK_ERROR;
+        }
+        else if (0 == pid) { /* Child process */
+            /* By convention, argv[0] tells the name of program invoked.
+             *
+             * execv on NetBSD 8 will actually return EFAULT if there is a
+             * NULL at argv[0], so we follow the convention unconditionally.
+             */
+            char        swmr_reader[] = SWMR_READER;
+            char *const new_argv[]    = {swmr_reader, NULL};
+            /* Run the reader */
+            status = HDexecv(SWMR_READER, new_argv);
+            HDprintf("errno from execv = %s\n", HDstrerror(errno));
+            FAIL_STACK_ERROR;
+        } /* end if */
+
+        /* Parent process -- wait for the child process to complete */
+        while (pid != HDwaitpid(pid, &status, 0))
+            /*void*/;
+
+        /* Check if child process terminates normally and its return value */
+        if (WIFEXITED(status) && !WEXITSTATUS(status))
+            process_success = TRUE;
+    }
+#endif /* WIN32 */
+
+    
+    if (process_success)
+        FAIL_PUTS_ERROR("child process exited abnormally")
+
+    /* Flush the accumulator */
+    if (accum_reset(rf) < 0)
         FAIL_STACK_ERROR;
-    } /* end if */
 
-    /* Parent process -- wait for the child process to complete */
-    while (pid != HDwaitpid(pid, &status, 0))
-        /*void*/;
+    /* Close and remove the file */
+    if (H5Fclose(fid) < 0)
+        FAIL_STACK_ERROR;
 
-    /* Check if child process terminates normally and its return value */
-    if (WIFEXITED(status) && !WEXITSTATUS(status)) {
-        /* Flush the accumulator */
-        if (accum_reset(rf) < 0)
-            FAIL_STACK_ERROR;
+    /* Close the property list */
+    if (H5Pclose(fapl) < 0)
+        FAIL_STACK_ERROR;
 
-        /* Close and remove the file */
-        if (H5Fclose(fid) < 0)
-            FAIL_STACK_ERROR;
+    /* Pop API context */
+    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+        FAIL_STACK_ERROR
+    api_ctx_pushed = FALSE;
 
-        /* Close the property list */
-        if (H5Pclose(fapl) < 0)
-            FAIL_STACK_ERROR;
+    /* Release memory */
+    if (wbuf2)
+        HDfree(wbuf2);
+    if (rbuf)
+        HDfree(rbuf);
 
-        /* Pop API context */
-        if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
-            FAIL_STACK_ERROR
-        api_ctx_pushed = FALSE;
-
-        /* Release memory */
-        if (wbuf2)
-            HDfree(wbuf2);
-        if (rbuf)
-            HDfree(rbuf);
-        PASSED();
-        return 0;
-    } /* end if */
+    PASSED();
+    return 0;
 
 error:
     /* Closing and remove the file */
