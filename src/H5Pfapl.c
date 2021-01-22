@@ -1797,7 +1797,7 @@ H5Pset_mdc_image_config(hid_t plist_id, H5AC_cache_image_config_t *config_ptr)
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", plist_id, config_ptr);
+    H5TRACE2("e", "i*CC", plist_id, config_ptr);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -1844,7 +1844,7 @@ H5Pget_mdc_image_config(hid_t plist_id, H5AC_cache_image_config_t *config_ptr)
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", plist_id, config_ptr);
+    H5TRACE2("e", "i*CC", plist_id, config_ptr);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -1890,7 +1890,7 @@ H5Pset_mdc_config(hid_t plist_id, H5AC_cache_config_t *config_ptr)
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", plist_id, config_ptr);
+    H5TRACE2("e", "i*Cc", plist_id, config_ptr);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -1937,7 +1937,7 @@ H5Pget_mdc_config(hid_t plist_id, H5AC_cache_config_t *config_ptr)
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", plist_id, config_ptr);
+    H5TRACE2("e", "i*Cc", plist_id, config_ptr);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -2794,7 +2794,7 @@ H5Pset_file_image_callbacks(hid_t fapl_id, H5FD_file_image_callbacks_t *callback
     herr_t                 ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", fapl_id, callbacks_ptr);
+    H5TRACE2("e", "i*DI", fapl_id, callbacks_ptr);
 
     /* Get the plist structure */
     if (NULL == (fapl = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
@@ -2870,7 +2870,7 @@ H5Pget_file_image_callbacks(hid_t fapl_id, H5FD_file_image_callbacks_t *callback
     herr_t                 ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", fapl_id, callbacks_ptr);
+    H5TRACE2("e", "i*DI", fapl_id, callbacks_ptr);
 
     /* Get the plist structure */
     if (NULL == (fapl = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
@@ -4272,7 +4272,7 @@ H5Pset_object_flush_cb(hid_t plist_id, H5F_flush_cb_t func, void *udata)
     herr_t             ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "ix*x", plist_id, func, udata);
+    H5TRACE3("e", "iFF*x", plist_id, func, udata);
 
     /* Check if the callback function is NULL and the user data is non-NULL.
      * This is almost certainly an error as the user data will not be used. */
@@ -4315,7 +4315,7 @@ H5Pget_object_flush_cb(hid_t plist_id, H5F_flush_cb_t *func, void **udata)
     herr_t             ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "i*x**x", plist_id, func, udata);
+    H5TRACE3("e", "i*FF**x", plist_id, func, udata);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -5683,7 +5683,7 @@ H5Pset_vfd_swmr_config(hid_t plist_id, H5F_vfd_swmr_config_t *config_ptr)
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", plist_id, config_ptr);
+    H5TRACE2("e", "i*#", plist_id, config_ptr);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -5863,7 +5863,7 @@ H5Pget_vfd_swmr_config(hid_t plist_id, H5F_vfd_swmr_config_t *config_ptr)
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", plist_id, config_ptr);
+    H5TRACE2("e", "i*#", plist_id, config_ptr);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))

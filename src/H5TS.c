@@ -11,25 +11,51 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/* private headers */
-#include "H5private.h"   /*library                     */
-#include "H5Eprivate.h"  /*error handling              */
-#include "H5MMprivate.h" /*memory management functions    */
+/*
+ * Purpose:	This file contains the framework for ensuring that the global
+ *		library lock is held when an API routine is called.  This
+ *              framework works in concert with the FUNC_ENTER_API / FUNC_LEAVE_API
+ *		macros defined in H5private.h.
+ *
+ * Note:	Because this threadsafety framework operates outside the library,
+ *		it does not use the error stack and only uses the "namecheck only"
+ *              FUNC_ENTER_* / FUNC_LEAVE_* macros.
+ */
+
+/****************/
+/* Module Setup */
+/****************/
+
+/***********/
+/* Headers */
+/***********/
+#include "H5private.h"   /* Generic Functions                        */
+#include "H5Eprivate.h"  /* Error handling                           */
+#include "H5MMprivate.h" /* Memory management                        */
 
 #ifdef H5_HAVE_THREADSAFE
 
-/* Module specific data structures */
+/****************/
+/* Local Macros */
+/****************/
 
-/* cancelability structure */
+/******************/
+/* Local Typedefs */
+/******************/
+
+/* Cancelability structure */
 typedef struct H5TS_cancel_struct {
     int          previous_state;
     unsigned int cancel_count;
 } H5TS_cancel_t;
 
+/* Function pointer typedef for thread callback function */
+typedef void *(*H5TS_thread_cb_t)(void *);
+
 /* Global variable definitions */
 #ifdef H5_HAVE_WIN_THREADS
 H5TS_once_t H5TS_first_init_g;
-#else  /* H5_HAVE_WIN_THREADS */
+#else /* H5_HAVE_WIN_THREADS */
 H5TS_once_t H5TS_first_init_g = PTHREAD_ONCE_INIT;
 #endif /* H5_HAVE_WIN_THREADS */
 H5TS_key_t H5TS_errstk_key_g;
@@ -638,12 +664,11 @@ H5TS_win32_thread_exit(void)
  *--------------------------------------------------------------------------
  */
 H5TS_thread_t
-H5TS_create_thread(void *(*func)(void *), H5TS_attr_t *attr, void *udata)
+H5TS_create_thread(H5TS_thread_cb_t func, H5TS_attr_t *attr, void *udata)
 {
     H5TS_thread_t ret_value;
 
 #ifdef H5_HAVE_WIN_THREADS
-
     /* When calling C runtime functions, you should use _beginthread or
      * _beginthreadex instead of CreateThread.  Threads created with
      * CreateThread risk being killed in low-memory situations. Since we
@@ -658,7 +683,7 @@ H5TS_create_thread(void *(*func)(void *), H5TS_attr_t *attr, void *udata)
 
 #else /* H5_HAVE_WIN_THREADS */
 
-    pthread_create(&ret_value, attr, (void *(*)(void *))func, udata);
+    HDpthread_create(&ret_value, attr, (void *(*)(void *))func, udata);
 
 #endif /* H5_HAVE_WIN_THREADS */
 

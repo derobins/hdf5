@@ -85,7 +85,7 @@ H5VLregister_connector(const H5VL_class_t *cls, hid_t vipl_id)
     hid_t ret_value = H5I_INVALID_HID; /* Return value */
 
     FUNC_ENTER_API(H5I_INVALID_HID)
-    H5TRACE2("i", "*xi", cls, vipl_id);
+    H5TRACE2("i", "*#i", cls, vipl_id);
 
     /* Check arguments */
     if (!cls)

@@ -845,7 +845,7 @@ H5Miterate(hid_t map_id, hsize_t *idx, hid_t key_mem_type_id, H5M_iterate_t op, 
     herr_t            ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE6("e", "i*hix*xi", map_id, idx, key_mem_type_id, op, op_data, dxpl_id);
+    H5TRACE6("e", "i*hiMI*xi", map_id, idx, key_mem_type_id, op, op_data, dxpl_id);
 
     /* Check arguments */
     if (key_mem_type_id < 0)
@@ -919,7 +919,7 @@ H5Miterate_by_name(hid_t loc_id, const char *map_name, hsize_t *idx, hid_t key_m
     herr_t            ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE8("e", "i*s*hix*xii", loc_id, map_name, idx, key_mem_type_id, op, op_data, dxpl_id, lapl_id);
+    H5TRACE8("e", "i*s*hiMI*xii", loc_id, map_name, idx, key_mem_type_id, op, op_data, dxpl_id, lapl_id);
 
     /* Check arguments */
     if (!map_name)

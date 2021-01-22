@@ -395,7 +395,7 @@ H5Eset_auto1(H5E_auto1_t func, void *client_data)
 
     /* Don't clear the error stack! :-) */
     FUNC_ENTER_API_NOCLEAR(FAIL)
-    H5TRACE2("e", "x*x", func, client_data);
+    H5TRACE2("e", "Ea*x", func, client_data);
 
     if (NULL == (estack = H5E__get_my_stack())) /*lint !e506 !e774 Make lint 'constant value Boolean' in
                                                    non-threaded case */

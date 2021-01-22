@@ -1314,7 +1314,7 @@ H5Pset_filter_callback(hid_t plist_id, H5Z_filter_func_t func, void *op_data)
     H5Z_cb_t        cb_struct;
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "ix*x", plist_id, func, op_data);
+    H5TRACE3("e", "iZF*x", plist_id, func, op_data);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_DATASET_XFER)))
@@ -1353,7 +1353,7 @@ H5Pset_type_conv_cb(hid_t plist_id, H5T_conv_except_func_t op, void *operate_dat
     H5T_conv_cb_t   cb_struct;
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "ix*x", plist_id, op, operate_data);
+    H5TRACE3("e", "iTE*x", plist_id, op, operate_data);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_DATASET_XFER)))
@@ -1392,7 +1392,7 @@ H5Pget_type_conv_cb(hid_t plist_id, H5T_conv_except_func_t *op, void **operate_d
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "i*x**x", plist_id, op, operate_data);
+    H5TRACE3("e", "i*TE**x", plist_id, op, operate_data);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_DATASET_XFER)))
@@ -1577,7 +1577,7 @@ H5Pset_vlen_mem_manager(hid_t plist_id, H5MM_allocate_t alloc_func, void *alloc_
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE5("e", "ix*xx*x", plist_id, alloc_func, alloc_info, free_func, free_info);
+    H5TRACE5("e", "iMa*xMf*x", plist_id, alloc_func, alloc_info, free_func, free_info);
 
     /* Check arguments */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_DATASET_XFER)))

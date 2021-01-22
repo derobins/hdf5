@@ -1055,7 +1055,7 @@ H5Fget_mdc_config(hid_t file_id, H5AC_cache_config_t *config_ptr)
     herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", file_id, config_ptr);
+    H5TRACE2("e", "i*Cc", file_id, config_ptr);
 
     /* Check args */
     if ((NULL == config_ptr) || (config_ptr->version != H5AC__CURR_CACHE_CONFIG_VERSION))
@@ -1092,7 +1092,7 @@ H5Fset_mdc_config(hid_t file_id, H5AC_cache_config_t *config_ptr)
     herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", file_id, config_ptr);
+    H5TRACE2("e", "i*Cc", file_id, config_ptr);
 
     /* Get the file object */
     if (NULL == (vol_obj = (H5VL_object_t *)H5I_object(file_id)))
@@ -1286,7 +1286,7 @@ H5Fget_info2(hid_t obj_id, H5F_info2_t *finfo)
     herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", obj_id, finfo);
+    H5TRACE2("e", "i*FI", obj_id, finfo);
 
     /* Check args */
     if (!finfo)
@@ -1328,7 +1328,7 @@ H5Fget_metadata_read_retry_info(hid_t file_id, H5F_retry_info_t *info)
     herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", file_id, info);
+    H5TRACE2("e", "i*!", file_id, info);
 
     /* Check args */
     if (!info)

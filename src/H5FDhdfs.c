@@ -609,7 +609,7 @@ H5Pset_fapl_hdfs(hid_t fapl_id, H5FD_hdfs_fapl_t *fa)
     herr_t          ret_value = FAIL;
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*x", fapl_id, fa);
+    H5TRACE2("e", "i*#", fapl_id, fa);
 
     HDassert(fa != NULL);
 
