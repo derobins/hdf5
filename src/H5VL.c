@@ -757,13 +757,13 @@ done:
  *---------------------------------------------------------------------------
  */
 herr_t
-H5VLretrieve_lib_state(void **state)
+H5VLretrieve_lib_state(void **state /*out*/)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
     /* Must use this, to avoid modifying the API context stack in FUNC_ENTER */
     FUNC_ENTER_API_NOINIT
-    H5TRACE1("e", "**x", state);
+    H5TRACE1("e", "x", state);
 
     /* Check args */
     if (NULL == state)
@@ -895,7 +895,8 @@ done:
  * Function:    H5VLquery_optional
  *
  * Purpose:     Determine if a VOL connector supports a particular optional
- *              callback operation.
+ *              callback operation, and a general sense of the operation's
+ *              behavior.
  *
  * Return:      Success:    Non-negative
  *              Failure:    Negative

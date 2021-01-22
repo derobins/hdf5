@@ -47,7 +47,7 @@ typedef struct H5Z_object_t {
 #ifdef H5_HAVE_PARALLEL
     hbool_t
         sanity_checked; /* Whether the sanity check for collectively calling H5Zunregister has been done */
-#endif                  /* H5_HAVE_PARALLEL */
+#endif /* H5_HAVE_PARALLEL */
 } H5Z_object_t;
 
 /* Enumerated type for dataset creation prelude callbacks */
@@ -172,7 +172,7 @@ H5Z_term_package(void)
                 } /* end for */
             }     /* end for */
         }         /* end if */
-#endif            /* H5Z_DEBUG */
+#endif /* H5Z_DEBUG */
 
         /* Free the table of filters */
         if (H5Z_table_g) {
@@ -246,11 +246,11 @@ H5Zregister(const void *cls)
         /* Set cls_real to point to the translated structure */
         cls_real = &cls_new;
 
-#else  /* H5_NO_DEPRECATED_SYMBOLS */
+#else /* H5_NO_DEPRECATED_SYMBOLS */
         /* Deprecated symbols not allowed, throw an error */
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "invalid H5Z_class_t version number");
 #endif /* H5_NO_DEPRECATED_SYMBOLS */
-    }  /* end if */
+    } /* end if */
 
     if (cls_real->id < 0 || cls_real->id > H5Z_FILTER_MAX)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "invalid filter identification number")
@@ -318,7 +318,7 @@ H5Z_register(const H5Z_class2_t *cls)
 #ifdef H5Z_DEBUG
         HDmemset(H5Z_stat_table_g + i, 0, sizeof(H5Z_stats_t));
 #endif /* H5Z_DEBUG */
-    }  /* end if */
+    } /* end if */
     /* Filter already registered */
     else {
         /* Replace old contents */
@@ -573,12 +573,12 @@ done:
  *-------------------------------------------------------------------------
  */
 static int
-H5Z__flush_file_cb(void *obj_ptr, hid_t H5_ATTR_UNUSED obj_id, void *key H5_ATTR_PARALLEL_USED)
+H5Z__flush_file_cb(void *obj_ptr, hid_t H5_ATTR_UNUSED obj_id, void H5_ATTR_PARALLEL_USED *key)
 {
     H5F_t *f = (H5F_t *)obj_ptr; /* File object for operations */
 #ifdef H5_HAVE_PARALLEL
     H5Z_object_t *object = (H5Z_object_t *)key;
-#endif                     /* H5_HAVE_PARALLEL */
+#endif /* H5_HAVE_PARALLEL */
     int ret_value = FALSE; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -623,7 +623,7 @@ H5Z__flush_file_cb(void *obj_ptr, hid_t H5_ATTR_UNUSED obj_id, void *key H5_ATTR
             if (H5P_USER_TRUE == coll_md_read)
                 H5CX_set_coll_metadata_read(TRUE);
         } /* end if */
-#endif    /* H5_HAVE_PARALLEL */
+#endif /* H5_HAVE_PARALLEL */
 
         /* Call the flush routine for mounted file hierarchies */
         if (H5F_flush_mounts((H5F_t *)obj_ptr) < 0)
@@ -1005,7 +1005,7 @@ H5Z_ignore_filters(hid_t dcpl_id, const H5T_t *type, const H5S_t *space)
     H5O_pline_t     pline;                   /* Object's I/O pipeline information */
     H5S_class_t     space_class;             /* To check class of space */
     H5T_class_t     type_class;              /* To check if type is VL */
-    bool            bad_for_filters = FALSE; /* Suitable to have filters */
+    hbool_t         bad_for_filters = FALSE; /* Suitable to have filters */
     htri_t          ret_value       = FALSE; /* TRUE for ignoring filters */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1656,12 +1656,12 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Zget_filter_info(H5Z_filter_t filter, unsigned int *filter_config_flags)
+H5Zget_filter_info(H5Z_filter_t filter, unsigned *filter_config_flags /*out*/)
 {
     herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "Zf*Iu", filter, filter_config_flags);
+    H5TRACE2("e", "Zfx", filter, filter_config_flags);
 
     /* Get the filter info */
     if (H5Z_get_filter_info(filter, filter_config_flags) < 0)

@@ -26,9 +26,9 @@
 #define _H5Opublic_H
 
 /* Public headers needed by this file */
-#include "H5public.h"  /* Generic Functions			*/
-#include "H5Ipublic.h" /* IDs			  		*/
-#include "H5Lpublic.h" /* Links		  		*/
+#include "H5public.h"  /* Generic Functions            */
+#include "H5Ipublic.h" /* IDs                          */
+#include "H5Lpublic.h" /* Links                        */
 
 /*****************/
 /* Public Macros */
@@ -90,9 +90,13 @@
  * Theses flags determine which fields will be filled in in the H5O_native_info_t
  * struct.
  */
+//! [H5O_native_info_fields_snip]
+
 #define H5O_NATIVE_INFO_HDR       0x0008u /* Fill in the hdr field */
 #define H5O_NATIVE_INFO_META_SIZE 0x0010u /* Fill in the meta_size field */
 #define H5O_NATIVE_INFO_ALL       (H5O_NATIVE_INFO_HDR | H5O_NATIVE_INFO_META_SIZE)
+
+//! [H5O_native_info_fields_snip]
 
 /* Convenience macro to check if the token is the 'undefined' token value */
 #define H5O_IS_TOKEN_UNDEF(token) (!HDmemcmp(&(token), &(H5O_TOKEN_UNDEF), sizeof(H5O_token_t)))
@@ -101,17 +105,23 @@
 /* Public Typedefs */
 /*******************/
 
+//! [H5O_type_t_snip]
+
 /* Types of objects in file */
 typedef enum H5O_type_t {
-    H5O_TYPE_UNKNOWN = -1,   /* Unknown object type		*/
-    H5O_TYPE_GROUP,          /* Object is a group		*/
-    H5O_TYPE_DATASET,        /* Object is a dataset		*/
-    H5O_TYPE_NAMED_DATATYPE, /* Object is a named data type	*/
+    H5O_TYPE_UNKNOWN = -1,   /* Unknown object type        */
+    H5O_TYPE_GROUP,          /* Object is a group          */
+    H5O_TYPE_DATASET,        /* Object is a dataset        */
+    H5O_TYPE_NAMED_DATATYPE, /* Object is a named data type    */
     H5O_TYPE_MAP,            /* Object is a map */
     H5O_TYPE_NTYPES          /* Number of different object types (must be last!) */
 } H5O_type_t;
 
+//! [H5O_type_t_snip]
+
 /* Information struct for object header metadata (for H5Oget_info/H5Oget_info_by_name/H5Oget_info_by_idx) */
+//! [H5O_hdr_info_t_snip]
+
 typedef struct H5O_hdr_info_t {
     unsigned version; /* Version number of header format in file */
     unsigned nmesgs;  /* Number of object header messages */
@@ -129,6 +139,10 @@ typedef struct H5O_hdr_info_t {
     } mesg;
 } H5O_hdr_info_t;
 
+//! [H5O_hdr_info_t_snip]
+
+//! [H5O_info2_t_snip]
+
 /* Data model information struct for objects */
 /* (For H5Oget_info / H5Oget_info_by_name / H5Oget_info_by_idx version 3) */
 typedef struct H5O_info2_t {
@@ -143,6 +157,10 @@ typedef struct H5O_info2_t {
     hsize_t       num_attrs; /* # of attributes attached to object   */
 } H5O_info2_t;
 
+//! [H5O_info2_t_snip]
+
+//! [H5O_native_info_t_snip]
+
 /* Native file format information struct for objects */
 /* (For H5Oget_native_info / H5Oget_native_info_by_name / H5Oget_native_info_by_idx) */
 typedef struct H5O_native_info_t {
@@ -154,11 +172,17 @@ typedef struct H5O_native_info_t {
     } meta_size;
 } H5O_native_info_t;
 
+//! [H5O_native_info_t_snip]
+
 /* Typedef for message creation indexes */
 typedef uint32_t H5O_msg_crt_idx_t;
 
 /* Prototype for H5Ovisit/H5Ovisit_by_name() operator (version 3) */
+//! [H5O_iterate2_t_snip]
+
 typedef herr_t (*H5O_iterate2_t)(hid_t obj, const char *name, const H5O_info2_t *info, void *op_data);
+
+//! [H5O_iterate2_t_snip]
 
 typedef enum H5O_mcdt_search_ret_t {
     H5O_MCDT_SEARCH_ERROR = -1, /* Abort H5Ocopy */
