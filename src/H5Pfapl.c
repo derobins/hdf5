@@ -501,7 +501,7 @@ static const hbool_t H5F_def_coll_md_write_flag_g =
     H5F_ACS_COLL_MD_WRITE_FLAG_DEF; /* Default setting for the collective metedata write flag */
 static const MPI_Comm H5F_def_mpi_params_comm_g = H5F_ACS_MPI_PARAMS_COMM_DEF; /* Default MPI communicator */
 static const MPI_Info H5F_def_mpi_params_info_g = H5F_ACS_MPI_PARAMS_INFO_DEF; /* Default MPI info struct */
-#endif                                                                         /* H5_HAVE_PARALLEL */
+#endif /* H5_HAVE_PARALLEL */
 static const H5AC_cache_image_config_t H5F_def_mdc_initCacheImageCfg_g =
     H5F_ACS_META_CACHE_INIT_IMAGE_CONFIG_DEF; /* Default metadata cache image settings */
 static const size_t   H5F_def_page_buf_size_g = H5F_ACS_PAGE_BUFFER_SIZE_DEF; /* Default page buffer size */
@@ -1573,13 +1573,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_family_offset(hid_t fapl_id, hsize_t *offset)
+H5Pget_family_offset(hid_t fapl_id, hsize_t *offset /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*h", fapl_id, offset);
+    H5TRACE2("e", "ix", fapl_id, offset);
 
     /* Get the plist structure */
     if (H5P_DEFAULT == fapl_id)
@@ -1651,13 +1651,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_multi_type(hid_t fapl_id, H5FD_mem_t *type)
+H5Pget_multi_type(hid_t fapl_id, H5FD_mem_t *type /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*Mt", fapl_id, type);
+    H5TRACE2("e", "ix", fapl_id, type);
 
     /* Get the plist structure */
     if (H5P_DEFAULT == fapl_id)
@@ -1745,13 +1745,14 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_cache(hid_t plist_id, int *mdc_nelmts, size_t *rdcc_nslots, size_t *rdcc_nbytes, double *rdcc_w0)
+H5Pget_cache(hid_t plist_id, int *mdc_nelmts, size_t *rdcc_nslots /*out*/, size_t *rdcc_nbytes /*out*/,
+             double *rdcc_w0 /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE5("e", "i*Is*z*z*d", plist_id, mdc_nelmts, rdcc_nslots, rdcc_nbytes, rdcc_w0);
+    H5TRACE5("e", "i*Isxxx", plist_id, mdc_nelmts, rdcc_nslots, rdcc_nbytes, rdcc_w0);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -1838,23 +1839,22 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_mdc_image_config(hid_t plist_id, H5AC_cache_image_config_t *config_ptr)
+H5Pget_mdc_image_config(hid_t plist_id, H5AC_cache_image_config_t *config /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*CC", plist_id, config_ptr);
+    H5TRACE2("e", "ix", plist_id, config);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
         HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "can't find object for ID")
 
-    /* validate the config_ptr */
-    if (config_ptr == NULL)
-        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL config_ptr on entry.")
-
-    if (config_ptr->version != H5AC__CURR_CACHE_IMAGE_CONFIG_VERSION)
+    /* validate the config ptr */
+    if (config == NULL)
+        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL config ptr on entry.")
+    if (config->version != H5AC__CURR_CACHE_IMAGE_CONFIG_VERSION)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "Unknown image config version.")
 
     /* If we ever support multiple versions of H5AC_cache_config_t, we
@@ -1863,7 +1863,7 @@ H5Pget_mdc_image_config(hid_t plist_id, H5AC_cache_image_config_t *config_ptr)
      */
 
     /* Get the current initial metadata cache resize configuration */
-    if (H5P_get(plist, H5F_ACS_META_CACHE_INIT_IMAGE_CONFIG_NAME, config_ptr) < 0)
+    if (H5P_get(plist, H5F_ACS_META_CACHE_INIT_IMAGE_CONFIG_NAME, config) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get metadata cache initial image config")
 
 done:
@@ -1919,7 +1919,7 @@ done:
  * Purpose:    Retrieve the metadata cache initial resize configuration
  *        from the target FAPL.
  *
- *        Observe that the function will fail if config_ptr is
+ *        Observe that the function will fail if config is
  *        NULL, or if config_ptr->version specifies an unknown
  *        version of H5AC_cache_config_t.
  *
@@ -1931,23 +1931,22 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_mdc_config(hid_t plist_id, H5AC_cache_config_t *config_ptr)
+H5Pget_mdc_config(hid_t plist_id, H5AC_cache_config_t *config /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*Cc", plist_id, config_ptr);
+    H5TRACE2("e", "ix", plist_id, config);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
         HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "can't find object for ID")
 
-    /* validate the config_ptr */
-    if (config_ptr == NULL)
-        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL config_ptr on entry.")
-
-    if (config_ptr->version != H5AC__CURR_CACHE_CONFIG_VERSION)
+    /* validate the config ptr */
+    if (config == NULL)
+        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL config ptr on entry.")
+    if (config->version != H5AC__CURR_CACHE_CONFIG_VERSION)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "Unknown config version.")
 
     /* If we ever support multiple versions of H5AC_cache_config_t, we
@@ -1956,7 +1955,7 @@ H5Pget_mdc_config(hid_t plist_id, H5AC_cache_config_t *config_ptr)
      */
 
     /* Get the current initial metadata cache resize configuration */
-    if (H5P_get(plist, H5F_ACS_META_CACHE_INIT_CONFIG_NAME, config_ptr) < 0)
+    if (H5P_get(plist, H5F_ACS_META_CACHE_INIT_CONFIG_NAME, config) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get metadata cache initial resize config")
 
 done:
@@ -2089,13 +2088,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_fclose_degree(hid_t plist_id, H5F_close_degree_t *degree)
+H5Pget_fclose_degree(hid_t plist_id, H5F_close_degree_t *degree /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*Fd", plist_id, degree);
+    H5TRACE2("e", "ix", plist_id, degree);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -2460,7 +2459,6 @@ H5Pset_libver_bounds(hid_t plist_id, H5F_libver_t low, H5F_libver_t high)
     /* Check args */
     if (low < 0 || low > H5F_LIBVER_LATEST)
         HGOTO_ERROR(H5E_ARGS, H5E_BADRANGE, FAIL, "low bound is not valid")
-
     if (high < 0 || high > H5F_LIBVER_LATEST)
         HGOTO_ERROR(H5E_ARGS, H5E_BADRANGE, FAIL, "high bound is not valid")
 
@@ -2512,15 +2510,13 @@ H5Pget_libver_bounds(hid_t plist_id, H5F_libver_t *low /*out*/, H5F_libver_t *hi
         HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "can't find object for ID")
 
     /* Get values */
-    if (low) {
+    if (low)
         if (H5P_get(plist, H5F_ACS_LIBVER_LOW_BOUND_NAME, low) < 0)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get low bound for library format versions")
-    }
 
-    if (high) {
+    if (high)
         if (H5P_get(plist, H5F_ACS_LIBVER_HIGH_BOUND_NAME, high) < 0)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get high bound for library format versions")
-    }
 
 done:
     FUNC_LEAVE_API(ret_value)
@@ -2580,13 +2576,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_elink_file_cache_size(hid_t plist_id, unsigned *efc_size)
+H5Pget_elink_file_cache_size(hid_t plist_id, unsigned *efc_size /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*Iu", plist_id, efc_size);
+    H5TRACE2("e", "ix", plist_id, efc_size);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -2685,22 +2681,22 @@ done:
 /*-------------------------------------------------------------------------
  * Function: H5Pget_file_image
  *
- * Purpose:     If the file image exists and buf_ptr_ptr is not NULL,
+ * Purpose:     If the file image exists and buf is not NULL,
  *        allocate a buffer of the correct size, copy the image into
  *        the new buffer, and return the buffer to the caller in
- *        *buf_ptr_ptr.  Do this using the file image callbacks
+ *        *buf.  Do this using the file image callbacks
  *        if defined.
  *
  *        NB: It is the responsibility of the caller to free the
- *        buffer whose address is returned in *buf_ptr_ptr.  Do
+ *        buffer whose address is returned in *buf.  Do
  *        this using free if the file image callbacks are not
  *        defined, or with whatever method is appropriate if
  *        the callbacks are defined.
  *
- *              If buf_ptr_ptr is not NULL, and no image exists, set
- *        *buf_ptr_ptr to NULL.
+ *              If buf is not NULL, and no image exists, set
+ *        *buf to NULL.
  *
- *        If buf_len_ptr is not NULL, set *buf_len_ptr equal
+ *        If buf_len is not NULL, set *buf_len equal
  *        to the length of the file image if it exists, and
  *        to 0 if it does not.
  *
@@ -2712,14 +2708,14 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_file_image(hid_t fapl_id, void **buf_ptr_ptr, size_t *buf_len_ptr)
+H5Pget_file_image(hid_t fapl_id, void **buf /*out*/, size_t *buf_len /*out*/)
 {
     H5P_genplist_t *       fapl;                /* Property list pointer */
     H5FD_file_image_info_t image_info;          /* File image info */
     herr_t                 ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "i**x*z", fapl_id, buf_ptr_ptr, buf_len_ptr);
+    H5TRACE3("e", "ixx", fapl_id, buf, buf_len);
 
     /* Get the plist structure */
     if (NULL == (fapl = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
@@ -2734,11 +2730,11 @@ H5Pget_file_image(hid_t fapl_id, void **buf_ptr_ptr, size_t *buf_len_ptr)
              ((image_info.buffer == NULL) && (image_info.size == 0)));
 
     /* Set output size */
-    if (buf_len_ptr != NULL)
-        *buf_len_ptr = image_info.size;
+    if (buf_len != NULL)
+        *buf_len = image_info.size;
 
     /* Duplicate the image if desired, using callbacks if available */
-    if (buf_ptr_ptr != NULL) {
+    if (buf != NULL) {
         void *copy_ptr = NULL; /* Copy of memory image */
 
         if (image_info.buffer != NULL) {
@@ -2763,7 +2759,7 @@ H5Pget_file_image(hid_t fapl_id, void **buf_ptr_ptr, size_t *buf_len_ptr)
                 H5MM_memcpy(copy_ptr, image_info.buffer, image_info.size);
         } /* end if */
 
-        *buf_ptr_ptr = copy_ptr;
+        *buf = copy_ptr;
     } /* end if */
 
 done:
@@ -2848,7 +2844,7 @@ done:
 } /* end H5Pset_file_image_callbacks() */
 
 /*-------------------------------------------------------------------------
- * Function: H5Pget_file_image_callbacks
+ * Function:    H5Pget_file_image_callbacks
  *
  * Purpose:     Sets the callbacks for file images. Some file drivers allow
  *              the use of user-defined callbacks for allocating, freeing and
@@ -2863,14 +2859,14 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_file_image_callbacks(hid_t fapl_id, H5FD_file_image_callbacks_t *callbacks_ptr)
+H5Pget_file_image_callbacks(hid_t fapl_id, H5FD_file_image_callbacks_t *callbacks /*out*/)
 {
     H5P_genplist_t *       fapl;                /* Property list pointer */
     H5FD_file_image_info_t info;                /* File image info */
     herr_t                 ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*DI", fapl_id, callbacks_ptr);
+    H5TRACE2("e", "ix", fapl_id, callbacks);
 
     /* Get the plist structure */
     if (NULL == (fapl = H5P_object_verify(fapl_id, H5P_FILE_ACCESS)))
@@ -2883,17 +2879,17 @@ H5Pget_file_image_callbacks(hid_t fapl_id, H5FD_file_image_callbacks_t *callback
     /* verify file image field consistency */
     HDassert(((info.buffer != NULL) && (info.size > 0)) || ((info.buffer == NULL) && (info.size == 0)));
 
-    /* verify that callbacks_ptr is not NULL */
-    if (NULL == callbacks_ptr)
-        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL callbacks_ptr")
+    /* verify that callbacks is not NULL */
+    if (NULL == callbacks)
+        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL callbacks ptr")
 
     /* Transfer values to parameters */
-    *callbacks_ptr = info.callbacks;
+    *callbacks = info.callbacks;
 
     /* Copy udata if it exists */
     if (info.callbacks.udata != NULL) {
         HDassert(info.callbacks.udata_copy);
-        if ((callbacks_ptr->udata = info.callbacks.udata_copy(info.callbacks.udata)) == 0)
+        if ((callbacks->udata = info.callbacks.udata_copy(info.callbacks.udata)) == 0)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTSET, FAIL, "can't copy udata")
     } /* end if */
 
@@ -4308,14 +4304,14 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_object_flush_cb(hid_t plist_id, H5F_flush_cb_t *func, void **udata)
+H5Pget_object_flush_cb(hid_t plist_id, H5F_flush_cb_t *func /*out*/, void **udata /*out*/)
 {
     H5P_genplist_t *   plist; /* Property list pointer */
     H5F_object_flush_t flush_info;
     herr_t             ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "i*FF**x", plist_id, func, udata);
+    H5TRACE3("e", "ixx", plist_id, func, udata);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -4395,15 +4391,15 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_mdc_log_options(hid_t plist_id, hbool_t *is_enabled, char *location, size_t *location_size,
-                       hbool_t *start_on_access)
+H5Pget_mdc_log_options(hid_t plist_id, hbool_t *is_enabled /*out*/, char *location /*out*/,
+                       size_t *location_size /*out*/, hbool_t *start_on_access /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     char *          location_ptr;        /* Pointer to location string */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE5("e", "i*b*s*z*b", plist_id, is_enabled, location, location_size, start_on_access);
+    H5TRACE5("e", "ixxxx", plist_id, is_enabled, location, location_size, start_on_access);
 
     /* Get the property list structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -4432,7 +4428,7 @@ H5Pget_mdc_log_options(hid_t plist_id, hbool_t *is_enabled, char *location, size
             *location_size = HDstrlen(location_ptr) + 1;
         else
             *location_size = 0;
-    }
+    } /* end if */
 
 done:
     FUNC_LEAVE_API(ret_value)
@@ -4706,13 +4702,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_evict_on_close(hid_t fapl_id, hbool_t *evict_on_close)
+H5Pget_evict_on_close(hid_t fapl_id, hbool_t *evict_on_close /*out*/)
 {
     H5P_genplist_t *plist;               /* property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*b", fapl_id, evict_on_close);
+    H5TRACE2("e", "ix", fapl_id, evict_on_close);
 
     /* Compare the property list's class against the other class */
     if (TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
@@ -4793,13 +4789,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_file_locking(hid_t fapl_id, hbool_t *use_file_locking, hbool_t *ignore_when_disabled)
+H5Pget_file_locking(hid_t fapl_id, hbool_t *use_file_locking /*out*/, hbool_t *ignore_when_disabled /*out*/)
 {
     H5P_genplist_t *plist;               /* property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "i*b*b", fapl_id, use_file_locking, ignore_when_disabled);
+    H5TRACE3("e", "ixx", fapl_id, use_file_locking, ignore_when_disabled);
 
     /* Make sure this is a fapl */
     if (TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
@@ -4967,12 +4963,12 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_all_coll_metadata_ops(hid_t plist_id, hbool_t *is_collective)
+H5Pget_all_coll_metadata_ops(hid_t plist_id, hbool_t *is_collective /*out*/)
 {
     herr_t ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*b", plist_id, is_collective);
+    H5TRACE2("e", "ix", plist_id, is_collective);
 
     /* Compare the property list's class against the other class */
     /* (Dataset, group, attribute, and named datype  access property lists
@@ -5056,13 +5052,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_mpi_params(hid_t plist_id, MPI_Comm *comm, MPI_Info *info)
+H5Pget_mpi_params(hid_t plist_id, MPI_Comm *comm /*out*/, MPI_Info *info /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "i*Mc*Mi", plist_id, comm, info);
+    H5TRACE3("e", "ixx", plist_id, comm, info);
 
     /* Make sure that the property list is a fapl */
     if (TRUE != H5P_isa_class(plist_id, H5P_FILE_ACCESS))
@@ -5506,13 +5502,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_coll_metadata_write(hid_t plist_id, hbool_t *is_collective)
+H5Pget_coll_metadata_write(hid_t plist_id, hbool_t *is_collective /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*b", plist_id, is_collective);
+    H5TRACE2("e", "ix", plist_id, is_collective);
 
     /* Compare the property list's class against the other class */
     if (TRUE != H5P_isa_class(plist_id, H5P_FILE_ACCESS))
@@ -5593,13 +5589,14 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_page_buffer_size(hid_t plist_id, size_t *buf_size, unsigned *min_meta_perc, unsigned *min_raw_perc)
+H5Pget_page_buffer_size(hid_t plist_id, size_t *buf_size /*out*/, unsigned *min_meta_perc /*out*/,
+                        unsigned *min_raw_perc /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE4("e", "i*z*Iu*Iu", plist_id, buf_size, min_meta_perc, min_raw_perc);
+    H5TRACE4("e", "ixxx", plist_id, buf_size, min_meta_perc, min_raw_perc);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
@@ -5811,13 +5808,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_vol_id(hid_t plist_id, hid_t *vol_id)
+H5Pget_vol_id(hid_t plist_id, hid_t *vol_id /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*i", plist_id, vol_id);
+    H5TRACE2("e", "ix", plist_id, vol_id);
 
     /* Get property list for ID */
     if (NULL == (plist = (H5P_genplist_t *)H5I_object_verify(plist_id, H5I_GENPROP_LST)))
@@ -5857,24 +5854,24 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_vfd_swmr_config(hid_t plist_id, H5F_vfd_swmr_config_t *config_ptr)
+H5Pget_vfd_swmr_config(hid_t plist_id, H5F_vfd_swmr_config_t *config)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*#", plist_id, config_ptr);
+    H5TRACE2("e", "i*#", plist_id, config);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(plist_id, H5P_FILE_ACCESS)))
         HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "can't find object for ID")
 
-    /* Validate the config_ptr */
-    if (config_ptr == NULL)
-        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL config_ptr on entry.")
+    /* Validate the config */
+    if (config == NULL)
+        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "NULL config on entry.")
 
     /* Get the current VFD SWMR configuration */
-    if (H5P_get(plist, H5F_ACS_VFD_SWMR_CONFIG_NAME, config_ptr) < 0)
+    if (H5P_get(plist, H5F_ACS_VFD_SWMR_CONFIG_NAME, config) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get VFD SWMR config")
 
 done:
@@ -5893,13 +5890,13 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_vol_info(hid_t plist_id, void **vol_info)
+H5Pget_vol_info(hid_t plist_id, void **vol_info /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i**x", plist_id, vol_info);
+    H5TRACE2("e", "ix", plist_id, vol_info);
 
     /* Get property list for ID */
     if (NULL == (plist = (H5P_genplist_t *)H5I_object_verify(plist_id, H5I_GENPROP_LST)))

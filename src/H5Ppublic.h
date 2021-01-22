@@ -112,13 +112,23 @@ extern "C" {
 /*******************/
 
 /* Define property list class callback function pointer types */
+//! [H5P_cls_create_func_t_snip]
 typedef herr_t (*H5P_cls_create_func_t)(hid_t prop_id, void *create_data);
+//! [H5P_cls_create_func_t_snip]
+//! [H5P_cls_copy_func_t_snip]
 typedef herr_t (*H5P_cls_copy_func_t)(hid_t new_prop_id, hid_t old_prop_id, void *copy_data);
+//! [H5P_cls_copy_func_t_snip]
+//! [H5P_cls_close_func_t_snip]
 typedef herr_t (*H5P_cls_close_func_t)(hid_t prop_id, void *close_data);
+//! [H5P_cls_close_func_t_snip]
 
 /* Define property list callback function pointer types */
+//! [H5P_prp_cb1_t_snip]
 typedef herr_t (*H5P_prp_cb1_t)(const char *name, size_t size, void *value);
+//! [H5P_prp_cb1_t_snip]
+//! [H5P_prp_cb2_t_snip]
 typedef herr_t (*H5P_prp_cb2_t)(hid_t prop_id, const char *name, size_t size, void *value);
+//! [H5P_prp_cb2_t_snip]
 typedef H5P_prp_cb1_t H5P_prp_create_func_t;
 typedef H5P_prp_cb2_t H5P_prp_set_func_t;
 typedef H5P_prp_cb2_t H5P_prp_get_func_t;
@@ -126,11 +136,15 @@ typedef herr_t (*H5P_prp_encode_func_t)(const void *value, void **buf, size_t *s
 typedef herr_t (*H5P_prp_decode_func_t)(const void **buf, void *value);
 typedef H5P_prp_cb2_t H5P_prp_delete_func_t;
 typedef H5P_prp_cb1_t H5P_prp_copy_func_t;
+//! [H5P_prp_compare_func_t_snip]
 typedef int (*H5P_prp_compare_func_t)(const void *value1, const void *value2, size_t size);
+//! [H5P_prp_compare_func_t_snip]
 typedef H5P_prp_cb1_t H5P_prp_close_func_t;
 
 /* Define property list iteration function type */
+//! [H5P_iterate_t_snip]
 typedef herr_t (*H5P_iterate_t)(hid_t id, const char *name, void *iter_data);
+//! [H5P_iterate_t_snip]
 
 /* Actual IO mode property */
 typedef enum H5D_mpio_actual_chunk_opt_mode_t {

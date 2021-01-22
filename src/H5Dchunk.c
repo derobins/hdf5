@@ -2431,7 +2431,7 @@ H5D__chunk_cacheable(const H5D_io_info_t *io_info, haddr_t caddr, hbool_t write_
 #ifdef H5_HAVE_PARALLEL
         } /* end else */
 #endif    /* H5_HAVE_PARALLEL */
-    }     /* end else */
+    } /* end else */
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -4467,7 +4467,7 @@ H5D__chunk_allocate(const H5D_io_info_t *io_info, hbool_t full_overwrite, hsize_
             /* Check for the chunk expanding too much to encode in a 32-bit value */
             if (orig_chunk_size > ((size_t)0xffffffff))
                 HGOTO_ERROR(H5E_DATASET, H5E_BADRANGE, FAIL, "chunk too large for 32-bit length")
-#endif    /* H5_SIZEOF_SIZE_T > 4 */
+#endif /* H5_SIZEOF_SIZE_T > 4 */
         } /* end if */
     }     /* end if */
 
@@ -4669,7 +4669,7 @@ H5D__chunk_allocate(const H5D_io_info_t *io_info, hbool_t full_overwrite, hsize_
 #ifdef H5_HAVE_PARALLEL
                 } /* end else */
 #endif            /* H5_HAVE_PARALLEL */
-            }     /* end if */
+            } /* end if */
 
             /* Insert the chunk record into the index */
             if (need_insert && ops->insert)
@@ -4952,7 +4952,7 @@ H5D__chunk_collective_fill(const H5D_t *dset, H5D_chunk_coll_info_t *chunk_info,
     int              blocks, leftover, block_len; /* converted to int for MPI */
     MPI_Aint *       chunk_disp_array = NULL;
     int *            block_lens       = NULL;
-    MPI_Datatype     mem_type, file_type;
+    MPI_Datatype     mem_type = MPI_BYTE, file_type = MPI_BYTE;
     H5FD_mpio_xfer_t prev_xfer_mode;         /* Previous data xfer mode */
     hbool_t          have_xfer_mode = FALSE; /* Whether the previous xffer mode has been retrieved */
     hbool_t          need_addr_sort = FALSE;
@@ -4978,9 +4978,9 @@ H5D__chunk_collective_fill(const H5D_t *dset, H5D_chunk_coll_info_t *chunk_info,
         HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL, "Resulted in division by zero")
     num_blocks = (size_t)(chunk_info->num_io / (size_t)mpi_size); /* value should be the same on all procs */
 
-    /* after evenly distributing the blocks between processes, are
-       there any leftover blocks for each individual process
-       (round-robin) */
+    /* After evenly distributing the blocks between processes, are there any
+     * leftover blocks for each individual process (round-robin)?
+     */
     leftover_blocks = (size_t)(chunk_info->num_io % (size_t)mpi_size);
 
     /* Cast values to types needed by MPI */
@@ -5008,9 +5008,10 @@ H5D__chunk_collective_fill(const H5D_t *dset, H5D_chunk_coll_info_t *chunk_info,
             need_addr_sort = TRUE;
     } /* end for */
 
-    /* calculate if there are any leftover blocks after evenly
-       distributing. If there are, then round robin the distribution
-       to processes 0 -> leftover. */
+    /* Calculate if there are any leftover blocks after evenly
+     * distributing. If there are, then round robin the distribution
+     * to processes 0 -> leftover.
+     */
     if (leftover && leftover > mpi_rank) {
         chunk_disp_array[blocks] = (MPI_Aint)chunk_info->addr[blocks * mpi_size + mpi_rank];
         if (blocks && (chunk_disp_array[blocks] < chunk_disp_array[blocks - 1]))
@@ -5019,8 +5020,7 @@ H5D__chunk_collective_fill(const H5D_t *dset, H5D_chunk_coll_info_t *chunk_info,
         blocks++;
     }
 
-    /*
-     * Ensure that the blocks are sorted in monotonically non-decreasing
+    /* Ensure that the blocks are sorted in monotonically non-decreasing
      * order of offset in the file.
      */
     if (need_addr_sort)
@@ -6336,7 +6336,7 @@ H5D__chunk_copy(H5F_t *f_src, H5O_storage_chunk_t *storage_src, H5O_layout_chunk
         if (NULL == (buf_space = H5S_create_simple((unsigned)1, &buf_dim, NULL)))
             HGOTO_ERROR(H5E_DATASPACE, H5E_CANTCREATE, FAIL, "can't create simple dataspace")
 
-        /* Atomize */
+        /* Register */
         if ((sid_buf = H5I_register(H5I_DATASPACE, buf_space, FALSE)) < 0) {
             (void)H5S_close(buf_space);
             HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, FAIL, "unable to register dataspace ID")

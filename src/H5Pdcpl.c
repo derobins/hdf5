@@ -313,7 +313,7 @@ static const H5O_layout_t H5D_def_layout_compact_g = H5D_DEF_LAYOUT_COMPACT;
 static const H5O_layout_t H5D_def_layout_contig_g  = H5D_DEF_LAYOUT_CONTIG;
 static const H5O_layout_t H5D_def_layout_chunk_g   = H5D_DEF_LAYOUT_CHUNK;
 static const H5O_layout_t H5D_def_layout_virtual_g = H5D_DEF_LAYOUT_VIRTUAL;
-#else  /* H5_HAVE_C99_DESIGNATED_INITIALIZER */
+#else /* H5_HAVE_C99_DESIGNATED_INITIALIZER */
 static H5O_layout_t H5D_def_layout_compact_g   = H5D_DEF_LAYOUT_COMPACT;
 static H5O_layout_t H5D_def_layout_contig_g    = H5D_DEF_LAYOUT_CONTIG;
 static H5O_layout_t H5D_def_layout_chunk_g     = H5D_DEF_LAYOUT_CHUNK;
@@ -2773,14 +2773,14 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_chunk_opts(hid_t plist_id, unsigned *options)
+H5Pget_chunk_opts(hid_t plist_id, unsigned *options /*out*/)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     H5O_layout_t    layout;              /* Layout information for setting chunk info */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE2("e", "i*Iu", plist_id, options);
+    H5TRACE2("e", "ix", plist_id, options);
 
 #ifndef H5_HAVE_C99_DESIGNATED_INITIALIZER
     /* If the compiler doesn't support C99 designated initializers, check if

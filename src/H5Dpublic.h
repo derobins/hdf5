@@ -105,16 +105,22 @@ typedef enum H5D_vds_view_t {
 /* Callback for H5Pset_append_flush() in a dataset access property list */
 typedef herr_t (*H5D_append_cb_t)(hid_t dataset_id, hsize_t *cur_dims, void *op_data);
 
-/* Define the operator function pointer for H5Diterate() */
+/** Define the operator function pointer for H5Diterate() */
+//! [H5D_operator_t_snip]
 typedef herr_t (*H5D_operator_t)(void *elem, hid_t type_id, unsigned ndim, const hsize_t *point,
                                  void *operator_data);
+//! [H5D_operator_t_snip]
 
-/* Define the operator function pointer for H5Dscatter() */
+/** Define the operator function pointer for H5Dscatter() */
+//! [H5D_scatter_func_t_snip]
 typedef herr_t (*H5D_scatter_func_t)(const void **src_buf /*out*/, size_t *src_buf_bytes_used /*out*/,
                                      void *op_data);
+//! [H5D_scatter_func_t_snip]
 
-/* Define the operator function pointer for H5Dgather() */
+/** Define the operator function pointer for H5Dgather() */
+//! [H5D_gather_func_t_snip]
 typedef herr_t (*H5D_gather_func_t)(const void *dst_buf, size_t dst_buf_bytes_used, void *op_data);
+//! [H5D_gather_func_t_snip]
 
 /********************/
 /* Public Variables */

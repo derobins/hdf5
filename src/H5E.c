@@ -576,13 +576,13 @@ done:
  *-------------------------------------------------------------------------
  */
 ssize_t
-H5Eget_class_name(hid_t class_id, char *name, size_t size)
+H5Eget_class_name(hid_t class_id, char *name /*out*/, size_t size)
 {
     H5E_cls_t *cls;            /* Pointer to error class */
     ssize_t    ret_value = -1; /* Return value */
 
     FUNC_ENTER_API((-1))
-    H5TRACE3("Zs", "i*sz", class_id, name, size);
+    H5TRACE3("Zs", "ixz", class_id, name, size);
 
     /* Get the error class */
     if (NULL == (cls = (H5E_cls_t *)H5I_object_verify(class_id, H5I_ERROR_CLASS)))
@@ -837,13 +837,13 @@ done:
  *-------------------------------------------------------------------------
  */
 ssize_t
-H5Eget_msg(hid_t msg_id, H5E_type_t *type, char *msg_str, size_t size)
+H5Eget_msg(hid_t msg_id, H5E_type_t *type /*out*/, char *msg_str /*out*/, size_t size)
 {
     H5E_msg_t *msg;            /* Pointer to error message */
     ssize_t    ret_value = -1; /* Return value */
 
     FUNC_ENTER_API_NOCLEAR((-1))
-    H5TRACE4("Zs", "i*Et*sz", msg_id, type, msg_str, size);
+    H5TRACE4("Zs", "ixxz", msg_id, type, msg_str, size);
 
     /* Get the message object */
     if (NULL == (msg = (H5E_msg_t *)H5I_object_verify(msg_id, H5I_ERROR_MSG)))
