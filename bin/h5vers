@@ -71,8 +71,6 @@ use strict;
 # something like: This is hdf5-1.2.3-pre1 currently under development.
 # The AC_INIT macro in configure.ac will also change in this case to be
 # something like: AC_INIT([HDF5], [hdf5-1.2.3-pre1], [help@hdfgroup.org])
-# Version changes are also reflected in the Windows-maintained H5pubconf.h
-# file.
 #
 # Whenever the version changes, this script will increment the revision
 # field in HDF5's libtool shared library version in config/lt_vers.am,
@@ -157,10 +155,10 @@ while ($_ = shift) {
 die "mutually exclusive options given\n" if $set && $inc;
 
 # Determine file to use as H5public.h, README.txt,
-# release_docs/RELEASE.txt, configure.ac, windows/src/H5pubconf.h
+# release_docs/RELEASE.txt, configure.ac,
 # config/lt_vers.am and config/cmake/scripts/HDF5config.cmake. 
 # The README.txt, release_docs/RELEASE.txt, configure.ac, 
-# windows/src/H5pubconf.h, config/lt_vers.am and
+# config/lt_vers.am and
 # config/cmake/scripts/HDF5config.cmake
 # files are always in the directory above H5public.h
 unless ($file) {

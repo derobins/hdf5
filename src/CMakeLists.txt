@@ -1293,7 +1293,7 @@ if (NOT HDF5_INSTALL_NO_DEVELOPMENT)
       FILES
           ${H5_PUBLIC_HEADERS}
           ${H5_PUBLIC_GENERATED_HEADERS}
-          ${HDF5_SRC_BINARY_DIR}/H5pubconf.h
+          ${HDF5_SRC_BINARY_DIR}/H5config_options.h
       DESTINATION
           ${HDF5_INSTALL_INCLUDE_DIR}
       COMPONENT

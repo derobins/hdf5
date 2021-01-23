@@ -775,8 +775,9 @@ done:\n\
         fprintf(rawoutstream, "/* ALIGNAMENT test is not available */\n");
     if (align_status_g & STA_NoHandlerVerify)
         fprintf(rawoutstream, "/* Signal handlers verify test is not available */\n");
-        /* The following is available in H5pubconf.h. Printing them here for */
-        /* convenience. */
+    /* The following are available in H5config.h. Printing them here for
+     * convenience.
+     */
 #ifdef H5_HAVE_SIGNAL
     fprintf(rawoutstream, "/* Signal() support: yes */\n");
 #else

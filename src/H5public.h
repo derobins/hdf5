@@ -17,19 +17,8 @@
 #ifndef _H5public_H
 #define _H5public_H
 
-/* Include files for public use... */
-/*
- * Since H5pubconf.h is a generated header file, it is messy to try
- * to put a #ifndef _H5pubconf_H ... #endif guard in it.
- * HDF5 has set an internal rule that it is being included here.
- * Source files should NOT include H5pubconf.h directly but include
- * it via H5public.h.  The #ifndef _H5public_H guard above would
- * prevent repeated include.
- */
-#include "H5pubconf.h" /* From configure */
-
-/* API Version macro wrapper definitions */
-#include "H5version.h"
+/* XXX: MOVE TO H5private.h!!!!!!!!! (former H5pubconf.h)*/
+#include "H5config.h" /* From configure */
 
 /* C header files for things that appear in our public headers */
 #include <inttypes.h>
@@ -47,6 +36,9 @@
 #include <sys/types.h>
 #endif
 
+/* HDF5 options (defines H5_HAVE_PARALLEL, etc.) */
+#include "H5config_options.h"
+
 #ifdef H5_HAVE_PARALLEL
 /* Don't link against MPI C++ bindings */
 #define MPICH_SKIP_MPICXX 1
@@ -56,6 +48,9 @@
 #include <mpio.h>
 #endif
 #endif
+
+/* API Version macro wrapper definitions */
+#include "H5version.h"
 
 /* Macro to hide a symbol from further preprocessor substitutions */
 #define H5_NO_EXPAND(x) (x)

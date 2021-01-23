@@ -65,7 +65,7 @@ CHECK_LIBINFO(){
 
 # MAIN Body
 nerrors=0
-H5_HAVE_EMBEDDED_LIBINFO=`grep '#define H5_HAVE_EMBEDDED_LIBINFO ' ../src/H5pubconf.h`
+H5_HAVE_EMBEDDED_LIBINFO=`grep '#define H5_HAVE_EMBEDDED_LIBINFO ' ../src/H5config.h`
 
 # Skip the rest if embedded-libinfo is not enabled.
 if [ -z "$H5_HAVE_EMBEDDED_LIBINFO" ]; then

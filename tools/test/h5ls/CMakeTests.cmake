@@ -211,7 +211,7 @@
 ##############################################################################
 
 # See which filters are usable (and skip tests for filters we
-# don't have).  Do this by searching H5pubconf.h to see which
+# don't have).  Do this by searching H5config_options.h to see which
 # filters are defined.
 
 # detect whether the encoder is present.

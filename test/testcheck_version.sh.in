@@ -210,7 +210,7 @@ DEBUGPRINT() {
 nerrors=0
 verbose=yes	# default on
 debugmode=	# default off
-H5_HAVE_EMBEDDED_LIBINFO=`grep '#define H5_HAVE_EMBEDDED_LIBINFO ' ../src/H5pubconf.h`
+H5_HAVE_EMBEDDED_LIBINFO=`grep '#define H5_HAVE_EMBEDDED_LIBINFO ' ../src/H5config.h`
 h5libsettings=../src/libhdf5.settings
 
 PURPOSE

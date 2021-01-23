@@ -809,6 +809,8 @@ Bug Fixes since HDF5-1.12.0 release
       CMake. This #define is only used in the tests and does not affect the
       HDF5 C library.
 
+      NOTE: H5pubconf.h is no longer deployed with the library.
+
       (DER - 2021/01/07, HDFFV-11201)
 
 

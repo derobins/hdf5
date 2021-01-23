@@ -563,6 +563,7 @@
 ./release_docs/USING_HDF5_VS.txt
 
 ./src/.indent.pro      _DO_NOT_DISTRIBUTE_
+./src/config_options.h.in
 ./src/hdf5.lnt        _DO_NOT_DISTRIBUTE_
 ./src/hdf5-win.lnt      _DO_NOT_DISTRIBUTE_
 ./src/hdf5-lin.lnt      _DO_NOT_DISTRIBUTE_
@@ -3735,7 +3736,7 @@
 ./m4/ltsugar.m4
 ./m4/ltversion.m4
 ./Makefile.in
-./src/H5config.h.in
+./src/config.h.in
 ./src/H5Edefin.h
 ./src/H5Einit.h
 ./src/H5Epubgen.h

@@ -530,7 +530,7 @@ CONTENTS
                 ./src/hdf5.h
 
             The configuration information:
-                ./src/H5pubconf.h
+                ./src/H5config_options.h
 
             The support programs that are useful are:
             ./tools/h5ls/h5ls               (list file contents)
