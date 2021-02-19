@@ -1148,6 +1148,7 @@ AC_CHECK_HEADERS([dirent.h])
 AC_CHECK_HEADERS([stdint.h], [C9x=yes])
 AC_CHECK_HEADERS([stdbool.h])
 AC_CHECK_HEADERS([netdb.h netinet/in.h arpa/inet.h])
+AC_CHECK_HEADERS([sys/queue.h])
 
 ## Darwin
 AC_SUBST([H5_IS_DARWIN])

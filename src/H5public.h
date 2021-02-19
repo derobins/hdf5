@@ -65,7 +65,8 @@
 #   include <mpio.h>
 #endif
 #endif
-
+/* BSD queues, used in VFD SWMR. Will probably be replaced. */
+#include "H5queue.h"
 
 /* Include the Windows API adapter header early */
 #include "H5api_adpt.h"
