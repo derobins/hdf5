@@ -187,15 +187,15 @@ typedef struct timer_params_t {
     hid_t fid;
 } timer_params_t;
 
+pthread_mutex_t timer_mutex;
+hbool_t timer_stop = FALSE;
+
 static void *
 timer_function(void *arg)
 {
     timer_params_t *params = (timer_params_t *)arg;
     sigset_t sleepset;
-
-    /* Default cancel type is deferred, so the thread won't quit
-     * until it calls nanosleep();
-     */
+    hbool_t done = FALSE;
 
     /* Ignore any signals */
     sigfillset(&sleepset);
@@ -205,6 +205,13 @@ timer_function(void *arg)
         estack_state_t es;
 
         nanosleep(params->tick, NULL);
+
+        /* Check the mutex */
+        pthread_mutex_lock(&timer_mutex);
+        done = timer_stop;
+        pthread_mutex_unlock(&timer_mutex);
+        if (done)
+            break;
 
         /* Avoid deadlock with peer: periodically enter the API so that
          * tick processing occurs and data is flushed so that the peer
@@ -217,6 +224,8 @@ timer_function(void *arg)
         (void)H5Aexists_by_name(params->fid, "nonexistent", "nonexistent", H5P_DEFAULT);
         restore_estack(es);
     }
+
+    return NULL;
 }
 #endif
 
@@ -244,12 +253,11 @@ await_signal(hid_t fid)
 
     dbgf(1, "waiting for signal\n");
 
-    for (;;) {
 #if defined(__APPLE__) && defined(__MACH__)
+    {
         /* MacOS does not have sigtimedwait(2), so use an alternative.
          * XXX: Replace with configure macros later.
          */
-
         timer_params_t params;
         int rc;
         pthread_t timer;
@@ -257,19 +265,24 @@ await_signal(hid_t fid)
         params.tick = &tick;
         params.fid = fid;
 
+        pthread_mutex_init(&timer_mutex, NULL);
+
         pthread_create(&timer, NULL, timer_function, &params);
 
         rc = sigwait(&sleepset, NULL);
 
         if (rc != -1) {
-            fprintf(stderr, "Received %s, wrapping things up.\n",
-                strsignal(rc));
-            pthread_cancel(timer);
+            fprintf(stderr, "Received signal, wrapping things up.\n");
+            pthread_mutex_lock(&timer_mutex);
+            timer_stop = TRUE;
+            pthread_mutex_unlock(&timer_mutex);
             pthread_join(timer, NULL);
-            break;
-        } else
+        }
+        else
             err(EXIT_FAILURE, "%s: sigtimedwait", __func__);
+    }
 #else
+    for (;;) {
         /* Linux and other systems */
         const int rc = sigtimedwait(&sleepset, NULL, &tick);
 
@@ -293,8 +306,8 @@ await_signal(hid_t fid)
             restore_estack(es);
         } else if (rc == -1)
             err(EXIT_FAILURE, "%s: sigtimedwait", __func__);
-#endif
     }
+#endif
 }
 
 /* Perform common VFD SWMR configuration on the file-access property list:
