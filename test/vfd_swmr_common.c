@@ -20,6 +20,9 @@
 /***********/
 
 #include <err.h>    /* for err(3) */
+#if defined(__APPLE__) && defined(__MACH__)
+#include <pthread.h>
+#endif
 
 #include "h5test.h"
 #include "vfd_swmr_common.h"
@@ -177,6 +180,46 @@ strsignal(int signum)
 }
 #endif
 
+#if defined(__APPLE__) && defined(__MACH__)
+
+typedef struct timer_params_t {
+    struct timespec *tick;
+    hid_t fid;
+} timer_params_t;
+
+static void *
+timer_function(void *arg)
+{
+    timer_params_t *params = (timer_params_t *)arg;
+    sigset_t sleepset;
+
+    /* Default cancel type is deferred, so the thread won't quit
+     * until it calls nanosleep();
+     */
+
+    /* Ignore any signals */
+    sigfillset(&sleepset);
+    pthread_sigmask(SIG_SETMASK, &sleepset, NULL);
+
+    for (;;) {
+        estack_state_t es;
+
+        nanosleep(params->tick, NULL);
+
+        /* Avoid deadlock with peer: periodically enter the API so that
+         * tick processing occurs and data is flushed so that the peer
+         * can see it.
+         *
+         * The call we make will fail, but that's ok,
+         * so squelch errors.
+         */
+        es = disable_estack();
+        (void)H5Aexists_by_name(params->fid, "nonexistent", "nonexistent", H5P_DEFAULT);
+        restore_estack(es);
+    }
+}
+#endif
+
 /* Wait for any signal to occur and then return.  Wake periodically
  * during the wait to perform API calls: in this way, the
  * VFD SWMR tick number advances and recent changes do not languish
@@ -185,8 +228,8 @@ strsignal(int signum)
 void
 await_signal(hid_t fid)
 {
-    sigset_t sleepset;
     struct timespec tick = {.tv_sec = 0, .tv_nsec = 1000000000 / 100};
+    sigset_t sleepset;
 
     if (sigfillset(&sleepset) == -1) {
         err(EXIT_FAILURE, "%s.%d: could not initialize signal mask",
@@ -202,6 +245,32 @@ await_signal(hid_t fid)
     dbgf(1, "waiting for signal\n");
 
     for (;;) {
+#if defined(__APPLE__) && defined(__MACH__)
+        /* MacOS does not have sigtimedwait(2), so use an alternative.
+         * XXX: Replace with configure macros later.
+         */
+
+        timer_params_t params;
+        int rc;
+        pthread_t timer;
+
+        params.tick = &tick;
+        params.fid = fid;
+
+        pthread_create(&timer, NULL, timer_function, &params);
+
+        rc = sigwait(&sleepset, NULL);
+
+        if (rc != -1) {
+            fprintf(stderr, "Received %s, wrapping things up.\n",
+                strsignal(rc));
+            pthread_cancel(timer);
+            pthread_join(timer, NULL);
+            break;
+        } else
+            err(EXIT_FAILURE, "%s: sigtimedwait", __func__);
+#else
+        /* Linux and other systems */
         const int rc = sigtimedwait(&sleepset, NULL, &tick);
 
         if (rc != -1) {
@@ -224,6 +293,7 @@ await_signal(hid_t fid)
             restore_estack(es);
         } else if (rc == -1)
             err(EXIT_FAILURE, "%s: sigtimedwait", __func__);
+#endif
     }
 }
 
