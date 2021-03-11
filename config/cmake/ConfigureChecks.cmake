@@ -210,7 +210,7 @@ if (H5FD_ENABLE_MIRROR_VFD)
        ${HDF_PREFIX}_HAVE_NETDB_H      AND
        ${HDF_PREFIX}_HAVE_ARPA_INET_H  AND
        ${HDF_PREFIX}_HAVE_SYS_SOCKET_H AND
-       ${HDF_PREFIX}_HAVE_FORK)
+       ${HDF_PREFIX}_HAVE_UNISTD_H)
       set (${HDF_PREFIX}_HAVE_MIRROR_VFD 1)
   else()
     message(WARNING "The socket-based Mirror VFD was requested but cannot be built. System prerequisites are not met.")
