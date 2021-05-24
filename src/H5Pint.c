@@ -863,7 +863,7 @@ H5P_copy_plist(const H5P_genplist_t *old_plist, bool app_ref)
     H5SL_node_t *   curr_node;        /* Current node in skip list */
     H5SL_t *        seen = NULL;      /* Skip list containing properties already seen */
     size_t          nseen;            /* Number of items 'seen' */
-    bool         has_parent_class; /* Flag to indicate that this property list's class has a parent */
+    bool            has_parent_class; /* Flag to indicate that this property list's class has a parent */
     hid_t           ret_value = H5I_INVALID_HID; /* return value */
 
     FUNC_ENTER_NOAPI(H5I_INVALID_HID)
@@ -1448,7 +1448,7 @@ static herr_t
 H5P__free_prop_cb(void *item, void H5_ATTR_UNUSED *key, void *op_data)
 {
     H5P_genprop_t *tprop   = (H5P_genprop_t *)item; /* Temporary pointer to property */
-    bool        make_cb = *(bool *)op_data;   /* Whether to make property 'close' callback */
+    bool           make_cb = *(bool *)op_data;      /* Whether to make property 'close' callback */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -5081,7 +5081,7 @@ H5P_close(H5P_genplist_t *plist)
     H5P_genclass_t *tclass;              /* Temporary class pointer */
     H5SL_t *        seen = NULL;         /* Skip list to hold names of properties already seen */
     size_t          nseen;               /* Number of items 'seen' */
-    bool         has_parent_class;    /* Flag to indicate that this property list's class has a parent */
+    bool            has_parent_class;    /* Flag to indicate that this property list's class has a parent */
     size_t          ndel;                /* Number of items deleted */
     H5SL_node_t *   curr_node;           /* Current node in skip list */
     H5P_genprop_t * tmp;                 /* Temporary pointer to properties */

@@ -997,9 +997,8 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5O__layout_pre_copy_file(H5F_t H5_ATTR_UNUSED *file_src, const void *mesg_src,
-                          bool H5_ATTR_UNUSED *deleted, const H5O_copy_t *cpy_info,
-                          void H5_ATTR_UNUSED *udata)
+H5O__layout_pre_copy_file(H5F_t H5_ATTR_UNUSED *file_src, const void *mesg_src, bool H5_ATTR_UNUSED *deleted,
+                          const H5O_copy_t *cpy_info, void H5_ATTR_UNUSED *udata)
 {
     const H5O_layout_t *layout_src = (const H5O_layout_t *)mesg_src; /* Source layout */
     herr_t              ret_value  = SUCCEED;                        /* Return value */
@@ -1034,14 +1033,13 @@ done:
  *-------------------------------------------------------------------------
  */
 static void *
-H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst,
-                      bool H5_ATTR_UNUSED *recompute_size, unsigned H5_ATTR_UNUSED *mesg_flags,
-                      H5O_copy_t *cpy_info, void *_udata)
+H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst, bool H5_ATTR_UNUSED *recompute_size,
+                      unsigned H5_ATTR_UNUSED *mesg_flags, H5O_copy_t *cpy_info, void *_udata)
 {
     H5D_copy_file_ud_t *udata      = (H5D_copy_file_ud_t *)_udata; /* Dataset copying user data */
     H5O_layout_t *      layout_src = (H5O_layout_t *)mesg_src;
     H5O_layout_t *      layout_dst = NULL;
-    bool             copied     = false; /* Whether the data was copied */
+    bool                copied     = false; /* Whether the data was copied */
     void *              ret_value  = NULL;  /* Return value */
 
     FUNC_ENTER_STATIC

@@ -647,10 +647,10 @@ test_multiple_ends(hid_t file, bool is_chunked)
 void
 test_coords(void)
 {
-    hid_t   fid;
-    bool is_chunk[2] = {true, false};
-    int     i;
-    herr_t  ret; /* Generic error return */
+    hid_t  fid;
+    bool   is_chunk[2] = {true, false};
+    int    i;
+    herr_t ret; /* Generic error return */
 
     fid = H5Fcreate(FILENAME, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
     CHECK(fid, FAIL, "H5Fcreate");

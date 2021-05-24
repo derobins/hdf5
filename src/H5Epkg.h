@@ -67,7 +67,7 @@
 #ifndef H5_NO_DEPRECATED_SYMBOLS
 typedef struct {
     unsigned    vers;          /* Which version callback to use */
-    bool     is_default;    /* If the printing function is the library's own. */
+    bool        is_default;    /* If the printing function is the library's own. */
     H5E_auto1_t func1;         /* Old-style callback, NO error stack param. */
     H5E_auto2_t func2;         /* New-style callback, with error stack param. */
     H5E_auto1_t func1_default; /* The saved library's default function - old style. */

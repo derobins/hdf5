@@ -399,8 +399,8 @@ H5VL__native_file_specific(void *obj, H5VL_file_specific_t specific_type, hid_t 
 
         /* Check if two files are the same */
         case H5VL_FILE_IS_EQUAL: {
-            H5F_t *  file2    = (H5F_t *)HDva_arg(arguments, void *);
-            bool *is_equal = HDva_arg(arguments, bool *);
+            H5F_t *file2    = (H5F_t *)HDva_arg(arguments, void *);
+            bool * is_equal = HDva_arg(arguments, bool *);
 
             if (!obj || !file2)
                 *is_equal = false;
@@ -758,7 +758,7 @@ H5VL__native_file_optional(void *obj, H5VL_file_optional_t optional_type, hid_t 
         /* H5Fget_dset_no_attrs_hint */
         case H5VL_NATIVE_FILE_GET_MIN_DSET_OHDR_FLAG: {
             bool *minimize = HDva_arg(arguments, bool *);
-            *minimize         = H5F_GET_MIN_DSET_OHDR(f);
+            *minimize      = H5F_GET_MIN_DSET_OHDR(f);
             break;
         }
 

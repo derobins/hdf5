@@ -142,7 +142,7 @@ H5F__efc_open(H5F_t *parent, const char *name, unsigned flags, hid_t fcpl_id, hi
 {
     H5F_efc_t *           efc       = NULL;  /* External file cache for parent file */
     H5F_efc_ent_t *       ent       = NULL;  /* Entry for target file in efc */
-    bool               open_file = false; /* Whether ent->file needs to be closed in case of error */
+    bool                  open_file = false; /* Whether ent->file needs to be closed in case of error */
     H5P_genplist_t *      plist;             /* Property list pointer for FAPL */
     H5VL_connector_prop_t connector_prop;    /* Property for VOL connector ID & info        */
     H5F_t *               ret_value = NULL;  /* Return value */

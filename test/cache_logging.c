@@ -33,20 +33,20 @@ const char *FILENAME[] = {"cache_logging", NULL};
 static herr_t
 test_logging_api(void)
 {
-    hid_t   fapl = -1;
-    bool is_enabled;
-    bool is_enabled_out;
-    bool start_on_access;
-    bool start_on_access_out;
-    char *  location = NULL;
-    size_t  size;
+    hid_t  fapl = -1;
+    bool   is_enabled;
+    bool   is_enabled_out;
+    bool   start_on_access;
+    bool   start_on_access_out;
+    char * location = NULL;
+    size_t size;
 
-    hid_t   fid = -1;
-    hid_t   gid = -1;
-    bool is_currently_logging;
-    char    group_name[12];
-    char    filename[1024];
-    int     i;
+    hid_t fid = -1;
+    hid_t gid = -1;
+    bool  is_currently_logging;
+    char  group_name[12];
+    char  filename[1024];
+    int   i;
 
     TESTING("metadata cache log api calls");
 

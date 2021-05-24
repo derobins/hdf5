@@ -74,7 +74,7 @@ open_skeleton(const char *filename, bool verbose, FILE *verbose_file, unsigned r
     hid_t    fid;                 /* File ID for new HDF5 file */
     hid_t    fapl;                /* File access property list */
     unsigned u, v;                /* Local index variable */
-    bool  use_log_vfd = false; /* Use the log VFD (set this manually) */
+    bool     use_log_vfd = false; /* Use the log VFD (set this manually) */
 
     HDassert(filename);
 
@@ -280,10 +280,10 @@ main(int argc, const char *argv[])
     hid_t    fid;                  /* File ID for file opened */
     long     nrecords     = 0;     /* # of records to append */
     long     flush_count  = 10000; /* # of records to write between flushing file */
-    bool  verbose      = true;  /* Whether to emit some informational messages */
+    bool     verbose      = true;  /* Whether to emit some informational messages */
     FILE *   verbose_file = NULL;  /* File handle for verbose output */
-    bool  old          = false; /* Whether to use non-latest-format when opening file */
-    bool  use_seed     = false; /* Set to TRUE if a seed was set on the command line */
+    bool     old          = false; /* Whether to use non-latest-format when opening file */
+    bool     use_seed     = false; /* Set to TRUE if a seed was set on the command line */
     unsigned random_seed  = 0;     /* Random # seed */
     unsigned u;                    /* Local index variable */
     int      temp;

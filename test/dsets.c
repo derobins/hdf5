@@ -2840,7 +2840,7 @@ test_missing_filter(hid_t file)
     size_t        i, j;                                   /* Local index variables */
     herr_t        ret;                                    /* Generic return value */
     const char *  testfile       = H5_get_srcdir_filename(FILE_DEFLATE_NAME); /* Corrected test file name */
-    bool       api_ctx_pushed = false;                                     /* Whether API context pushed */
+    bool          api_ctx_pushed = false;                                     /* Whether API context pushed */
 
     TESTING("dataset access with missing filter");
 
@@ -7806,9 +7806,9 @@ error:
 static H5_ATTR_CONST long
 gcd(long l0, long r0)
 {
-    long    magnitude, remainder;
+    long magnitude, remainder;
     bool negative = ((l0 < 0) != (r0 < 0));
-    long    l = HDlabs(l0), r = HDlabs(r0);
+    long l = HDlabs(l0), r = HDlabs(r0);
 
     do {
         if (l < r) {
@@ -13513,9 +13513,9 @@ error:
  *-------------------------------------------------------------------------
  */
 typedef struct gather_info_t {
-    int *   expect_dst_buf; /* Expected destination data buffer */
-    size_t  max_nelmts;     /* Maximum number of elements passed to callback */
-    bool last_call;      /* Whether this should be the last time the callback is called */
+    int *  expect_dst_buf; /* Expected destination data buffer */
+    size_t max_nelmts;     /* Maximum number of elements passed to callback */
+    bool   last_call;      /* Whether this should be the last time the callback is called */
 } gather_info_t;
 
 static herr_t
@@ -14580,7 +14580,7 @@ test_compact_open_close_dirty(hid_t fapl)
     int     wbuf[10];                    /* Data buffer */
     char    filename[FILENAME_BUF_SIZE]; /* Filename */
     int     i;                           /* Local index variable */
-    bool dirty;                       /* The dirty flag */
+    bool    dirty;                       /* The dirty flag */
 
     TESTING("compact dataset repeated open/close and dirty flag");
 
@@ -14855,11 +14855,11 @@ error:
 static herr_t
 test_object_header_minimization_dcpl(void)
 {
-    hid_t   dcpl_id                     = -1;
-    hid_t   file_id                     = -1;
-    char    filename[FILENAME_BUF_SIZE] = "";
-    bool minimize                    = false;
-    herr_t  ret;
+    hid_t  dcpl_id                     = -1;
+    hid_t  file_id                     = -1;
+    char   filename[FILENAME_BUF_SIZE] = "";
+    bool   minimize                    = false;
+    herr_t ret;
 
     TESTING("dcpl flags to minimize dataset object header");
 
@@ -15183,7 +15183,7 @@ main(void)
     double      rdcc_w0;
     int         nerrors = 0;
     const char *envval;
-    bool     contig_addr_vfd; /* Whether VFD used has a contigous address space */
+    bool        contig_addr_vfd; /* Whether VFD used has a contigous address space */
     int         i;
 
     /* Don't run this test using certain file drivers */

@@ -62,63 +62,63 @@ struct flush_cache_test_spec {
     int          entry_num;
     int          entry_type;
     int          entry_index;
-    bool      insert_flag;
+    bool         insert_flag;
     unsigned int flags;
-    bool      expected_deserialized;
-    bool      expected_serialized;
-    bool      expected_destroyed;
+    bool         expected_deserialized;
+    bool         expected_serialized;
+    bool         expected_destroyed;
 };
 
 struct pe_flush_cache_test_spec {
     int          entry_num;
     int          entry_type;
     int          entry_index;
-    bool      insert_flag;
+    bool         insert_flag;
     unsigned int flags;
     int          num_pins;
     int          pin_type[MAX_PINS];
     int          pin_idx[MAX_PINS];
-    bool      expected_deserialized;
-    bool      expected_serialized;
-    bool      expected_destroyed;
+    bool         expected_deserialized;
+    bool         expected_serialized;
+    bool         expected_destroyed;
 };
 
 struct fo_flush_entry_check {
-    int     entry_num;
-    int     entry_type;
-    int     entry_index;
-    size_t  expected_size;
-    bool in_cache;
-    bool at_main_addr;
-    bool is_dirty;
-    bool is_protected;
-    bool is_pinned;
-    bool expected_deserialized;
-    bool expected_serialized;
-    bool expected_destroyed;
+    int    entry_num;
+    int    entry_type;
+    int    entry_index;
+    size_t expected_size;
+    bool   in_cache;
+    bool   at_main_addr;
+    bool   is_dirty;
+    bool   is_protected;
+    bool   is_pinned;
+    bool   expected_deserialized;
+    bool   expected_serialized;
+    bool   expected_destroyed;
 };
 
 struct fo_flush_cache_test_spec {
     int             entry_num;
     int             entry_type;
     int             entry_index;
-    bool         insert_flag;
+    bool            insert_flag;
     unsigned int    flags;
-    bool         resize_flag;
+    bool            resize_flag;
     size_t          new_size;
     int             num_pins;
     int             pin_type[MAX_PINS];
     int             pin_idx[MAX_PINS];
     int             num_flush_ops;
     struct flush_op flush_ops[MAX_FLUSH_OPS];
-    bool         expected_deserialized;
-    bool         expected_serialized;
-    bool         expected_destroyed;
+    bool            expected_deserialized;
+    bool            expected_serialized;
+    bool            expected_destroyed;
 };
 
 struct move_entry_test_spec {
-    int     entry_type;
-    int     entry_index;
+    int  entry_type;
+    int  entry_index;
     bool is_pinned;
     bool is_protected;
 };
@@ -150,18 +150,20 @@ static void check_flush_cache__single_entry_test(H5F_t *file_ptr, int test_num, 
                                                  bool insert_flag, unsigned int flags,
                                                  unsigned int flush_flags, bool expected_deserialized,
                                                  bool expected_serialized, bool expected_destroyed);
-static void check_flush_cache__pinned_single_entry_test(
-    H5F_t *file_ptr, int test_num, int entry_type, int entry_idx, bool unprot_dirty_flag,
-    bool mark_dirty, bool pop_mark_dirty_prot, bool pop_mark_dirty_pinned, bool unprotect_unpin,
-    unsigned int flags, unsigned int flush_flags, bool expected_serialized, bool expected_destroyed);
-static void     check_flush_cache__flush_ops(H5F_t *file_ptr);
-static void     check_flush_cache__flush_op_test(H5F_t *file_ptr, int test_num, unsigned int flush_flags,
-                                                 int spec_size, const struct fo_flush_cache_test_spec spec[],
-                                                 unsigned init_expected_index_len,
-                                                 size_t init_expected_index_size, unsigned expected_index_len,
-                                                 size_t expected_index_size, int check_size,
-                                                 struct fo_flush_entry_check check[]);
-static void     check_flush_cache__flush_op_eviction_test(H5F_t *file_ptr);
+static void check_flush_cache__pinned_single_entry_test(H5F_t *file_ptr, int test_num, int entry_type,
+                                                        int entry_idx, bool unprot_dirty_flag,
+                                                        bool mark_dirty, bool pop_mark_dirty_prot,
+                                                        bool pop_mark_dirty_pinned, bool unprotect_unpin,
+                                                        unsigned int flags, unsigned int flush_flags,
+                                                        bool expected_serialized, bool expected_destroyed);
+static void check_flush_cache__flush_ops(H5F_t *file_ptr);
+static void check_flush_cache__flush_op_test(H5F_t *file_ptr, int test_num, unsigned int flush_flags,
+                                             int spec_size, const struct fo_flush_cache_test_spec spec[],
+                                             unsigned init_expected_index_len,
+                                             size_t init_expected_index_size, unsigned expected_index_len,
+                                             size_t expected_index_size, int check_size,
+                                             struct fo_flush_entry_check check[]);
+static void check_flush_cache__flush_op_eviction_test(H5F_t *file_ptr);
 static unsigned check_get_entry_status(unsigned paged);
 static unsigned check_expunge_entry(unsigned paged);
 static unsigned check_multiple_read_protect(unsigned paged);
@@ -237,10 +239,10 @@ static void takedown_cache(H5F_t *file_ptr, bool dump_stats, bool dump_detailed_
 static unsigned
 smoke_check_1(int express_test, unsigned paged)
 {
-    bool show_progress    = false;
+    bool    show_progress    = false;
     int     dirty_unprotects = false;
     int     dirty_destroys   = false;
-    bool display_stats    = false;
+    bool    display_stats    = false;
     int32_t lag              = 10;
     int32_t max_index        = (10 * 1024) - 1;
     int     mile_stone       = 1;
@@ -435,10 +437,10 @@ smoke_check_1(int express_test, unsigned paged)
 static unsigned
 smoke_check_2(int express_test, unsigned paged)
 {
-    bool show_progress    = false;
+    bool    show_progress    = false;
     int     dirty_unprotects = true;
     int     dirty_destroys   = true;
-    bool display_stats    = false;
+    bool    display_stats    = false;
     int32_t max_index        = (10 * 1024) - 1;
     int32_t lag              = 10;
     int     mile_stone       = 1;
@@ -632,10 +634,10 @@ smoke_check_2(int express_test, unsigned paged)
 static unsigned
 smoke_check_3(int express_test, unsigned paged)
 {
-    bool show_progress    = false;
+    bool    show_progress    = false;
     int     dirty_unprotects = false;
     int     dirty_destroys   = false;
-    bool display_stats    = false;
+    bool    display_stats    = false;
     int32_t max_index        = (10 * 1024) - 1;
     int32_t lag              = 10;
     int     mile_stone       = 1;
@@ -830,10 +832,10 @@ smoke_check_3(int express_test, unsigned paged)
 static unsigned
 smoke_check_4(int express_test, unsigned paged)
 {
-    bool show_progress    = false;
+    bool    show_progress    = false;
     int     dirty_unprotects = true;
     int     dirty_destroys   = true;
-    bool display_stats    = false;
+    bool    display_stats    = false;
     int32_t max_index        = (10 * 1024) - 1;
     int32_t lag              = 10;
     int     mile_stone       = 1;
@@ -1029,9 +1031,9 @@ static unsigned
 smoke_check_5(int express_test, unsigned paged)
 {
     herr_t              result;
-    bool             show_progress    = false;
+    bool                show_progress    = false;
     int                 dirty_unprotects = false;
-    bool             display_stats    = false;
+    bool                display_stats    = false;
     int32_t             max_index        = 1024;
     int                 mile_stone       = 1;
     H5F_t *             file_ptr         = NULL;
@@ -1261,9 +1263,9 @@ static unsigned
 smoke_check_6(int express_test, unsigned paged)
 {
     herr_t              result;
-    bool             show_progress    = false;
+    bool                show_progress    = false;
     int                 dirty_unprotects = false;
-    bool             display_stats    = false;
+    bool                display_stats    = false;
     int                 mile_stone       = 1;
     int32_t             max_index        = 1024;
     H5F_t *             file_ptr         = NULL;
@@ -1493,9 +1495,9 @@ static unsigned
 smoke_check_7(int express_test, unsigned paged)
 {
     herr_t              result;
-    bool             show_progress    = false;
+    bool                show_progress    = false;
     int                 dirty_unprotects = false;
-    bool             display_stats    = false;
+    bool                display_stats    = false;
     int                 mile_stone       = 1;
     int32_t             max_index        = 1024;
     H5F_t *             file_ptr         = NULL;
@@ -1726,9 +1728,9 @@ static unsigned
 smoke_check_8(int express_test, unsigned paged)
 {
     herr_t              result;
-    bool             show_progress    = false;
+    bool                show_progress    = false;
     int                 dirty_unprotects = false;
-    bool             display_stats    = false;
+    bool                display_stats    = false;
     int                 mile_stone       = 1;
     int32_t             max_index        = 1024;
     H5F_t *             file_ptr         = NULL;
@@ -1966,11 +1968,11 @@ static unsigned
 smoke_check_9(int express_test, unsigned paged)
 {
     herr_t  result;
-    bool show_progress          = false;
+    bool    show_progress          = false;
     int     dirty_unprotects       = false;
     int     dirty_destroys         = false;
-    bool display_stats          = false;
-    bool display_detailed_stats = false;
+    bool    display_stats          = false;
+    bool    display_detailed_stats = false;
     int32_t max_index              = (10 * 1024) - 1;
     int32_t lag                    = 10;
     int     mile_stone             = 1;
@@ -2277,11 +2279,11 @@ static unsigned
 smoke_check_10(int express_test, unsigned paged)
 {
     herr_t  result;
-    bool show_progress          = false;
+    bool    show_progress          = false;
     int     dirty_unprotects       = true;
     int     dirty_destroys         = true;
-    bool display_stats          = false;
-    bool display_detailed_stats = false;
+    bool    display_stats          = false;
+    bool    display_detailed_stats = false;
     int32_t max_index              = (10 * 1024) - 1;
     int32_t lag                    = 10;
     int     mile_stone             = 1;
@@ -2798,10 +2800,10 @@ check_insert_entry(unsigned paged)
     int                       entry_type = PICO_ENTRY_TYPE;
     int                       i;
     herr_t                    result;
-    bool                   in_cache;
-    bool                   is_dirty;
-    bool                   is_protected;
-    bool                   is_pinned;
+    bool                      in_cache;
+    bool                      is_dirty;
+    bool                      is_protected;
+    bool                      is_pinned;
     size_t                    entry_size;
     H5F_t *                   file_ptr  = NULL;
     H5C_t *                   cache_ptr = NULL;
@@ -11609,15 +11611,15 @@ check_flush_cache__single_entry(H5F_t *file_ptr)
             int          test_num;
             int          entry_type;
             int          entry_idx;
-            bool      dirty_flag;
-            bool      mark_dirty;
-            bool      pop_mark_dirty_prot;
-            bool      pop_mark_dirty_pinned;
-            bool      unprotect_unpin;
+            bool         dirty_flag;
+            bool         mark_dirty;
+            bool         pop_mark_dirty_prot;
+            bool         pop_mark_dirty_pinned;
+            bool         unprotect_unpin;
             unsigned int flags;
             unsigned int flush_flags;
-            bool      expected_serialized;
-            bool      expected_destroyed;
+            bool         expected_serialized;
+            bool         expected_destroyed;
         } spec[256] =
             /*                                           pop    pop
              *                         ent unprot        mark   mark
@@ -12328,15 +12330,14 @@ check_flush_cache__single_entry_test(H5F_t *file_ptr, int test_num, int entry_ty
 
 static void
 check_flush_cache__pinned_single_entry_test(H5F_t *file_ptr, int test_num, int entry_type, int entry_idx,
-                                            bool unprot_dirty_flag, bool mark_dirty,
-                                            bool pop_mark_dirty_prot, bool pop_mark_dirty_pinned,
-                                            bool unprotect_unpin, unsigned int flags,
-                                            unsigned int flush_flags, bool expected_serialized,
-                                            bool expected_destroyed)
+                                            bool unprot_dirty_flag, bool mark_dirty, bool pop_mark_dirty_prot,
+                                            bool pop_mark_dirty_pinned, bool unprotect_unpin,
+                                            unsigned int flags, unsigned int flush_flags,
+                                            bool expected_serialized, bool expected_destroyed)
 {
     H5C_t *       cache_ptr = file_ptr->shared->cache;
     static char   msg[128];
-    bool       expected_deserialized = true;
+    bool          expected_deserialized = true;
     test_entry_t *base_addr;
     test_entry_t *entry_ptr = NULL;
 
@@ -12493,10 +12494,10 @@ check_get_entry_status(unsigned paged)
 {
     static char   msg[128];
     herr_t        result;
-    bool       in_cache;
-    bool       is_dirty;
-    bool       is_protected;
-    bool       is_pinned;
+    bool          in_cache;
+    bool          is_dirty;
+    bool          is_protected;
+    bool          is_pinned;
     size_t        entry_size;
     H5F_t *       file_ptr  = NULL;
     test_entry_t *base_addr = NULL;
@@ -12714,10 +12715,10 @@ check_expunge_entry(unsigned paged)
 {
     static char   msg[128];
     herr_t        result;
-    bool       in_cache;
-    bool       is_dirty;
-    bool       is_protected;
-    bool       is_pinned;
+    bool          in_cache;
+    bool          is_dirty;
+    bool          is_protected;
+    bool          is_pinned;
     size_t        entry_size;
     H5F_t *       file_ptr = NULL;
     test_entry_t *base_addr;
@@ -13748,10 +13749,10 @@ check_resize_entry(unsigned paged)
 {
     static char   msg[128];
     herr_t        result;
-    bool       in_cache;
-    bool       is_dirty;
-    bool       is_protected;
-    bool       is_pinned;
+    bool          in_cache;
+    bool          is_dirty;
+    bool          is_protected;
+    bool          is_pinned;
     size_t        entry_size;
     size_t        reported_entry_size;
     H5F_t *       file_ptr  = NULL;
@@ -14616,9 +14617,9 @@ check_evictions_enabled(unsigned paged)
 {
     static char   msg[128];
     herr_t        result;
-    bool       show_progress = false;
-    bool       evictions_enabled;
-    bool       in_cache;
+    bool          show_progress = false;
+    bool          evictions_enabled;
+    bool          in_cache;
     int           i;
     int           mile_stone = 1;
     H5F_t *       file_ptr   = NULL;
@@ -16838,10 +16839,10 @@ check_protect_retries(unsigned paged)
 static unsigned
 check_check_evictions_enabled_err(unsigned paged)
 {
-    herr_t  result;
-    bool evictions_enabled;
-    H5F_t * file_ptr  = NULL;
-    H5C_t * cache_ptr = NULL;
+    herr_t result;
+    bool   evictions_enabled;
+    H5F_t *file_ptr  = NULL;
+    H5C_t *cache_ptr = NULL;
 
     if (paged)
         TESTING("get/set evictions enabled errors (paged aggregation)")
@@ -16973,7 +16974,7 @@ check_check_evictions_enabled_err(unsigned paged)
  *-------------------------------------------------------------------------
  */
 
-bool                rpt_fcn_called = false;
+bool                   rpt_fcn_called = false;
 enum H5C_resize_status rpt_status;
 
 static void
@@ -16989,7 +16990,7 @@ test_rpt_fcn(H5_ATTR_UNUSED H5C_t *cache_ptr, H5_ATTR_UNUSED int32_t version, H5
 static unsigned
 check_auto_cache_resize(bool cork_ageout, unsigned paged)
 {
-    bool             show_progress = false;
+    bool                show_progress = false;
     herr_t              result;
     int32_t             i;
     int32_t             checkpoint    = 0;
@@ -20844,7 +20845,7 @@ check_auto_cache_resize(bool cork_ageout, unsigned paged)
 static unsigned
 check_auto_cache_resize_disable(unsigned paged)
 {
-    bool             show_progress = false;
+    bool                show_progress = false;
     herr_t              result;
     int32_t             i;
     int32_t             checkpoint    = 0;
@@ -23442,7 +23443,7 @@ check_auto_cache_resize_disable(unsigned paged)
 static unsigned
 check_auto_cache_resize_epoch_markers(unsigned paged)
 {
-    bool             show_progress = false;
+    bool                show_progress = false;
     herr_t              result;
     int32_t             i;
     int32_t             j;
@@ -26872,7 +26873,7 @@ check_metadata_blizzard_absence(bool fill_via_insertion, unsigned paged)
     size_t  entry_size    = HUGE_ENTRY_SIZE; /* 16 KB */
     H5F_t * file_ptr      = NULL;
     H5C_t * cache_ptr     = NULL;
-    bool show_progress = false;
+    bool    show_progress = false;
     int32_t checkpoint    = 0;
     int32_t entry_idx     = 0;
     int32_t i;
@@ -26880,7 +26881,7 @@ check_metadata_blizzard_absence(bool fill_via_insertion, unsigned paged)
     /* Expected deserialized status of entries depends on how they get into
      * the cache. Insertions = not deserialized, protect/unprotect = deserialized.
      */
-    bool deserialized = (bool) !(fill_via_insertion);
+    bool deserialized = (bool)!(fill_via_insertion);
 
     /* Set up the expected array. This is used to maintain a table of the
      * expected status of every entry used in this test.
@@ -27774,7 +27775,7 @@ check_flush_deps(unsigned paged)
 
     /* Create flush dependency between entries 0 (child) & 1 (parent) */
     {
-        bool       in_cache, is_flush_dep_parent, is_flush_dep_child;
+        bool          in_cache, is_flush_dep_parent, is_flush_dep_child;
         test_entry_t *entry_ptr;
 
         protect_entry(file_ptr, entry_type, 1);
@@ -32860,7 +32861,7 @@ check_metadata_cork(bool fill_via_insertion, unsigned paged)
     size_t      entry_size    = HUGE_ENTRY_SIZE; /* 16 KB */
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
-    bool     show_progress = false;
+    bool        show_progress = false;
     int32_t     checkpoint    = 0;
     int32_t     entry_idx     = 0;
     int32_t     i;
@@ -32868,7 +32869,7 @@ check_metadata_cork(bool fill_via_insertion, unsigned paged)
     /* Expected deserialized status of entries depends on how they get into
      * the cache. Insertions = not deserialized, protect/unprotect = deserialized.
      */
-    bool deserialized = (bool) !(fill_via_insertion);
+    bool deserialized = (bool)!(fill_via_insertion);
 
     /* Set up the expected array. This is used to maintain a table of the
      * expected status of every entry used in this test.
@@ -35521,8 +35522,8 @@ H5F_t *
 setup_cache(size_t max_cache_size, size_t min_clean_size, unsigned paged)
 {
     char    filename[512];
-    bool show_progress = false;
-    bool verbose       = true;
+    bool    show_progress = false;
+    bool    verbose       = true;
     int     mile_stone    = 1;
     hid_t   fid           = -1;
     H5F_t * file_ptr      = NULL;

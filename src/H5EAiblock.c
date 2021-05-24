@@ -161,7 +161,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     /* Local variables */
     H5EA_iblock_t *iblock = NULL;    /* Extensible array index block */
     haddr_t        iblock_addr;      /* Extensible array index block address */
-    bool        inserted = false; /* Whether the header was inserted into cache */
+    bool           inserted = false; /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);

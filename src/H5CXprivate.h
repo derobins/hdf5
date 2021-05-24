@@ -65,7 +65,7 @@ typedef struct H5CX_state_t {
 H5_DLL herr_t H5CX_push(void);
 H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
 #endif /* H5private_H */
-H5_DLL void    H5CX_push_special(void);
+H5_DLL void H5CX_push_special(void);
 H5_DLL bool H5CX_is_def_dxpl(void);
 
 /* API context state routines */
@@ -79,8 +79,7 @@ H5_DLL void   H5CX_set_lcpl(hid_t lcpl_id);
 H5_DLL void   H5CX_set_lapl(hid_t lapl_id);
 H5_DLL void   H5CX_set_dcpl(hid_t dcpl_id);
 H5_DLL herr_t H5CX_set_libver_bounds(H5F_t *f);
-H5_DLL herr_t H5CX_set_apl(hid_t *acspl_id, const H5P_libclass_t *libclass, hid_t loc_id,
-                           bool is_collective);
+H5_DLL herr_t H5CX_set_apl(hid_t *acspl_id, const H5P_libclass_t *libclass, hid_t loc_id, bool is_collective);
 H5_DLL herr_t H5CX_set_loc(hid_t loc_id);
 H5_DLL herr_t H5CX_set_vol_wrap_ctx(void *wrap_ctx);
 H5_DLL herr_t H5CX_set_vol_connector_prop(const H5VL_connector_prop_t *vol_connector_prop);

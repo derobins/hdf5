@@ -3765,8 +3765,8 @@ H5_DLL herr_t H5Pget_mdc_image_config(hid_t plist_id, H5AC_cache_image_config_t 
  *
  * \since 1.10.0
  */
-H5_DLL herr_t H5Pget_mdc_log_options(hid_t plist_id, bool *is_enabled, char *location,
-                                     size_t *location_size, bool *start_on_access);
+H5_DLL herr_t H5Pget_mdc_log_options(hid_t plist_id, bool *is_enabled, char *location, size_t *location_size,
+                                     bool *start_on_access);
 /**
  * \ingroup FAPL
  *

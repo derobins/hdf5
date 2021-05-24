@@ -67,7 +67,7 @@ struct H5ES_t {
     H5ES_event_list_t active; /* List of active events in set */
 
     /* Failed events */
-    bool           err_occurred; /* Flag for error from an operation */
+    bool              err_occurred; /* Flag for error from an operation */
     H5ES_event_list_t failed;       /* List of failed events in set */
 };
 

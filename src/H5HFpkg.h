@@ -237,7 +237,7 @@ typedef struct H5HF_block_loc_t {
 
 /* Fractal heap block iterator info */
 typedef struct H5HF_block_iter_t {
-    bool           ready; /* Set if iterator is finished initializing   */
+    bool              ready; /* Set if iterator is finished initializing   */
     H5HF_block_loc_t *curr;  /* Pointer to the current level information for iterator */
 } H5HF_block_iter_t;
 
@@ -342,7 +342,7 @@ struct H5HF_hdr_t {
     unsigned                mode;           /* Access mode for heap */
     H5F_t *                 f;              /* Pointer to file for heap */
     size_t                  file_rc;        /* Reference count of files using heap header */
-    bool                 pending_delete; /* Heap is pending deletion */
+    bool                    pending_delete; /* Heap is pending deletion */
     uint8_t                 sizeof_size;    /* Size of file sizes */
     uint8_t                 sizeof_addr;    /* Size of file addresses */
     struct H5HF_indirect_t *root_iblock;    /* Pointer to root indirect block */
@@ -352,14 +352,14 @@ struct H5HF_hdr_t {
     H5B2_t *          huge_bt2;     /* v2 B-tree handle for huge objects */
     hsize_t           huge_max_id;  /* Max. 'huge' heap ID before rolling 'huge' heap IDs over */
     uint8_t           huge_id_size; /* Size of 'huge' heap IDs (in bytes) */
-    bool huge_ids_direct;   /* Flag to indicate that 'huge' object's offset & length are stored directly in
-                                  heap ID */
-    size_t  tiny_max_len;      /* Max. size of tiny objects for this heap */
-    bool tiny_len_extended; /* Flag to indicate that 'tiny' object's length is stored in extended form
-                                  (i.e. w/extra byte) */
-    uint8_t heap_off_size;     /* Size of heap offsets (in bytes) */
-    uint8_t heap_len_size;     /* Size of heap ID lengths (in bytes) */
-    bool checked_filters;   /* TRUE if pipeline passes can_apply checks */
+    bool huge_ids_direct;     /* Flag to indicate that 'huge' object's offset & length are stored directly in
+                                    heap ID */
+    size_t tiny_max_len;      /* Max. size of tiny objects for this heap */
+    bool   tiny_len_extended; /* Flag to indicate that 'tiny' object's length is stored in extended form
+                                    (i.e. w/extra byte) */
+    uint8_t heap_off_size;    /* Size of heap offsets (in bytes) */
+    uint8_t heap_len_size;    /* Size of heap ID lengths (in bytes) */
+    bool    checked_filters;  /* TRUE if pipeline passes can_apply checks */
 };
 
 /* Common indirect block doubling table entry */
@@ -398,7 +398,7 @@ struct H5HF_indirect_t {
     unsigned                 nchildren;          /* Number of child blocks                     */
     unsigned                 max_child;          /* Max. offset used in child entries          */
     struct H5HF_indirect_t **child_iblocks;      /* Array of pointers to pinned child indirect blocks */
-    bool                  removed_from_cache; /* Flag that indicates the block has  */
+    bool                     removed_from_cache; /* Flag that indicates the block has  */
                                                  /* been removed from the metadata cache, but  */
                                                  /* is still 'live' due to a refcount (rc) > 0 */
                                                  /* (usually from free space sections)         */
@@ -719,18 +719,18 @@ H5_DLL herr_t H5HF__tiny_op(H5HF_hdr_t *hdr, const uint8_t *id, H5HF_operator_t 
 H5_DLL herr_t H5HF__tiny_remove(H5HF_hdr_t *fh, const uint8_t *id);
 
 /* Block iteration routines */
-H5_DLL herr_t  H5HF__man_iter_init(H5HF_block_iter_t *biter);
-H5_DLL herr_t  H5HF__man_iter_start_offset(H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, hsize_t offset);
-H5_DLL herr_t  H5HF__man_iter_start_entry(H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, H5HF_indirect_t *iblock,
-                                          unsigned start_entry);
-H5_DLL herr_t  H5HF__man_iter_set_entry(const H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, unsigned entry);
-H5_DLL herr_t  H5HF__man_iter_next(H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, unsigned nentries);
-H5_DLL herr_t  H5HF__man_iter_up(H5HF_block_iter_t *biter);
-H5_DLL herr_t  H5HF__man_iter_down(H5HF_block_iter_t *biter, H5HF_indirect_t *iblock);
-H5_DLL herr_t  H5HF__man_iter_reset(H5HF_block_iter_t *biter);
-H5_DLL herr_t  H5HF__man_iter_curr(H5HF_block_iter_t *biter, unsigned *row, unsigned *col, unsigned *entry,
-                                   H5HF_indirect_t **block);
-H5_DLL bool H5HF__man_iter_ready(H5HF_block_iter_t *biter);
+H5_DLL herr_t H5HF__man_iter_init(H5HF_block_iter_t *biter);
+H5_DLL herr_t H5HF__man_iter_start_offset(H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, hsize_t offset);
+H5_DLL herr_t H5HF__man_iter_start_entry(H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, H5HF_indirect_t *iblock,
+                                         unsigned start_entry);
+H5_DLL herr_t H5HF__man_iter_set_entry(const H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, unsigned entry);
+H5_DLL herr_t H5HF__man_iter_next(H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, unsigned nentries);
+H5_DLL herr_t H5HF__man_iter_up(H5HF_block_iter_t *biter);
+H5_DLL herr_t H5HF__man_iter_down(H5HF_block_iter_t *biter, H5HF_indirect_t *iblock);
+H5_DLL herr_t H5HF__man_iter_reset(H5HF_block_iter_t *biter);
+H5_DLL herr_t H5HF__man_iter_curr(H5HF_block_iter_t *biter, unsigned *row, unsigned *col, unsigned *entry,
+                                  H5HF_indirect_t **block);
+H5_DLL bool   H5HF__man_iter_ready(H5HF_block_iter_t *biter);
 
 /* Free space manipulation routines */
 H5_DLL herr_t H5HF__space_start(H5HF_hdr_t *hdr, bool may_create);

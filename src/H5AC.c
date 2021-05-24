@@ -232,8 +232,8 @@ H5AC_term_package(void)
 bool
 H5AC_cache_image_pending(const H5F_t *f)
 {
-    H5C_t * cache_ptr;
-    bool ret_value = false; /* Return value */
+    H5C_t *cache_ptr;
+    bool   ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -745,15 +745,15 @@ done:
 herr_t
 H5AC_get_entry_status(const H5F_t *f, haddr_t addr, unsigned *status)
 {
-    bool in_cache;     /* Entry @ addr is in the cache */
-    bool is_dirty;     /* Entry @ addr is in the cache and dirty */
-    bool is_protected; /* Entry @ addr is in the cache and protected */
-    bool is_pinned;    /* Entry @ addr is in the cache and pinned */
-    bool is_corked;
-    bool is_flush_dep_child;  /* Entry @ addr is in the cache and is a flush dependency child */
-    bool is_flush_dep_parent; /* Entry @ addr is in the cache and is a flush dependency parent */
-    bool image_is_up_to_date; /* Entry @ addr is in the cache and has an up to date image */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    bool   in_cache;     /* Entry @ addr is in the cache */
+    bool   is_dirty;     /* Entry @ addr is in the cache and dirty */
+    bool   is_protected; /* Entry @ addr is in the cache and protected */
+    bool   is_pinned;    /* Entry @ addr is in the cache and pinned */
+    bool   is_corked;
+    bool   is_flush_dep_child;  /* Entry @ addr is in the cache and is a flush dependency child */
+    bool   is_flush_dep_parent; /* Entry @ addr is in the cache and is a flush dependency parent */
+    bool   image_is_up_to_date; /* Entry @ addr is in the cache and has an up to date image */
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -1707,7 +1707,7 @@ herr_t
 H5AC_get_cache_auto_resize_config(const H5AC_t *cache_ptr, H5AC_cache_config_t *config_ptr)
 {
     H5C_auto_size_ctl_t internal_config;
-    bool             evictions_enabled;
+    bool                evictions_enabled;
     herr_t              ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -2135,7 +2135,7 @@ H5AC__check_if_write_permitted(const H5F_t
                                    H5_ATTR_UNUSED
 #endif /* H5_HAVE_PARALLEL */
                                        *f,
-                               bool *write_permitted_ptr)
+                               bool *   write_permitted_ptr)
 {
 #ifdef H5_HAVE_PARALLEL
     H5AC_aux_t *aux_ptr = NULL;

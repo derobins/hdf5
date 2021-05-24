@@ -54,8 +54,7 @@ static herr_t H5C__epoch_marker_get_initial_load_size(void *udata_ptr, size_t *i
 static herr_t H5C__epoch_marker_get_final_load_size(const void *image_ptr, size_t image_len_ptr,
                                                     void *udata_ptr, size_t *actual_len);
 static htri_t H5C__epoch_marker_verify_chksum(const void *image_ptr, size_t len, void *udata_ptr);
-static void * H5C__epoch_marker_deserialize(const void *image_ptr, size_t len, void *udata,
-                                            bool *dirty_ptr);
+static void * H5C__epoch_marker_deserialize(const void *image_ptr, size_t len, void *udata, bool *dirty_ptr);
 static herr_t H5C__epoch_marker_image_len(const void *thing, size_t *image_len_ptr);
 static herr_t H5C__epoch_marker_pre_serialize(H5F_t *f, void *thing, haddr_t addr, size_t len,
                                               haddr_t *new_addr_ptr, size_t *new_len_ptr,

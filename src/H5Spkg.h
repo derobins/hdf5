@@ -316,7 +316,7 @@ typedef struct {
 typedef struct {
     const H5S_select_class_t *type; /* Pointer to selection's class info */
 
-    bool  offset_changed;       /* Indicate that the offset for the selection has been changed */
+    bool     offset_changed;       /* Indicate that the offset for the selection has been changed */
     hssize_t offset[H5S_MAX_RANK]; /* Offset within the extent */
 
     hsize_t num_elem; /* Number of elements in selection */

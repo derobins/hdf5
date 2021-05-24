@@ -117,7 +117,7 @@ test_metadata_read_attempts(hid_t in_fapl)
     hid_t         fid = -1, fid1 = -1, fid2 = -1; /* File IDs                             */
     hid_t         driver_id    = -1;              /* ID for this VFD                      */
     unsigned long driver_flags = 0;               /* VFD feature flags                    */
-    bool       compat_w_default_vfd;           /* current VFD compat w/ H5P_DEFAULT?   */
+    bool          compat_w_default_vfd;           /* current VFD compat w/ H5P_DEFAULT?   */
     unsigned      attempts;                       /* The # of read attempts               */
     char          filename[NAME_BUF_SIZE];        /* File name                            */
     herr_t        ret;                            /* Generic return value                 */
@@ -7357,12 +7357,12 @@ error:
 int
 main(void)
 {
-    int     nerrors      = 0;             /* The # of errors */
-    hid_t   fapl         = -1;            /* File access property list ID */
-    char *  driver       = NULL;          /* VFD string (from env variable) */
-    char *  lock_env_var = NULL;          /* file locking env var pointer */
-    bool use_file_locking;             /* read from env var */
-    bool file_locking_enabled = false; /* Checks if the file system supports locks */
+    int   nerrors      = 0;             /* The # of errors */
+    hid_t fapl         = -1;            /* File access property list ID */
+    char *driver       = NULL;          /* VFD string (from env variable) */
+    char *lock_env_var = NULL;          /* file locking env var pointer */
+    bool  use_file_locking;             /* read from env var */
+    bool  file_locking_enabled = false; /* Checks if the file system supports locks */
 
     /* Skip this test if SWMR I/O is not supported for the VFD specified
      * by the environment variable.

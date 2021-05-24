@@ -123,7 +123,7 @@ typedef struct H5G_node_t {
  * Shared information for all open group objects
  */
 struct H5G_shared_t {
-    int     fo_count; /* open file object count */
+    int  fo_count; /* open file object count */
     bool mounted;  /* Group is mount point */
 };
 
@@ -417,8 +417,7 @@ H5_DLL herr_t  H5G__compact_remove_by_idx(const H5O_loc_t *oloc, const H5O_linfo
 H5_DLL herr_t  H5G__compact_iterate(const H5O_loc_t *oloc, const H5O_linfo_t *linfo, H5_index_t idx_type,
                                     H5_iter_order_t order, hsize_t skip, hsize_t *last_lnk,
                                     H5G_lib_iterate_t op, void *op_data);
-H5_DLL herr_t  H5G__compact_lookup(const H5O_loc_t *grp_oloc, const char *name, bool *found,
-                                   H5O_link_t *lnk);
+H5_DLL herr_t  H5G__compact_lookup(const H5O_loc_t *grp_oloc, const char *name, bool *found, H5O_link_t *lnk);
 H5_DLL herr_t H5G__compact_lookup_by_idx(const H5O_loc_t *oloc, const H5O_linfo_t *linfo, H5_index_t idx_type,
                                          H5_iter_order_t order, hsize_t n, H5O_link_t *lnk);
 

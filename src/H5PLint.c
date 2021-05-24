@@ -179,7 +179,7 @@ int
 H5PL_term_package(void)
 {
     bool already_closed = false;
-    int     ret_value      = 0;
+    int  ret_value      = 0;
 
     FUNC_ENTER_NOAPI_NOINIT
 
@@ -224,7 +224,7 @@ const void *
 H5PL_load(H5PL_type_t type, const H5PL_key_t *key)
 {
     H5PL_search_params_t search_params;       /* Plugin search parameters     */
-    bool              found       = false; /* Whether the plugin was found */
+    bool                 found       = false; /* Whether the plugin was found */
     const void *         plugin_info = NULL;  /* Information from the plugin  */
     const void *         ret_value   = NULL;
 
@@ -292,8 +292,8 @@ done:
  */
 H5_GCC_DIAG_OFF("pedantic")
 herr_t
-H5PL__open(const char *path, H5PL_type_t type, const H5PL_key_t *key, bool *success,
-           H5PL_type_t *plugin_type, const void **plugin_info)
+H5PL__open(const char *path, H5PL_type_t type, const H5PL_key_t *key, bool *success, H5PL_type_t *plugin_type,
+           const void **plugin_info)
 {
     H5PL_HANDLE            handle          = NULL;
     H5PL_get_plugin_type_t get_plugin_type = NULL;

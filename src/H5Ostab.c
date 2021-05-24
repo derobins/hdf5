@@ -287,9 +287,8 @@ done:
  *-------------------------------------------------------------------------
  */
 static void *
-H5O__stab_copy_file(H5F_t *file_src, void *native_src, H5F_t *file_dst,
-                    bool H5_ATTR_UNUSED *recompute_size, unsigned H5_ATTR_UNUSED *mesg_flags,
-                    H5O_copy_t H5_ATTR_UNUSED *cpy_info, void *_udata)
+H5O__stab_copy_file(H5F_t *file_src, void *native_src, H5F_t *file_dst, bool H5_ATTR_UNUSED *recompute_size,
+                    unsigned H5_ATTR_UNUSED *mesg_flags, H5O_copy_t H5_ATTR_UNUSED *cpy_info, void *_udata)
 {
     H5O_stab_t *        stab_src = (H5O_stab_t *)native_src;
     H5O_stab_t *        stab_dst = NULL;

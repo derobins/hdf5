@@ -472,7 +472,7 @@ test_hide(hid_t fapl)
     hid_t       file1 = -1, file2 = -1, grp = -1;
     H5O_info2_t oi1, oi2;
     char        filename1[1024], filename2[1024];
-    bool     same_obj;
+    bool        same_obj;
 
     TESTING("name hiding under mount point");
     h5_fixname(FILENAME[0], fapl, filename1, sizeof(filename1));
@@ -572,7 +572,7 @@ test_assoc(hid_t fapl)
     hid_t       file1 = -1, file2 = -1;
     H5O_info2_t oi1, oi2;
     char        filename1[1024], filename2[1024];
-    bool     same_obj;
+    bool        same_obj;
 
     TESTING("mount point open");
     h5_fixname(FILENAME[0], fapl, filename1, sizeof filename1);

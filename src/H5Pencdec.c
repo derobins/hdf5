@@ -46,7 +46,7 @@
 
 /* Typedef for iterator when encoding a property list */
 typedef struct {
-    bool encode;       /* Whether the property list should be encoded */
+    bool    encode;       /* Whether the property list should be encoded */
     size_t *enc_size_ptr; /* Pointer to size of encoded buffer */
     void ** pp;           /* Pointer to encoding buffer pointer */
 } H5P_enc_iter_ud_t;
@@ -379,7 +379,7 @@ H5P__encode(const H5P_genplist_t *plist, bool enc_all_prop, void *buf, size_t *n
     uint8_t *         p = (uint8_t *)buf;    /* Temporary pointer to encoding buffer */
     int               idx;                   /* Index of property to start at */
     size_t            encode_size = 0;       /* Size of buffer needed to encode properties */
-    bool           encode      = true;    /* Whether the property list should be encoded */
+    bool              encode      = true;    /* Whether the property list should be encoded */
     herr_t            ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -594,7 +594,7 @@ H5P__decode_uint8_t(const void **_pp, void *_value)
 herr_t
 H5P__decode_hbool_t(const void **_pp, void *_value)
 {
-    bool *       value     = (bool *)_value; /* Property value to return */
+    bool *          value     = (bool *)_value; /* Property value to return */
     const uint8_t **pp        = (const uint8_t **)_pp;
     herr_t          ret_value = SUCCEED; /* Return value */
 
@@ -606,7 +606,7 @@ H5P__decode_hbool_t(const void **_pp, void *_value)
     HDassert(value);
 
     /* Decode the value */
-    *value = (bool) * (*pp)++;
+    *value = (bool)*(*pp)++;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5P__decode_hbool_t() */

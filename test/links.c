@@ -161,7 +161,7 @@ typedef struct {
     int             stop;      /* # of iterations to stop after */
     int64_t         curr;      /* Current creation order value */
     size_t          max_visit; /* Size of "visited link" flag array */
-    bool *       visited;   /* Pointer to array of "visited link" flags */
+    bool *          visited;   /* Pointer to array of "visited link" flags */
 } link_iter_info_t;
 
 /* Link visit structs */
@@ -4853,8 +4853,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-link_info_by_idx_check_deprec(hid_t group_id, const char *linkname, hsize_t n, bool hard_link,
-                              bool use_index)
+link_info_by_idx_check_deprec(hid_t group_id, const char *linkname, hsize_t n, bool hard_link, bool use_index)
 {
     char        tmpname[NAME_BUF_SIZE]; /* Temporary link name */
     char        valname[NAME_BUF_SIZE]; /* Link value name */
@@ -6464,7 +6463,7 @@ link_iterate_deprec(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    bool *        visited = NULL;          /* Array of flags for visiting links */
+    bool *           visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
@@ -6955,7 +6954,7 @@ link_iterate_old_deprec(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    bool *        visited = NULL;          /* Array of flags for visiting links */
+    bool *           visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
@@ -19538,7 +19537,7 @@ link_iterate(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    bool *        visited = NULL;          /* Array of flags for visiting links */
+    bool *           visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
@@ -20045,7 +20044,7 @@ link_iterate_old(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    bool *        visited = NULL;          /* Array of flags for visiting links */
+    bool *           visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
@@ -22307,7 +22306,7 @@ timestamps(hid_t fapl)
     H5O_info2_t       oinfo, oinfo2;           /* Object info for groups created */
     H5O_native_info_t ninfo, ninfo2;           /* Native info for groups created */
     char              filename[NAME_BUF_SIZE]; /* File name */
-    bool           track_times;             /* The object timestamp setting */
+    bool              track_times;             /* The object timestamp setting */
 
     /* Print test message */
     TESTING("timestamps on objects")

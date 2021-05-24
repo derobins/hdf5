@@ -1923,7 +1923,7 @@ test_h5s_encode_irregular_hyper(H5F_libver_t low, H5F_libver_t high)
 
     /* Testing with each configuration */
     for (config = CONFIG_8; config <= CONFIG_32; config++) {
-        bool  expected_to_fail  = false; /* Whether H5Sencode2 is expected to fail */
+        bool     expected_to_fail  = false; /* Whether H5Sencode2 is expected to fail */
         uint32_t expected_version  = 0;     /* Expected version for selection info */
         uint32_t expected_enc_size = 0;     /* Expected encoded size for selection info */
 
@@ -2028,7 +2028,7 @@ test_h5s_encode_points(H5F_libver_t low, H5F_libver_t high)
     hsize_t  vdsdims[1]      = {total_particles}; /* Dimension size */
     hsize_t  coord[4];                            /* The point coordinates */
     herr_t   ret;                                 /* Generic return value */
-    bool  expected_to_fail  = false;           /* Expected to fail or not */
+    bool     expected_to_fail  = false;           /* Expected to fail or not */
     uint32_t expected_version  = 0;               /* Expected version for selection info */
     uint8_t  expected_enc_size = 0;               /* Expected encoded size of selection info */
 

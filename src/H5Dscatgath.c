@@ -441,11 +441,11 @@ H5D__scatgath_read(const H5D_io_info_t *io_info, const H5D_type_info_t *type_inf
 {
     void *          buf            = io_info->u.rbuf; /* Local pointer to application buffer */
     H5S_sel_iter_t *mem_iter       = NULL;            /* Memory selection iteration info*/
-    bool         mem_iter_init  = false; /* Memory selection iteration info has been initialized */
+    bool            mem_iter_init  = false; /* Memory selection iteration info has been initialized */
     H5S_sel_iter_t *bkg_iter       = NULL;  /* Background iteration info*/
-    bool         bkg_iter_init  = false; /* Background iteration info has been initialized */
+    bool            bkg_iter_init  = false; /* Background iteration info has been initialized */
     H5S_sel_iter_t *file_iter      = NULL;  /* File selection iteration info*/
-    bool         file_iter_init = false; /* File selection iteration info has been initialized */
+    bool            file_iter_init = false; /* File selection iteration info has been initialized */
     hsize_t         smine_start;            /* Strip mine start loc	*/
     size_t          smine_nelmts;           /* Elements per strip	*/
     herr_t          ret_value = SUCCEED;    /* Return value		*/
@@ -581,11 +581,11 @@ H5D__scatgath_write(const H5D_io_info_t *io_info, const H5D_type_info_t *type_in
 {
     const void *    buf            = io_info->u.wbuf; /* Local pointer to application buffer */
     H5S_sel_iter_t *mem_iter       = NULL;            /* Memory selection iteration info*/
-    bool         mem_iter_init  = false; /* Memory selection iteration info has been initialized */
+    bool            mem_iter_init  = false; /* Memory selection iteration info has been initialized */
     H5S_sel_iter_t *bkg_iter       = NULL;  /* Background iteration info*/
-    bool         bkg_iter_init  = false; /* Background iteration info has been initialized */
+    bool            bkg_iter_init  = false; /* Background iteration info has been initialized */
     H5S_sel_iter_t *file_iter      = NULL;  /* File selection iteration info*/
-    bool         file_iter_init = false; /* File selection iteration info has been initialized */
+    bool            file_iter_init = false; /* File selection iteration info has been initialized */
     hsize_t         smine_start;            /* Strip mine start loc	*/
     size_t          smine_nelmts;           /* Elements per strip	*/
     herr_t          ret_value = SUCCEED;    /* Return value		*/

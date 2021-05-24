@@ -369,7 +369,7 @@ copy_attr(hid_t loc_in, hid_t loc_out, named_dt_t **named_dt_head_p, trav_table_
     H5O_info2_t oinfo; /* object info */
     int         j;
     unsigned    u;
-    bool     is_ref     = 0;
+    bool        is_ref     = 0;
     H5T_class_t type_class = -1;
     int         ret_value  = 0;
 

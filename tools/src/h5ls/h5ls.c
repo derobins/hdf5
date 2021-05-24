@@ -112,15 +112,15 @@ typedef struct {
     const char *    fname;          /* Filename */
     hid_t           fid;            /* File ID */
     hid_t           gid;            /* Group ID */
-    bool         symlink_target; /* Whether this is the target of an symbolic link */
+    bool            symlink_target; /* Whether this is the target of an symbolic link */
     symlink_trav_t *symlink_list;   /* List of visited symbolic links */
     size_t          base_len;       /* Length of base path name, if not root */
     size_t          name_start;     /* # of leading characters to strip off path names on output */
 } iter_t;
 
 /* Command-line switches */
-static int     verbose_g          = 0;     /* lots of extra output */
-static int     width_g            = 80;    /* output width in characters */
+static int  verbose_g          = 0;     /* lots of extra output */
+static int  width_g            = 80;    /* output width in characters */
 static bool address_g          = false; /* print raw data addresses */
 static bool data_g             = false; /* display dataset values? */
 static bool label_g            = false; /* label compound values? */
@@ -153,10 +153,10 @@ static struct dispatch_t {
         dispatch_g[TYPE].list2 = (LIST2);                                                                    \
     }
 
-static void    print_type(h5tools_str_t *buffer, hid_t type, int ind);
-static bool print_int_type(h5tools_str_t *buffer, hid_t type, int ind);
-static bool print_float_type(h5tools_str_t *buffer, hid_t type, int ind);
-static herr_t  visit_obj(hid_t file, const char *oname, iter_t *iter);
+static void   print_type(h5tools_str_t *buffer, hid_t type, int ind);
+static bool   print_int_type(h5tools_str_t *buffer, hid_t type, int ind);
+static bool   print_float_type(h5tools_str_t *buffer, hid_t type, int ind);
+static herr_t visit_obj(hid_t file, const char *oname, iter_t *iter);
 
 /*-------------------------------------------------------------------------
  * Function: usage
@@ -2348,7 +2348,7 @@ list_lnk(const char *name, const H5L_info2_t *linfo, void *_iter)
         case H5L_TYPE_EXTERNAL: {
             const char *filename;
             const char *path;
-            bool     follow_link = follow_symlink_g || follow_elink_g;
+            bool        follow_link = follow_symlink_g || follow_elink_g;
 
             ret = H5tools_get_symlink_info(iter->fid, name, &lnk_info, follow_link);
             /* lnk_info.trg_path is malloced in H5tools_get_symlink_info()
@@ -2652,7 +2652,7 @@ main(int argc, const char *argv[])
     const char *       preferred_driver = NULL;
     int                err_exit         = 0;
     hid_t              fapl_id          = H5P_DEFAULT;
-    bool            custom_vol_fapl  = false;
+    bool               custom_vol_fapl  = false;
     h5tools_vol_info_t vol_info;
 
 #ifdef H5_HAVE_ROS3_VFD

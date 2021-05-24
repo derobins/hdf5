@@ -97,8 +97,7 @@ static size_t H5T__ref_obj_disk_getsize(H5VL_object_t *src_file, const void *src
 static herr_t H5T__ref_obj_disk_read(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
                                      H5VL_object_t *dst_file, void *dst_buf, size_t dst_size);
 
-static herr_t H5T__ref_dsetreg_disk_isnull(const H5VL_object_t *src_file, const void *src_buf,
-                                           bool *isnull);
+static herr_t H5T__ref_dsetreg_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, bool *isnull);
 static size_t H5T__ref_dsetreg_disk_getsize(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
                                             H5VL_object_t *dst_file, bool *dst_copy);
 static herr_t H5T__ref_dsetreg_disk_read(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
@@ -505,7 +504,7 @@ H5T__ref_mem_read(H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf, s
 {
     H5VL_object_t *       vol_obj; /* VOL object for src ref's location */
     const H5R_ref_priv_t *src_ref     = (const H5R_ref_priv_t *)src_buf;
-    bool               files_equal = true; /* Whether src & dst references are in same file */
+    bool                  files_equal = true; /* Whether src & dst references are in same file */
     char                  file_name_buf_static[256] = {'\0'}; /* File name */
     char *                file_name_buf_dyn =
         NULL; /* Pointer to dynamically allocated buffer for file name, if static buffer is too small */
@@ -1176,8 +1175,8 @@ H5T__ref_dsetreg_disk_getsize(H5VL_object_t H5_ATTR_UNUSED *src_file, const void
 
 #ifndef NDEBUG
     {
-        H5F_t * src_f;
-        bool is_native = false; /* Whether the src file is using the native VOL connector */
+        H5F_t *src_f;
+        bool   is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)

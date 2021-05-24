@@ -56,7 +56,7 @@ typedef struct {
     H5F_t *           f;             /* Pointer to file that fractal heap is in */
     H5A_attr_table_t *atable;        /* Pointer to attribute table to build */
     size_t            curr_attr;     /* Current attribute to operate on */
-    bool           bogus_crt_idx; /* Whether bogus creation index values need to be set */
+    bool              bogus_crt_idx; /* Whether bogus creation index values need to be set */
 } H5A_compact_bt_ud_t;
 
 /* Data exchange structure to use when building table of dense attributes for an object */
@@ -69,7 +69,7 @@ typedef struct {
 typedef struct {
     const H5O_ainfo_t *ainfo;          /* dense information    */
     H5F_t *            file;           /* file                 */
-    bool *          recompute_size; /* Flag to indicate if size changed */
+    bool *             recompute_size; /* Flag to indicate if size changed */
     H5O_copy_t *       cpy_info;       /* Information on copying options   */
     const H5O_loc_t *  oloc_src;
     H5O_loc_t *        oloc_dst;
@@ -294,7 +294,7 @@ H5A__create(const H5G_loc_t *loc, const char *attr_name, const H5T_t *type, cons
     H5A_t *  attr = NULL;      /* Attribute created */
     hssize_t snelmts;          /* elements in attribute */
     size_t   nelmts;           /* elements in attribute */
-    bool  exists;           /* Whether attribute exists */
+    bool     exists;           /* Whether attribute exists */
     H5A_t *  ret_value = NULL; /* Return value */
 
     FUNC_ENTER_PACKAGE_TAG(loc->oloc->addr)
@@ -457,7 +457,7 @@ H5A__create_by_name(const H5G_loc_t *loc, const char *obj_name, const char *attr
     H5G_loc_t  obj_loc;           /* Location used to open group */
     H5G_name_t obj_path;          /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;          /* Opened object object location */
-    bool    loc_found = false; /* Entry at 'obj_name' found */
+    bool       loc_found = false; /* Entry at 'obj_name' found */
     H5A_t *    attr      = NULL;  /* Attribute from object header */
     H5A_t *    ret_value = NULL;  /* Return value */
 
@@ -617,7 +617,7 @@ H5A__open_by_idx(const H5G_loc_t *loc, const char *obj_name, H5_index_t idx_type
     H5G_loc_t  obj_loc;           /* Location used to open group */
     H5G_name_t obj_path;          /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;          /* Opened object object location */
-    bool    loc_found = false; /* Entry at 'obj_name' found */
+    bool       loc_found = false; /* Entry at 'obj_name' found */
     H5A_t *    attr      = NULL;  /* Attribute from object header */
     H5A_t *    ret_value = NULL;  /* Return value */
 
@@ -679,7 +679,7 @@ H5A__open_by_name(const H5G_loc_t *loc, const char *obj_name, const char *attr_n
     H5G_loc_t  obj_loc;           /* Location used to open group */
     H5G_name_t obj_path;          /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;          /* Opened object object location */
-    bool    loc_found = false; /* Entry at 'obj_name' found */
+    bool       loc_found = false; /* Entry at 'obj_name' found */
     H5A_t *    attr      = NULL;  /* Attribute from object header */
     H5A_t *    ret_value = NULL;  /* Return value */
 
@@ -852,7 +852,7 @@ herr_t
 H5A__write(H5A_t *attr, const H5T_t *mem_type, const void *buf)
 {
     uint8_t *   tconv_buf   = NULL;       /* datatype conv buffer */
-    bool     tconv_owned = false;      /* Whether the datatype conv buffer is owned by attribute */
+    bool        tconv_owned = false;      /* Whether the datatype conv buffer is owned by attribute */
     uint8_t *   bkg_buf     = NULL;       /* temp conversion buffer */
     hssize_t    snelmts;                  /* elements in attribute */
     size_t      nelmts;                   /* elements in attribute */
@@ -1188,9 +1188,9 @@ done:
 H5A_t *
 H5A__copy(H5A_t *_new_attr, const H5A_t *old_attr)
 {
-    H5A_t * new_attr       = NULL;
-    bool allocated_attr = false; /* Whether the attribute was allocated */
-    H5A_t * ret_value      = NULL;  /* Return value */
+    H5A_t *new_attr       = NULL;
+    bool   allocated_attr = false; /* Whether the attribute was allocated */
+    H5A_t *ret_value      = NULL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -1474,7 +1474,7 @@ H5A__exists_by_name(H5G_loc_t loc, const char *obj_name, const char *attr_name, 
     H5G_loc_t  obj_loc;             /* Location used to open group */
     H5G_name_t obj_path;            /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;            /* Opened object object location */
-    bool    loc_found = false;   /* Entry at 'obj_name' found */
+    bool       loc_found = false;   /* Entry at 'obj_name' found */
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1601,11 +1601,12 @@ H5A__compact_build_table(H5F_t *f, H5O_t *oh, H5_index_t idx_type, H5_iter_order
     atable->nattrs = 0;
 
     /* Set up user data for iteration */
-    udata.f             = f;
-    udata.atable        = atable;
-    udata.curr_attr     = 0;
-    udata.bogus_crt_idx = (bool)(
-        (oh->version == H5O_VERSION_1 || !(oh->flags & H5O_HDR_ATTR_CRT_ORDER_TRACKED)) ? true : false);
+    udata.f         = f;
+    udata.atable    = atable;
+    udata.curr_attr = 0;
+    udata.bogus_crt_idx =
+        (bool)((oh->version == H5O_VERSION_1 || !(oh->flags & H5O_HDR_ATTR_CRT_ORDER_TRACKED)) ? true
+                                                                                               : false);
 
     /* Iterate over existing attributes, checking for attribute with same name */
     op.op_type  = H5O_MESG_OP_LIB;
@@ -2111,10 +2112,9 @@ done:
 herr_t
 H5A__set_version(const H5F_t *f, H5A_t *attr)
 {
-    bool type_shared,
-        space_shared;            /* Flags to indicate that shared messages are used for this attribute */
-    uint8_t version;             /* Message version */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    bool type_shared, space_shared; /* Flags to indicate that shared messages are used for this attribute */
+    uint8_t version;                /* Message version */
+    herr_t  ret_value = SUCCEED;    /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -2610,7 +2610,7 @@ H5A__dense_post_copy_file_all(const H5O_loc_t *src_oloc, const H5O_ainfo_t *ainf
 {
     H5A_dense_file_cp_ud_t udata;                    /* User data for iteration callback */
     H5A_attr_iter_op_t     attr_op;                  /* Attribute operator */
-    bool                recompute_size = false;   /* recompute the size */
+    bool                   recompute_size = false;   /* recompute the size */
     herr_t                 ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -2655,7 +2655,7 @@ H5A__rename_by_name(H5G_loc_t loc, const char *obj_name, const char *old_attr_na
     H5G_loc_t  obj_loc;             /* Location used to open group */
     H5G_name_t obj_path;            /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;            /* Opened object object location */
-    bool    loc_found = false;   /* Entry at 'obj_name' found */
+    bool       loc_found = false;   /* Entry at 'obj_name' found */
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -2735,7 +2735,7 @@ H5A__iterate(const H5G_loc_t *loc, const char *obj_name, H5_index_t idx_type, H5
     H5G_loc_t          obj_loc;                      /* Location used to open group */
     H5G_name_t         obj_path;                     /* Opened object group hier. path */
     H5O_loc_t          obj_oloc;                     /* Opened object object location */
-    bool            loc_found  = false;           /* Entry at 'obj_name' found */
+    bool               loc_found  = false;           /* Entry at 'obj_name' found */
     hid_t              obj_loc_id = H5I_INVALID_HID; /* ID for object located */
     H5A_attr_iter_op_t attr_op;                      /* Attribute operator */
     void *             temp_obj = NULL;
@@ -2843,7 +2843,7 @@ H5A__delete_by_name(const H5G_loc_t *loc, const char *obj_name, const char *attr
     H5G_loc_t  obj_loc;             /* Location used to open group */
     H5G_name_t obj_path;            /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;            /* Opened object object location */
-    bool    loc_found = false;   /* Entry at 'obj_name' found */
+    bool       loc_found = false;   /* Entry at 'obj_name' found */
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -2889,7 +2889,7 @@ H5A__delete_by_idx(const H5G_loc_t *loc, const char *obj_name, H5_index_t idx_ty
     H5G_loc_t  obj_loc;             /* Location used to open group */
     H5G_name_t obj_path;            /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;            /* Opened object object location */
-    bool    loc_found = false;   /* Entry at 'obj_name' found */
+    bool       loc_found = false;   /* Entry at 'obj_name' found */
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

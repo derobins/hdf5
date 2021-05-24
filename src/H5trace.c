@@ -3882,7 +3882,7 @@ H5_trace(const double *returning, const char *func, const char *type, ...)
     H5RS_str_t *      rs = NULL;
     hssize_t          i;
     FILE *            out                 = H5_debug_g.trace;
-    static bool    is_first_invocation = true;
+    static bool       is_first_invocation = true;
     H5_timer_t        function_timer;
     H5_timevals_t     function_times = {0.0, 0.0, 0.0};
     static H5_timer_t running_timer;

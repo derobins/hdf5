@@ -66,7 +66,7 @@ typedef struct {
     H5T_cset_t       cset;             /* Char set for new name */
     const H5G_loc_t *dst_loc;          /* Destination location for moving object */
     unsigned         dst_target_flags; /* Target flags for destination object */
-    bool          copy;             /* TRUE if this is a copy operation */
+    bool             copy;             /* TRUE if this is a copy operation */
     size_t           orig_nlinks; /* The original value for the # of soft / UD links that can be traversed */
 } H5L_trav_mv_t;
 
@@ -74,7 +74,7 @@ typedef struct {
 typedef struct {
     H5F_t *     file; /* Pointer to the file */
     H5O_link_t *lnk;  /* Pointer to link information to insert */
-    bool     copy; /* TRUE if this is a copy operation */
+    bool        copy; /* TRUE if this is a copy operation */
 } H5L_trav_mv2_t;
 
 /* User data for path traversal routine for checking if a link exists */
@@ -1324,8 +1324,8 @@ done:
 htri_t
 H5Lexists(hid_t loc_id, const char *name, hid_t lapl_id)
 {
-    bool exists;           /* Flag to indicate if link exists */
-    htri_t  ret_value = FAIL; /* Return value */
+    bool   exists;           /* Flag to indicate if link exists */
+    htri_t ret_value = FAIL; /* Return value */
 
     FUNC_ENTER_API(FAIL)
     H5TRACE3("t", "i*si", loc_id, name, lapl_id);
@@ -2379,12 +2379,12 @@ H5L__link_cb(H5G_loc_t *grp_loc /*in*/, const char *name, const H5O_link_t H5_AT
              H5G_loc_t *obj_loc, void *_udata /*in,out*/, H5G_own_loc_t *own_loc /*out*/)
 {
     H5L_trav_cr_t *udata  = (H5L_trav_cr_t *)_udata; /* User data passed in */
-    H5G_t *        grp    = NULL;    /* H5G_t for this group, opened to pass to user callback */
-    hid_t          grp_id = FAIL;    /* Id for this group (passed to user callback */
-    H5G_loc_t      temp_loc;         /* For UD callback */
-    bool temp_loc_init = false;   /* Temporary location for UD callback (temp_loc) has been initialized */
-    bool obj_created   = false;   /* Whether an object was created (through a hard link) */
-    herr_t  ret_value     = SUCCEED; /* Return value */
+    H5G_t *        grp    = NULL;   /* H5G_t for this group, opened to pass to user callback */
+    hid_t          grp_id = FAIL;   /* Id for this group (passed to user callback */
+    H5G_loc_t      temp_loc;        /* For UD callback */
+    bool   temp_loc_init = false;   /* Temporary location for UD callback (temp_loc) has been initialized */
+    bool   obj_created   = false;   /* Whether an object was created (through a hard link) */
+    herr_t ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -2630,7 +2630,7 @@ H5L__create_hard(H5G_loc_t *cur_loc, const char *cur_name, const H5G_loc_t *link
     H5G_loc_t  obj_loc;              /* Location of object to link to */
     H5G_name_t path;                 /* obj_loc's path*/
     H5O_loc_t  oloc;                 /* obj_loc's oloc */
-    bool    loc_valid = false;
+    bool       loc_valid = false;
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -2938,7 +2938,7 @@ H5L__get_val_by_idx_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char H5_A
 {
     H5L_trav_gvbi_t *udata = (H5L_trav_gvbi_t *)_udata; /* User data passed in */
     H5O_link_t       fnd_lnk;                           /* Link within group */
-    bool          lnk_copied = false;                /* Whether the link was copied */
+    bool             lnk_copied = false;                /* Whether the link was copied */
     herr_t           ret_value  = SUCCEED;              /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3200,7 +3200,7 @@ H5L__move_dest_cb(H5G_loc_t *grp_loc /*in*/, const char *name, const H5O_link_t 
     H5G_t *         grp    = NULL; /* H5G_t for this group, opened to pass to user callback */
     hid_t           grp_id = FAIL; /* ID for this group (passed to user callback */
     H5G_loc_t       temp_loc;      /* For UD callback */
-    bool         temp_loc_init = false;
+    bool            temp_loc_init = false;
     herr_t          ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3311,7 +3311,7 @@ H5L__move_cb(H5G_loc_t *grp_loc /*in*/, const char *name, const H5O_link_t *lnk,
     H5L_trav_mv_t *udata = (H5L_trav_mv_t *)_udata; /* User data passed in */
     H5L_trav_mv2_t udata_out;                       /* User data for H5L__move_dest_cb traversal */
     char *         orig_name   = NULL;              /* The name of the link in this group */
-    bool        link_copied = false;             /* Has udata_out.lnk been allocated? */
+    bool           link_copied = false;             /* Has udata_out.lnk been allocated? */
     herr_t         ret_value   = SUCCEED;           /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3769,7 +3769,7 @@ H5L__get_info_by_idx_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char H5_
 {
     H5L_trav_gibi_t *udata = (H5L_trav_gibi_t *)_udata; /* User data passed in */
     H5O_link_t       fnd_lnk;                           /* Link within group */
-    bool          lnk_copied = false;                /* Whether the link was copied */
+    bool             lnk_copied = false;                /* Whether the link was copied */
     herr_t           ret_value  = SUCCEED;              /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3939,8 +3939,8 @@ H5L__link_copy_file(H5F_t *dst_file, const H5O_link_t *_src_lnk, const H5O_loc_t
 {
     H5O_link_t        tmp_src_lnk;                   /* Temporary copy of src link, when needed */
     const H5O_link_t *src_lnk            = _src_lnk; /* Source link */
-    bool           dst_lnk_init       = false;    /* Whether the destination link is initialized */
-    bool           expanded_link_open = false;    /* Whether the target location has been opened */
+    bool              dst_lnk_init       = false;    /* Whether the destination link is initialized */
+    bool              expanded_link_open = false;    /* Whether the target location has been opened */
     H5G_loc_t         tmp_src_loc;                   /* Group location holding target object */
     H5G_name_t        tmp_src_path;                  /* Path for target object */
     H5O_loc_t         tmp_src_oloc;                  /* Object location for target object */

@@ -69,8 +69,8 @@ H5I__get_name_test(hid_t id, char *name /*out*/, size_t size, bool *cached)
 {
     H5VL_object_t *vol_obj;                 /* Object of id */
     H5G_loc_t      loc;                     /* Object location */
-    bool        api_ctx_pushed  = false; /* Whether API context pushed */
-    bool        vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    bool           api_ctx_pushed  = false; /* Whether API context pushed */
+    bool           vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
     ssize_t        ret_value       = -1;    /* Return value */
 
     FUNC_ENTER_PACKAGE

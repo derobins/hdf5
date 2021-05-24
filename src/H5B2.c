@@ -1295,7 +1295,7 @@ H5B2_modify(H5B2_t *bt2, void *udata, H5B2_modify_t op, void *op_data)
     {
         H5B2_leaf_t *leaf;                            /* Pointer to leaf node in B-tree */
         unsigned     leaf_flags = H5AC__NO_FLAGS_SET; /* Flags for unprotecting the leaf node */
-        bool      changed    = false;              /* Whether the 'modify' callback changed the record */
+        bool         changed    = false;              /* Whether the 'modify' callback changed the record */
 
         /* Lock B-tree leaf node */
         if (NULL == (leaf = H5B2__protect_leaf(hdr, parent, &curr_node_ptr, false, H5AC__NO_FLAGS_SET)))
@@ -1403,7 +1403,7 @@ herr_t
 H5B2_close(H5B2_t *bt2)
 {
     haddr_t bt2_addr       = HADDR_UNDEF; /* Address of v2 B-tree (for deletion) */
-    bool pending_delete = false;       /* Whether the v2 B-tree is pending deletion */
+    bool    pending_delete = false;       /* Whether the v2 B-tree is pending deletion */
     herr_t  ret_value      = SUCCEED;     /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT

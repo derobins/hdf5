@@ -217,17 +217,17 @@ typedef struct H5CX_t {
 
     /* Cached DXPL properties */
     size_t    max_temp_buf;            /* Maximum temporary buffer size */
-    bool   max_temp_buf_valid;      /* Whether maximum temporary buffer size is valid */
+    bool      max_temp_buf_valid;      /* Whether maximum temporary buffer size is valid */
     void *    tconv_buf;               /* Temporary conversion buffer (H5D_XFER_TCONV_BUF_NAME) */
-    bool   tconv_buf_valid;         /* Whether temporary conversion buffer is valid */
+    bool      tconv_buf_valid;         /* Whether temporary conversion buffer is valid */
     void *    bkgr_buf;                /* Background conversion buffer (H5D_XFER_BKGR_BUF_NAME) */
-    bool   bkgr_buf_valid;          /* Whether background conversion buffer is valid */
+    bool      bkgr_buf_valid;          /* Whether background conversion buffer is valid */
     H5T_bkg_t bkgr_buf_type;           /* Background buffer type (H5D_XFER_BKGR_BUF_NAME) */
-    bool   bkgr_buf_type_valid;     /* Whether background buffer type is valid */
+    bool      bkgr_buf_type_valid;     /* Whether background buffer type is valid */
     double    btree_split_ratio[3];    /* B-tree split ratios */
-    bool   btree_split_ratio_valid; /* Whether B-tree split ratios are valid */
+    bool      btree_split_ratio_valid; /* Whether B-tree split ratios are valid */
     size_t    vec_size;                /* Size of hyperslab vector (H5D_XFER_HYPER_VECTOR_SIZE_NAME) */
-    bool   vec_size_valid;          /* Whether hyperslab vector is valid */
+    bool      vec_size_valid;          /* Whether hyperslab vector is valid */
 #ifdef H5_HAVE_PARALLEL
     H5FD_mpio_xfer_t io_xfer_mode; /* Parallel transfer mode for this request (H5D_XFER_IO_XFER_MODE_NAME) */
     hbool_t          io_xfer_mode_valid;      /* Whether parallel transfer mode is valid */
@@ -243,15 +243,15 @@ typedef struct H5CX_t {
     hbool_t  mpio_chunk_opt_ratio_valid; /* Whether collective chunk ratio is valid */
 #endif                                   /* H5_HAVE_PARALLEL */
     H5Z_EDC_t             err_detect;    /* Error detection info (H5D_XFER_EDC_NAME) */
-    bool               err_detect_valid;     /* Whether error detection info is valid */
+    bool                  err_detect_valid;     /* Whether error detection info is valid */
     H5Z_cb_t              filter_cb;            /* Filter callback function (H5D_XFER_FILTER_CB_NAME) */
-    bool               filter_cb_valid;      /* Whether filter callback function is valid */
+    bool                  filter_cb_valid;      /* Whether filter callback function is valid */
     H5Z_data_xform_t *    data_transform;       /* Data transform info (H5D_XFER_XFORM_NAME) */
-    bool               data_transform_valid; /* Whether data transform info is valid */
+    bool                  data_transform_valid; /* Whether data transform info is valid */
     H5T_vlen_alloc_info_t vl_alloc_info;        /* VL datatype alloc info (H5D_XFER_VLEN_*_NAME) */
-    bool               vl_alloc_info_valid;  /* Whether VL datatype alloc info is valid */
+    bool                  vl_alloc_info_valid;  /* Whether VL datatype alloc info is valid */
     H5T_conv_cb_t         dt_conv_cb;           /* Datatype conversion struct (H5D_XFER_CONV_CB_NAME) */
-    bool               dt_conv_cb_valid;     /* Whether datatype conversion struct is valid */
+    bool                  dt_conv_cb_valid;     /* Whether datatype conversion struct is valid */
 
     /* Return-only DXPL properties to return to application */
 #ifdef H5_HAVE_PARALLEL
@@ -303,37 +303,37 @@ typedef struct H5CX_t {
 
     /* Cached LCPL properties */
     H5T_cset_t encoding;                 /* Link name character encoding */
-    bool    encoding_valid;           /* Whether link name character encoding is valid */
+    bool       encoding_valid;           /* Whether link name character encoding is valid */
     unsigned   intermediate_group;       /* Whether to create intermediate groups */
-    bool    intermediate_group_valid; /* Whether create intermediate group flag is valid */
+    bool       intermediate_group_valid; /* Whether create intermediate group flag is valid */
 
     /* Cached LAPL properties */
-    size_t  nlinks;       /* Number of soft / UD links to traverse (H5L_ACS_NLINKS_NAME) */
-    bool nlinks_valid; /* Whether number of soft / UD links to traverse is valid */
+    size_t nlinks;       /* Number of soft / UD links to traverse (H5L_ACS_NLINKS_NAME) */
+    bool   nlinks_valid; /* Whether number of soft / UD links to traverse is valid */
 
     /* Cached DCPL properties */
-    bool do_min_dset_ohdr;       /* Whether to minimize dataset object header */
-    bool do_min_dset_ohdr_valid; /* Whether minimize dataset object header flag is valid */
+    bool    do_min_dset_ohdr;       /* Whether to minimize dataset object header */
+    bool    do_min_dset_ohdr_valid; /* Whether minimize dataset object header flag is valid */
     uint8_t ohdr_flags;             /* Object header flags */
-    bool ohdr_flags_valid;       /* Whether the object headers flags are valid */
+    bool    ohdr_flags_valid;       /* Whether the object headers flags are valid */
 
     /* Cached DAPL properties */
     const char *extfile_prefix;       /* Prefix for external file                      */
-    bool     extfile_prefix_valid; /* Whether the prefix for external file is valid */
+    bool        extfile_prefix_valid; /* Whether the prefix for external file is valid */
     const char *vds_prefix;           /* Prefix for VDS                                */
-    bool     vds_prefix_valid;     /* Whether the prefix for VDS is valid           */
+    bool        vds_prefix_valid;     /* Whether the prefix for VDS is valid           */
 
     /* Cached FAPL properties */
     H5F_libver_t low_bound;        /* low_bound property for H5Pset_libver_bounds() */
-    bool      low_bound_valid;  /* Whether low_bound property is valid */
+    bool         low_bound_valid;  /* Whether low_bound property is valid */
     H5F_libver_t high_bound;       /* high_bound property for H5Pset_libver_bounds */
-    bool      high_bound_valid; /* Whether high_bound property is valid */
+    bool         high_bound_valid; /* Whether high_bound property is valid */
 
     /* Cached VOL settings */
     H5VL_connector_prop_t vol_connector_prop; /* Property for VOL connector ID & info */
-    bool vol_connector_prop_valid;         /* Whether property for VOL connector ID & info is valid */
-    void *  vol_wrap_ctx;                     /* VOL connector's "wrap context" for creating IDs */
-    bool vol_wrap_ctx_valid; /* Whether VOL connector's "wrap context" for creating IDs is valid */
+    bool  vol_connector_prop_valid;           /* Whether property for VOL connector ID & info is valid */
+    void *vol_wrap_ctx;                       /* VOL connector's "wrap context" for creating IDs */
+    bool  vol_wrap_ctx_valid; /* Whether VOL connector's "wrap context" for creating IDs is valid */
 } H5CX_t;
 
 /* Typedef for nodes on the API context stack */
@@ -397,7 +397,7 @@ typedef struct H5CX_lapl_cache_t {
 /* Typedef for cached default dataset creation property list information */
 /* (Same as the cached DXPL struct, above, except for the default DCPL) */
 typedef struct H5CX_dcpl_cache_t {
-    bool do_min_dset_ohdr; /* Whether to minimize dataset object header */
+    bool    do_min_dset_ohdr; /* Whether to minimize dataset object header */
     uint8_t ohdr_flags;       /* Object header flags */
 } H5CX_dcpl_cache_t;
 

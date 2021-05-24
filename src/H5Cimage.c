@@ -463,7 +463,7 @@ herr_t
 H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t **entry_ptr_ptr,
                                   const H5C_class_t *type, haddr_t addr, void *udata)
 {
-    bool dirty = false;                  /* Flag indicating whether thing was
+    bool dirty = false;                     /* Flag indicating whether thing was
                                              * dirtied during deserialize
                                              */
     size_t             len;                 /* Size of image in file */
@@ -750,7 +750,7 @@ H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t 
 
 #ifndef NDEBUG
             {
-                int     j;
+                int  j;
                 bool found;
 
                 j     = 0;
@@ -1754,7 +1754,7 @@ H5C__decode_cache_image_header(const H5F_t *f, H5C_t *cache_ptr, const uint8_t *
 {
     uint8_t        version;
     uint8_t        flags;
-    bool        have_resize_status = false;
+    bool           have_resize_status = false;
     size_t         actual_header_len;
     size_t         expected_header_len;
     const uint8_t *p;
@@ -1837,10 +1837,10 @@ done:
 static herr_t
 H5C__decode_cache_image_entry(const H5F_t *f, const H5C_t *cache_ptr, const uint8_t **buf, unsigned entry_num)
 {
-    bool            is_dirty     = false;
-    bool            in_lru       = false; /* Only used in assertions */
-    bool            is_fd_parent = false; /* Only used in assertions */
-    bool            is_fd_child  = false; /* Only used in assertions */
+    bool               is_dirty     = false;
+    bool               in_lru       = false; /* Only used in assertions */
+    bool               is_fd_parent = false; /* Only used in assertions */
+    bool               is_fd_child  = false; /* Only used in assertions */
     haddr_t            addr;
     hsize_t            size = 0;
     void *             image_ptr;
@@ -2010,7 +2010,7 @@ H5C__destroy_pf_entry_child_flush_deps(H5C_t *cache_ptr, H5C_cache_entry_t *pf_e
     H5C_cache_entry_t *entry_ptr;
     unsigned           entries_visited   = 0;
     int                fd_children_found = 0;
-    bool            found;
+    bool               found;
     herr_t             ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -2361,7 +2361,7 @@ H5C__prep_for_file_close__compute_fd_heights(const H5C_t *cache_ptr)
     unsigned           entries_removed_from_image      = 0;
     unsigned           external_parent_fd_refs_removed = 0;
     unsigned           external_child_fd_refs_removed  = 0;
-    bool            done                            = false;
+    bool               done                            = false;
     unsigned           u; /* Local index variable */
     herr_t             ret_value = SUCCEED;
 
@@ -2771,7 +2771,7 @@ static herr_t
 H5C__prep_for_file_close__scan_entries(const H5F_t *f, H5C_t *cache_ptr)
 {
     H5C_cache_entry_t *entry_ptr;
-    bool            include_in_image;
+    bool               include_in_image;
     unsigned           entries_visited                  = 0;
     int                lru_rank                         = 1;
     uint32_t           num_entries_tentatively_in_image = 0;
@@ -3221,14 +3221,14 @@ H5C__reconstruct_cache_entry(const H5F_t *f, H5C_t *cache_ptr, const uint8_t **b
 {
     H5C_cache_entry_t *pf_entry_ptr = NULL; /* Reconstructed cache entry */
     uint8_t            flags        = 0;
-    bool            is_dirty     = false;
+    bool               is_dirty     = false;
 #ifndef NDEBUG /* only used in assertions */
     bool in_lru       = false;
     bool is_fd_parent = false;
     bool is_fd_child  = false;
 #endif /* NDEBUG */ /* only used in assertions */
     const uint8_t *    p;
-    bool            file_is_rw;
+    bool               file_is_rw;
     H5C_cache_entry_t *ret_value = NULL; /* Return value */
 
     FUNC_ENTER_STATIC

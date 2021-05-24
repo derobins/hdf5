@@ -2870,7 +2870,7 @@ main(void)
 {
     hid_t    fapl           = -1;    /* File access property list for data files */
     unsigned nerrors        = 0;     /* Cumulative error count */
-    bool  api_ctx_pushed = false; /* Whether API context pushed */
+    bool     api_ctx_pushed = false; /* Whether API context pushed */
 
     h5_reset();
 

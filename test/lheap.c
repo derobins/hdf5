@@ -58,7 +58,7 @@ main(void)
     int         i, j;                   /* miscellaneous counters   */
     char        buf[1024];              /* the value to store       */
     const char *s;                      /* value to read            */
-    bool     api_ctx_pushed = false; /* Whether API context pushed */
+    bool        api_ctx_pushed = false; /* Whether API context pushed */
 
     /* Reset library */
     h5_reset();

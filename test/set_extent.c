@@ -115,7 +115,7 @@ main(void)
     unsigned    chunk_cache; /* Whether to enable chunk caching */
     int         nerrors = 0;
     const char *env_h5_drvr;     /* File Driver value from environment */
-    bool     contig_addr_vfd; /* Whether VFD used has a contigous address space */
+    bool        contig_addr_vfd; /* Whether VFD used has a contigous address space */
 
     env_h5_drvr = HDgetenv("HDF5_DRIVER");
     if (env_h5_drvr == NULL)
@@ -224,8 +224,8 @@ static int
 do_ranks(hid_t fapl, bool new_format)
 {
 
-    bool       do_fillvalue         = false;
-    bool       disable_edge_filters = false;
+    bool          do_fillvalue         = false;
+    bool          disable_edge_filters = false;
     rank4_index_t index_type;
     hid_t         dcpl      = -1;
     int           fillvalue = FILL_VALUE;
@@ -2230,8 +2230,8 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_random_rank4(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters,
-                  bool do_sparse, rank4_index_t index_type)
+test_random_rank4(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters, bool do_sparse,
+                  rank4_index_t index_type)
 {
     hid_t             file        = -1;
     hid_t             dset        = -1;
@@ -2249,8 +2249,8 @@ test_random_rank4(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_f
     static int        rbuf[10][10][10][10];           /* Read buffer */
     static int        wbuf[10][10][10][10];           /* Write buffer */
     static hsize_t    dim_log[RAND4_NITER + 1][4];    /* Log of dataset dimensions */
-    bool           zero_dim = false;               /* Whether a dimension is 0 */
-    bool           writing  = true;                /* Whether we're writing to the dset */
+    bool              zero_dim = false;               /* Whether a dimension is 0 */
+    bool              writing  = true;                /* Whether we're writing to the dset */
     unsigned          scalar_iter;                    /* Iteration to shrink dset to 1x1x1x1 */
     volatile unsigned i, j, k, l, m;                  /* Local indices */
     char              filename[NAME_BUF_SIZE];
@@ -2426,8 +2426,8 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_random_rank4_vl(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters,
-                     bool do_sparse, rank4_index_t index_type)
+test_random_rank4_vl(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters, bool do_sparse,
+                     rank4_index_t index_type)
 {
     hid_t             file        = -1;
     hid_t             dset        = -1;
@@ -2446,8 +2446,8 @@ test_random_rank4_vl(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edg
     static hvl_t      rbuf[10][10][10][10];           /* Read buffer */
     static hvl_t      wbuf[10][10][10][10];           /* Write buffer */
     static hsize_t    dim_log[RAND4_NITER + 1][4];    /* Log of dataset dimensions */
-    bool           zero_dim = false;               /* Whether a dimension is 0 */
-    bool           writing  = true;                /* Whether we're writing to the dset */
+    bool              zero_dim = false;               /* Whether a dimension is 0 */
+    bool              writing  = true;                /* Whether we're writing to the dset */
     hvl_t             fill_value;                     /* Fill value */
     unsigned          scalar_iter;                    /* Iteration to shrink dset to 1x1x1x1 */
     volatile unsigned i, j, k, l, m;                  /* Local indices */

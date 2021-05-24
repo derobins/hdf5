@@ -1014,7 +1014,7 @@ H5Z_ignore_filters(hid_t dcpl_id, const H5T_t *type, const H5S_t *space)
     H5O_pline_t     pline;                   /* Object's I/O pipeline information */
     H5S_class_t     space_class;             /* To check class of space */
     H5T_class_t     type_class;              /* To check if type is VL */
-    bool         bad_for_filters = false; /* Suitable to have filters */
+    bool            bad_for_filters = false; /* Suitable to have filters */
     htri_t          ret_value       = false; /* TRUE for ignoring filters */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1339,7 +1339,7 @@ H5Z_pipeline(const H5O_pline_t *pline, unsigned flags, unsigned *filter_mask /*i
             if ((fclass_idx = H5Z__find_idx(pline->filter[idx].id)) < 0) {
                 H5PL_key_t          key;
                 const H5Z_class2_t *filter_info;
-                bool             issue_error = false;
+                bool                issue_error = false;
 
                 /* Try loading the filter */
                 key.id = (int)(pline->filter[idx].id);
@@ -1607,8 +1607,8 @@ H5Z_delete(H5O_pline_t *pline, H5Z_filter_t filter)
     }
     /* Delete filter */
     else {
-        size_t  idx;           /* Index of filter in pipeline */
-        bool found = false; /* Indicate filter was found in pipeline */
+        size_t idx;           /* Index of filter in pipeline */
+        bool   found = false; /* Indicate filter was found in pipeline */
 
         /* Locate the filter in the pipeline */
         for (idx = 0; idx < pline->nused; idx++)

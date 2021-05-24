@@ -95,8 +95,7 @@ H5_DLL htri_t H5I_is_file_object(hid_t id);
 
 /* ID registration functions */
 H5_DLL hid_t  H5I_register(H5I_type_t type, const void *object, bool app_ref);
-H5_DLL herr_t H5I_register_using_existing_id(H5I_type_t type, void *object, bool app_ref,
-                                             hid_t existing_id);
+H5_DLL herr_t H5I_register_using_existing_id(H5I_type_t type, void *object, bool app_ref, hid_t existing_id);
 
 /* Debugging functions */
 H5_DLL herr_t H5I_dump_ids_for_type(H5I_type_t type);

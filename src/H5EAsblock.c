@@ -177,7 +177,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     H5EA_sblock_t *sblock = NULL;          /* Extensible array super block */
     haddr_t        sblock_addr;            /* Extensible array super block address */
     haddr_t        tmp_addr = HADDR_UNDEF; /* Address value to fill data block addresses with */
-    bool        inserted = false;       /* Whether the header was inserted into cache */
+    bool           inserted = false;       /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);

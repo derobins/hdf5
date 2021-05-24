@@ -115,7 +115,7 @@ herr_t
 H5D__fill(const void *fill, const H5T_t *fill_type, void *buf, const H5T_t *buf_type, const H5S_t *space)
 {
     H5S_sel_iter_t *mem_iter      = NULL;  /* Memory selection iteration info */
-    bool         mem_iter_init = false; /* Whether the memory selection iterator has been initialized */
+    bool            mem_iter_init = false; /* Whether the memory selection iterator has been initialized */
     H5WB_t *        elem_wb       = NULL;  /* Wrapped buffer for element data */
     uint8_t         elem_buf[H5T_ELEM_BUF_SIZE];     /* Buffer for element data */
     H5WB_t *        bkg_elem_wb = NULL;              /* Wrapped buffer for background data */

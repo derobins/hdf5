@@ -78,7 +78,7 @@ typedef struct H5R_ref_priv_t {
     uint32_t encode_size; /* Cached encoding size             */
     int8_t   type;        /* Reference type                   */
     uint8_t  token_size;  /* Cached token size                */
-    bool  app_ref;     /* App ref on loc_id                */
+    bool     app_ref;     /* App ref on loc_id                */
 } H5R_ref_priv_t;
 
 /*****************************/

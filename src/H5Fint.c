@@ -361,7 +361,7 @@ H5F_get_access_plist(H5F_t *f, bool app_ref)
     H5P_genplist_t *      new_plist;                  /* New property list */
     H5P_genplist_t *      old_plist;                  /* Old property list */
     H5FD_driver_prop_t    driver_prop;                /* Property for driver ID & info */
-    bool               driver_prop_copied = false; /* Whether the driver property has been set up */
+    bool                  driver_prop_copied = false; /* Whether the driver property has been set up */
     H5VL_connector_prop_t connector_prop;             /* Property for VOL connector ID & info */
     unsigned              efc_size  = 0;
     hid_t                 ret_value = H5I_INVALID_HID; /* Return value */
@@ -655,7 +655,7 @@ static int
 H5F__get_objects_cb(void *obj_ptr, hid_t obj_id, void *key)
 {
     H5F_olist_t *olist     = (H5F_olist_t *)key; /* Alias for search info */
-    bool      add_obj   = false;
+    bool         add_obj   = false;
     int          ret_value = H5_ITER_CONT; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1783,12 +1783,12 @@ H5F_open(const char *name, unsigned flags, hid_t fcpl_id, hid_t fapl_id)
     size_t             page_buf_size;
     unsigned           page_buf_min_meta_perc = 0;
     unsigned           page_buf_min_raw_perc  = 0;
-    bool            set_flag               = false; /*set the status_flags in the superblock */
-    bool            clear                  = false; /*clear the status_flags         */
-    bool            evict_on_close;                 /* evict on close value from plist  */
-    bool            use_file_locking = true;        /* Using file locks? */
-    bool            ci_load          = false;       /* whether MDC ci load requested */
-    bool            ci_write         = false;       /* whether MDC CI write requested */
+    bool               set_flag               = false; /*set the status_flags in the superblock */
+    bool               clear                  = false; /*clear the status_flags         */
+    bool               evict_on_close;                 /* evict on close value from plist  */
+    bool               use_file_locking = true;        /* Using file locks? */
+    bool               ci_load          = false;       /* whether MDC ci load requested */
+    bool               ci_write         = false;       /* whether MDC CI write requested */
     H5F_t *            ret_value        = NULL;        /*actual return value           */
 
     FUNC_ENTER_NOAPI(NULL)
@@ -2859,7 +2859,7 @@ H5F_addr_encode(const H5F_t *f, uint8_t **pp /*in,out*/, haddr_t addr)
 void
 H5F_addr_decode_len(size_t addr_len, const uint8_t **pp /*in,out*/, haddr_t *addr_p /*out*/)
 {
-    bool  all_zero = true; /* True if address was all zeroes */
+    bool     all_zero = true; /* True if address was all zeroes */
     unsigned u;               /* Local index variable */
 
     /* Use FUNC_ENTER_NOAPI_NOINIT_NOERR here to avoid performance issues */
@@ -3612,8 +3612,8 @@ done:
 herr_t
 H5F__start_swmr_write(H5F_t *f)
 {
-    bool     ci_load        = false;  /* whether MDC ci load requested */
-    bool     ci_write       = false;  /* whether MDC CI write requested */
+    bool        ci_load        = false;  /* whether MDC ci load requested */
+    bool        ci_write       = false;  /* whether MDC CI write requested */
     size_t      grp_dset_count = 0;      /* # of open objects: groups & datasets */
     size_t      nt_attr_count  = 0;      /* # of opened named datatypes  + opened attributes */
     hid_t *     obj_ids        = NULL;   /* List of ids */
@@ -3621,7 +3621,7 @@ H5F__start_swmr_write(H5F_t *f)
     H5O_loc_t * obj_olocs      = NULL;   /* Object location */
     H5G_name_t *obj_paths      = NULL;   /* Group hierarchy path */
     size_t      u;                       /* Local index variable */
-    bool     setup         = false;   /* Boolean flag to indicate whether SWMR setting is enabled */
+    bool        setup         = false;   /* Boolean flag to indicate whether SWMR setting is enabled */
     H5VL_t *    vol_connector = NULL;    /* VOL connector for the file */
     herr_t      ret_value     = SUCCEED; /* Return value */
 
@@ -3837,8 +3837,8 @@ done:
 herr_t
 H5F__format_convert(H5F_t *f)
 {
-    bool mark_dirty = false;   /* Whether to mark the file's superblock dirty */
-    herr_t  ret_value  = SUCCEED; /* Return value */
+    bool   mark_dirty = false;   /* Whether to mark the file's superblock dirty */
+    herr_t ret_value  = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -3905,7 +3905,7 @@ H5F_get_file_id(H5VL_object_t *vol_obj, H5I_type_t obj_type, bool app_ref)
     void *            vol_obj_file = NULL;               /* File object pointer */
     H5VL_loc_params_t loc_params;                        /* Location parameters */
     hid_t             file_id         = H5I_INVALID_HID; /* File ID for object */
-    bool           vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    bool              vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
     hid_t             ret_value       = H5I_INVALID_HID; /* Return value */
 
     FUNC_ENTER_NOAPI(H5I_INVALID_HID)

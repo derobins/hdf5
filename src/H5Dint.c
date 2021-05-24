@@ -558,10 +558,10 @@ done:
 static herr_t
 H5D__init_type(H5F_t *file, const H5D_t *dset, hid_t type_id, const H5T_t *type)
 {
-    htri_t  relocatable;         /* Flag whether the type is relocatable */
-    htri_t  immutable;           /* Flag whether the type is immutable */
-    bool use_at_least_v18;    /* Flag indicating to use at least v18 format versions */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    htri_t relocatable;         /* Flag whether the type is relocatable */
+    htri_t immutable;           /* Flag whether the type is immutable */
+    bool   use_at_least_v18;    /* Flag indicating to use at least v18 format versions */
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -756,7 +756,7 @@ H5D__calculate_minimum_header_size(H5F_t *file, H5D_t *dset, H5O_t *ohdr)
 {
     H5T_t *     type             = NULL;
     H5O_fill_t *fill_prop        = NULL;
-    bool     use_at_least_v18 = false;
+    bool        use_at_least_v18 = false;
     const char  continuation[1]  = ""; /* requred for work-around */
     size_t      get_value        = 0;
     size_t      ret_value        = 0;
@@ -920,10 +920,10 @@ H5D__update_oh_info(H5F_t *file, H5D_t *dset, hid_t dapl_id)
     H5T_t *          type;                        /* Dataset's datatype */
     H5O_fill_t *     fill_prop;                   /* Pointer to dataset's fill value information */
     H5D_fill_value_t fill_status;                 /* Fill value status */
-    bool          fill_changed = false;        /* Flag indicating the fill value was changed */
-    bool          layout_init  = false; /* Flag to indicate that chunk information was initialized */
-    bool          use_at_least_v18;     /* Flag indicating to use at least v18 format versions */
-    bool          use_minimized_header = false;   /* Flag to use minimized dataset object headers */
+    bool             fill_changed = false;        /* Flag indicating the fill value was changed */
+    bool             layout_init  = false; /* Flag to indicate that chunk information was initialized */
+    bool             use_at_least_v18;     /* Flag indicating to use at least v18 format versions */
+    bool             use_minimized_header = false;   /* Flag to use minimized dataset object headers */
     herr_t           ret_value            = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1210,12 +1210,12 @@ H5D__create(H5F_t *file, hid_t type_id, const H5S_t *space, hid_t dcpl_id, hid_t
     H5T_t *         dt            = NULL; /* Datatype for dataset (non-VOL pointer) */
     H5D_t *         new_dset      = NULL;
     H5P_genplist_t *dc_plist      = NULL;  /* New Property list */
-    bool         has_vl_type   = false; /* Flag to indicate a VL-type for dataset */
-    bool         layout_init   = false; /* Flag to indicate that chunk information was initialized */
-    bool         layout_copied = false; /* Flag to indicate that layout message was copied */
-    bool         fill_copied   = false; /* Flag to indicate that fill-value message was copied */
-    bool         pline_copied  = false; /* Flag to indicate that pipeline message was copied */
-    bool         efl_copied    = false; /* Flag to indicate that external file list message was copied */
+    bool            has_vl_type   = false; /* Flag to indicate a VL-type for dataset */
+    bool            layout_init   = false; /* Flag to indicate that chunk information was initialized */
+    bool            layout_copied = false; /* Flag to indicate that layout message was copied */
+    bool            fill_copied   = false; /* Flag to indicate that fill-value message was copied */
+    bool            pline_copied  = false; /* Flag to indicate that pipeline message was copied */
+    bool            efl_copied    = false; /* Flag to indicate that external file list message was copied */
     H5G_loc_t       dset_loc;              /* Dataset location */
     H5D_t *         ret_value = NULL;      /* Return value */
 
@@ -1464,7 +1464,7 @@ H5D__open_name(const H5G_loc_t *loc, const char *name, hid_t dapl_id)
     H5G_name_t path;              /* Dataset group hier. path */
     H5O_loc_t  oloc;              /* Dataset object location */
     H5O_type_t obj_type;          /* Type of object at location */
-    bool    loc_found = false; /* Location at 'name' found */
+    bool       loc_found = false; /* Location at 'name' found */
     H5D_t *    ret_value = NULL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1733,7 +1733,7 @@ H5D__open_oid(H5D_t *dataset, hid_t dapl_id)
     H5O_fill_t *    fill_prop;             /* Pointer to dataset's fill value info */
     unsigned        alloc_time_state;      /* Allocation time state */
     htri_t          msg_exists;            /* Whether a particular type of message exists */
-    bool         layout_init = false;   /* Flag to indicate that chunk information was initialized */
+    bool            layout_init = false;   /* Flag to indicate that chunk information was initialized */
     herr_t          ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC_TAG(dataset->oloc.addr)
@@ -1900,10 +1900,10 @@ done:
 herr_t
 H5D_close(H5D_t *dataset)
 {
-    bool free_failed = false;   /* Set if freeing sub-components failed */
-    bool corked;                /* Whether the dataset is corked or not */
-    bool file_closed = true;    /* H5O_close also closed the file?      */
-    herr_t  ret_value   = SUCCEED; /* Return value                         */
+    bool   free_failed = false;   /* Set if freeing sub-components failed */
+    bool   corked;                /* Whether the dataset is corked or not */
+    bool   file_closed = true;    /* H5O_close also closed the file?      */
+    herr_t ret_value   = SUCCEED; /* Return value                         */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -2274,8 +2274,8 @@ H5D__alloc_storage(const H5D_io_info_t *io_info, H5D_time_alloc_t time_alloc, bo
     const H5D_t * dset = io_info->dset;      /* The dataset object */
     H5F_t *       f    = dset->oloc.file;    /* The dataset's file pointer */
     H5O_layout_t *layout;                    /* The dataset's layout information */
-    bool       must_init_space = false;   /* Flag to indicate that space should be initialized */
-    bool       addr_set        = false;   /* Flag to indicate that the dataset's storage address was set */
+    bool          must_init_space = false;   /* Flag to indicate that space should be initialized */
+    bool          addr_set        = false;   /* Flag to indicate that the dataset's storage address was set */
     herr_t        ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -3305,9 +3305,9 @@ H5D__format_convert(H5D_t *dataset)
     H5D_chk_idx_info_t new_idx_info;                /* Index info for the new layout */
     H5D_chk_idx_info_t idx_info;                    /* Index info for the current layout */
     H5O_layout_t *     newlayout         = NULL;    /* The new layout */
-    bool            init_new_index    = false;   /* Indicate that the new chunk index is initialized */
-    bool            delete_old_layout = false;   /* Indicate that the old layout message is deleted */
-    bool            add_new_layout    = false;   /* Indicate that the new layout message is added */
+    bool               init_new_index    = false;   /* Indicate that the new chunk index is initialized */
+    bool               delete_old_layout = false;   /* Indicate that the old layout message is deleted */
+    bool               add_new_layout    = false;   /* Indicate that the new layout message is added */
     herr_t             ret_value         = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE_TAG(dataset->oloc.addr)
@@ -3946,7 +3946,7 @@ herr_t
 H5D__refresh(hid_t dset_id, H5D_t *dset)
 {
     H5D_virtual_held_file_t *head            = NULL;    /* Pointer to list of files held open */
-    bool                  virt_dsets_held = false;   /* Whether virtual datasets' files are held open */
+    bool                     virt_dsets_held = false;   /* Whether virtual datasets' files are held open */
     herr_t                   ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

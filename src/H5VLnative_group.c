@@ -293,7 +293,7 @@ H5VL__native_group_optional(void H5_ATTR_UNUSED *obj, H5VL_group_optional_t opti
         /* H5Gget_objinfo (deprecated) */
         case H5VL_NATIVE_GROUP_GET_OBJINFO: {
             const H5VL_loc_params_t *loc_params  = HDva_arg(arguments, const H5VL_loc_params_t *);
-            bool                  follow_link = (bool)HDva_arg(arguments, unsigned);
+            bool                     follow_link = (bool)HDva_arg(arguments, unsigned);
             H5G_stat_t *             statbuf     = HDva_arg(arguments, H5G_stat_t *);
             H5G_loc_t                grp_loc;
 

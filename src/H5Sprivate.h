@@ -62,13 +62,13 @@ typedef struct {
                                   *  which there are contiguous regions in the lower
                                   *  dimensions that have been "flattened")
                                   */
-    bool diminfo_valid;       /* Whether the dimension information is valid */
+    bool diminfo_valid;          /* Whether the dimension information is valid */
 
     /* "Flattened" regular hyperslab selection fields */
     H5S_hyper_dim_t diminfo[H5S_MAX_RANK];   /* "Flattened" regular selection information */
     hsize_t         size[H5S_MAX_RANK];      /* "Flattened" dataspace extent information */
     hssize_t        sel_off[H5S_MAX_RANK];   /* "Flattened" selection offset information */
-    bool         flattened[H5S_MAX_RANK]; /* Whether this dimension has been flattened */
+    bool            flattened[H5S_MAX_RANK]; /* Whether this dimension has been flattened */
 
     /* Irregular hyperslab selection fields */
     hsize_t loc_off[H5S_MAX_RANK]; /* Byte offset in buffer, for each dimension's current offset */
@@ -207,7 +207,7 @@ H5_DLL herr_t      H5S_close(H5S_t *ds);
 H5_DLL H5S_class_t H5S_get_simple_extent_type(const H5S_t *ds);
 H5_DLL hssize_t    H5S_get_simple_extent_npoints(const H5S_t *ds);
 H5_DLL hsize_t     H5S_get_npoints_max(const H5S_t *ds);
-H5_DLL bool     H5S_has_extent(const H5S_t *ds);
+H5_DLL bool        H5S_has_extent(const H5S_t *ds);
 H5_DLL int         H5S_get_simple_extent_ndims(const H5S_t *ds);
 H5_DLL int    H5S_get_simple_extent_dims(const H5S_t *ds, hsize_t dims[] /*out*/, hsize_t max_dims[] /*out*/);
 H5_DLL herr_t H5S_write(H5F_t *f, struct H5O_t *oh, unsigned update_flags, H5S_t *ds);
@@ -283,8 +283,7 @@ H5_DLL herr_t  H5S_hyper_add_span_element(H5S_t *space, unsigned rank, const hsi
 H5_DLL htri_t  H5S_hyper_normalize_offset(H5S_t *space, hssize_t *old_offset);
 H5_DLL herr_t  H5S_hyper_denormalize_offset(H5S_t *space, const hssize_t *old_offset);
 H5_DLL herr_t  H5S_hyper_clip_unlim(H5S_t *space, hsize_t clip_size);
-H5_DLL hsize_t H5S_hyper_get_clip_extent(const H5S_t *clip_space, const H5S_t *match_space,
-                                         bool incl_trail);
+H5_DLL hsize_t H5S_hyper_get_clip_extent(const H5S_t *clip_space, const H5S_t *match_space, bool incl_trail);
 H5_DLL hsize_t H5S_hyper_get_clip_extent_match(const H5S_t *clip_space, const H5S_t *match_space,
                                                hsize_t match_clip_size, bool incl_trail);
 H5_DLL H5S_t * H5S_hyper_get_unlim_block(const H5S_t *space, hsize_t block_index);

@@ -85,7 +85,7 @@ typedef struct H5FD_stdio_t {
     haddr_t            eof;          /* end of file; current file size   */
     haddr_t            pos;          /* current file I/O position        */
     unsigned           write_access; /* Flag to indicate the file was opened with write access */
-    bool            ignore_disabled_file_locks;
+    bool               ignore_disabled_file_locks;
     H5FD_stdio_file_op op; /* last operation */
 #ifndef H5_HAVE_WIN32_API
     /* On most systems the combination of device and i-node number uniquely

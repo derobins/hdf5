@@ -50,7 +50,7 @@ struct H5RS_str_t {
     char *   end;     /* Pointer to terminating NUL character at the end of the string */
     size_t   len;     /* Current length of the string */
     size_t   max;     /* Size of allocated buffer */
-    bool  wrapped; /* Indicates that the string to be ref-counted is not copied */
+    bool     wrapped; /* Indicates that the string to be ref-counted is not copied */
     unsigned n;       /* Reference count of number of pointers sharing string */
 };
 

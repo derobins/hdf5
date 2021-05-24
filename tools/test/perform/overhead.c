@@ -347,11 +347,11 @@ error:
 int
 main(int argc, char *argv[])
 {
-    hid_t   xfer;
-    fill_t  fill_style = FILL_ALL;
-    bool use_cache  = false;
-    double  splits[3];
-    int     i, j, nerrors = 0;
+    hid_t  xfer;
+    fill_t fill_style = FILL_ALL;
+    bool   use_cache  = false;
+    double splits[3];
+    int    i, j, nerrors = 0;
 
     /* Default split ratios */
     H5Eset_auto2(H5E_DEFAULT, display_error_cb, NULL);

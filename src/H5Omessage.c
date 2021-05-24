@@ -55,7 +55,7 @@ typedef struct {
     unsigned       nfailed;  /* # of failed message removals */
     H5O_operator_t op;       /* Callback routine for removal operations */
     void *         op_data;  /* Callback data for removal operations */
-    bool        adj_link; /* Whether to adjust links when removing messages */
+    bool           adj_link; /* Whether to adjust links when removing messages */
 } H5O_iter_rm_t;
 
 /********************/
@@ -1879,7 +1879,7 @@ H5O__copy_mesg(H5F_t *f, H5O_t *oh, size_t idx, const H5O_msg_class_t *type, con
 {
     H5O_chunk_proxy_t *chk_proxy   = NULL;           /* Chunk that message is in */
     H5O_mesg_t *       idx_msg     = &oh->mesg[idx]; /* Pointer to message to modify */
-    bool            chk_dirtied = false;          /* Flag for unprotecting chunk */
+    bool               chk_dirtied = false;          /* Flag for unprotecting chunk */
     herr_t             ret_value   = SUCCEED;        /* Return value */
 
     FUNC_ENTER_STATIC

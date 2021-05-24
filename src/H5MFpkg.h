@@ -146,8 +146,8 @@ typedef struct H5MF_sect_ud_t {
     /* Down */
     H5F_t *    f;                     /* Pointer to file to operate on */
     H5FD_mem_t alloc_type;            /* Type of memory being allocated */
-    bool    allow_sect_absorb;     /* Whether sections are allowed to absorb a block aggregator */
-    bool    allow_eoa_shrink_only; /* Whether shrinking eoa is allowed only for the section */
+    bool       allow_sect_absorb;     /* Whether sections are allowed to absorb a block aggregator */
+    bool       allow_eoa_shrink_only; /* Whether shrinking eoa is allowed only for the section */
 
     /* Up */
     H5MF_shrink_type_t shrink; /* Type of shrink operation to perform */

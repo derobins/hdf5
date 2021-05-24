@@ -86,7 +86,7 @@ herr_t
 H5B2__create_leaf(H5B2_hdr_t *hdr, void *parent, H5B2_node_ptr_t *node_ptr)
 {
     H5B2_leaf_t *leaf      = NULL;    /* Pointer to new leaf node created */
-    bool      inserted  = false;   /* Whether the leaf node was inserted into cache */
+    bool         inserted  = false;   /* Whether the leaf node was inserted into cache */
     herr_t       ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

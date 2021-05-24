@@ -67,11 +67,11 @@ copy_objects(const char *fnamein, const char *fnameout, pack_opt_t *options)
     trav_table_t *        travt   = NULL;
     hsize_t               ub_size = 0;     /* size of user block */
     H5F_fspace_strategy_t set_strategy;    /* Strategy to be set in outupt file */
-    bool               set_persist;     /* Persist free-space status to be set in output file */
+    bool                  set_persist;     /* Persist free-space status to be set in output file */
     hsize_t               set_threshold;   /* Free-space section threshold to be set in output file */
     hsize_t               set_pagesize;    /* File space page size to be set in output file */
     H5F_fspace_strategy_t in_strategy;     /* Strategy from input file */
-    bool               in_persist;      /* Persist free-space status from input file */
+    bool                  in_persist;      /* Persist free-space status from input file */
     hsize_t               in_threshold;    /* Free-space section threshold from input file */
     hsize_t               in_pagesize;     /* File space page size from input file */
     unsigned              crt_order_flags; /* group creation order flag */
@@ -648,7 +648,7 @@ do_copy_objects(hid_t fidin, hid_t fidout, trav_table_t *travt, pack_opt_t *opti
     int                ifil;
     int                is_ref = 0;
     htri_t             is_named;
-    bool            limit_maxdims;
+    bool               limit_maxdims;
     hsize_t            size_dset;
     int                ret_value = 0;
 

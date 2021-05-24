@@ -338,7 +338,7 @@ H5A__dense_open(H5F_t *f, const H5O_ainfo_t *ainfo, const char *name)
     H5HF_t *            shared_fheap = NULL; /* Fractal heap handle for shared header messages */
     H5B2_t *            bt2_name     = NULL; /* v2 B-tree handle for name index */
     htri_t              attr_sharable;       /* Flag indicating attributes are sharable */
-    bool             attr_exists;         /* Attribute exists in v2 B-tree */
+    bool                attr_exists;         /* Attribute exists in v2 B-tree */
     H5A_t *             ret_value = NULL;    /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -867,7 +867,7 @@ H5A__dense_rename(H5F_t *f, const H5O_ainfo_t *ainfo, const char *old_name, cons
     H5A_t *             attr_copy    = NULL; /* Copy of attribute to rename */
     htri_t              attr_sharable;       /* Flag indicating attributes are sharable */
     htri_t              shared_mesg;         /* Should this message be stored in the Shared Message table? */
-    bool             attr_exists;         /* Attribute exists in v2 B-tree */
+    bool                attr_exists;         /* Attribute exists in v2 B-tree */
     herr_t              ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1425,8 +1425,8 @@ H5A__dense_remove_by_idx_bt2_cb(const void *_record, void *_bt2_udata)
     H5A_bt2_ud_rmbi_t *             bt2_udata = (H5A_bt2_ud_rmbi_t *)_bt2_udata; /* User data for callback */
     H5A_fh_ud_cp_t                  fh_udata; /* User data for fractal heap 'op' callback */
     H5O_shared_t                    sh_loc;   /* Shared message info for attribute */
-    bool use_sh_loc;          /* Whether to use the attribute's shared location or the separate one */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    bool   use_sh_loc;          /* Whether to use the attribute's shared location or the separate one */
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 

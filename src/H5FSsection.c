@@ -371,8 +371,7 @@ H5FS__sinfo_unlock(H5F_t *f, H5FS_t *fspace, bool modified)
 
     /* Check if section info lock count dropped to zero */
     if (fspace->sinfo_lock_count == 0) {
-        bool release_sinfo_space =
-            false; /* Flag to indicate section info space in file should be released */
+        bool release_sinfo_space = false; /* Flag to indicate section info space in file should be released */
         bool closing_or_flushing = f->shared->closing; /* Is closing or flushing in progress */
 
         /* Check whether cache-flush is in progress if closing is not. */
@@ -906,8 +905,8 @@ done:
 herr_t
 H5FS_sect_remove(H5F_t *f, H5FS_t *fspace, H5FS_section_info_t *sect)
 {
-    bool sinfo_valid = false;   /* Whether the section info is valid */
-    herr_t  ret_value   = SUCCEED; /* Return value */
+    bool   sinfo_valid = false;   /* Whether the section info is valid */
+    herr_t ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT
 
@@ -949,7 +948,7 @@ static herr_t
 H5FS__sect_link_size(H5FS_sinfo_t *sinfo, const H5FS_section_class_t *cls, H5FS_section_info_t *sect)
 {
     H5FS_node_t *fspace_node       = NULL;  /* Pointer to free space node of the correct size */
-    bool      fspace_node_alloc = false; /* Whether the free space node was allocated */
+    bool         fspace_node_alloc = false; /* Whether the free space node was allocated */
     unsigned     bin;                       /* Bin to put the free space section in */
     herr_t       ret_value = SUCCEED;       /* Return value */
 
@@ -1138,8 +1137,8 @@ static herr_t
 H5FS__sect_merge(H5FS_t *fspace, H5FS_section_info_t **sect, void *op_data)
 {
     H5FS_section_class_t *sect_cls;            /* Section's class */
-    bool               modified;            /* Flag to indicate merge or shrink occurred */
-    bool               remove_sect = false; /* Whether a section should be removed before shrinking */
+    bool                  modified;            /* Flag to indicate merge or shrink occurred */
+    bool                  remove_sect = false; /* Whether a section should be removed before shrinking */
     htri_t                status;              /* Status value */
     herr_t                ret_value = SUCCEED; /* Return value */
 
@@ -1154,11 +1153,11 @@ H5FS__sect_merge(H5FS_t *fspace, H5FS_section_info_t **sect, void *op_data)
     /* Loop until no more merging */
     if (fspace->sinfo->merge_list) {
         do {
-            H5SL_node_t *less_sect_node;             /* Skip list node for section less than new section */
-            H5SL_node_t *greater_sect_node = NULL;   /* Skip list node for section greater than new section */
-            H5FS_section_info_t * tmp_sect;          /* Temporary free space section */
-            H5FS_section_class_t *tmp_sect_cls;      /* Temporary section's class */
-            bool greater_sect_node_valid = false; /* Indicate if 'greater than' section node is valid */
+            H5SL_node_t *less_sect_node;           /* Skip list node for section less than new section */
+            H5SL_node_t *greater_sect_node = NULL; /* Skip list node for section greater than new section */
+            H5FS_section_info_t * tmp_sect;        /* Temporary free space section */
+            H5FS_section_class_t *tmp_sect_cls;    /* Temporary section's class */
+            bool greater_sect_node_valid = false;  /* Indicate if 'greater than' section node is valid */
 
             /* Reset 'modification occurred' flag */
             modified = false;
@@ -1336,8 +1335,8 @@ herr_t
 H5FS_sect_add(H5F_t *f, H5FS_t *fspace, H5FS_section_info_t *sect, unsigned flags, void *op_data)
 {
     H5FS_section_class_t *cls;                      /* Section's class */
-    bool               sinfo_valid    = false;   /* Whether the section info is valid */
-    bool               sinfo_modified = false;   /* Whether the section info was modified */
+    bool                  sinfo_valid    = false;   /* Whether the section info is valid */
+    bool                  sinfo_modified = false;   /* Whether the section info was modified */
     herr_t                ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1422,9 +1421,9 @@ htri_t
 H5FS_sect_try_extend(H5F_t *f, H5FS_t *fspace, haddr_t addr, hsize_t size, hsize_t extra_requested,
                      unsigned flags, void *op_data)
 {
-    bool sinfo_valid    = false; /* Whether the section info is valid */
-    bool sinfo_modified = false; /* Whether the section info was modified */
-    htri_t  ret_value      = false; /* Return value */
+    bool   sinfo_valid    = false; /* Whether the section info is valid */
+    bool   sinfo_modified = false; /* Whether the section info was modified */
+    htri_t ret_value      = false; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -1561,8 +1560,8 @@ done:
 htri_t
 H5FS_sect_try_merge(H5F_t *f, H5FS_t *fspace, H5FS_section_info_t *sect, unsigned flags, void *op_data)
 {
-    bool sinfo_valid    = false; /* Whether the section info is valid */
-    bool sinfo_modified = false; /* Whether the section info was modified */
+    bool    sinfo_valid    = false; /* Whether the section info is valid */
+    bool    sinfo_modified = false; /* Whether the section info was modified */
     hsize_t saved_fs_size;          /* Copy of the free-space section size */
     htri_t  ret_value = false;      /* Return value */
 
@@ -1778,9 +1777,9 @@ done:
 htri_t
 H5FS_sect_find(H5F_t *f, H5FS_t *fspace, hsize_t request, H5FS_section_info_t **node)
 {
-    bool sinfo_valid    = false; /* Whether the section info is valid */
-    bool sinfo_modified = false; /* Whether the section info was modified */
-    htri_t  ret_value      = false; /* Return value */
+    bool   sinfo_valid    = false; /* Whether the section info is valid */
+    bool   sinfo_modified = false; /* Whether the section info was modified */
+    htri_t ret_value      = false; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -1906,7 +1905,7 @@ herr_t
 H5FS_sect_iterate(H5F_t *f, H5FS_t *fspace, H5FS_operator_t op, void *op_data)
 {
     H5FS_iter_ud_t udata;                 /* User data for callbacks */
-    bool        sinfo_valid = false;   /* Whether the section info is valid */
+    bool           sinfo_valid = false;   /* Whether the section info is valid */
     herr_t         ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT
@@ -1996,7 +1995,7 @@ H5FS_sect_change_class(H5F_t *f, H5FS_t *fspace, H5FS_section_info_t *sect, uint
     const H5FS_section_class_t *old_cls;               /* Old class of section */
     const H5FS_section_class_t *new_cls;               /* New class of section */
     unsigned                    old_class;             /* Old class ID of section */
-    bool                     sinfo_valid = false;   /* Whether the section info is valid */
+    bool                        sinfo_valid = false;   /* Whether the section info is valid */
     herr_t                      ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT
@@ -2021,7 +2020,7 @@ H5FS_sect_change_class(H5F_t *f, H5FS_t *fspace, H5FS_section_info_t *sect, uint
     if ((old_cls->flags & H5FS_CLS_GHOST_OBJ) != (new_cls->flags & H5FS_CLS_GHOST_OBJ)) {
         H5FS_node_t *fspace_node; /* Free list size node */
         unsigned     bin;         /* Bin to put the free space section in */
-        bool      to_ghost;    /* Flag if the section is changing to a ghost section */
+        bool         to_ghost;    /* Flag if the section is changing to a ghost section */
 
         /* Determine if this section is becoming a ghost or is becoming serializable */
         if (old_cls->flags & H5FS_CLS_GHOST_OBJ)
@@ -2290,9 +2289,9 @@ H5FS__sect_assert(const H5FS_t *fspace)
 htri_t
 H5FS_sect_try_shrink_eoa(H5F_t *f, H5FS_t *fspace, void *op_data)
 {
-    bool sinfo_valid     = false; /* Whether the section info is valid */
-    bool section_removed = false; /* Whether a section was removed */
-    htri_t  ret_value       = false; /* Return value */
+    bool   sinfo_valid     = false; /* Whether the section info is valid */
+    bool   section_removed = false; /* Whether a section was removed */
+    htri_t ret_value       = false; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 

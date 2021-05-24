@@ -173,9 +173,9 @@ struct H5T_path_t {
     H5T_t *         src;               /*source datatype 		     */
     H5T_t *         dst;               /*destination datatype		     */
     H5T_conv_func_t conv;              /* Conversion function  */
-    bool         is_hard;           /*is it a hard function?	     */
-    bool         is_noop;           /*is it the noop conversion?	     */
-    bool         are_compounds;     /*are source and dest both compounds?*/
+    bool            is_hard;           /*is it a hard function?	     */
+    bool            is_noop;           /*is it the noop conversion?	     */
+    bool            are_compounds;     /*are source and dest both compounds?*/
     H5T_stats_t     stats;             /*statistics for the conversion	     */
     H5T_cdata_t     cdata;             /*data for this function	     */
 };
@@ -229,7 +229,7 @@ typedef struct H5T_atomic_t {
         struct {
             H5R_type_t             rtype;   /* type of reference stored             */
             unsigned               version; /* version of encoded reference         */
-            bool                opaque;  /* opaque reference type                */
+            bool                   opaque;  /* opaque reference type                */
             H5T_loc_t              loc;     /* location of data in buffer           */
             H5VL_object_t *        file;    /* file VOL pointer (if data is on disk) */
             const H5T_ref_class_t *cls;     /* Pointer to ref class callbacks */
@@ -257,7 +257,7 @@ typedef struct H5T_compnd_t {
     unsigned     nalloc;    /*num entries allocated in MEMB array*/
     unsigned     nmembs;    /*number of members defined in struct*/
     H5T_sort_t   sorted;    /*how are members sorted?	     */
-    bool      packed;    /*are members packed together?       */
+    bool         packed;    /*are members packed together?       */
     H5T_cmemb_t *memb;      /*array of struct members	     */
     size_t       memb_size; /*total of all member sizes          */
 } H5T_compnd_t;
@@ -338,8 +338,7 @@ typedef struct H5T_shared_t {
     H5T_class_t type;     /*which class of type is this?		     */
     size_t      size;     /*total size of an instance of this type     */
     unsigned    version;  /* Version of object header message to encode this object with */
-    bool
-                   force_conv; /* Set if this type always needs to be converted and H5T__conv_noop cannot be called */
+    bool force_conv; /* Set if this type always needs to be converted and H5T__conv_noop cannot be called */
     struct H5T_t * parent;        /*parent type for derived datatypes	     */
     H5VL_object_t *owned_vol_obj; /* Vol object owned by this type (free on close) */
     union {
@@ -854,8 +853,8 @@ H5_DLL uint64_t H5T__bit_get_d(uint8_t *buf, size_t offset, size_t size);
 H5_DLL void     H5T__bit_set_d(uint8_t *buf, size_t offset, size_t size, uint64_t val);
 H5_DLL ssize_t  H5T__bit_find(const uint8_t *buf, size_t offset, size_t size, H5T_sdir_t direction,
                               bool value);
-H5_DLL bool  H5T__bit_inc(uint8_t *buf, size_t start, size_t size);
-H5_DLL bool  H5T__bit_dec(uint8_t *buf, size_t start, size_t size);
+H5_DLL bool     H5T__bit_inc(uint8_t *buf, size_t start, size_t size);
+H5_DLL bool     H5T__bit_dec(uint8_t *buf, size_t start, size_t size);
 H5_DLL void     H5T__bit_neg(uint8_t *buf, size_t start, size_t size);
 
 /* VL functions */

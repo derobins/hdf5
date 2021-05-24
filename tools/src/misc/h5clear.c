@@ -35,10 +35,10 @@
 #define DEFAULT_INCREMENT 1024 * 1024
 
 static char *  fname_g            = NULL;
-static bool clear_status_flags = false;
-static bool remove_cache_image = false;
-static bool print_filesize     = false;
-static bool increment_eoa_eof  = false;
+static bool    clear_status_flags = false;
+static bool    remove_cache_image = false;
+static bool    print_filesize     = false;
+static bool    increment_eoa_eof  = false;
 static hsize_t increment          = DEFAULT_INCREMENT;
 
 /*

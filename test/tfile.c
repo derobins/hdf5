@@ -3932,7 +3932,7 @@ test_filespace_info(const char *env_h5_drvr)
     hid_t                 fapl, new_fapl;         /* File access property lists */
     hid_t                 fcpl, fcpl1, fcpl2;     /* File creation property lists */
     H5F_fspace_strategy_t strategy;               /* File space strategy */
-    bool               persist;                /* Persist free-space or not */
+    bool                  persist;                /* Persist free-space or not */
     hsize_t               threshold;              /* Free-space section threshold */
     unsigned              new_format;             /* New or old format */
     H5F_fspace_strategy_t fs_strategy;            /* File space strategy--iteration variable */
@@ -3940,7 +3940,7 @@ test_filespace_info(const char *env_h5_drvr)
     hsize_t               fs_threshold;           /* Free-space section threshold--iteration variable */
     hsize_t               fsp_size;               /* File space page size */
     char                  filename[FILENAME_LEN]; /* Filename to use */
-    bool               contig_addr_vfd;        /* Whether VFD used has a contigous address space */
+    bool                  contig_addr_vfd;        /* Whether VFD used has a contigous address space */
     herr_t                ret;                    /* Return value    */
 
     /* Output message about test being performed */
@@ -4288,7 +4288,7 @@ set_multi_split(hid_t fapl, hsize_t pagesize, bool split)
     hid_t      memb_fapl_arr[H5FD_MEM_NTYPES];
     char *     memb_name[H5FD_MEM_NTYPES];
     haddr_t    memb_addr[H5FD_MEM_NTYPES];
-    bool    relax;
+    bool       relax;
     H5FD_mem_t mt;
 
     HDassert(split);
@@ -4351,7 +4351,7 @@ test_file_freespace(const char *env_h5_drvr)
     char           filename[FILENAME_LEN]; /* Filename to use */
     char           name[32];               /* Dataset name */
     unsigned       new_format;             /* To use old or new format */
-    bool        split_vfd, multi_vfd;   /* Indicate multi/split driver */
+    bool           split_vfd, multi_vfd;   /* Indicate multi/split driver */
     hsize_t        expected_freespace;     /* Freespace expected */
     hsize_t        expected_fs_del;        /* Freespace expected after delete */
     herr_t         ret;                    /* Return value */
@@ -4526,7 +4526,7 @@ test_sects_freespace(const char *env_h5_drvr, bool new_format)
     hsize_t         dims[1];                /* Dimension sizes */
     unsigned        u;                      /* Local index variable */
     H5FD_mem_t      type;
-    bool         split_vfd = false, multi_vfd = false;
+    bool            split_vfd = false, multi_vfd = false;
     herr_t          ret; /* Return value */
 
     /* Output message about test being performed */
@@ -4764,7 +4764,7 @@ test_filespace_compatible(void)
     ssize_t               nread;                        /* Number of bytes read in */
     unsigned              i, j;                         /* Local index variable */
     hssize_t              free_space;                   /* Amount of free-space in the file */
-    bool               persist;                      /* Persist free-space or not */
+    bool                  persist;                      /* Persist free-space or not */
     hsize_t               threshold;                    /* Free-space section threshold */
     H5F_fspace_strategy_t strategy;                     /* File space handling strategy */
     herr_t                ret;                          /* Return value */
@@ -4889,7 +4889,7 @@ test_filespace_1_10_0_compatible(void)
     hid_t                 fid = -1;  /* File id */
     hid_t                 did = -1;  /* Dataset id */
     hid_t                 fcpl;      /* File creation property list */
-    bool               persist;   /* Persist free-space or not */
+    bool                  persist;   /* Persist free-space or not */
     hsize_t               threshold; /* Free-space section threshold */
     H5F_fspace_strategy_t strategy;  /* File space handling strategy */
     int                   wbuf[24];  /* Buffer for dataset data */
@@ -5204,7 +5204,7 @@ test_filespace_round_compatible(void)
     hid_t                 fcpl = -1;  /* File creation property list ID */
     unsigned              j;          /* Local index variable */
     H5F_fspace_strategy_t strategy;   /* File space strategy */
-    bool               persist;    /* Persist free-space or not */
+    bool                  persist;    /* Persist free-space or not */
     hsize_t               threshold;  /* Free-space section threshold */
     hssize_t              free_space; /* Amount of free space in the file */
     int                   status;     /* Status from copying the existing file */
@@ -5813,7 +5813,7 @@ test_libver_bounds_super_create(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t n
     hid_t        fid = H5I_INVALID_HID; /* File ID */
     H5F_t *      f   = NULL;            /* Internal file pointer */
     H5F_libver_t low, high;             /* Low and high bounds */
-    bool      ok;                    /* The result is ok or not */
+    bool         ok;                    /* The result is ok or not */
     herr_t       ret;                   /* The return value */
 
     /* Try to create the file */
@@ -7623,7 +7623,7 @@ test_min_dset_ohdr(void)
     char       filename[FILENAME_LEN] = "";
     hid_t      file_id                = -1;
     hid_t      file2_id               = -1;
-    bool    minimize;
+    bool       minimize;
     herr_t     ret;
 
     MESSAGE(5, ("Testing dataset object header minimization\n"));

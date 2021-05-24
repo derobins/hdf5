@@ -80,8 +80,8 @@ static void usage(void);
  *-------------------------------------------------------------------------
  */
 static int
-gen_skeleton(const char *filename, bool verbose, bool swmr_write, int comp_level,
-             const char *index_type, unsigned random_seed)
+gen_skeleton(const char *filename, bool verbose, bool swmr_write, int comp_level, const char *index_type,
+             unsigned random_seed)
 {
     hid_t   fid;                                /* File ID for new HDF5 file */
     hid_t   fcpl;                               /* File creation property list */
@@ -183,9 +183,9 @@ gen_skeleton(const char *filename, bool verbose, bool swmr_write, int comp_level
     /* Create the datasets */
     for (u = 0; u < NLEVELS; u++)
         for (v = 0; v < symbol_count[u]; v++) {
-            hid_t   dsid; /* Dataset ID */
-            char    name_buf[64];
-            bool move_dataspace_message =
+            hid_t dsid; /* Dataset ID */
+            char  name_buf[64];
+            bool  move_dataspace_message =
                 false; /* Whether to move the dataspace message out of object header chunk #0 */
 
             generate_name(name_buf, u, v);
@@ -261,10 +261,10 @@ int
 main(int argc, const char *argv[])
 {
     int         comp_level  = -1;    /* Compression level (-1 is no compression) */
-    bool     verbose     = true;  /* Whether to emit some informational messages */
-    bool     swmr_write  = false; /* Whether to create file with SWMR_WRITE access */
+    bool        verbose     = true;  /* Whether to emit some informational messages */
+    bool        swmr_write  = false; /* Whether to create file with SWMR_WRITE access */
     const char *index_type  = "b1";  /* Chunk index type */
-    bool     use_seed    = false; /* Set to TRUE if a seed was set on the command line */
+    bool        use_seed    = false; /* Set to TRUE if a seed was set on the command line */
     unsigned    random_seed = 0;     /* Random # seed */
     unsigned    u;                   /* Local index variables */
     int         temp;

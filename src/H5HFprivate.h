@@ -58,7 +58,7 @@ typedef struct H5HF_dtable_cparam_t {
 /* Fractal heap creation parameters */
 typedef struct H5HF_create_t {
     H5HF_dtable_cparam_t managed;          /* Mapped object doubling-table creation parameters */
-    bool              checksum_dblocks; /* Whether the direct blocks should be checksummed */
+    bool                 checksum_dblocks; /* Whether the direct blocks should be checksummed */
     uint32_t             max_man_size;     /* Max. size of object to manage in doubling table */
                                            /* (i.e.  min. size of object to store standalone) */
     uint16_t id_len;                       /* Length of IDs to use for heap objects */
@@ -128,13 +128,12 @@ H5_DLL herr_t H5HF_sects_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent,
 #endif /* H5HF_DEBUGGING */
 
 /* Debugging routines for dumping file structures */
-H5_DLL void   H5HF_hdr_print(const H5HF_hdr_t *hdr, bool dump_internal, FILE *stream, int indent,
-                             int fwidth);
+H5_DLL void   H5HF_hdr_print(const H5HF_hdr_t *hdr, bool dump_internal, FILE *stream, int indent, int fwidth);
 H5_DLL herr_t H5HF_hdr_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent, int fwidth);
 H5_DLL herr_t H5HF_dblock_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent, int fwidth,
                                 haddr_t hdr_addr, size_t nrec);
-H5_DLL void H5HF_iblock_print(const H5HF_indirect_t *iblock, bool dump_internal, FILE *stream, int indent,
-                              int fwidth);
+H5_DLL void   H5HF_iblock_print(const H5HF_indirect_t *iblock, bool dump_internal, FILE *stream, int indent,
+                                int fwidth);
 H5_DLL herr_t H5HF_iblock_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent, int fwidth,
                                 haddr_t hdr_addr, unsigned nrows);
 

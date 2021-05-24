@@ -318,7 +318,7 @@ H5VL__native_link_specific(void *obj, const H5VL_loc_params_t *loc_params, H5VL_
 
     switch (specific_type) {
         case H5VL_LINK_EXISTS: {
-            bool * exists = HDva_arg(arguments, bool *);
+            bool *    exists = HDva_arg(arguments, bool *);
             H5G_loc_t loc;
 
             if (H5G_loc_real(obj, loc_params->obj_type, &loc) < 0)
@@ -332,7 +332,7 @@ H5VL__native_link_specific(void *obj, const H5VL_loc_params_t *loc_params, H5VL_
 
         case H5VL_LINK_ITER: {
             H5G_loc_t       loc;
-            bool         recursive = (bool)HDva_arg(arguments, unsigned);
+            bool            recursive = (bool)HDva_arg(arguments, unsigned);
             H5_index_t      idx_type  = (H5_index_t)HDva_arg(arguments, int);      /* enum work-around */
             H5_iter_order_t order     = (H5_iter_order_t)HDva_arg(arguments, int); /* enum work-around */
             hsize_t *       idx_p     = HDva_arg(arguments, hsize_t *);

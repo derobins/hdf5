@@ -87,7 +87,7 @@ static int
 H5C__verify_cork_tag_test_cb(H5C_cache_entry_t *entry, void *_ctx)
 {
     H5C_tag_iter_vct_ctx_t *ctx = (H5C_tag_iter_vct_ctx_t *)_ctx; /* Get pointer to iterator context */
-    bool                 is_corked;                            /* Corked status for entry */
+    bool                    is_corked;                            /* Corked status for entry */
     int                     ret_value = H5_ITER_CONT;             /* Return value */
 
     /* Function enter macro */

@@ -135,8 +135,7 @@ static herr_t H5C__mark_flush_dep_clean(H5C_cache_entry_t *entry);
 static herr_t H5C__serialize_ring(H5F_t *f, H5C_ring_t ring);
 static herr_t H5C__serialize_single_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t *entry_ptr);
 static herr_t H5C__generate_image(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t *entry_ptr);
-static herr_t H5C__verify_len_eoa(H5F_t *f, const H5C_class_t *type, haddr_t addr, size_t *len,
-                                  bool actual);
+static herr_t H5C__verify_len_eoa(H5F_t *f, const H5C_class_t *type, haddr_t addr, size_t *len, bool actual);
 
 #if H5C_DO_SLIST_SANITY_CHECKS
 static hbool_t H5C__entry_in_skip_list(H5C_t *cache_ptr, H5C_cache_entry_t *target_ptr);
@@ -719,9 +718,9 @@ H5C__free_tag_list_cb(void *_item, void H5_ATTR_UNUSED *key, void H5_ATTR_UNUSED
 herr_t
 H5C_prep_for_file_close(H5F_t *f)
 {
-    H5C_t * cache_ptr;
-    bool image_generated = false;   /* Whether a cache image was generated */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    H5C_t *cache_ptr;
+    bool   image_generated = false;   /* Whether a cache image was generated */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -1102,7 +1101,7 @@ H5C_flush_cache(H5F_t *f, unsigned flags)
 #endif /* H5C_DO_SANITY_CHECKS */
     H5C_ring_t ring;
     H5C_t *    cache_ptr;
-    bool    destroy;
+    bool       destroy;
     herr_t     ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1234,9 +1233,9 @@ done:
 herr_t
 H5C_flush_to_min_clean(H5F_t *f)
 {
-    H5C_t * cache_ptr;
-    bool write_permitted;
-    herr_t  ret_value = SUCCEED;
+    H5C_t *cache_ptr;
+    bool   write_permitted;
+    herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -1286,17 +1285,17 @@ H5C_insert_entry(H5F_t *f, const H5C_class_t *type, haddr_t addr, void *thing, u
 {
     H5C_t *     cache_ptr;
     H5AC_ring_t ring = H5C_RING_UNDEFINED;
-    bool     insert_pinned;
-    bool     flush_last;
+    bool        insert_pinned;
+    bool        flush_last;
 #ifdef H5_HAVE_PARALLEL
     hbool_t coll_access = FALSE; /* whether access to the cache entry is done collectively */
 #endif                           /* H5_HAVE_PARALLEL */
-    bool            set_flush_marker;
-    bool            write_permitted = true;
+    bool               set_flush_marker;
+    bool               write_permitted = true;
     size_t             empty_space;
     H5C_cache_entry_t *entry_ptr = NULL;
     H5C_cache_entry_t *test_entry_ptr;
-    bool            entry_tagged = false;
+    bool               entry_tagged = false;
     herr_t             ret_value    = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -2202,15 +2201,15 @@ H5C_protect(H5F_t *f, const H5C_class_t *type, haddr_t addr, void *udata, unsign
 {
     H5C_t *     cache_ptr;
     H5AC_ring_t ring = H5C_RING_UNDEFINED;
-    bool     hit;
-    bool     have_write_permitted = false;
-    bool     read_only            = false;
-    bool     flush_last;
+    bool        hit;
+    bool        have_write_permitted = false;
+    bool        read_only            = false;
+    bool        flush_last;
 #ifdef H5_HAVE_PARALLEL
     hbool_t coll_access = FALSE; /* whether access to the cache entry is done collectively */
 #endif                           /* H5_HAVE_PARALLEL */
-    bool            write_permitted = false;
-    bool            was_loaded      = false; /* Whether the entry was loaded as a result of the protect */
+    bool               write_permitted = false;
+    bool               was_loaded      = false; /* Whether the entry was loaded as a result of the protect */
     size_t             empty_space;
     void *             thing;
     H5C_cache_entry_t *entry_ptr;
@@ -3202,15 +3201,15 @@ done:
 herr_t
 H5C_unprotect(H5F_t *f, haddr_t addr, void *thing, unsigned flags)
 {
-    H5C_t * cache_ptr;
-    bool deleted;
-    bool dirtied;
-    bool set_flush_marker;
-    bool pin_entry;
-    bool unpin_entry;
-    bool free_file_space;
-    bool take_ownership;
-    bool was_clean;
+    H5C_t *cache_ptr;
+    bool   deleted;
+    bool   dirtied;
+    bool   set_flush_marker;
+    bool   pin_entry;
+    bool   unpin_entry;
+    bool   free_file_space;
+    bool   take_ownership;
+    bool   was_clean;
 #ifdef H5_HAVE_PARALLEL
     hbool_t clear_entry = FALSE;
 #endif /* H5_HAVE_PARALLEL */
@@ -4258,8 +4257,8 @@ static herr_t
 H5C__auto_adjust_cache_size(H5F_t *f, bool write_permitted)
 {
     H5C_t *                cache_ptr             = f->shared->cache;
-    bool                reentrant_call        = false;
-    bool                inserted_epoch_marker = false;
+    bool                   reentrant_call        = false;
+    bool                   inserted_epoch_marker = false;
     size_t                 new_max_cache_size    = 0;
     size_t                 old_max_cache_size    = 0;
     size_t                 new_min_clean_size    = 0;
@@ -4740,8 +4739,8 @@ H5C__autoadjust__ageout__evict_aged_out_entries(H5F_t *f, bool write_permitted)
     H5C_t *            cache_ptr = f->shared->cache;
     size_t             eviction_size_limit;
     size_t             bytes_evicted = 0;
-    bool            prev_is_dirty = false;
-    bool            restart_scan;
+    bool               prev_is_dirty = false;
+    bool               restart_scan;
     H5C_cache_entry_t *entry_ptr;
     H5C_cache_entry_t *next_ptr;
     H5C_cache_entry_t *prev_ptr;
@@ -5512,7 +5511,7 @@ static herr_t
 H5C__flush_invalidate_ring(H5F_t *f, H5C_ring_t ring, unsigned flags)
 {
     H5C_t *            cache_ptr;
-    bool            restart_slist_scan;
+    bool               restart_slist_scan;
     uint32_t           protected_entries = 0;
     int32_t            i;
     int32_t            cur_ring_pel_len;
@@ -6034,11 +6033,11 @@ static herr_t
 H5C__flush_ring(H5F_t *f, H5C_ring_t ring, unsigned flags)
 {
     H5C_t *            cache_ptr = f->shared->cache;
-    bool            flushed_entries_last_pass;
-    bool            flush_marked_entries;
-    bool            ignore_protected;
-    bool            tried_to_flush_protected_entry = false;
-    bool            restart_slist_scan;
+    bool               flushed_entries_last_pass;
+    bool               flush_marked_entries;
+    bool               ignore_protected;
+    bool               tried_to_flush_protected_entry = false;
+    bool               restart_slist_scan;
     uint32_t           protected_entries = 0;
     H5SL_node_t *      node_ptr          = NULL;
     H5C_cache_entry_t *entry_ptr         = NULL;
@@ -6399,19 +6398,19 @@ herr_t
 H5C__flush_single_entry(H5F_t *f, H5C_cache_entry_t *entry_ptr, unsigned flags)
 {
     H5C_t * cache_ptr;                 /* Cache for file */
-    bool destroy;                   /* external flag */
-    bool clear_only;                /* external flag */
-    bool free_file_space;           /* external flag */
-    bool take_ownership;            /* external flag */
-    bool del_from_slist_on_destroy; /* external flag */
-    bool during_flush;              /* external flag */
-    bool write_entry;               /* internal flag */
-    bool destroy_entry;             /* internal flag */
-    bool generate_image;            /* internal flag */
-    bool update_page_buffer;        /* internal flag */
-    bool was_dirty;
-    bool suppress_image_entry_writes = false;
-    bool suppress_image_entry_frees  = false;
+    bool    destroy;                   /* external flag */
+    bool    clear_only;                /* external flag */
+    bool    free_file_space;           /* external flag */
+    bool    take_ownership;            /* external flag */
+    bool    del_from_slist_on_destroy; /* external flag */
+    bool    during_flush;              /* external flag */
+    bool    write_entry;               /* internal flag */
+    bool    destroy_entry;             /* internal flag */
+    bool    generate_image;            /* internal flag */
+    bool    update_page_buffer;        /* internal flag */
+    bool    was_dirty;
+    bool    suppress_image_entry_writes = false;
+    bool    suppress_image_entry_frees  = false;
     haddr_t entry_addr                  = HADDR_UNDEF;
     herr_t  ret_value                   = SUCCEED; /* Return value */
 
@@ -7094,7 +7093,7 @@ H5C__load_entry(H5F_t *f,
 #endif /* H5_HAVE_PARALLEL */
                 const H5C_class_t *type, haddr_t addr, void *udata)
 {
-    bool            dirty = false; /* Flag indicating whether thing was dirtied during deserialize */
+    bool               dirty = false; /* Flag indicating whether thing was dirtied during deserialize */
     uint8_t *          image = NULL;  /* Buffer for disk image                    */
     void *             thing = NULL;  /* Pointer to thing loaded                  */
     H5C_cache_entry_t *entry = NULL;  /* Alias for thing loaded, as cache entry   */
@@ -7160,7 +7159,7 @@ H5C__load_entry(H5F_t *f,
         size_t   actual_len = len;   /* The actual length, after speculative reads have been resolved */
         uint64_t nanosec    = 1;     /* # of nanoseconds to sleep between retries */
         void *   new_image;          /* Pointer to image                     */
-        bool  len_changed = true; /* Whether to re-check speculative entries */
+        bool     len_changed = true; /* Whether to re-check speculative entries */
 
         /* Get the # of read attempts */
         max_tries = tries = H5F_GET_READ_ATTEMPTS(f);
@@ -7447,10 +7446,10 @@ H5C__make_space_in_cache(H5F_t *f, size_t space_needed, bool write_permitted)
     uint32_t           entries_examined = 0;
     uint32_t           initial_list_len;
     size_t             empty_space;
-    bool            reentrant_call    = false;
-    bool            prev_is_dirty     = false;
-    bool            didnt_flush_entry = false;
-    bool            restart_scan;
+    bool               reentrant_call    = false;
+    bool               prev_is_dirty     = false;
+    bool               didnt_flush_entry = false;
+    bool               restart_scan;
     H5C_cache_entry_t *entry_ptr;
     H5C_cache_entry_t *prev_ptr;
     H5C_cache_entry_t *next_ptr;
@@ -8611,7 +8610,7 @@ done:
 static herr_t
 H5C__serialize_ring(H5F_t *f, H5C_ring_t ring)
 {
-    bool            done = false;
+    bool               done = false;
     H5C_t *            cache_ptr;
     H5C_cache_entry_t *entry_ptr;
     herr_t             ret_value = SUCCEED;

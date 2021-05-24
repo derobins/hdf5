@@ -91,7 +91,7 @@ typedef struct H5A_shared_t {
 struct H5A_t {
     H5O_shared_t  sh_loc;     /* Shared message info (must be first) */
     H5O_loc_t     oloc;       /* Object location for object attribute is on */
-    bool       obj_opened; /* Object header entry opened? */
+    bool          obj_opened; /* Object header entry opened? */
     H5G_name_t    path;       /* Group hierarchy path */
     H5A_shared_t *shared;     /* Shared attribute information */
 };

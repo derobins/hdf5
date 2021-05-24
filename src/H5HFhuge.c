@@ -850,7 +850,7 @@ H5HF__huge_write(H5HF_hdr_t *hdr, const uint8_t *id, const void *obj)
     else {
         H5HF_huge_bt2_indir_rec_t found_rec;     /* Record found from tracking object */
         H5HF_huge_bt2_indir_rec_t search_rec;    /* Record for searching for object */
-        bool                   found = false; /* Whether entry was found */
+        bool                      found = false; /* Whether entry was found */
 
         /* Sanity check */
         HDassert(H5F_addr_defined(hdr->huge_bt2_addr));

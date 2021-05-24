@@ -1314,11 +1314,11 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
                        h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols, hsize_t local_elmt_counter,
                        hsize_t elmt_counter)
 {
-    bool dimension_break = true;
-    char *  s               = NULL;
-    char *  section         = NULL; /* a section of output */
-    int     secnum;                 /* section sequence number */
-    int     multiline;              /* datum was multiline */
+    bool  dimension_break = true;
+    char *s               = NULL;
+    char *section         = NULL; /* a section of output */
+    int   secnum;                 /* section sequence number */
+    int   multiline;              /* datum was multiline */
 
     if (stream == NULL)
         return dimension_break;
@@ -1479,11 +1479,11 @@ h5tools_render_region_element(FILE *stream, const h5tool_format_t *info, h5tools
                               h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols, hsize_t *ptdata,
                               hsize_t local_elmt_counter, hsize_t elmt_counter)
 {
-    bool dimension_break = true;
-    char *  s               = NULL;
-    char *  section         = NULL; /* a section of output */
-    int     secnum;                 /* section sequence number */
-    int     multiline;              /* datum was multiline */
+    bool  dimension_break = true;
+    char *s               = NULL;
+    char *section         = NULL; /* a section of output */
+    int   secnum;                 /* section sequence number */
+    int   multiline;              /* datum was multiline */
 
     H5TOOLS_START_DEBUG(" ");
     H5TOOLS_DEBUG("elmt_counter=%ld - local_elmt_counter=%ld", elmt_counter, local_elmt_counter);
@@ -1686,7 +1686,7 @@ render_bin_output(FILE *stream, hid_t container, hid_t tid, void *_mem, hsize_t 
     size_t         size; /* datum size */
     hsize_t        block_index;
     H5T_class_t    type_class;
-    bool        past_catch = false;
+    bool           past_catch = false;
     int            ret_value  = 0;
 
     H5TOOLS_START_DEBUG(" ");
@@ -1927,7 +1927,7 @@ render_bin_output_region_data_blocks(hid_t region_id, FILE *stream, hid_t contai
     size_t   type_size;
     hid_t    mem_space  = H5I_INVALID_HID;
     void *   region_buf = NULL;
-    bool  past_catch = false;
+    bool     past_catch = false;
     hsize_t  blkndx;
     hid_t    sid1      = H5I_INVALID_HID;
     int      ret_value = -1;
@@ -2023,8 +2023,8 @@ render_bin_output_region_blocks(hid_t region_space, hid_t region_id, FILE *strea
     unsigned ndims;
     hid_t    dtype      = H5I_INVALID_HID;
     hid_t    type_id    = H5I_INVALID_HID;
-    bool  past_catch = false;
-    bool  ret_value  = true;
+    bool     past_catch = false;
+    bool     ret_value  = true;
 
     H5TOOLS_START_DEBUG(" ");
     if ((snblocks = H5Sget_select_hyper_nblocks(region_space)) <= 0)
@@ -2146,8 +2146,8 @@ render_bin_output_region_points(hid_t region_space, hid_t region_id, FILE *strea
     unsigned ndims;
     hid_t    dtype      = H5I_INVALID_HID;
     hid_t    type_id    = H5I_INVALID_HID;
-    bool  past_catch = false;
-    bool  ret_value  = true;
+    bool     past_catch = false;
+    bool     ret_value  = true;
 
     H5TOOLS_START_DEBUG(" ");
     if ((snpoints = H5Sget_select_elem_npoints(region_space)) <= 0)
@@ -2222,7 +2222,7 @@ bool
 h5tools_is_obj_same(hid_t loc_id1, const char *name1, hid_t loc_id2, const char *name2)
 {
     H5O_info2_t oinfo1, oinfo2;
-    bool     ret_val = false;
+    bool        ret_val = false;
 
     if (name1 && HDstrcmp(name1, ".") != 0)
         H5Oget_info_by_name3(loc_id1, name1, &oinfo1, H5O_INFO_BASIC, H5P_DEFAULT);

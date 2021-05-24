@@ -54,15 +54,15 @@ typedef struct {
 typedef struct {
     H5I_search_func_t user_func;  /* 'User' function to invoke */
     void *            user_udata; /* User data to pass to 'user' function */
-    bool           app_ref;    /* Whether this is an appl. ref. call */
+    bool              app_ref;    /* Whether this is an appl. ref. call */
     H5I_type_t        obj_type;   /* Type of object we are iterating over */
 } H5I_iterate_ud_t;
 
 /* User data for H5I__clear_type_cb */
 typedef struct {
     H5I_type_info_t *type_info; /* Pointer to the type's info to be cleared */
-    bool          force;     /* Whether to always remove the ID */
-    bool          app_ref;   /* Whether this is an appl. ref. call */
+    bool             force;     /* Whether to always remove the ID */
+    bool             app_ref;   /* Whether this is an appl. ref. call */
 } H5I_clear_type_ud_t;
 
 /********************/
@@ -377,7 +377,7 @@ H5I__mark_node(void *_info, void H5_ATTR_UNUSED *key, void *_udata)
 {
     H5I_id_info_t *      info  = (H5I_id_info_t *)_info;        /* Current ID info being worked with */
     H5I_clear_type_ud_t *udata = (H5I_clear_type_ud_t *)_udata; /* udata struct */
-    bool              mark  = false;
+    bool                 mark  = false;
 
     FUNC_ENTER_STATIC_NOERR
 

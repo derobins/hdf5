@@ -33,7 +33,7 @@
 typedef struct H5FO_open_obj_t {
     haddr_t addr;    /* Address of object header for object */
     void *  obj;     /* Pointer to the object            */
-    bool deleted; /* Flag to indicate that the object was deleted from the file */
+    bool    deleted; /* Flag to indicate that the object was deleted from the file */
 } H5FO_open_obj_t;
 
 /* Information about counted objects in a file */
@@ -299,7 +299,7 @@ bool
 H5FO_marked(const H5F_t *f, haddr_t addr)
 {
     H5FO_open_obj_t *open_obj;          /* Information about open object */
-    bool          ret_value = false; /* Return value */
+    bool             ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOERR
 

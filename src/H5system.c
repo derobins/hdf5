@@ -518,7 +518,7 @@ H5_get_win32_times(H5_timevals_t *tvs /*in,out*/)
     FILETIME             ExitTime;
     LARGE_INTEGER        counts_start;
     static LARGE_INTEGER counts_freq;
-    static bool       is_initialized = false;
+    static bool          is_initialized = false;
     BOOL                 err;
 
     HDassert(tvs);

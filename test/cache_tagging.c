@@ -1796,7 +1796,7 @@ check_attribute_rename_tags(hid_t fcpl, int type)
     haddr_t g_tag           = 0;
     hsize_t dims1[2]        = {DIMS, DIMS};                   /* dimensions */
     hsize_t maxdims[2]      = {H5S_UNLIMITED, H5S_UNLIMITED}; /* dimensions */
-    bool persistent_fsms = false;
+    bool    persistent_fsms = false;
 
     /* Testing Macro */
     TESTING("tag application during attribute renaming");
@@ -2009,7 +2009,7 @@ check_attribute_delete_tags(hid_t fcpl, int type)
     haddr_t g_tag           = 0;
     hsize_t dims1[2]        = {DIMS, DIMS};                   /* dimensions */
     hsize_t maxdims[2]      = {H5S_UNLIMITED, H5S_UNLIMITED}; /* dimensions */
-    bool persistent_fsms = false;
+    bool    persistent_fsms = false;
 
     /* Testing Macro */
     TESTING("tag application during attribute delete");
@@ -4461,7 +4461,7 @@ check_invalid_tag_application(void)
     haddr_t addr;
     H5HL_t *lheap          = NULL;
     hid_t   fapl           = -1;    /* File access prop list */
-    bool api_ctx_pushed = false; /* Whether API context pushed */
+    bool    api_ctx_pushed = false; /* Whether API context pushed */
 #endif                              /* H5C_DO_TAGGING_SANITY_CHECKS */
 
     /* Testing Macro */

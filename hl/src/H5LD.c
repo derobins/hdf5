@@ -155,10 +155,10 @@ done:
 int
 H5LD_construct_vector(char *fields, H5LD_memb_t *listv[] /*OUT*/, hid_t par_tid)
 {
-    int     nfields;               /* The # of comma-separated fields in "fields" */
-    bool end_of_fields = false; /* end of "fields" */
-    char *  fields_ptr;            /* Pointer to "fields" */
-    int     ret_value = FAIL;      /* Return value */
+    int   nfields;               /* The # of comma-separated fields in "fields" */
+    bool  end_of_fields = false; /* end of "fields" */
+    char *fields_ptr;            /* Pointer to "fields" */
+    int   ret_value = FAIL;      /* Return value */
 
     HDassert(listv);
     HDassert(fields);
@@ -171,9 +171,9 @@ H5LD_construct_vector(char *fields, H5LD_memb_t *listv[] /*OUT*/, hid_t par_tid)
         H5LD_memb_t *memb = NULL;       /* Pointer to structure for storing a field's info */
         char *       cur;               /* Pointer to a member in a field */
         size_t       len;               /* Estimated # of members in a field */
-        bool      gotcomma  = false; /* A comma encountered */
-        bool      gotmember = false; /* Getting member in a field */
-        bool      valid     = true;  /* Whether a field being processed is valid or not */
+        bool         gotcomma  = false; /* A comma encountered */
+        bool         gotmember = false; /* Getting member in a field */
+        bool         valid     = true;  /* Whether a field being processed is valid or not */
         int          j         = 0;     /* The # of members in a field */
 
         len = (HDstrlen(fields_ptr) / 2) + 2;

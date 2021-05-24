@@ -193,12 +193,12 @@ H5_DLL herr_t            H5G_init(void);
 H5_DLL struct H5O_loc_t *H5G_oloc(H5G_t *grp);
 H5_DLL H5G_name_t *H5G_nameof(const H5G_t *grp);
 H5_DLL H5F_t *H5G_fileof(H5G_t *grp);
-H5_DLL H5G_t * H5G_open(const H5G_loc_t *loc);
-H5_DLL herr_t  H5G_close(H5G_t *grp);
-H5_DLL herr_t  H5G_get_shared_count(H5G_t *grp);
-H5_DLL herr_t  H5G_mount(H5G_t *grp);
-H5_DLL bool H5G_mounted(H5G_t *grp);
-H5_DLL herr_t  H5G_unmount(H5G_t *grp);
+H5_DLL H5G_t *H5G_open(const H5G_loc_t *loc);
+H5_DLL herr_t H5G_close(H5G_t *grp);
+H5_DLL herr_t H5G_get_shared_count(H5G_t *grp);
+H5_DLL herr_t H5G_mount(H5G_t *grp);
+H5_DLL bool   H5G_mounted(H5G_t *grp);
+H5_DLL herr_t H5G_unmount(H5G_t *grp);
 #ifndef H5_NO_DEPRECATED_SYMBOLS
 H5_DLL H5G_obj_t H5G_map_obj_type(H5O_type_t obj_type);
 #endif /* H5_NO_DEPRECATED_SYMBOLS */

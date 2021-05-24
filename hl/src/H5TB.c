@@ -2036,7 +2036,7 @@ H5TBinsert_field(hid_t loc_id, const char *dset_name, const char *field_name, hi
     char *         member_name  = NULL;
     unsigned char *tmp_buf      = NULL;
     unsigned char *tmp_fill_buf = NULL;
-    bool        inserted;
+    bool           inserted;
     herr_t         ret_val = -1;
 
     /* check the arguments */

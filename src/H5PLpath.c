@@ -695,7 +695,7 @@ H5PL__path_table_iterate_process_path(const char *plugin_path, H5PL_iterate_type
     HANDLE           hFind = INVALID_HANDLE_VALUE;
     H5PL_type_t      plugin_type;
     const void *     plugin_info = NULL;
-    bool          plugin_loaded;
+    bool             plugin_loaded;
     char *           path = NULL;
     char             service[2048];
     herr_t           ret_value = H5_ITER_CONT;
@@ -715,8 +715,8 @@ H5PL__path_table_iterate_process_path(const char *plugin_path, H5PL_iterate_type
     do {
         /* Ignore '.' and '..' */
         if (HDstrcmp(fdFile.cFileName, ".") != 0 && HDstrcmp(fdFile.cFileName, "..") != 0) {
-            bool plugin_matches;
-            size_t  len;
+            bool   plugin_matches;
+            size_t len;
 
             /* Allocate & initialize the path name */
             len = HDstrlen(plugin_path) + HDstrlen(H5PL_PATH_SEPARATOR) + HDstrlen(fdFile.cFileName) + 1;

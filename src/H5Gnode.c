@@ -76,8 +76,8 @@ static herr_t    H5G__node_create(H5F_t *f, H5B_ins_t op, void *_lt_key, void *_
 static int       H5G__node_cmp2(void *_lt_key, void *_udata, void *_rt_key);
 static int       H5G__node_cmp3(void *_lt_key, void *_udata, void *_rt_key);
 static herr_t    H5G__node_found(H5F_t *f, haddr_t addr, const void *_lt_key, bool *found, void *_udata);
-static H5B_ins_t H5G__node_insert(H5F_t *f, haddr_t addr, void *_lt_key, bool *lt_key_changed,
-                                  void *_md_key, void *_udata, void *_rt_key, bool *rt_key_changed,
+static H5B_ins_t H5G__node_insert(H5F_t *f, haddr_t addr, void *_lt_key, bool *lt_key_changed, void *_md_key,
+                                  void *_udata, void *_rt_key, bool *rt_key_changed,
                                   haddr_t *new_node_p /*out*/);
 static H5B_ins_t H5G__node_remove(H5F_t *f, haddr_t addr, void *lt_key, bool *lt_key_changed, void *udata,
                                   void *rt_key, bool *rt_key_changed);

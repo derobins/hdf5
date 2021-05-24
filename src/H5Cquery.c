@@ -230,10 +230,9 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5C_get_entry_status(const H5F_t *f, haddr_t addr, size_t *size_ptr, bool *in_cache_ptr,
-                     bool *is_dirty_ptr, bool *is_protected_ptr, bool *is_pinned_ptr,
-                     bool *is_corked_ptr, bool *is_flush_dep_parent_ptr,
-                     bool *is_flush_dep_child_ptr, bool *image_up_to_date_ptr)
+H5C_get_entry_status(const H5F_t *f, haddr_t addr, size_t *size_ptr, bool *in_cache_ptr, bool *is_dirty_ptr,
+                     bool *is_protected_ptr, bool *is_pinned_ptr, bool *is_corked_ptr,
+                     bool *is_flush_dep_parent_ptr, bool *is_flush_dep_child_ptr, bool *image_up_to_date_ptr)
 {
     H5C_t *            cache_ptr;
     H5C_cache_entry_t *entry_ptr = NULL;

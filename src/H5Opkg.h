@@ -213,10 +213,10 @@ struct H5O_msg_class_t {
     unsigned    share_flags; /* Message sharing settings */
     void *(*decode)(H5F_t *, H5O_t *, unsigned, unsigned *, size_t, const uint8_t *);
     herr_t (*encode)(H5F_t *, bool, uint8_t *, const void *);
-    void *(*copy)(const void *, void *);                      /*copy native value         */
+    void *(*copy)(const void *, void *);                   /*copy native value         */
     size_t (*raw_size)(const H5F_t *, bool, const void *); /*sizeof encoded message	*/
-    herr_t (*reset)(void *);                                  /*free nested data structs  */
-    herr_t (*free)(void *);                                   /*free main data struct  */
+    herr_t (*reset)(void *);                               /*free nested data structs  */
+    herr_t (*free)(void *);                                /*free main data struct  */
     herr_t (*del)(H5F_t *, H5O_t *, void *);  /* Delete space in file referenced by this message */
     herr_t (*link)(H5F_t *, H5O_t *, void *); /* Increment any links in file reference by this message */
     herr_t (*set_share)(void *, const H5O_shared_t *); /* Set shared information */
@@ -234,7 +234,7 @@ struct H5O_msg_class_t {
 
 struct H5O_mesg_t {
     const H5O_msg_class_t *type;     /* type of message                  */
-    bool                dirty;    /* raw out of date wrt native       */
+    bool                   dirty;    /* raw out of date wrt native       */
     uint8_t                flags;    /* message flags                    */
     H5O_msg_crt_idx_t      crt_idx;  /* message creation index           */
     unsigned               chunkno;  /* chunk number for this mesg       */
@@ -267,9 +267,9 @@ struct H5O_t {
                             /* first field in structure */
 
     /* File-specific information (not stored) */
-    size_t  sizeof_size; /* Size of file sizes 		     */
-    size_t  sizeof_addr; /* Size of file addresses	     */
-    bool swmr_write;  /* Whether we are doing SWMR writes  */
+    size_t sizeof_size; /* Size of file sizes 		     */
+    size_t sizeof_addr; /* Size of file addresses	     */
+    bool   swmr_write;  /* Whether we are doing SWMR writes  */
 
     /* Debugging information (not stored) */
 #ifdef H5O_ENABLE_BAD_MESG_COUNT
@@ -286,7 +286,7 @@ struct H5O_t {
     size_t rc; /* Reference count of [continuation] chunks using this structure */
 
     /* Object information (stored) */
-    bool  has_refcount_msg; /* Whether the object has a ref. count message */
+    bool     has_refcount_msg; /* Whether the object has a ref. count message */
     unsigned nlink;            /*link count			     */
     uint8_t  version;          /*version number		     */
     uint8_t  flags;            /*flags				     */
@@ -312,7 +312,7 @@ struct H5O_t {
     size_t       nchunks;       /*number of chunks		     */
     size_t       alloc_nchunks; /*chunks allocated		     */
     H5O_chunk_t *chunk;         /*array of chunks		     */
-    bool      chunks_pinned; /* Whether chunks are pinned from ohdr protect */
+    bool         chunks_pinned; /* Whether chunks are pinned from ohdr protect */
 
     /* Object header proxy information (not stored) */
     H5AC_proxy_entry_t *proxy; /* Proxy cache entry for all ohdr entries */
@@ -337,7 +337,7 @@ typedef struct H5O_obj_class_t {
 typedef struct H5O_addr_map_t {
     H5_obj_t               src_obj_pos;   /* Location of source object */
     haddr_t                dst_addr;      /* Address of object in destination file */
-    bool                is_locked;     /* Indicate that the destination object is locked currently */
+    bool                   is_locked;     /* Indicate that the destination object is locked currently */
     hsize_t                inc_ref_count; /* Number of deferred increments to reference count */
     const H5O_obj_class_t *obj_class;     /* Object class */
     void *                 udata;         /* Object class copy file udata */
@@ -361,11 +361,11 @@ typedef struct H5O_common_cache_ud_t {
 
 /* Callback information for loading object header prefix from disk */
 typedef struct H5O_cache_ud_t {
-    bool               made_attempt;  /* Whether the deserialize routine was already attempted */
+    bool                  made_attempt;  /* Whether the deserialize routine was already attempted */
     unsigned              v1_pfx_nmesgs; /* Number of messages from v1 prefix header */
     size_t                chunk0_size;   /* Size of serialized first chunk    */
     H5O_t *               oh;            /* Partially deserialized object header, for later use */
-    bool               free_oh;       /* Whether to free the object header or not */
+    bool                  free_oh;       /* Whether to free the object header or not */
     H5O_common_cache_ud_t common;        /* Common object header cache callback info */
 } H5O_cache_ud_t;
 
@@ -394,7 +394,7 @@ typedef struct H5O_chunk_proxy_t {
 
 /* Callback information for loading object header chunk from disk */
 typedef struct H5O_chk_cache_ud_t {
-    bool               decoding; /* Whether the object header is being decoded */
+    bool                  decoding; /* Whether the object header is being decoded */
     H5O_t *               oh;       /* Object header for this chunk */
     unsigned              chunkno;  /* Index of chunk being brought in (for re-loads) */
     size_t                size;     /* Size of chunk in the file */

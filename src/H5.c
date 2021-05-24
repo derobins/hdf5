@@ -87,9 +87,9 @@ bool H5_libterm_g = false; /* Library isn't being shutdown */
 bool H5_MPEinit_g = FALSE; /* MPE Library hasn't been initialized */
 #endif
 
-char           H5_lib_vers_info_g[] = H5_VERS_INFO;
+char        H5_lib_vers_info_g[] = H5_VERS_INFO;
 static bool H5_dont_atexit_g     = false;
-H5_debug_t     H5_debug_g; /* debugging info */
+H5_debug_t  H5_debug_g; /* debugging info */
 
 /*******************/
 /* Local Variables */
@@ -728,10 +728,10 @@ done:
 static void
 H5__debug_mask(const char *s)
 {
-    FILE *  stream = stderr;
-    char    pkg_name[32], *rest;
-    size_t  i;
-    bool clear;
+    FILE * stream = stderr;
+    char   pkg_name[32], *rest;
+    size_t i;
+    bool   clear;
 
     while (s && *s) {
 

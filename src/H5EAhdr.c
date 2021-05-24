@@ -333,7 +333,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
 
     /* Local variables */
     H5EA_hdr_t *hdr      = NULL;  /* Extensible array header */
-    bool     inserted = false; /* Whether the header was inserted into cache */
+    bool        inserted = false; /* Whether the header was inserted into cache */
 
     /* Check arguments */
     HDassert(f);

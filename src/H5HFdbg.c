@@ -692,7 +692,7 @@ H5HF_iblock_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent, int fwidth, 
 {
     H5HF_hdr_t *     hdr         = NULL;    /* Fractal heap header info */
     H5HF_indirect_t *iblock      = NULL;    /* Fractal heap direct block info */
-    bool          did_protect = false;   /* Whether we protected the indirect block or not */
+    bool             did_protect = false;   /* Whether we protected the indirect block or not */
     herr_t           ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)

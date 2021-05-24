@@ -87,7 +87,7 @@ int
 main(void)
 {
     unsigned nerrors        = 0;     /* track errors */
-    bool  api_ctx_pushed = false; /* Whether API context pushed */
+    bool     api_ctx_pushed = false; /* Whether API context pushed */
     hid_t    fid            = -1;
     hid_t    fapl           = -1; /* File access property list */
     char     filename[1024];
@@ -2101,9 +2101,9 @@ test_swmr_write_big(bool newest_format)
     uint8_t *wbuf2 = NULL, *rbuf = NULL; /* Buffers for reading & writing */
     uint8_t  wbuf[1024];                 /* Buffer for reading & writing */
     unsigned u;                          /* Local index variable */
-    bool  process_success = false;
+    bool     process_success = false;
     char *   driver          = NULL;  /* VFD string (from env variable) */
-    bool  api_ctx_pushed  = false; /* Whether API context pushed */
+    bool     api_ctx_pushed  = false; /* Whether API context pushed */
 
     if (newest_format)
         TESTING("SWMR write of large metadata: with latest format")

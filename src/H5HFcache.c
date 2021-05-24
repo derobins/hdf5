@@ -107,8 +107,8 @@ static herr_t H5HF__cache_verify_iblock_descendants_clean(H5F_t *f, haddr_t fd_p
                                                           H5HF_indirect_t *iblock, unsigned *iblock_status,
                                                           bool *fd_clean, bool *clean);
 static herr_t H5HF__cache_verify_iblocks_dblocks_clean(H5F_t *f, haddr_t fd_parent_addr,
-                                                       H5HF_indirect_t *iblock, bool *fd_clean,
-                                                       bool *clean, bool *has_dblocks);
+                                                       H5HF_indirect_t *iblock, bool *fd_clean, bool *clean,
+                                                       bool *has_dblocks);
 static herr_t H5HF__cache_verify_descendant_iblocks_clean(H5F_t *f, haddr_t fd_parent_addr,
                                                           H5HF_indirect_t *iblock, bool *fd_clean,
                                                           bool *clean, bool *has_iblocks);
@@ -1201,8 +1201,8 @@ H5HF__cache_iblock_pre_serialize(H5F_t *f, void *_thing, haddr_t addr, size_t H5
 
 #ifndef NDEBUG
     {
-        bool  descendants_clean = true;
-        bool  fd_children_clean = true;
+        bool     descendants_clean = true;
+        bool     fd_children_clean = true;
         unsigned iblock_status     = 0;
 
         /* verify that flush dependencies are working correctly.  Do this
@@ -2042,7 +2042,7 @@ H5HF__cache_dblock_pre_serialize(H5F_t *f, void *_thing, haddr_t addr, size_t le
                                  size_t *new_len, unsigned *flags)
 {
     bool at_tmp_addr; /* Flag to indicate direct block is */
-                         /* at temporary address */
+                      /* at temporary address */
     haddr_t          dblock_addr;
     H5HF_hdr_t *     hdr;                              /* Shared fractal heap information */
     H5HF_direct_t *  dblock = (H5HF_direct_t *)_thing; /* Direct block info */
@@ -2241,8 +2241,8 @@ H5HF__cache_dblock_pre_serialize(H5F_t *f, void *_thing, haddr_t addr, size_t le
             if (hdr_changed)
                 if (H5HF__hdr_dirty(hdr) < 0)
                     HGOTO_ERROR(H5E_HEAP, H5E_CANTDIRTY, FAIL, "can't mark heap header as dirty")
-        }                                /* end if */
-        else {                           /* the direct block's parent is an indirect block */
+        }                             /* end if */
+        else {                        /* the direct block's parent is an indirect block */
             bool par_changed = false; /* Whether the parent's infochanged */
 
             /* Sanity check */
@@ -2655,7 +2655,7 @@ H5HF__cache_dblock_fsf_size(const void *_thing, hsize_t *fsf_size)
 static herr_t
 H5HF__cache_verify_hdr_descendants_clean(H5F_t *f, H5HF_hdr_t *hdr, bool *fd_clean, bool *clean)
 {
-    bool  fd_exists = false;    /* whether flush dependency exists. */
+    bool     fd_exists = false;    /* whether flush dependency exists. */
     haddr_t  hdr_addr;             /* Address of header */
     unsigned hdr_status = 0;       /* Header cache entry status */
     herr_t   ret_value  = SUCCEED; /* Return value */
@@ -2711,7 +2711,7 @@ H5HF__cache_verify_hdr_descendants_clean(H5F_t *f, H5HF_hdr_t *hdr, bool *fd_cle
         H5HF_indirect_t *root_iblock = hdr->root_iblock;
         haddr_t          root_iblock_addr;
         unsigned         root_iblock_status = 0;
-        bool          root_iblock_in_cache;
+        bool             root_iblock_in_cache;
 
         /* make note of the on disk address of the root iblock */
         if (root_iblock == NULL)
@@ -2891,8 +2891,8 @@ H5HF__cache_verify_hdr_descendants_clean(H5F_t *f, H5HF_hdr_t *hdr, bool *fd_cle
     else if ((hdr->man_dtable.curr_root_rows == 0) && (HADDR_UNDEF != hdr->man_dtable.table_addr)) {
         haddr_t  root_dblock_addr;
         unsigned root_dblock_status = 0;
-        bool  in_cache;
-        bool  type_ok;
+        bool     in_cache;
+        bool     type_ok;
 
         /* this is scenario 2 -- we have a root dblock */
         root_dblock_addr = hdr->man_dtable.table_addr;
@@ -3020,9 +3020,9 @@ static herr_t
 H5HF__cache_verify_iblock_descendants_clean(H5F_t *f, haddr_t fd_parent_addr, H5HF_indirect_t *iblock,
                                             unsigned *iblock_status, bool *fd_clean, bool *clean)
 {
-    bool has_dblocks = false;
-    bool has_iblocks = false;
-    herr_t  ret_value   = SUCCEED; /* Return value */
+    bool   has_dblocks = false;
+    bool   has_iblocks = false;
+    herr_t ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -3175,7 +3175,7 @@ H5HF__cache_verify_iblocks_dblocks_clean(H5F_t *f, haddr_t fd_parent_addr, H5HF_
                 HGOTO_ERROR(H5E_HEAP, H5E_CANTGET, FAIL, "can't check dblock type")
 
             if (in_cache) { /* dblock is in cache */
-                bool  fd_exists;
+                bool     fd_exists;
                 unsigned dblock_status = 0;
 
                 if (!type_ok)
@@ -3409,7 +3409,7 @@ H5HF__cache_verify_descendant_iblocks_clean(H5F_t *f, haddr_t fd_parent_addr, H5
                  */
                 if (*fd_clean) {
                     H5HF_indirect_t *child_iblock           = NULL;
-                    bool          unprotect_child_iblock = false;
+                    bool             unprotect_child_iblock = false;
 
                     if (0 == (child_iblock_status & H5AC_ES__IS_PINNED)) {
                         /* child iblock is not pinned */

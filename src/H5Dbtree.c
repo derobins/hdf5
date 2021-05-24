@@ -103,35 +103,35 @@ static herr_t    H5D__btree_new_node(H5F_t *f, H5B_ins_t, void *_lt_key, void *_
 static int       H5D__btree_cmp2(void *_lt_key, void *_udata, void *_rt_key);
 static int       H5D__btree_cmp3(void *_lt_key, void *_udata, void *_rt_key);
 static htri_t    H5D__btree_found(H5F_t *f, haddr_t addr, const void *_lt_key, bool *found, void *_udata);
-static H5B_ins_t H5D__btree_insert(H5F_t *f, haddr_t addr, void *_lt_key, bool *lt_key_changed,
-                                   void *_md_key, void *_udata, void *_rt_key, bool *rt_key_changed,
+static H5B_ins_t H5D__btree_insert(H5F_t *f, haddr_t addr, void *_lt_key, bool *lt_key_changed, void *_md_key,
+                                   void *_udata, void *_rt_key, bool *rt_key_changed,
                                    haddr_t *new_node /*out*/);
-static H5B_ins_t H5D__btree_remove(H5F_t *f, haddr_t addr, void *_lt_key, bool *lt_key_changed,
-                                   void *_udata, void *_rt_key, bool *rt_key_changed);
+static H5B_ins_t H5D__btree_remove(H5F_t *f, haddr_t addr, void *_lt_key, bool *lt_key_changed, void *_udata,
+                                   void *_rt_key, bool *rt_key_changed);
 static herr_t    H5D__btree_decode_key(const H5B_shared_t *shared, const uint8_t *raw, void *_key);
 static herr_t    H5D__btree_encode_key(const H5B_shared_t *shared, uint8_t *raw, const void *_key);
 static herr_t H5D__btree_debug_key(FILE *stream, int indent, int fwidth, const void *key, const void *udata);
 
 /* Chunked layout indexing callbacks */
-static herr_t  H5D__btree_idx_init(const H5D_chk_idx_info_t *idx_info, const H5S_t *space,
-                                   haddr_t dset_ohdr_addr);
-static herr_t  H5D__btree_idx_create(const H5D_chk_idx_info_t *idx_info);
-static bool H5D__btree_idx_is_space_alloc(const H5O_storage_chunk_t *storage);
-static herr_t  H5D__btree_idx_insert(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata,
-                                     const H5D_t *dset);
-static herr_t  H5D__btree_idx_get_addr(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata);
-static int     H5D__btree_idx_iterate(const H5D_chk_idx_info_t *idx_info, H5D_chunk_cb_func_t chunk_cb,
-                                      void *chunk_udata);
-static herr_t  H5D__btree_idx_remove(const H5D_chk_idx_info_t *idx_info, H5D_chunk_common_ud_t *udata);
-static herr_t  H5D__btree_idx_delete(const H5D_chk_idx_info_t *idx_info);
-static herr_t  H5D__btree_idx_copy_setup(const H5D_chk_idx_info_t *idx_info_src,
-                                         const H5D_chk_idx_info_t *idx_info_dst);
-static herr_t  H5D__btree_idx_copy_shutdown(H5O_storage_chunk_t *storage_src,
-                                            H5O_storage_chunk_t *storage_dst);
-static herr_t  H5D__btree_idx_size(const H5D_chk_idx_info_t *idx_info, hsize_t *size);
-static herr_t  H5D__btree_idx_reset(H5O_storage_chunk_t *storage, bool reset_addr);
-static herr_t  H5D__btree_idx_dump(const H5O_storage_chunk_t *storage, FILE *stream);
-static herr_t  H5D__btree_idx_dest(const H5D_chk_idx_info_t *idx_info);
+static herr_t H5D__btree_idx_init(const H5D_chk_idx_info_t *idx_info, const H5S_t *space,
+                                  haddr_t dset_ohdr_addr);
+static herr_t H5D__btree_idx_create(const H5D_chk_idx_info_t *idx_info);
+static bool   H5D__btree_idx_is_space_alloc(const H5O_storage_chunk_t *storage);
+static herr_t H5D__btree_idx_insert(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata,
+                                    const H5D_t *dset);
+static herr_t H5D__btree_idx_get_addr(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata);
+static int    H5D__btree_idx_iterate(const H5D_chk_idx_info_t *idx_info, H5D_chunk_cb_func_t chunk_cb,
+                                     void *chunk_udata);
+static herr_t H5D__btree_idx_remove(const H5D_chk_idx_info_t *idx_info, H5D_chunk_common_ud_t *udata);
+static herr_t H5D__btree_idx_delete(const H5D_chk_idx_info_t *idx_info);
+static herr_t H5D__btree_idx_copy_setup(const H5D_chk_idx_info_t *idx_info_src,
+                                        const H5D_chk_idx_info_t *idx_info_dst);
+static herr_t H5D__btree_idx_copy_shutdown(H5O_storage_chunk_t *storage_src,
+                                           H5O_storage_chunk_t *storage_dst);
+static herr_t H5D__btree_idx_size(const H5D_chk_idx_info_t *idx_info, hsize_t *size);
+static herr_t H5D__btree_idx_reset(H5O_storage_chunk_t *storage, bool reset_addr);
+static herr_t H5D__btree_idx_dump(const H5O_storage_chunk_t *storage, FILE *stream);
+static herr_t H5D__btree_idx_dest(const H5D_chk_idx_info_t *idx_info);
 
 /*********************/
 /* Package Variables */
@@ -470,7 +470,7 @@ static bool
 H5D__chunk_disjoint(unsigned n, const hsize_t *scaled1, const hsize_t *scaled2)
 {
     unsigned u;                 /* Local index variable */
-    bool  ret_value = false; /* Return value */
+    bool     ret_value = false; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -995,8 +995,8 @@ done:
 static herr_t
 H5D__btree_idx_get_addr(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata)
 {
-    bool found;               /* Whether chunk was found */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    bool   found;               /* Whether chunk was found */
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -1436,7 +1436,7 @@ H5D_btree_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent, int fwidth, un
     H5D_btree_dbg_t     udata;               /* User data for B-tree callback */
     H5O_storage_chunk_t storage;             /* Storage information for B-tree callback */
     H5O_layout_chunk_t  layout;              /* Layout information for B-tree callback */
-    bool             shared_init = false; /* Whether B-tree shared info is initialized */
+    bool                shared_init = false; /* Whether B-tree shared info is initialized */
     unsigned            u;                   /* Local index variable */
     herr_t              ret_value = SUCCEED; /* Return value */
 

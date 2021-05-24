@@ -514,7 +514,7 @@ H5HF__man_dblock_locate(H5HF_hdr_t *hdr, hsize_t obj_off, H5HF_indirect_t **ret_
 {
     haddr_t          iblock_addr;         /* Indirect block's address */
     H5HF_indirect_t *iblock;              /* Pointer to indirect block */
-    bool          did_protect;         /* Whether we protected the indirect block or not */
+    bool             did_protect;         /* Whether we protected the indirect block or not */
     unsigned         row, col;            /* Row & column for object's block */
     unsigned         entry;               /* Entry of block */
     herr_t           ret_value = SUCCEED; /* Return value */
@@ -547,7 +547,7 @@ H5HF__man_dblock_locate(H5HF_hdr_t *hdr, hsize_t obj_off, H5HF_indirect_t **ret_
     /* Check for indirect block row */
     while (row >= hdr->man_dtable.max_direct_rows) {
         H5HF_indirect_t *new_iblock;      /* Pointer to new indirect block */
-        bool          new_did_protect; /* Whether we protected the indirect block or not */
+        bool             new_did_protect; /* Whether we protected the indirect block or not */
         unsigned         nrows;           /* Number of rows in new indirect block */
         unsigned         cache_flags = H5AC__NO_FLAGS_SET; /* Flags for unprotecting parent indirect block */
 

@@ -160,7 +160,7 @@ typedef union {
 typedef struct H5O_loc_t {
     H5F_t * file;         /* File that object header is located within */
     haddr_t addr;         /* File address of object header */
-    bool holding_file; /* True if this object header has incremented
+    bool    holding_file; /* True if this object header has incremented
                            * its file's count of open objects. */
 } H5O_loc_t;
 
@@ -178,20 +178,20 @@ typedef struct H5O_mcdt_cb_info_t {
 
 /* Settings/flags for copying an object */
 typedef struct H5O_copy_t {
-    bool                      copy_shallow;           /* Flag to perform shallow hierarchy copy */
-    bool                      expand_soft_link;       /* Flag to expand soft links */
-    bool                      expand_ext_link;        /* Flag to expand external links */
-    bool                      expand_ref;             /* Flag to expand object references */
-    bool                      copy_without_attr;      /* Flag to not copy attributes */
-    bool                      preserve_null;          /* Flag to not delete NULL messages */
-    bool                      merge_comm_dt;          /* Flag to merge committed datatypes in dest file */
+    bool                         copy_shallow;           /* Flag to perform shallow hierarchy copy */
+    bool                         expand_soft_link;       /* Flag to expand soft links */
+    bool                         expand_ext_link;        /* Flag to expand external links */
+    bool                         expand_ref;             /* Flag to expand object references */
+    bool                         copy_without_attr;      /* Flag to not copy attributes */
+    bool                         preserve_null;          /* Flag to not delete NULL messages */
+    bool                         merge_comm_dt;          /* Flag to merge committed datatypes in dest file */
     H5O_copy_dtype_merge_list_t *dst_dt_suggestion_list; /* Suggestions for merging committed datatypes */
     int                          curr_depth;             /* Current depth in hierarchy copied */
     int                          max_depth;              /* Maximum depth in hierarchy to copy */
     H5SL_t *                     map_list;               /* Skip list to hold address mappings */
     H5SL_t *                     dst_dt_list; /* Skip list to hold committed datatypes in dest file */
-    bool dst_dt_list_complete;   /* Whether the destination datatype list is complete (i.e. not only
-                                       populated with "suggestions" from H5Padd_merge_committed_dtype_path) */
+    bool dst_dt_list_complete;      /* Whether the destination datatype list is complete (i.e. not only
+                                          populated with "suggestions" from H5Padd_merge_committed_dtype_path) */
     H5O_t *oh_dst;                  /* The destination object header */
     H5F_t *file_dst;                /* The destination file pointer */
                                     /* This is used in the pre_copy_file callback to obtain
@@ -298,8 +298,8 @@ typedef struct H5O_shared_t {
  */
 typedef struct H5O_linfo_t {
     /* Creation order info */
-    bool track_corder;    /* Are creation order values tracked on links? */
-    bool index_corder;    /* Are creation order values indexed on links? */
+    bool    track_corder;    /* Are creation order values tracked on links? */
+    bool    index_corder;    /* Are creation order values indexed on links? */
     int64_t max_corder;      /* Current max. creation order value for group */
     haddr_t corder_bt2_addr; /* Address of v2 B-tree for indexing creation order values of links */
 
@@ -339,7 +339,7 @@ struct H5O_fill_t {
     void *           buf;          /*the fill value		     */
     H5D_alloc_time_t alloc_time;   /* time to allocate space	     */
     H5D_fill_time_t  fill_time;    /* time to write fill value	     */
-    bool          fill_defined; /* whether fill value is defined     */
+    bool             fill_defined; /* whether fill value is defined     */
 };
 
 /*
@@ -361,7 +361,7 @@ typedef struct H5O_link_ud_t {
 
 typedef struct H5O_link_t {
     H5L_type_t type;         /* Type of link */
-    bool    corder_valid; /* Creation order for link is valid (not stored) */
+    bool       corder_valid; /* Creation order for link is valid (not stored) */
     int64_t    corder;       /* Creation order for link (stored if it's valid) */
     H5T_cset_t cset;         /* Character set of link name	*/
     char *     name;         /* Link name */
@@ -495,9 +495,9 @@ typedef struct H5O_storage_chunk_t {
 } H5O_storage_chunk_t;
 
 typedef struct H5O_storage_compact_t {
-    bool dirty; /* Dirty flag for compact dataset    */
-    size_t  size;  /* Size of buffer in bytes           */
-    void *  buf;   /* Buffer for compact dataset        */
+    bool   dirty; /* Dirty flag for compact dataset    */
+    size_t size;  /* Size of buffer in bytes           */
+    void * buf;   /* Buffer for compact dataset        */
 } H5O_storage_compact_t;
 
 typedef struct H5O_storage_virtual_srcdset_t {
@@ -510,7 +510,7 @@ typedef struct H5O_storage_virtual_srcdset_t {
     struct H5S_t *clipped_source_select;  /* Clipped version of source_select  */
     struct H5S_t *clipped_virtual_select; /* Clipped version of virtual_select */
     struct H5D_t *dset;                   /* Source dataset                     */
-    bool       dset_exists;            /* Whether the dataset exists (was opened successfully) */
+    bool          dset_exists;            /* Whether the dataset exists (was opened successfully) */
 
     /* Temporary - only used during I/O operation, NULL at all other times */
     struct H5S_t *projected_mem_space; /* Selection within mem_space for this mapping */
@@ -578,11 +578,11 @@ typedef struct H5O_storage_virtual_t {
         min_dims[H5S_MAX_RANK]; /* Minimum extent of VDS (maximum of all non-unlimited selection bounds) */
     H5D_vds_view_t
             view; /* Method for calculating the extent of the virtual dataset with unlimited selections */
-    hsize_t printf_gap;  /* Maximum number of sequential missing source datasets before terminating the search
-                            for more */
-    hid_t   source_fapl; /* FAPL to use to open source files */
-    hid_t   source_dapl; /* DAPL to use to open source datasets */
-    bool init;        /* Whether all information has been completely initialized */
+    hsize_t printf_gap; /* Maximum number of sequential missing source datasets before terminating the search
+                           for more */
+    hid_t source_fapl;  /* FAPL to use to open source files */
+    hid_t source_dapl;  /* DAPL to use to open source datasets */
+    bool  init;         /* Whether all information has been completely initialized */
 } H5O_storage_virtual_t;
 
 typedef struct H5O_storage_t {
@@ -689,12 +689,12 @@ typedef struct H5O_ginfo_t {
     /* "New" format group info (stored) */
 
     /* (storage management info) */
-    bool  store_link_phase_change; /* Whether to store the link phase change values */
+    bool     store_link_phase_change; /* Whether to store the link phase change values */
     uint16_t max_compact;             /* Maximum # of compact links        */
     uint16_t min_dense;               /* Minimum # of "dense" links        */
 
     /* (initial object header size info) */
-    bool  store_est_entry_info; /* Whether to store the est. entry values */
+    bool     store_est_entry_info; /* Whether to store the est. entry values */
     uint16_t est_num_entries;      /* Estimated # of entries in group   */
     uint16_t est_name_len;         /* Estimated length of entry name    */
 } H5O_ginfo_t;
@@ -800,8 +800,8 @@ typedef struct H5O_drvinfo_t {
  */
 typedef struct H5O_ainfo_t {
     /* Creation order info */
-    bool           track_corder; /* Are creation order values tracked on attributes? */
-    bool           index_corder; /* Are creation order values indexed on attributes? */
+    bool              track_corder; /* Are creation order values tracked on attributes? */
+    bool              index_corder; /* Are creation order values indexed on attributes? */
     H5O_msg_crt_idx_t max_crt_idx;  /* Maximum attribute creation index used */
     haddr_t
         corder_bt2_addr; /* Address of v2 B-tree for indexing creation order values of "dense" attributes */
@@ -844,14 +844,14 @@ typedef unsigned H5O_unknown_t; /* Original message type ID */
 typedef struct H5O_fsinfo_t {
     unsigned              version;          /* Version number */
     H5F_fspace_strategy_t strategy;         /* File space strategy */
-    bool               persist;          /* Persisting free-space or not */
+    bool                  persist;          /* Persisting free-space or not */
     hsize_t               threshold;        /* Free-space section threshold */
     hsize_t               page_size;        /* For paged aggregation: file space page size */
     size_t                pgend_meta_thres; /* For paged aggregation: page end metadata threshold */
     haddr_t eoa_pre_fsm_fsalloc; /* For paged aggregation: the eoa before free-space headers & sinfo */
     haddr_t fs_addr[H5F_MEM_PAGE_NTYPES - 1]; /* 13 addresses of free-space managers */
                                               /* For non-paged aggregation: only 6 addresses are used */
-    bool mapped;                           /* Not stored */
+    bool mapped;                              /* Not stored */
                                               /* Indicate the message is mapped from version 0 to version 1 */
 } H5O_fsinfo_t;
 
@@ -982,8 +982,7 @@ H5_DLL herr_t H5O_msg_get_flags(const H5O_loc_t *loc, unsigned type_id, uint8_t 
 H5_DLL herr_t H5O_flush(H5O_loc_t *oloc, hid_t obj_id);
 H5_DLL herr_t H5O_flush_common(H5O_loc_t *oloc, hid_t obj_id);
 H5_DLL herr_t H5O_refresh_metadata(hid_t oid, H5O_loc_t oloc);
-H5_DLL herr_t H5O_refresh_metadata_reopen(hid_t oid, H5G_loc_t *obj_loc, H5VL_t *vol_driver,
-                                          bool start_swmr);
+H5_DLL herr_t H5O_refresh_metadata_reopen(hid_t oid, H5G_loc_t *obj_loc, H5VL_t *vol_driver, bool start_swmr);
 
 /* Cache corking functions */
 H5_DLL herr_t H5O_disable_mdc_flushes(H5O_loc_t *oloc);
@@ -992,8 +991,7 @@ H5_DLL herr_t H5O_are_mdc_flushes_disabled(H5O_loc_t *oloc, bool *are_disabled);
 
 /* Object copying routines */
 H5_DLL herr_t H5O_copy_header_map(const H5O_loc_t *oloc_src, H5O_loc_t *oloc_dst /*out */,
-                                  H5O_copy_t *cpy_info, bool inc_depth, H5O_type_t *obj_type,
-                                  void **udata);
+                                  H5O_copy_t *cpy_info, bool inc_depth, H5O_type_t *obj_type, void **udata);
 H5_DLL herr_t H5O_copy_expand_ref(H5F_t *file_src, hid_t tid_src, const H5T_t *dt_src, void *buf_src,
                                   size_t nbytes_src, H5F_t *file_dst, void *buf_dst, H5O_copy_t *cpy_info);
 

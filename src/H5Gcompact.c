@@ -52,7 +52,7 @@ typedef struct {
 
     /* upward */
     H5O_link_t *lnk;   /* Link struct to fill in */
-    bool *   found; /* Pointer to flag to indicate that the object was found */
+    bool *      found; /* Pointer to flag to indicate that the object was found */
 } H5G_iter_lkp_t;
 
 /* Private macros */

@@ -83,7 +83,7 @@ typedef struct H5FD_multi_fapl_t {
     hid_t      memb_fapl[H5FD_MEM_NTYPES]; /*member access properties      */
     char *     memb_name[H5FD_MEM_NTYPES]; /*name generators               */
     haddr_t    memb_addr[H5FD_MEM_NTYPES]; /*starting addr per member      */
-    bool    relax;                      /*less stringent error checking */
+    bool       relax;                      /*less stringent error checking */
 } H5FD_multi_fapl_t;
 
 /*
@@ -697,8 +697,8 @@ H5FD_multi_sb_decode(H5FD_t *_file, const char *name, const unsigned char *buf)
     H5FD_mem_t         map[H5FD_MEM_NTYPES];
     int                i;
     size_t             nseen       = 0;
-    bool            map_changed = false;
-    bool            in_use[H5FD_MEM_NTYPES];
+    bool               map_changed = false;
+    bool               in_use[H5FD_MEM_NTYPES];
     const char *       memb_name[H5FD_MEM_NTYPES];
     haddr_t            memb_addr[H5FD_MEM_NTYPES];
     haddr_t            memb_eoa[H5FD_MEM_NTYPES];

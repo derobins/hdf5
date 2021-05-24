@@ -70,11 +70,11 @@ const char *FILENAMES[] = {"evict-on-close", /* 0 */
 #define SUBGROUP_NAME_SIZE 16
 
 /* Prototypes */
-static bool verify_tag_not_in_cache(const H5F_t *f, haddr_t tag);
-static herr_t  check_evict_on_close_api(void);
-static hid_t   generate_eoc_test_file(hid_t fapl_id);
-static herr_t  check_dset_scheme(hid_t fid, const char *dset_name);
-static herr_t  check_group_layout(hid_t fid, const char *group_name);
+static bool   verify_tag_not_in_cache(const H5F_t *f, haddr_t tag);
+static herr_t check_evict_on_close_api(void);
+static hid_t  generate_eoc_test_file(hid_t fapl_id);
+static herr_t check_dset_scheme(hid_t fid, const char *dset_name);
+static herr_t check_group_layout(hid_t fid, const char *group_name);
 
 /*-------------------------------------------------------------------------
  * Function:    verify_tag_not_in_cache()
@@ -802,10 +802,10 @@ error:
 static herr_t
 check_evict_on_close_api(void)
 {
-    hid_t   fapl_id = -1;
-    hid_t   dapl_id = -1;
-    bool evict_on_close;
-    herr_t  status;
+    hid_t  fapl_id = -1;
+    hid_t  dapl_id = -1;
+    bool   evict_on_close;
+    herr_t status;
 
     TESTING("evict on close API");
 

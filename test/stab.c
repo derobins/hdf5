@@ -1416,7 +1416,7 @@ main(void)
     hid_t       fcpl, fcpl2;     /* File creation property list ID */
     unsigned    new_format;      /* Whether to use the new format or not */
     const char *env_h5_drvr;     /* File Driver value from environment */
-    bool     contig_addr_vfd; /* Whether VFD used has a contigous address space */
+    bool        contig_addr_vfd; /* Whether VFD used has a contigous address space */
     int         nerrors = 0;
 
     /* Get the VFD to use */

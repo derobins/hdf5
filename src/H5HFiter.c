@@ -121,7 +121,7 @@ H5HF__man_iter_start_offset(H5HF_hdr_t *hdr, H5HF_block_iter_t *biter, hsize_t o
     hsize_t          curr_offset;          /* Current offset, as adjusted */
     unsigned         row;                  /* Current row we are on */
     unsigned         col;                  /* Column in row */
-    bool          root_block = true;    /* Flag to indicate the current block is the root indirect block */
+    bool             root_block = true;    /* Flag to indicate the current block is the root indirect block */
     herr_t           ret_value  = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

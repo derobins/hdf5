@@ -453,8 +453,7 @@ static const H5F_close_degree_t H5F_def_close_degree_g = H5F_CLOSE_DEGREE_DEF; /
 static const hsize_t H5F_def_family_offset_g = H5F_ACS_FAMILY_OFFSET_DEF; /* Default offset for family VFD */
 static const hsize_t H5F_def_family_newsize_g =
     H5F_ACS_FAMILY_NEWSIZE_DEF; /* Default size of new files for family VFD */
-static const bool H5F_def_family_to_single_g =
-    H5F_ACS_FAMILY_TO_SINGLE_DEF; /* Default ?? for family VFD */
+static const bool H5F_def_family_to_single_g = H5F_ACS_FAMILY_TO_SINGLE_DEF; /* Default ?? for family VFD */
 static const H5FD_mem_t H5F_def_mem_type_g =
     H5F_ACS_MULTI_TYPE_DEF; /* Default file space type for multi VFD */
 
@@ -481,8 +480,8 @@ static const bool H5F_def_null_fsm_addr_g =
 
 static const bool H5F_def_use_mdc_logging_g =
     H5F_ACS_USE_MDC_LOGGING_DEF; /* Default metadata cache logging flag */
-static const char *  H5F_def_mdc_log_location_g = H5F_ACS_MDC_LOG_LOCATION_DEF; /* Default mdc log location */
-static const bool H5F_def_start_mdc_log_on_access_g =
+static const char *H5F_def_mdc_log_location_g = H5F_ACS_MDC_LOG_LOCATION_DEF; /* Default mdc log location */
+static const bool  H5F_def_start_mdc_log_on_access_g =
     H5F_ACS_START_MDC_LOG_ON_ACCESS_DEF; /* Default mdc log start on access flag */
 static const bool H5F_def_evict_on_close_flag_g =
     H5F_ACS_EVICT_ON_CLOSE_FLAG_DEF; /* Default setting for evict on close property */

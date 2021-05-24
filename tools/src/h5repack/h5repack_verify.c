@@ -50,7 +50,7 @@ h5repack_verify(const char *in_fname, const char *out_fname, pack_opt_t *options
     hid_t                 fcpl_in  = H5I_INVALID_HID;  /* file creation property for input file */
     hid_t                 fcpl_out = H5I_INVALID_HID;  /* file creation property for output file */
     H5F_fspace_strategy_t in_strategy, out_strategy;   /* file space handling strategy for in/output file */
-    bool               in_persist, out_persist;     /* free-space persist status for in/output file */
+    bool                  in_persist, out_persist;     /* free-space persist status for in/output file */
     hsize_t               in_threshold, out_threshold; /* free-space section threshold for in/output file */
     hsize_t               in_pagesize, out_pagesize;   /* file space page size for input/output file */
     int                   ret_value = 0;

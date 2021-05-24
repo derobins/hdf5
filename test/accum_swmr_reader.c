@@ -51,7 +51,7 @@ main(void)
     uint8_t  rbuf[1024];             /* Buffer for reading */
     uint8_t  buf[1024];              /* Buffer for holding the expected data */
     char *   driver         = NULL;  /* VFD string (from env variable) */
-    bool  api_ctx_pushed = false; /* Whether API context pushed */
+    bool     api_ctx_pushed = false; /* Whether API context pushed */
 
     /* Skip this test if SWMR I/O is not supported for the VFD specified
      * by the environment variable.

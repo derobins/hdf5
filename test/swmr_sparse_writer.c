@@ -174,7 +174,7 @@ add_records(hid_t fid, unsigned verbose, unsigned long nrecords, unsigned long f
         symbol_info_t *symbol;   /* Symbol to write record to */
         hid_t          file_sid; /* Dataset's space ID */
         hid_t          aid;      /* Attribute ID */
-        bool        corked;   /* Whether the dataset was corked */
+        bool           corked;   /* Whether the dataset was corked */
 
         /* Get a random dataset, according to the symbol distribution */
         symbol = choose_dataset();

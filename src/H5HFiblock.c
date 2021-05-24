@@ -340,8 +340,8 @@ H5HF__man_iblock_root_create(H5HF_hdr_t *hdr, size_t min_dblock_size)
     H5HF_indirect_t *iblock;              /* Pointer to indirect block */
     haddr_t          iblock_addr;         /* Indirect block's address */
     hsize_t          acc_dblock_free;     /* Accumulated free space in direct blocks */
-    bool          have_direct_block;   /* Flag to indicate a direct block already exists */
-    bool          did_protect;         /* Whether we protected the indirect block or not */
+    bool             have_direct_block;   /* Flag to indicate a direct block already exists */
+    bool             did_protect;         /* Whether we protected the indirect block or not */
     unsigned         nrows;               /* Number of rows for root indirect block */
     unsigned         u;                   /* Local index variable */
     herr_t           ret_value = SUCCEED; /* Return value */
@@ -498,7 +498,7 @@ H5HF__man_iblock_root_double(H5HF_hdr_t *hdr, size_t min_dblock_size)
     unsigned         min_nrows      = 0; /* Min. # of direct rows */
     unsigned         old_nrows;          /* Old # of rows */
     unsigned         new_nrows;          /* New # of rows */
-    bool          skip_direct_rows = false; /* Whether we are skipping direct rows */
+    bool             skip_direct_rows = false; /* Whether we are skipping direct rows */
     size_t           u;                        /* Local index variable */
     herr_t           ret_value = SUCCEED;      /* Return value */
 
@@ -896,7 +896,7 @@ H5HF__man_iblock_alloc_row(H5HF_hdr_t *hdr, H5HF_free_section_t **sec_node)
     H5HF_indirect_t *    iblock       = NULL;      /* Pointer to indirect block */
     H5HF_free_section_t *old_sec_node = *sec_node; /* Pointer to old indirect section node */
     unsigned             dblock_entry;             /* Entry for direct block */
-    bool              iblock_held = false;      /* Flag to indicate that indirect block is held */
+    bool                 iblock_held = false;      /* Flag to indicate that indirect block is held */
     herr_t               ret_value   = SUCCEED;    /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1106,12 +1106,12 @@ done:
  */
 H5HF_indirect_t *
 H5HF__man_iblock_protect(H5HF_hdr_t *hdr, haddr_t iblock_addr, unsigned iblock_nrows,
-                         H5HF_indirect_t *par_iblock, unsigned par_entry, bool must_protect,
-                         unsigned flags, bool *did_protect)
+                         H5HF_indirect_t *par_iblock, unsigned par_entry, bool must_protect, unsigned flags,
+                         bool *did_protect)
 {
     H5HF_parent_t    par_info;               /* Parent info for loading block */
     H5HF_indirect_t *iblock         = NULL;  /* Indirect block from cache */
-    bool          should_protect = false; /* Whether we should protect the indirect block or not */
+    bool             should_protect = false; /* Whether we should protect the indirect block or not */
     H5HF_indirect_t *ret_value      = NULL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1507,7 +1507,7 @@ H5HF__man_iblock_detach(H5HF_indirect_t *iblock, unsigned entry)
     /* Delete indirect block from cache, if appropriate */
     if (del_iblock) {
         unsigned cache_flags    = H5AC__NO_FLAGS_SET; /* Flags for unprotect */
-        bool  took_ownership = false; /* Flag to indicate that block ownership has transitioned */
+        bool     took_ownership = false; /* Flag to indicate that block ownership has transitioned */
 
         /* If the refcount is still >0, unpin the block and take ownership
          * 	from the cache, otherwise let the cache destroy it.
@@ -1604,7 +1604,7 @@ H5HF__man_iblock_delete(H5HF_hdr_t *hdr, haddr_t iblock_addr, unsigned iblock_nr
     unsigned         row, col;                         /* Current row & column in indirect block */
     unsigned         entry;                            /* Current entry in row */
     unsigned         cache_flags = H5AC__NO_FLAGS_SET; /* Flags for unprotecting indirect block */
-    bool          did_protect;                      /* Whether we protected the indirect block or not */
+    bool             did_protect;                      /* Whether we protected the indirect block or not */
     herr_t           ret_value = SUCCEED;              /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1713,7 +1713,7 @@ H5HF__man_iblock_size(H5F_t *f, H5HF_hdr_t *hdr, haddr_t iblock_addr, unsigned n
                       H5HF_indirect_t *par_iblock, unsigned par_entry, hsize_t *heap_size)
 {
     H5HF_indirect_t *iblock = NULL;       /* Pointer to indirect block */
-    bool          did_protect;         /* Whether we protected the indirect block or not */
+    bool             did_protect;         /* Whether we protected the indirect block or not */
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

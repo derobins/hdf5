@@ -782,7 +782,7 @@ done:
 herr_t
 H5HF_close(H5HF_t *fh)
 {
-    bool pending_delete = false;       /* Whether the heap is pending deletion */
+    bool    pending_delete = false;       /* Whether the heap is pending deletion */
     haddr_t heap_addr      = HADDR_UNDEF; /* Address of heap (for deletion) */
     herr_t  ret_value      = SUCCEED;     /* Return value */
 

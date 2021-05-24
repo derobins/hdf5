@@ -128,9 +128,9 @@ static herr_t               H5HF__sect_indirect_revive(H5HF_hdr_t *hdr, H5HF_fre
                                                        H5HF_indirect_t *sect_iblock);
 static herr_t               H5HF__sect_indirect_reduce_row(H5HF_hdr_t *hdr, H5HF_free_section_t *row_sect,
                                                            bool *alloc_from_start);
-static herr_t  H5HF__sect_indirect_reduce(H5HF_hdr_t *hdr, H5HF_free_section_t *sect, unsigned child_entry);
-static herr_t  H5HF__sect_indirect_first(H5HF_hdr_t *hdr, H5HF_free_section_t *sect);
-static bool H5HF__sect_indirect_is_first(H5HF_free_section_t *sect);
+static herr_t H5HF__sect_indirect_reduce(H5HF_hdr_t *hdr, H5HF_free_section_t *sect, unsigned child_entry);
+static herr_t H5HF__sect_indirect_first(H5HF_hdr_t *hdr, H5HF_free_section_t *sect);
+static bool   H5HF__sect_indirect_is_first(H5HF_free_section_t *sect);
 static H5HF_indirect_t *    H5HF__sect_indirect_get_iblock(H5HF_free_section_t *sect);
 static hsize_t              H5HF__sect_indirect_iblock_off(const H5HF_free_section_t *sect);
 static H5HF_free_section_t *H5HF__sect_indirect_top(H5HF_free_section_t *sect);
@@ -504,7 +504,7 @@ H5HF__sect_single_locate_parent(H5HF_hdr_t *hdr, bool refresh, H5HF_free_section
 {
     H5HF_indirect_t *sec_iblock;          /* Pointer to section indirect block */
     unsigned         sec_entry;           /* Entry within section indirect block */
-    bool          did_protect;         /* Whether we protected the indirect block or not */
+    bool             did_protect;         /* Whether we protected the indirect block or not */
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -729,7 +729,7 @@ H5HF__sect_single_full_dblock(H5HF_hdr_t *hdr, H5HF_free_section_t *sect)
     dblock_overhead = H5HF_MAN_ABS_DIRECT_OVERHEAD(hdr);
     if ((dblock_size - dblock_overhead) == sect->sect_info.size && hdr->man_dtable.curr_root_rows > 0) {
         H5HF_direct_t *dblock;         /* Pointer to direct block for section */
-        bool        parent_removed; /* Whether the direct block parent was removed from the file */
+        bool           parent_removed; /* Whether the direct block parent was removed from the file */
 
         if (NULL == (dblock = H5HF__man_dblock_protect(hdr, dblock_addr, dblock_size, sect->u.single.parent,
                                                        sect->u.single.par_entry, H5AC__NO_FLAGS_SET)))
@@ -1350,8 +1350,8 @@ done:
 herr_t
 H5HF__sect_row_reduce(H5HF_hdr_t *hdr, H5HF_free_section_t *sect, unsigned *entry_p)
 {
-    bool alloc_from_start;    /* Whether to allocate from the end of the row */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    bool   alloc_from_start;    /* Whether to allocate from the end of the row */
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -2707,7 +2707,7 @@ static herr_t
 H5HF__sect_indirect_revive_row(H5HF_hdr_t *hdr, H5HF_free_section_t *sect)
 {
     H5HF_indirect_t *sec_iblock;          /* Pointer to section indirect block */
-    bool          did_protect;         /* Whether we protected the indirect block or not */
+    bool             did_protect;         /* Whether we protected the indirect block or not */
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3433,7 +3433,7 @@ H5HF__sect_indirect_merge_row(H5HF_hdr_t *hdr, H5HF_free_section_t *row_sect1, H
     unsigned             end_entry1;             /* End entry for section #1 */
     unsigned             end_row1;               /* Ending row for section #1 */
     unsigned             start_row2;             /* Starting row for section #2 */
-    bool              merged_rows;            /* Flag to indicate that rows was merged together */
+    bool                 merged_rows;            /* Flag to indicate that rows was merged together */
     unsigned             u;                      /* Local index variable */
     herr_t               ret_value = SUCCEED;    /* Return value */
 

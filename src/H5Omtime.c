@@ -262,8 +262,7 @@ H5O__mtime_new_encode(H5F_t H5_ATTR_UNUSED *f, bool H5_ATTR_UNUSED disable_share
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5O__mtime_encode(H5F_t H5_ATTR_UNUSED *f, bool H5_ATTR_UNUSED disable_shared, uint8_t *p,
-                  const void *_mesg)
+H5O__mtime_encode(H5F_t H5_ATTR_UNUSED *f, bool H5_ATTR_UNUSED disable_shared, uint8_t *p, const void *_mesg)
 {
     const time_t *mesg = (const time_t *)_mesg;
     struct tm *   tm;

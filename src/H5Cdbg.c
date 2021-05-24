@@ -862,10 +862,10 @@ H5C_stats__reset(H5C_t H5_ATTR_UNUSED *cache_ptr)
 herr_t
 H5C_flush_dependency_exists(H5C_t *cache_ptr, haddr_t parent_addr, haddr_t child_addr, bool *fd_exists_ptr)
 {
-    bool            fd_exists = false; /* whether flush dependency exists */
+    bool               fd_exists = false; /* whether flush dependency exists */
     H5C_cache_entry_t *parent_ptr;        /* Ptr to parent entry */
     H5C_cache_entry_t *child_ptr;         /* Ptr to child entry */
-    bool            ret_value = false; /* Return value */
+    bool               ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -1141,7 +1141,7 @@ bool
 H5C_cache_is_clean(const H5C_t *cache_ptr, H5C_ring_t inner_ring)
 {
     H5C_ring_t ring      = H5C_RING_USER;
-    bool    ret_value = true; /* Return value */
+    bool       ret_value = true; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 

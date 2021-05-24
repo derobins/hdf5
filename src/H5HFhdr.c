@@ -963,7 +963,7 @@ H5HF__hdr_update_iter(H5HF_hdr_t *hdr, size_t min_dblock_size)
     } /* end if */
     else {
         H5HF_indirect_t *iblock;                 /* Pointer to indirect block */
-        bool          walked_up, walked_down; /* Condition variables for finding direct block location */
+        bool             walked_up, walked_down; /* Condition variables for finding direct block location */
         unsigned         next_row;               /* Iterator's next block row */
         unsigned         next_entry;             /* Iterator's next block entry */
         unsigned         min_dblock_row;         /* Minimum row for direct block size request */
@@ -1069,7 +1069,7 @@ H5HF__hdr_update_iter(H5HF_hdr_t *hdr, size_t min_dblock_size)
                 } /* end if */
                 else {
                     H5HF_indirect_t *new_iblock;      /* Pointer to new indirect block */
-                    bool          did_protect;     /* Whether we protected the indirect block or not */
+                    bool             did_protect;     /* Whether we protected the indirect block or not */
                     haddr_t          new_iblock_addr; /* New indirect block's address */
 
                     /* Allocate new indirect block */
@@ -1179,8 +1179,8 @@ H5HF__hdr_reverse_iter(H5HF_hdr_t *hdr, haddr_t dblock_addr)
 {
     H5HF_indirect_t *iblock;              /* Indirect block where iterator is located */
     unsigned         curr_entry;          /* Current entry for iterator */
-    bool          walked_down;         /* Loop flag */
-    bool          walked_up;           /* Loop flag */
+    bool             walked_down;         /* Loop flag */
+    bool             walked_up;           /* Loop flag */
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1272,7 +1272,7 @@ H5HF__hdr_reverse_iter(H5HF_hdr_t *hdr, haddr_t dblock_addr)
             } /* end if */
             else {
                 H5HF_indirect_t *child_iblock; /* Pointer to child indirect block */
-                bool          did_protect;  /* Whether we protected the indirect block or not */
+                bool             did_protect;  /* Whether we protected the indirect block or not */
                 unsigned         child_nrows;  /* # of rows in child block */
 
                 /* Compute # of rows in next child indirect block to use */

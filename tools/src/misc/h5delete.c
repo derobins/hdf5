@@ -31,7 +31,7 @@ usage(void)
 int
 main(int argc, const char *argv[])
 {
-    bool     quiet = false;
+    bool        quiet = false;
     const char *name  = NULL;
     int         ret   = 0;
 

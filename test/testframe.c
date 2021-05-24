@@ -223,7 +223,7 @@ void
 TestParseCmdLine(int argc, char *argv[])
 {
     bool skipped_all = false;
-    int     ret_code;
+    int  ret_code;
 
     while (argv++, --argc > 0) {
         if ((HDstrcmp(*argv, "-verbose") == 0) || (HDstrcmp(*argv, "-v") == 0)) {

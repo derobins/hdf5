@@ -75,12 +75,12 @@ typedef struct H5I_id_info_t {
     const void *object;    /* Pointer associated with the ID */
 
     /* Future ID info */
-    bool                   is_future;  /* Whether this ID represents a future object */
+    bool                      is_future;  /* Whether this ID represents a future object */
     H5I_future_realize_func_t realize_cb; /* 'realize' callback for future object */
     H5I_future_discard_func_t discard_cb; /* 'discard' callback for future object */
 
     /* Hash table ID fields */
-    bool        marked; /* Marked for deletion */
+    bool           marked; /* Marked for deletion */
     UT_hash_handle hh;     /* Hash table handle (must be LAST) */
 } H5I_id_info_t;
 

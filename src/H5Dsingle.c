@@ -51,22 +51,22 @@
 /********************/
 
 /* Single Chunk Index chunking I/O ops */
-static herr_t  H5D__single_idx_init(const H5D_chk_idx_info_t *idx_info, const H5S_t *space,
-                                    haddr_t dset_ohdr_addr);
-static herr_t  H5D__single_idx_create(const H5D_chk_idx_info_t *idx_info);
-static bool H5D__single_idx_is_space_alloc(const H5O_storage_chunk_t *storage);
-static herr_t  H5D__single_idx_insert(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata,
-                                      const H5D_t *dset);
-static herr_t  H5D__single_idx_get_addr(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata);
-static int     H5D__single_idx_iterate(const H5D_chk_idx_info_t *idx_info, H5D_chunk_cb_func_t chunk_cb,
-                                       void *chunk_udata);
-static herr_t  H5D__single_idx_remove(const H5D_chk_idx_info_t *idx_info, H5D_chunk_common_ud_t *udata);
-static herr_t  H5D__single_idx_delete(const H5D_chk_idx_info_t *idx_info);
-static herr_t  H5D__single_idx_copy_setup(const H5D_chk_idx_info_t *idx_info_src,
-                                          const H5D_chk_idx_info_t *idx_info_dst);
-static herr_t  H5D__single_idx_size(const H5D_chk_idx_info_t *idx_info, hsize_t *size);
-static herr_t  H5D__single_idx_reset(H5O_storage_chunk_t *storage, bool reset_addr);
-static herr_t  H5D__single_idx_dump(const H5O_storage_chunk_t *storage, FILE *stream);
+static herr_t H5D__single_idx_init(const H5D_chk_idx_info_t *idx_info, const H5S_t *space,
+                                   haddr_t dset_ohdr_addr);
+static herr_t H5D__single_idx_create(const H5D_chk_idx_info_t *idx_info);
+static bool   H5D__single_idx_is_space_alloc(const H5O_storage_chunk_t *storage);
+static herr_t H5D__single_idx_insert(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata,
+                                     const H5D_t *dset);
+static herr_t H5D__single_idx_get_addr(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata);
+static int    H5D__single_idx_iterate(const H5D_chk_idx_info_t *idx_info, H5D_chunk_cb_func_t chunk_cb,
+                                      void *chunk_udata);
+static herr_t H5D__single_idx_remove(const H5D_chk_idx_info_t *idx_info, H5D_chunk_common_ud_t *udata);
+static herr_t H5D__single_idx_delete(const H5D_chk_idx_info_t *idx_info);
+static herr_t H5D__single_idx_copy_setup(const H5D_chk_idx_info_t *idx_info_src,
+                                         const H5D_chk_idx_info_t *idx_info_dst);
+static herr_t H5D__single_idx_size(const H5D_chk_idx_info_t *idx_info, hsize_t *size);
+static herr_t H5D__single_idx_reset(H5O_storage_chunk_t *storage, bool reset_addr);
+static herr_t H5D__single_idx_dump(const H5O_storage_chunk_t *storage, FILE *stream);
 
 /*********************/
 /* Package Variables */

@@ -77,7 +77,7 @@ typedef struct H5FD_log_t {
     haddr_t        eof; /* end of file; current file size   */
     haddr_t        pos; /* current file I/O position        */
     H5FD_file_op_t op;  /* last operation                   */
-    bool        ignore_disabled_file_locks;
+    bool           ignore_disabled_file_locks;
     char           filename[H5FD_MAX_FILENAME_LEN]; /* Copy of file name from open operation */
 #ifndef H5_HAVE_WIN32_API
     /* On most systems the combination of device and i-node number uniquely

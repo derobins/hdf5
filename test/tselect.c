@@ -1879,7 +1879,7 @@ verify_select_hyper_contig_dr__run_test(const uint16_t *cube_buf, size_t H5_ATTR
     uint16_t        expected_value; /* Expected value in dataset */
     unsigned        i, j, k, l, m;  /* Local index variables */
     size_t          s;              /* Local index variable */
-    bool         mis_match;      /* Flag to indicate mis-match in expected value */
+    bool            mis_match;      /* Flag to indicate mis-match in expected value */
 
     HDassert(cube_buf);
     HDassert(cube_size > 0);
@@ -1937,7 +1937,7 @@ test_select_hyper_contig_dr__run_test(int test_num, const uint16_t *cube_buf, co
                                       unsigned edge_size, unsigned chunk_edge_size, unsigned small_rank,
                                       unsigned large_rank, hid_t dset_type, hid_t xfer_plist)
 {
-    bool   mis_match;                        /* Flag indicating a value read in wasn't what was expected */
+    bool      mis_match;                        /* Flag indicating a value read in wasn't what was expected */
     hid_t     fapl;                             /* File access property list */
     hid_t     fid1;                             /* File ID */
     hid_t     small_cube_sid;                   /* Dataspace ID for small cube in memory & file */
@@ -2581,7 +2581,7 @@ test_select_hyper_checker_board_dr__select_checker_board(hid_t tgt_n_cube_sid, u
                                                          unsigned edge_size, unsigned checker_edge_size,
                                                          unsigned sel_rank, const hsize_t sel_start[])
 {
-    bool  first_selection = true;
+    bool     first_selection = true;
     unsigned n_cube_offset;
     unsigned sel_offset;
     hsize_t  base_count;
@@ -2807,9 +2807,9 @@ test_select_hyper_checker_board_dr__verify_data(uint16_t *buf_ptr, unsigned rank
                                                 unsigned checker_edge_size, uint16_t first_expected_val,
                                                 bool buf_starts_in_checker)
 {
-    bool        good_data = true;
-    bool        in_checker;
-    bool        start_in_checker[5];
+    bool           good_data = true;
+    bool           in_checker;
+    bool           start_in_checker[5];
     uint16_t       expected_value;
     uint16_t *     val_ptr;
     unsigned       i, j, k, l, m;     /* to track position in n-cube */
@@ -2918,7 +2918,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
                                              unsigned chunk_edge_size, unsigned small_rank,
                                              unsigned large_rank, hid_t dset_type, hid_t xfer_plist)
 {
-    bool        data_ok;
+    bool           data_ok;
     hid_t          fapl;                /* File access property list */
     hid_t          fid;                 /* HDF5 File IDs        */
     hid_t          full_small_cube_sid; /* Dataspace for small cube w/all selection */
@@ -10974,8 +10974,8 @@ test_shape_same_dr__full_space_vs_slice(int test_num, int small_rank, int large_
 static void
 test_shape_same_dr__run_full_space_vs_slice_tests(void)
 {
-    bool dim_selected[5];
-    bool expected_result;
+    bool    dim_selected[5];
+    bool    expected_result;
     int     i, j;
     int     v, w, x, y, z;
     int     test_num = 0;
@@ -11414,11 +11414,11 @@ test_shape_same_dr__run_checkerboard_tests(void)
 {
     bool dim_selected[5];
     bool expected_result;
-    int     i, j;
-    int     v, w, x, y, z;
-    int     test_num = 0;
-    int     small_rank;
-    int     large_rank;
+    int  i, j;
+    int  v, w, x, y, z;
+    int  test_num = 0;
+    int  small_rank;
+    int  large_rank;
 
     for (large_rank = 1; large_rank <= 5; large_rank++) {
         for (small_rank = 1; small_rank <= large_rank; small_rank++) {
@@ -11854,11 +11854,11 @@ test_shape_same_dr__run_irregular_tests(void)
 {
     bool dim_selected[5];
     bool expected_result;
-    int     i, j;
-    int     v, w, x, y, z;
-    int     test_num = 0;
-    int     small_rank;
-    int     large_rank;
+    int  i, j;
+    int  v, w, x, y, z;
+    int  test_num = 0;
+    int  small_rank;
+    int  large_rank;
 
     for (large_rank = 1; large_rank <= 5; large_rank++) {
         for (small_rank = 1; small_rank <= large_rank; small_rank++) {

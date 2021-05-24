@@ -79,8 +79,8 @@ typedef struct H5C_log_class_t {
 
 /* Logging information */
 struct H5C_log_info_t {
-    bool                enabled; /* Was the logging set up? */
-    bool                logging; /* Are we currently logging? */
+    bool                   enabled; /* Was the logging set up? */
+    bool                   logging; /* Are we currently logging? */
     const H5C_log_class_t *cls;     /* Callbacks for writing log messages */
     void *                 udata;   /* Log-specific data */
 };

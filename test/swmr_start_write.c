@@ -357,9 +357,9 @@ main(int argc, const char *argv[])
     hid_t       fid;                  /* File ID for file opened */
     long        nrecords     = 0;     /* # of records to append */
     long        flush_count  = 10000; /* # of records to write between flushing file */
-    bool     verbose      = true;  /* Whether to emit some informational messages */
+    bool        verbose      = true;  /* Whether to emit some informational messages */
     FILE *      verbose_file = NULL;  /* File handle for verbose output */
-    bool     use_seed     = false; /* Set to TRUE if a seed was set on the command line */
+    bool        use_seed     = false; /* Set to TRUE if a seed was set on the command line */
     unsigned    random_seed  = 0;     /* Random # seed */
     int         comp_level   = -1;    /* Compression level (-1 is no compression) */
     const char *index_type   = "b1";  /* Chunk index type */

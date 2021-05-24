@@ -1052,8 +1052,8 @@ done:
 static herr_t
 H5S__point_get_version_enc_size(const H5S_t *space, uint32_t *version, uint8_t *enc_size)
 {
-    bool      count_up_version = false;   /* Whether number of points exceed H5S_UINT32_MAX */
-    bool      bound_up_version = false;   /* Whether high bounds exceed H5S_UINT32_MAX */
+    bool         count_up_version = false;   /* Whether number of points exceed H5S_UINT32_MAX */
+    bool         bound_up_version = false;   /* Whether high bounds exceed H5S_UINT32_MAX */
     H5F_libver_t low_bound;                  /* The 'low' bound of library format versions */
     H5F_libver_t high_bound;                 /* The 'high' bound of library format versions */
     uint32_t     tmp_version;                /* Local temporary version */
@@ -2059,7 +2059,7 @@ done:
 static herr_t
 H5S__point_adjust_u(H5S_t *space, const hsize_t *offset)
 {
-    bool         non_zero_offset = false; /* Whether any offset is non-zero */
+    bool            non_zero_offset = false; /* Whether any offset is non-zero */
     H5S_pnt_node_t *node;                    /* Point node */
     unsigned        rank;                    /* Dataspace rank */
     unsigned        u;                       /* Local index variable */
@@ -2126,7 +2126,7 @@ H5S__point_adjust_u(H5S_t *space, const hsize_t *offset)
 static herr_t
 H5S__point_adjust_s(H5S_t *space, const hssize_t *offset)
 {
-    bool         non_zero_offset = false; /* Whether any offset is non-zero */
+    bool            non_zero_offset = false; /* Whether any offset is non-zero */
     H5S_pnt_node_t *node;                    /* Point node */
     unsigned        rank;                    /* Dataspace rank */
     unsigned        u;                       /* Local index variable */

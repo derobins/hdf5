@@ -1523,9 +1523,9 @@ diff(hid_t file1_id, const char *path1, hid_t file2_id, const char *path2, diff_
     hid_t         type2_id        = H5I_INVALID_HID;
     hid_t         grp1_id         = H5I_INVALID_HID;
     hid_t         grp2_id         = H5I_INVALID_HID;
-    bool       is_dangle_link1 = false;
-    bool       is_dangle_link2 = false;
-    bool       is_hard_link    = false;
+    bool          is_dangle_link1 = false;
+    bool          is_dangle_link2 = false;
+    bool          is_hard_link    = false;
     hsize_t       nfound          = 0;
     h5trav_type_t object_type;
     diff_err_t    ret_value = opts->err_stat;

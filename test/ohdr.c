@@ -1749,14 +1749,14 @@ main(void)
     hid_t          file = -1;
     H5F_t *        f    = NULL;
     const char *   env_h5_drvr;     /* File driver value from environment */
-    bool        single_file_vfd; /* Whether VFD used stores data in a single file */
+    bool           single_file_vfd; /* Whether VFD used stores data in a single file */
     char           filename[1024];
     H5O_hdr_info_t hdr_info;  /* Object info */
     H5O_loc_t      oh_loc;    /* Object header locations */
     H5F_libver_t   low, high; /* File format bounds */
     time_t         time_new, ro;
     int            i;                      /* Local index variable */
-    bool        api_ctx_pushed = false; /* Whether API context pushed */
+    bool           api_ctx_pushed = false; /* Whether API context pushed */
     herr_t         ret;                    /* Generic return value */
 
     /* Get the VFD to use */
@@ -1766,7 +1766,7 @@ main(void)
 
     /* Check for VFD which stores data in multiple files */
     single_file_vfd = (bool)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0 &&
-                                HDstrcmp(env_h5_drvr, "family") != 0);
+                             HDstrcmp(env_h5_drvr, "family") != 0);
 
     /* Reset library */
     h5_reset();

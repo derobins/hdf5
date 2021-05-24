@@ -1625,7 +1625,7 @@ H5B2__iterate_node(H5B2_hdr_t *hdr, uint16_t depth, const H5B2_node_ptr_t *curr_
     uint8_t *           node_native;              /* Pointers to node's native records */
     uint8_t *           native      = NULL;       /* Pointers to copy of node's native records */
     H5B2_node_ptr_t *   node_ptrs   = NULL;       /* Pointers to node's node pointers */
-    bool             node_pinned = false;      /* Whether node is pinned */
+    bool                node_pinned = false;      /* Whether node is pinned */
     unsigned            u;                        /* Local index */
     herr_t              ret_value = H5_ITER_CONT; /* Iterator return value */
 
@@ -1933,8 +1933,8 @@ H5B2__update_flush_depend(H5B2_hdr_t *hdr, unsigned depth, const H5B2_node_ptr_t
 
     /* If the node is in the cache, check for retargeting its parent */
     if (node_status & H5AC_ES__IN_CACHE) {
-        void ** parent_ptr  = NULL;  /* Pointer to child node's parent */
-        bool update_deps = false; /* Whether to update flush dependencies */
+        void **parent_ptr  = NULL;  /* Pointer to child node's parent */
+        bool   update_deps = false; /* Whether to update flush dependencies */
 
         /* Get child node pointer */
         if (depth > 1) {

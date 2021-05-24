@@ -607,7 +607,7 @@ H5O_open_name(const H5G_loc_t *loc, const char *name, H5I_type_t *opened_type)
     H5G_loc_t  obj_loc;           /* Location used to open group */
     H5G_name_t obj_path;          /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;          /* Opened object object location */
-    bool    loc_found = false; /* Entry at 'name' found */
+    bool       loc_found = false; /* Entry at 'name' found */
     void *     ret_value = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
@@ -658,7 +658,7 @@ H5O__open_by_idx(const H5G_loc_t *loc, const char *name, H5_index_t idx_type, H5
     H5G_loc_t  obj_loc;           /* Location used to open group */
     H5G_name_t obj_path;          /* Opened object group hier. path */
     H5O_loc_t  obj_oloc;          /* Opened object object location */
-    bool    loc_found = false; /* Entry at 'name' found */
+    bool       loc_found = false; /* Entry at 'name' found */
     void *     ret_value = NULL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -963,9 +963,9 @@ done:
 int
 H5O_link(const H5O_loc_t *loc, int adjust)
 {
-    H5O_t * oh        = NULL;
-    bool deleted   = false; /* Whether the object was deleted */
-    int     ret_value = -1;    /* Return value */
+    H5O_t *oh        = NULL;
+    bool   deleted   = false; /* Whether the object was deleted */
+    int    ret_value = -1;    /* Return value */
 
     FUNC_ENTER_NOAPI_TAG(loc->addr, FAIL)
 
@@ -1331,7 +1331,7 @@ herr_t
 H5O_touch_oh(H5F_t *f, H5O_t *oh, bool force)
 {
     H5O_chunk_proxy_t *chk_proxy   = NULL;  /* Chunk that message is in */
-    bool            chk_dirtied = false; /* Flag for unprotecting chunk */
+    bool               chk_dirtied = false; /* Flag for unprotecting chunk */
     time_t             now;                 /* Current time */
     herr_t             ret_value = SUCCEED; /* Return value */
 
@@ -1544,7 +1544,7 @@ H5O_delete(H5F_t *f, haddr_t addr)
     H5O_t *   oh = NULL;                     /* Object header information */
     H5O_loc_t loc;                           /* Object location for object to delete */
     unsigned  oh_flags = H5AC__NO_FLAGS_SET; /* Flags for unprotecting object header */
-    bool   corked;
+    bool      corked;
     herr_t    ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI_TAG(addr, FAIL)
@@ -2648,7 +2648,7 @@ H5O__visit_cb(hid_t H5_ATTR_UNUSED group, const char *name, const H5L_info2_t *l
     H5G_loc_t            obj_loc;                               /* Location of object */
     H5G_name_t           obj_path;                              /* Object's group hier. path */
     H5O_loc_t            obj_oloc;                              /* Object's object location */
-    bool              obj_found = false;                     /* Object at 'name' found */
+    bool                 obj_found = false;                     /* Object at 'name' found */
     herr_t               ret_value = H5_ITER_CONT;              /* Return value */
 
     FUNC_ENTER_STATIC
@@ -2761,7 +2761,7 @@ H5O__visit(H5G_loc_t *loc, const char *obj_name, H5_index_t idx_type, H5_iter_or
     H5G_loc_t           obj_loc;                     /* Location used to open object */
     H5G_name_t          obj_path;                    /* Opened object group hier. path */
     H5O_loc_t           obj_oloc;                    /* Opened object object location */
-    bool             loc_found = false;           /* Entry at 'name' found */
+    bool                loc_found = false;           /* Entry at 'name' found */
     H5O_info2_t         oinfo;                       /* Object info struct */
     void *              obj = NULL;                  /* Object */
     H5I_type_t          opened_type;                 /* ID type of object */

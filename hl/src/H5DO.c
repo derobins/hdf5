@@ -121,7 +121,7 @@ H5DOappend(hid_t dset_id, hid_t dxpl_id, unsigned axis, size_t extension, hid_t 
     hsize_t *       boundary = NULL;  /* Boundary set in append flush property */
     H5D_append_cb_t append_cb;        /* Callback function set in append flush property */
     void *          udata;            /* User data set in append flush property */
-    bool         hit = false;      /* Boundary is hit or not */
+    bool            hit = false;      /* Boundary is hit or not */
     hsize_t         k;                /* Local index variable */
     unsigned        u;                /* Local index variable */
     herr_t          ret_value = FAIL; /* Return value */

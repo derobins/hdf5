@@ -23,7 +23,7 @@
 
 #include "cache_common.h"
 
-bool     pass         = true; /* set to false on error */
+bool        pass         = true; /* set to false on error */
 const char *failure_mssg = NULL;
 
 static test_entry_t *pico_entries = NULL, *orig_pico_entries = NULL;
@@ -1816,7 +1816,7 @@ execute_flush_op(H5F_t *file_ptr, struct test_entry_t *entry_ptr, struct flush_o
 bool
 entry_in_cache(H5C_t *cache_ptr, int32_t type, int32_t idx)
 {
-    bool            in_cache = false; /* will set to TRUE if necessary */
+    bool               in_cache = false; /* will set to TRUE if necessary */
     test_entry_t *     base_addr;
     test_entry_t *     entry_ptr;
     H5C_cache_entry_t *test_ptr = NULL;
@@ -2336,7 +2336,7 @@ verify_entry_status(H5C_t *cache_ptr, int tag, int num_entries, struct expected_
     while ((pass) && (i < num_entries)) {
         test_entry_t *base_addr = entries[expected[i].entry_type];
         test_entry_t *entry_ptr = &(base_addr[expected[i].entry_index]);
-        bool       in_cache  = false; /* will set to TRUE if necessary */
+        bool          in_cache  = false; /* will set to TRUE if necessary */
         unsigned      u;                 /* Local index variable */
 
         if ((!expected[i].in_cache) && ((expected[i].is_protected) || (expected[i].is_pinned))) {
@@ -2883,7 +2883,7 @@ insert_entry(H5F_t *file_ptr, int32_t type, int32_t idx, unsigned int flags)
 {
     H5C_t *       cache_ptr;
     herr_t        result;
-    bool       insert_pinned;
+    bool          insert_pinned;
     test_entry_t *base_addr;
     test_entry_t *entry_ptr;
     haddr_t       baddrs;
@@ -2981,7 +2981,7 @@ mark_entry_dirty(int32_t type, int32_t idx)
     herr_t        result;
     test_entry_t *base_addr;
     test_entry_t *entry_ptr;
-    bool       was_dirty;
+    bool          was_dirty;
 
     if (pass) {
 
@@ -3038,7 +3038,7 @@ void
 move_entry(H5C_t *cache_ptr, int32_t type, int32_t idx, bool main_addr)
 {
     herr_t        result;
-    bool       done     = true; /* will set to FALSE if we have work to do */
+    bool          done     = true; /* will set to FALSE if we have work to do */
     haddr_t       old_addr = HADDR_UNDEF;
     haddr_t       new_addr = HADDR_UNDEF;
     test_entry_t *base_addr;
@@ -3415,8 +3415,8 @@ void
 unprotect_entry(H5F_t *file_ptr, int32_t type, int32_t idx, unsigned int flags)
 {
     herr_t        result;
-    bool       pin_flag_set;
-    bool       unpin_flag_set;
+    bool          pin_flag_set;
+    bool          unpin_flag_set;
     test_entry_t *base_addr;
     test_entry_t *entry_ptr;
 
@@ -3526,9 +3526,9 @@ unprotect_entry(H5F_t *file_ptr, int32_t type, int32_t idx, unsigned int flags)
  */
 void
 row_major_scan_forward(H5F_t *file_ptr, int32_t max_index, int32_t lag, bool verbose, bool reset_stats,
-                       bool display_stats, bool display_detailed_stats, bool do_inserts,
-                       bool do_moves, bool move_to_main_addr, bool do_destroys,
-                       bool do_mult_ro_protects, int dirty_destroys, int dirty_unprotects)
+                       bool display_stats, bool display_detailed_stats, bool do_inserts, bool do_moves,
+                       bool move_to_main_addr, bool do_destroys, bool do_mult_ro_protects, int dirty_destroys,
+                       int dirty_unprotects)
 {
     H5C_t * cache_ptr = NULL;
     int32_t type      = 0;
@@ -3950,9 +3950,9 @@ hl_row_major_scan_forward(H5F_t *file_ptr, int32_t max_index, bool verbose, bool
 
 void
 row_major_scan_backward(H5F_t *file_ptr, int32_t max_index, int32_t lag, bool verbose, bool reset_stats,
-                        bool display_stats, bool display_detailed_stats, bool do_inserts,
-                        bool do_moves, bool move_to_main_addr, bool do_destroys,
-                        bool do_mult_ro_protects, int dirty_destroys, int dirty_unprotects)
+                        bool display_stats, bool display_detailed_stats, bool do_inserts, bool do_moves,
+                        bool move_to_main_addr, bool do_destroys, bool do_mult_ro_protects,
+                        int dirty_destroys, int dirty_unprotects)
 {
     H5C_t * cache_ptr = NULL;
     int32_t type      = NUMBER_OF_ENTRY_TYPES - 1;
@@ -4302,8 +4302,7 @@ hl_row_major_scan_backward(H5F_t *file_ptr, int32_t max_index, bool verbose, boo
 
 void
 col_major_scan_forward(H5F_t *file_ptr, int32_t max_index, int32_t lag, bool verbose, bool reset_stats,
-                       bool display_stats, bool display_detailed_stats, bool do_inserts,
-                       int dirty_unprotects)
+                       bool display_stats, bool display_detailed_stats, bool do_inserts, int dirty_unprotects)
 {
     H5C_t * cache_ptr = NULL;
     int32_t type      = 0;
@@ -4715,7 +4714,7 @@ create_flush_dependency(int32_t par_type, int32_t par_idx, int32_t chd_type, int
         test_entry_t *par_entry_ptr; /* Parent entry */
         test_entry_t *chd_base_addr; /* Base entry of child's entry array */
         test_entry_t *chd_entry_ptr; /* Child entry */
-        bool       par_is_pinned; /* Whether parent is already pinned */
+        bool          par_is_pinned; /* Whether parent is already pinned */
         herr_t        result;        /* API routine status */
 
         /* Get parent entry */
@@ -4957,8 +4956,8 @@ mark_flush_dep_clean(test_entry_t *entry_ptr)
  */
 
 void
-check_and_validate_cache_hit_rate(hid_t file_id, double *hit_rate_ptr, bool dump_data,
-                                  int64_t min_accesses, double min_hit_rate)
+check_and_validate_cache_hit_rate(hid_t file_id, double *hit_rate_ptr, bool dump_data, int64_t min_accesses,
+                                  double min_hit_rate)
 {
     herr_t  result;
     int64_t cache_hits     = 0;

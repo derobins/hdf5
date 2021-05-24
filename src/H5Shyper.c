@@ -96,7 +96,7 @@ typedef struct {
     hsize_t  skip;            /* Number of elements to skip in projected space */
     hsize_t  nelem;           /* Number of elements to add to projected space (after skip) */
     uint64_t op_gen;          /* Operation generation for counting elements */
-    bool  share_selection; /* Whether span trees in dst_space can be shared with proj_space */
+    bool     share_selection; /* Whether span trees in dst_space can be shared with proj_space */
 } H5S_hyper_project_intersect_ud_t;
 
 /* Assert that H5S_MAX_RANK is <= 32 so our trick with using a 32 bit bitmap
@@ -115,7 +115,7 @@ static H5S_hyper_span_info_t *H5S__hyper_new_span_info(unsigned rank);
 static H5S_hyper_span_info_t *H5S__hyper_copy_span_helper(H5S_hyper_span_info_t *spans, unsigned rank,
                                                           unsigned op_info_i, uint64_t op_gen);
 static H5S_hyper_span_info_t *H5S__hyper_copy_span(H5S_hyper_span_info_t *spans, unsigned rank);
-static bool                H5S__hyper_cmp_spans(const H5S_hyper_span_info_t *span_info1,
+static bool                   H5S__hyper_cmp_spans(const H5S_hyper_span_info_t *span_info1,
                                                    const H5S_hyper_span_info_t *span_info2);
 static void                   H5S__hyper_free_span_info(H5S_hyper_span_info_t *span_info);
 static void                   H5S__hyper_free_span(H5S_hyper_span_t *span);
@@ -140,7 +140,7 @@ static H5S_hyper_span_info_t *H5S__hyper_make_spans(unsigned rank, const hsize_t
 static herr_t                 H5S__hyper_update_diminfo(H5S_t *space, H5S_seloper_t op,
                                                         const H5S_hyper_dim_t *new_hyper_diminfo);
 static herr_t                 H5S__hyper_generate_spans(H5S_t *space);
-static bool                H5S__check_spans_overlap(const H5S_hyper_span_info_t *spans1,
+static bool                   H5S__check_spans_overlap(const H5S_hyper_span_info_t *spans1,
                                                        const H5S_hyper_span_info_t *spans2);
 static herr_t  H5S__fill_in_new_space(H5S_t *space1, H5S_seloper_t op, H5S_hyper_span_info_t *space2_span_lst,
                                       bool can_own_span2, bool *span2_owned, bool *updated_spans,
@@ -165,8 +165,7 @@ static herr_t  H5S__hyper_proj_int_iterate(const H5S_hyper_span_info_t *ss_span_
                                            unsigned depth, H5S_hyper_project_intersect_ud_t *udata);
 static void    H5S__hyper_get_clip_diminfo(hsize_t start, hsize_t stride, hsize_t *count, hsize_t *block,
                                            hsize_t clip_size);
-static hsize_t H5S__hyper_get_clip_extent_real(const H5S_t *clip_space, hsize_t num_slices,
-                                               bool incl_trail);
+static hsize_t H5S__hyper_get_clip_extent_real(const H5S_t *clip_space, hsize_t num_slices, bool incl_trail);
 
 /* Selection callbacks */
 static herr_t   H5S__hyper_copy(H5S_t *dst, const H5S_t *src, bool share_selection);
@@ -626,7 +625,7 @@ H5S__hyper_iter_init(const H5S_t *space, H5S_sel_iter_t *iter)
 
         /* Check if the regular selection can be "flattened" */
         if (cont_dim > 0) {
-            bool  last_dim_flattened = true; /* Flag to indicate that the last dimension was flattened */
+            bool     last_dim_flattened = true; /* Flag to indicate that the last dimension was flattened */
             unsigned flat_rank          = rank - cont_dim; /* Number of dimensions after flattening */
             unsigned curr_dim;                             /* Current dimension */
 
@@ -2623,7 +2622,7 @@ H5S__hyper_iter_get_seq_list(H5S_sel_iter_t *iter, size_t maxseq, size_t maxelem
         const hssize_t *       sel_off;      /* Selection offset in dataspace */
         unsigned               ndims;        /* Number of dimensions of dataset */
         unsigned               fast_dim;     /* Rank of the fastest changing dimension for the dataspace */
-        bool                single_block; /* Whether the selection is a single block */
+        bool                   single_block; /* Whether the selection is a single block */
         unsigned               u;            /* Local index variable */
 
         /* Set a local copy of the diminfo pointer */
@@ -3579,8 +3578,8 @@ H5S__hyper_get_version_enc_size(const H5S_t *space, hsize_t block_count, uint32_
 {
     hsize_t      bounds_start[H5S_MAX_RANK]; /* Starting coordinate of bounding box */
     hsize_t      bounds_end[H5S_MAX_RANK];   /* Opposite coordinate of bounding box */
-    bool      count_up_version = false;   /* Whether number of blocks exceed H5S_UINT32_MAX */
-    bool      bound_up_version = false;   /* Whether high bounds exceed H5S_UINT32_MAX */
+    bool         count_up_version = false;   /* Whether number of blocks exceed H5S_UINT32_MAX */
+    bool         bound_up_version = false;   /* Whether high bounds exceed H5S_UINT32_MAX */
     H5F_libver_t low_bound;                  /* The 'low' bound of library format versions */
     H5F_libver_t high_bound;                 /* The 'high' bound of library format versions */
     htri_t       is_regular;                 /* A regular hyperslab or not */
@@ -3959,8 +3958,8 @@ H5S__hyper_serialize(const H5S_t *space, uint8_t **p)
     unsigned               fast_dim;            /* Rank of the fastest changing dimension for the dataspace */
     unsigned               ndims;               /* Rank of the dataspace */
     unsigned               u;                   /* Local counting variable */
-    bool                complete = false;    /* Whether we are done with the iteration */
-    bool                is_regular;          /* Whether selection is regular */
+    bool                   complete = false;    /* Whether we are done with the iteration */
+    bool                   is_regular;          /* Whether selection is regular */
     uint8_t                enc_size;            /* Encoded size */
     herr_t                 ret_value = SUCCEED; /* return value */
 
@@ -4615,7 +4614,7 @@ H5S__get_select_hyper_blocklist(H5S_t *space, hsize_t startblock, hsize_t numblo
         hsize_t                end[H5S_MAX_RANK];       /* End of elements in dataspace */
         unsigned               fast_dim; /* Rank of the fastest changing dimension for the dataspace */
         unsigned               ndims;    /* Rank of the dataspace */
-        bool                done;     /* Whether we are done with the iteration */
+        bool                   done;     /* Whether we are done with the iteration */
         unsigned               u;        /* Counter */
 
         /* Set some convienence values */
@@ -5080,7 +5079,7 @@ done:
 static H5_ATTR_PURE htri_t
 H5S__hyper_is_contiguous(const H5S_t *space)
 {
-    bool small_contiguous,   /* Flag for small contiguous block */
+    bool small_contiguous,      /* Flag for small contiguous block */
         large_contiguous;       /* Flag for large contiguous block */
     unsigned u;                 /* index variable */
     htri_t   ret_value = false; /* Return value */
@@ -5500,10 +5499,10 @@ H5S__hyper_spans_shape_same(const H5S_hyper_span_info_t *span_info1, const H5S_h
     const H5S_hyper_span_t *span1;                /* Pointer to spans in first span tree */
     const H5S_hyper_span_t *span2;                /* Pointer to spans in second span tree */
     hssize_t                offset[H5S_MAX_RANK]; /* Offset vector for selections */
-    bool  rest_zeros[H5S_MAX_RANK]; /* Vector of flags to indicate when remaining offset is all zero */
-    bool  zero_offset;              /* Whether the two selections have a non-zero offset */
+    bool     rest_zeros[H5S_MAX_RANK]; /* Vector of flags to indicate when remaining offset is all zero */
+    bool     zero_offset;              /* Whether the two selections have a non-zero offset */
     unsigned u;                        /* Local index variable */
-    bool  ret_value = true;         /* Return value */
+    bool     ret_value = true;         /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -5875,7 +5874,7 @@ H5S__hyper_add_span_element_helper(H5S_hyper_span_info_t *span_tree, unsigned ra
         /* Check & update high bounds for lower dimensions */
         if (*first_dim_modified >= 0) {
             unsigned first_dim;             /* First dimension modified, relative to this span tree */
-            bool  first_dim_set = false; /* Whether first dimension modified is set */
+            bool     first_dim_set = false; /* Whether first dimension modified is set */
             unsigned u;                     /* Local index variable */
 
             /* Adjust first dimension modified to be relative to this span tree */
@@ -6290,7 +6289,7 @@ H5S__hyper_intersect_block(const H5S_t *space, const hsize_t *start, const hsize
 
     /* Check for regular hyperslab intersection */
     if (space->select.sel_info.hslab->diminfo_valid == H5S_DIMINFO_VALID_YES) {
-        bool  single_block; /* Whether the regular selection is a single block */
+        bool     single_block; /* Whether the regular selection is a single block */
         unsigned u;            /* Local index variable */
 
         /* Check for a single block */
@@ -6467,7 +6466,7 @@ H5S__hyper_adjust_u_helper(H5S_hyper_span_info_t *spans, unsigned rank, const hs
 static herr_t
 H5S__hyper_adjust_u(H5S_t *space, const hsize_t *offset)
 {
-    bool  non_zero_offset = false; /* Whether any offset is non-zero */
+    bool     non_zero_offset = false; /* Whether any offset is non-zero */
     unsigned u;                       /* Local index variable */
 
     FUNC_ENTER_STATIC_NOERR
@@ -7009,7 +7008,7 @@ H5S__hyper_adjust_s_helper(H5S_hyper_span_info_t *spans, unsigned rank, const hs
 static herr_t
 H5S__hyper_adjust_s(H5S_t *space, const hssize_t *offset)
 {
-    bool  non_zero_offset = false; /* Whether any offset is non-zero */
+    bool     non_zero_offset = false; /* Whether any offset is non-zero */
     unsigned u;                       /* Local index variable */
 
     FUNC_ENTER_STATIC_NOERR
@@ -7344,10 +7343,10 @@ H5S__hyper_clip_spans(H5S_hyper_span_info_t *a_spans, H5S_hyper_span_info_t *b_s
                       unsigned ndims, H5S_hyper_span_info_t **a_not_b, H5S_hyper_span_info_t **a_and_b,
                       H5S_hyper_span_info_t **b_not_a)
 {
-    bool need_a_not_b;        /* Whether to generate a_not_b list */
-    bool need_a_and_b;        /* Whether to generate a_and_b list */
-    bool need_b_not_a;        /* Whether to generate b_not_a list */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    bool   need_a_not_b;        /* Whether to generate a_not_b list */
+    bool   need_a_and_b;        /* Whether to generate a_and_b list */
+    bool   need_b_not_a;        /* Whether to generate b_not_a list */
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -7407,7 +7406,7 @@ H5S__hyper_clip_spans(H5S_hyper_span_info_t *a_spans, H5S_hyper_span_info_t *b_s
         else {
             H5S_hyper_span_t *span_a;               /* Pointer to a node in span tree 'a' */
             H5S_hyper_span_t *span_b;               /* Pointer to a node in span tree 'b' */
-            bool           recover_a, recover_b; /* Flags to indicate when to recover temporary spans */
+            bool              recover_a, recover_b; /* Flags to indicate when to recover temporary spans */
 
             /* Get the pointers to the new and old span lists */
             span_a = a_spans->head;
@@ -7999,7 +7998,7 @@ H5S__hyper_merge_spans_helper(H5S_hyper_span_info_t *a_spans, H5S_hyper_span_inf
     else {
         H5S_hyper_span_t *span_a;               /* Pointer to current span 'a' working on */
         H5S_hyper_span_t *span_b;               /* Pointer to current span 'b' working on */
-        bool           recover_a, recover_b; /* Flags to indicate when to recover temporary spans */
+        bool              recover_a, recover_b; /* Flags to indicate when to recover temporary spans */
 
         /* Get the pointers to the 'a' and 'b' span lists */
         span_a = a_spans->head;
@@ -8694,7 +8693,7 @@ H5S__hyper_update_diminfo(H5S_t *space, H5S_seloper_t op, const H5S_hyper_dim_t 
         space->select.sel_info.hslab->diminfo_valid = H5S_DIMINFO_VALID_NO;
     else {
         H5S_hyper_dim_t tmp_diminfo[H5S_MAX_RANK]; /* Temporary dimension info */
-        bool         found_nonidentical_dim = false;
+        bool            found_nonidentical_dim = false;
         unsigned        curr_dim;
 
         /* Copy current diminfo.opt values */
@@ -8895,7 +8894,7 @@ H5S__hyper_rebuild_helper(const H5S_hyper_span_info_t *spans, H5S_hyper_dim_t sp
     hsize_t                 block;            /* Block size for this dimension */
     hsize_t                 prev_low;         /* Low bound for previous span */
     size_t                  spancount;        /* Number of spans encountered in this dimension */
-    bool                 ret_value = true; /* Return value */
+    bool                    ret_value = true; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -9197,9 +9196,9 @@ H5S__fill_in_new_space(H5S_t *space1, H5S_seloper_t op, H5S_hyper_span_info_t *s
     H5S_hyper_span_info_t *a_and_b = NULL; /* Span tree for hyperslab spans in both old and new span trees */
     H5S_hyper_span_info_t *b_not_a =
         NULL; /* Span tree for hyperslab spans in new span tree and not in old span tree */
-    bool overlapped    = false; /* Whether selections overlap */
-    bool is_result_new = false;
-    herr_t  ret_value     = SUCCEED; /* Return value */
+    bool   overlapped    = false; /* Whether selections overlap */
+    bool   is_result_new = false;
+    herr_t ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -9666,8 +9665,8 @@ static herr_t
 H5S__hyper_regular_and_single_block(H5S_t *space, const hsize_t start[], const hsize_t block[])
 {
     hsize_t  select_end, block_end; /* End of block & selection */
-    bool  single_block;          /* Whether the selection is a single block */
-    bool  overlap;               /* Whether block & selection overlap */
+    bool     single_block;          /* Whether the selection is a single block */
+    bool     overlap;               /* Whether block & selection overlap */
     unsigned u;                     /* Local index variable */
     herr_t   ret_value = SUCCEED;   /* Return value */
 
@@ -9727,8 +9726,8 @@ H5S__hyper_regular_and_single_block(H5S_t *space, const hsize_t start[], const h
         hsize_t new_count[H5S_MAX_RANK]; /* New count for hyperslab selection */
         hsize_t stride[H5S_MAX_RANK];    /* Stride for hyperslab selection */
         hsize_t new_block[H5S_MAX_RANK]; /* New block for hyperslab selection */
-        bool partial_first_span;      /* Whether first span in intersection is partial */
-        bool partial_last_span;       /* Whether last span in intersection is partial */
+        bool    partial_first_span;      /* Whether first span in intersection is partial */
+        bool    partial_last_span;       /* Whether last span in intersection is partial */
 
         /* Iterate over selection, checking for overlap and computing first / last
          *      span that intersects with the block.
@@ -10364,7 +10363,7 @@ H5S_combine_hyperslab(const H5S_t *old_space, H5S_seloper_t op, const hsize_t st
         hsize_t *old_high_bounds;
         hsize_t  new_low_bounds[H5S_MAX_RANK]; /* New space's low & high bounds */
         hsize_t  new_high_bounds[H5S_MAX_RANK];
-        bool  overlapped = false;
+        bool     overlapped = false;
 
         /* Set up old space's low & high bounds */
         if (old_space->select.sel_info.hslab->span_lst) {
@@ -10489,9 +10488,9 @@ done:
 static herr_t
 H5S__fill_in_select(H5S_t *space1, H5S_seloper_t op, H5S_t *space2, H5S_t **result)
 {
-    bool span2_owned;
-    bool updated_spans;
-    herr_t  ret_value = SUCCEED; /* Return value */
+    bool   span2_owned;
+    bool   updated_spans;
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -11343,7 +11342,7 @@ H5S__hyper_proj_int_iterate(const H5S_hyper_span_info_t *ss_span_info,
     hsize_t                 low;                 /* Low bounds of current intersection */
     hsize_t                 old_skip;            /* Value of udata->skip before main loop */
     hsize_t                 old_nelem;           /* Value of udata->nelem before main loop */
-    bool                 check_intersect;     /* Whether to check for intersecting elements */
+    bool                    check_intersect;     /* Whether to check for intersecting elements */
     unsigned                u;                   /* Local index variable */
     herr_t                  ret_value = SUCCEED; /* Return value */
 

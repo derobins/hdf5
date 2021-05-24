@@ -631,7 +631,7 @@ test_insert_basic(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_param_
     haddr_t bt2_addr;    /* Address of B-tree created */
     hsize_t record;      /* Record to insert into tree */
     hsize_t idx;         /* Index within B-tree, for iterator */
-    bool found;       /* Whether record was found */
+    bool    found;       /* Whether record was found */
     herr_t  ret;         /* Generic error return value */
 
     /*
@@ -874,7 +874,7 @@ test_insert_split_root(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_p
     hsize_t     idx;         /* Index within B-tree, for iterator */
     H5B2_stat_t bt2_stat;    /* Statistics about B-tree created */
     unsigned    u;           /* Local index variable */
-    bool     found;       /* Whether record was found */
+    bool        found;       /* Whether record was found */
     herr_t      ret;         /* Generic error return value */
 
     /*
@@ -1634,7 +1634,7 @@ test_insert_make_level2(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_
     H5B2_stat_t bt2_stat;    /* Statistics about B-tree created */
     hsize_t     idx;         /* Index within B-tree, for iterator */
     unsigned    u;           /* Local index variable */
-    bool     found;       /* Whether record was found */
+    bool        found;       /* Whether record was found */
     herr_t      ret;         /* Generic error return value */
 
     /*
@@ -3002,7 +3002,7 @@ test_insert_lots(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_param_t
     hsize_t     temp_rec;       /* Temporary record */
     H5B2_stat_t bt2_stat;       /* Statistics about B-tree created */
     hsize_t     nrec;           /* Number of records in B-tree */
-    bool     found;          /* Whether record was found */
+    bool        found;          /* Whether record was found */
     herr_t      ret;            /* Generic error return value */
 
     /* Initialize random number seed */
@@ -3238,7 +3238,7 @@ test_update_basic(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_param_
     H5B2_test_rec_t record;      /* Record to insert into tree */
     H5B2_test_rec_t modify;      /* Modified value */
     H5B2_test_rec_t find;        /* Record to find */
-    bool         found;       /* Whether record was found */
+    bool            found;       /* Whether record was found */
     herr_t          ret;         /* Generic error return value */
 
     /* Create the file for the test */
@@ -3651,7 +3651,7 @@ test_update_split_root(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_p
     H5B2_test_rec_t idx;         /* Index within B-tree, for iterator */
     H5B2_stat_t     bt2_stat;    /* Statistics about B-tree created */
     unsigned        u;           /* Local index variable */
-    bool         found;       /* Whether record was found */
+    bool            found;       /* Whether record was found */
     herr_t          ret;         /* Generic error return value */
 
     /*
@@ -4501,7 +4501,7 @@ test_update_make_level2(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_
     H5B2_test_rec_t idx;         /* Index within B-tree, for iterator */
     H5B2_stat_t     bt2_stat;    /* Statistics about B-tree created */
     unsigned        u;           /* Local index variable */
-    bool         found;       /* Whether record was found */
+    bool            found;       /* Whether record was found */
     herr_t          ret;         /* Generic error return value */
 
     /*
@@ -5096,7 +5096,7 @@ test_update_lots(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_param_t
     H5B2_stat_t      bt2_stat;    /* Statistics about B-tree created */
     hsize_t          nrec;        /* Number of records in B-tree */
     unsigned         u;           /* Local index variable */
-    bool          found;       /* Whether record was found */
+    bool             found;       /* Whether record was found */
     herr_t           ret;         /* Generic error return value */
 
     /* Initialize random number seed */
@@ -8809,7 +8809,7 @@ test_remove_lots(const char *env_h5_drvr, hid_t fapl, const H5B2_create_t *cpara
     unsigned  u;                /* Local index variable */
     unsigned  rem_idx;          /* Location to remove */
     hsize_t   nrec;             /* Number of records in B-tree */
-    bool   single_file_vfd;  /* Whether VFD used stores data in a single file */
+    bool      single_file_vfd;  /* Whether VFD used stores data in a single file */
 
     /* Initialize random number seed */
     curr_time = HDtime(NULL);
@@ -8850,7 +8850,7 @@ HDfprintf(stderr, "curr_time = %lu\n", (unsigned long)curr_time);
 
     /* Check for VFD which stores data in multiple files */
     single_file_vfd = (bool)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0 &&
-                                HDstrcmp(env_h5_drvr, "family") != 0);
+                             HDstrcmp(env_h5_drvr, "family") != 0);
     if (single_file_vfd) {
         /* Make a copy of the file in memory, in order to speed up deletion testing */
 
@@ -9743,7 +9743,7 @@ test_modify(hid_t fapl, const H5B2_create_t *cparam, const bt2_test_param_t *tpa
     H5B2_stat_t           bt2_stat;    /* Statistics about B-tree created */
     H5B2_node_info_test_t ninfo;       /* B-tree node info */
     unsigned              u;           /* Local index variable */
-    bool               rec_found;   /* Whether record was found */
+    bool                  rec_found;   /* Whether record was found */
     herr_t                ret;         /* Generic error return value */
 
     /*
@@ -10125,7 +10125,7 @@ main(void)
     unsigned         reopen;          /* Whether to reopen B-tree during tests */
     int              ExpressMode;
     const char *     envval         = NULL;
-    bool          api_ctx_pushed = false; /* Whether API context pushed */
+    bool             api_ctx_pushed = false; /* Whether API context pushed */
 
     envval = HDgetenv("HDF5_DRIVER");
     if (envval == NULL)

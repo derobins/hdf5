@@ -160,8 +160,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5O__ginfo_encode(H5F_t H5_ATTR_UNUSED *f, bool H5_ATTR_UNUSED disable_shared, uint8_t *p,
-                  const void *_mesg)
+H5O__ginfo_encode(H5F_t H5_ATTR_UNUSED *f, bool H5_ATTR_UNUSED disable_shared, uint8_t *p, const void *_mesg)
 {
     const H5O_ginfo_t *ginfo = (const H5O_ginfo_t *)_mesg;
     unsigned char      flags = 0; /* Flags for encoding group info */

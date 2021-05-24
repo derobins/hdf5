@@ -64,11 +64,11 @@ typedef struct H5FD_family_t {
     unsigned flags;        /*flags for opening additional members    */
 
     /* Information from properties set by 'h5repart' tool */
-    hsize_t mem_newsize;    /*new member size passed in as private
-                             * property. It's used only by h5repart */
+    hsize_t mem_newsize; /*new member size passed in as private
+                          * property. It's used only by h5repart */
     bool repart_members; /* Whether to mark the superblock dirty
-                             * when it is loaded, so that the family
-                             * member sizes can be re-encoded       */
+                          * when it is loaded, so that the family
+                          * member sizes can be re-encoded       */
 } H5FD_family_t;
 
 /* Driver-specific file access properties */

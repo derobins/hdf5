@@ -392,7 +392,7 @@ static int without_hardware_g = 0;
     }
 
 static bool overflows(unsigned char *origin_bits, hid_t src_id, size_t dst_num_bits);
-static int     my_isnan(dtype_t type, void *val);
+static int  my_isnan(dtype_t type, void *val);
 static int my_isinf(int endian, const unsigned char *val, size_t size, size_t mpos, size_t msize, size_t epos,
                     size_t esize);
 
@@ -634,7 +634,7 @@ static int
 test_particular_fp_integer(void)
 {
     hid_t          dxpl_id;
-    bool        flag;
+    bool           flag;
     double         src_d = (double)SCHAR_MAX;
     signed char    dst_c;
     unsigned char *buf1 = NULL, *buf2 = NULL;
@@ -3422,7 +3422,7 @@ test_conv_int_fp(const char *name, int run_test, hid_t src, hid_t dst)
     int                    fill_value = 9; /*fill value for conversion exception*/
     H5T_conv_except_func_t op;             /*returned callback function for conversion exception*/
     void *                 user_data;      /*returned pointer to user data passed in to the callback*/
-    bool                except_set      = false; /*whether user's exception handling is set*/
+    bool                   except_set      = false; /*whether user's exception handling is set*/
     size_t                 nelmts          = 0;     /*num values per test    */
     const size_t           max_fails       = 40;    /*max number of failures*/
     size_t                 fails_all_tests = 0;     /*number of failures    */
@@ -4670,7 +4670,7 @@ error:
 static bool
 overflows(unsigned char *origin_bits, hid_t src_id, size_t dst_num_bits)
 {
-    bool       ret_value = false;
+    bool          ret_value = false;
     hsize_t       expt;
     size_t        mant_digits = 0, expt_digits = 0, bias = 0;
     size_t        epos, mpos;

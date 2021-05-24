@@ -97,8 +97,8 @@ H5TOOLS_DLL int get_option(int argc, const char **argv, const char *opt, const s
 typedef struct obj_t {
     H5O_token_t obj_token;
     char *      objname;
-    bool     displayed; /* Flag to indicate that the object has been displayed */
-    bool     recorded;  /* Flag for named datatypes to indicate they were found in the group hierarchy */
+    bool        displayed; /* Flag to indicate that the object has been displayed */
+    bool        recorded;  /* Flag for named datatypes to indicate they were found in the group hierarchy */
 } obj_t;
 
 /*struct for the tables that the find_objs function uses*/

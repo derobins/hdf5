@@ -973,8 +973,8 @@ void *
 H5VL_attr_create(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params, const char *name,
                  hid_t type_id, hid_t space_id, hid_t acpl_id, hid_t aapl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -1077,8 +1077,8 @@ void *
 H5VL_attr_open(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params, const char *name,
                hid_t aapl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -1176,8 +1176,8 @@ done:
 herr_t
 H5VL_attr_read(const H5VL_object_t *vol_obj, hid_t mem_type_id, void *buf, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -1274,8 +1274,8 @@ done:
 herr_t
 H5VL_attr_write(const H5VL_object_t *vol_obj, hid_t mem_type_id, const void *buf, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -1374,8 +1374,8 @@ herr_t
 H5VL_attr_get(const H5VL_object_t *vol_obj, H5VL_attr_get_t get_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1482,8 +1482,8 @@ H5VL_attr_specific(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_pa
                    H5VL_attr_specific_t specific_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1591,8 +1591,8 @@ H5VL_attr_optional(const H5VL_object_t *vol_obj, H5VL_attr_optional_t opt_type, 
                    ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1792,8 +1792,8 @@ H5VL_dataset_create(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_p
                     hid_t lcpl_id, hid_t type_id, hid_t space_id, hid_t dcpl_id, hid_t dapl_id, hid_t dxpl_id,
                     void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -1897,8 +1897,8 @@ void *
 H5VL_dataset_open(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params, const char *name,
                   hid_t dapl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -1998,8 +1998,8 @@ herr_t
 H5VL_dataset_read(const H5VL_object_t *vol_obj, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id,
                   hid_t dxpl_id, void *buf, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -2100,8 +2100,8 @@ herr_t
 H5VL_dataset_write(const H5VL_object_t *vol_obj, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id,
                    hid_t dxpl_id, const void *buf, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -2202,8 +2202,8 @@ herr_t
 H5VL_dataset_get(const H5VL_object_t *vol_obj, H5VL_dataset_get_t get_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -2310,8 +2310,8 @@ H5VL_dataset_specific(const H5VL_object_t *vol_obj, H5VL_dataset_specific_t spec
                       void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -2419,8 +2419,8 @@ H5VL_dataset_optional(const H5VL_object_t *vol_obj, H5VL_dataset_optional_t opt_
                       void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -2528,8 +2528,8 @@ done:
 herr_t
 H5VL_dataset_close(const H5VL_object_t *vol_obj, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -2635,8 +2635,8 @@ void *
 H5VL_datatype_commit(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params, const char *name,
                      hid_t type_id, hid_t lcpl_id, hid_t tcpl_id, hid_t tapl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -2739,8 +2739,8 @@ void *
 H5VL_datatype_open(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params, const char *name,
                    hid_t tapl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -2840,8 +2840,8 @@ herr_t
 H5VL_datatype_get(const H5VL_object_t *vol_obj, H5VL_datatype_get_t get_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -2952,8 +2952,8 @@ H5VL_datatype_specific(const H5VL_object_t *vol_obj, H5VL_datatype_specific_t sp
                        void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -3061,8 +3061,8 @@ H5VL_datatype_optional(const H5VL_object_t *vol_obj, H5VL_datatype_optional_t op
                        void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -3167,8 +3167,8 @@ done:
 herr_t
 H5VL_datatype_close(const H5VL_object_t *vol_obj, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -3480,8 +3480,8 @@ H5VL_file_open(H5VL_connector_prop_t *connector_prop, const char *name, unsigned
     /* Call the corresponding internal VOL routine */
     if (NULL == (ret_value = H5VL__file_open(cls, name, flags, fapl_id, dxpl_id, req))) {
         H5VL_file_open_find_connector_t find_connector_ud;
-        bool                         find_connector;
-        bool                         connector_available = false;
+        bool                            find_connector;
+        bool                            connector_available = false;
 
         /* Opening the file failed - Determine whether we should search
          * the plugin path to see if any other VOL connectors are available
@@ -3614,8 +3614,8 @@ herr_t
 H5VL_file_get(const H5VL_object_t *vol_obj, H5VL_file_get_t get_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -3723,8 +3723,8 @@ H5VL_file_specific(const H5VL_object_t *vol_obj, H5VL_file_specific_t specific_t
 {
     const H5VL_class_t *cls;                       /* VOL connector's class struct */
     va_list             arguments;                 /* Argument list passed from the API call */
-    bool             arg_started     = false;   /* Whether the va_list has been started */
-    bool             vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool                arg_started     = false;   /* Whether the va_list has been started */
+    bool                vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t              ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -3864,8 +3864,8 @@ H5VL_file_optional(const H5VL_object_t *vol_obj, H5VL_file_optional_t opt_type, 
                    ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -3973,8 +3973,8 @@ done:
 herr_t
 H5VL_file_close(const H5VL_object_t *vol_obj, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -4073,8 +4073,8 @@ void *
 H5VL_group_create(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params, const char *name,
                   hid_t lcpl_id, hid_t gcpl_id, hid_t gapl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -4176,8 +4176,8 @@ void *
 H5VL_group_open(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params, const char *name,
                 hid_t gapl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -4277,8 +4277,8 @@ herr_t
 H5VL_group_get(const H5VL_object_t *vol_obj, H5VL_group_get_t get_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -4385,8 +4385,8 @@ H5VL_group_specific(const H5VL_object_t *vol_obj, H5VL_group_specific_t specific
                     void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -4494,8 +4494,8 @@ H5VL_group_optional(const H5VL_object_t *vol_obj, H5VL_group_optional_t opt_type
                     ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -4604,8 +4604,8 @@ done:
 herr_t
 H5VL_group_close(const H5VL_object_t *vol_obj, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -4709,8 +4709,8 @@ H5VL_link_create(H5VL_link_create_type_t create_type, const H5VL_object_t *vol_o
 {
     H5VL_object_t tmp_vol_obj;               /* Temporary object */
     va_list       arguments;                 /* Argument list passed from the API call */
-    bool       arg_started     = false;   /* Whether the va_list has been started */
-    bool       vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool          arg_started     = false;   /* Whether the va_list has been started */
+    bool          vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t        ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -4838,7 +4838,7 @@ H5VL_link_copy(const H5VL_object_t *src_vol_obj, const H5VL_loc_params_t *loc_pa
                hid_t lapl_id, hid_t dxpl_id, void **req)
 {
     const H5VL_object_t *vol_obj;                   /* VOL object for object with data */
-    bool              vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool                 vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t               ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -4945,7 +4945,7 @@ H5VL_link_move(const H5VL_object_t *src_vol_obj, const H5VL_loc_params_t *loc_pa
                hid_t lapl_id, hid_t dxpl_id, void **req)
 {
     const H5VL_object_t *vol_obj;                   /* VOL object for object with data */
-    bool              vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool                 vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t               ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -5050,8 +5050,8 @@ H5VL_link_get(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_params,
               hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -5159,8 +5159,8 @@ H5VL_link_specific(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_pa
                    H5VL_link_specific_t specific_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -5268,8 +5268,8 @@ H5VL_link_optional(const H5VL_object_t *vol_obj, H5VL_link_optional_t opt_type, 
                    ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -5375,8 +5375,8 @@ void *
 H5VL_object_open(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *params, H5I_type_t *opened_type,
                  hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
-    void *  ret_value       = NULL;  /* Return value */
+    bool  vol_wrapper_set = false; /* Whether the VOL object wrapping context was set up */
+    void *ret_value       = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -5479,8 +5479,8 @@ H5VL_object_copy(const H5VL_object_t *src_obj, const H5VL_loc_params_t *src_loc_
                  const H5VL_object_t *dst_obj, const H5VL_loc_params_t *dst_loc_params, const char *dst_name,
                  hid_t ocpypl_id, hid_t lcpl_id, hid_t dxpl_id, void **req)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -5589,8 +5589,8 @@ H5VL_object_get(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_param
                 hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -5698,8 +5698,8 @@ H5VL_object_specific(const H5VL_object_t *vol_obj, const H5VL_loc_params_t *loc_
                      H5VL_object_specific_t specific_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -5812,8 +5812,8 @@ H5VL_object_optional(const H5VL_object_t *vol_obj, H5VL_object_optional_t opt_ty
                      ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -5927,8 +5927,8 @@ herr_t
 H5VL_introspect_get_conn_cls(const H5VL_object_t *vol_obj, H5VL_get_conn_lvl_t lvl,
                              const H5VL_class_t **conn_cls)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6033,8 +6033,8 @@ done:
 herr_t
 H5VL_introspect_opt_query(const H5VL_object_t *vol_obj, H5VL_subclass_t subcls, int opt_type, uint64_t *flags)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6135,8 +6135,8 @@ done:
 herr_t
 H5VL_request_wait(const H5VL_object_t *vol_obj, uint64_t timeout, H5VL_request_status_t *status)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6239,8 +6239,8 @@ done:
 herr_t
 H5VL_request_notify(const H5VL_object_t *vol_obj, H5VL_request_notify_t cb, void *ctx)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6342,8 +6342,8 @@ done:
 herr_t
 H5VL_request_cancel(const H5VL_object_t *vol_obj, H5VL_request_status_t *status)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6447,8 +6447,8 @@ herr_t
 H5VL_request_specific(const H5VL_object_t *vol_obj, H5VL_request_specific_t specific_type, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -6562,8 +6562,8 @@ herr_t
 H5VL_request_optional(const H5VL_object_t *vol_obj, H5VL_request_optional_t opt_type, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -6673,8 +6673,8 @@ done:
 herr_t
 H5VL_request_free(const H5VL_object_t *vol_obj)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6778,8 +6778,8 @@ done:
 herr_t
 H5VL_blob_put(const H5VL_object_t *vol_obj, const void *buf, size_t size, void *blob_id, void *ctx)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6882,8 +6882,8 @@ done:
 herr_t
 H5VL_blob_get(const H5VL_object_t *vol_obj, const void *blob_id, void *buf, size_t size, void *ctx)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -6991,8 +6991,8 @@ herr_t
 H5VL_blob_specific(const H5VL_object_t *vol_obj, void *blob_id, H5VL_blob_specific_t specific_type, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -7109,8 +7109,8 @@ herr_t
 H5VL_blob_optional(const H5VL_object_t *vol_obj, void *blob_id, H5VL_blob_optional_t opt_type, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -7243,8 +7243,8 @@ herr_t
 H5VL_token_cmp(const H5VL_object_t *vol_obj, const H5O_token_t *token1, const H5O_token_t *token2,
                int *cmp_value)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -7362,8 +7362,8 @@ herr_t
 H5VL_token_to_str(const H5VL_object_t *vol_obj, H5I_type_t obj_type, const H5O_token_t *token,
                   char **token_str)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -7480,8 +7480,8 @@ herr_t
 H5VL_token_from_str(const H5VL_object_t *vol_obj, H5I_type_t obj_type, const char *token_str,
                     H5O_token_t *token)
 {
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
-    herr_t  ret_value       = SUCCEED; /* Return value */
+    bool   vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    herr_t ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -7589,8 +7589,8 @@ herr_t
 H5VL_optional(const H5VL_object_t *vol_obj, int op_type, hid_t dxpl_id, void **req, ...)
 {
     va_list arguments;                 /* Argument list passed from the API call */
-    bool arg_started     = false;   /* Whether the va_list has been started */
-    bool vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
+    bool    arg_started     = false;   /* Whether the va_list has been started */
+    bool    vol_wrapper_set = false;   /* Whether the VOL object wrapping context was set up */
     herr_t  ret_value       = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)

@@ -590,7 +590,7 @@ typedef struct {
     H5_timevals_t initial;        /* Current interval start time */
     H5_timevals_t final_interval; /* Last interval elapsed time */
     H5_timevals_t total;          /* Total elapsed time for all intervals */
-    bool       is_running;     /* Whether timer is running */
+    bool          is_running;     /* Whether timer is running */
 } H5_timer_t;
 
 /* Returns library bandwidth as a pretty string */
@@ -1840,9 +1840,9 @@ typedef struct H5_debug_open_stream_t {
 } H5_debug_open_stream_t;
 
 typedef struct H5_debug_t {
-    FILE *  trace;  /*API trace output stream  */
-    bool ttop;   /*Show only top-level calls?    */
-    bool ttimes; /*Show trace event times?       */
+    FILE *trace;  /*API trace output stream  */
+    bool  ttop;   /*Show only top-level calls?    */
+    bool  ttimes; /*Show trace event times?       */
     struct {
         const char *name;   /*package name      */
         FILE *      stream; /*output stream  or NULL    */
@@ -2141,7 +2141,7 @@ H5_DLL herr_t H5CX_pop(bool update_dxpl_props);
 #ifndef NDEBUG
 #define FUNC_ENTER_CHECK_NAME(asrt)                                                                          \
     {                                                                                                        \
-        static bool func_check = false;                                                                   \
+        static bool func_check = false;                                                                      \
                                                                                                              \
         if (!func_check) {                                                                                   \
             /* Check function naming status */                                                               \
@@ -2158,7 +2158,7 @@ H5_DLL herr_t H5CX_pop(bool update_dxpl_props);
 #endif /* NDEBUG */
 
 #define FUNC_ENTER_COMMON(asrt)                                                                              \
-    bool err_occurred = false;                                                                            \
+    bool err_occurred = false;                                                                               \
                                                                                                              \
     FUNC_ENTER_CHECK_NAME(asrt);
 
@@ -2730,7 +2730,7 @@ extern bool H5_api_entered_g; /* Has library already been entered through API? *
 /* Macros for declaring error variables */
 /* Function can detect errors and has a specific error return value */
 #define FUNC_ERR_VAR_ERR(ret_typ, err)                                                                       \
-    bool past_catch = false;                                                                              \
+    bool    past_catch = false;                                                                              \
     ret_typ fail_value = err;
 /* Function can detect errors but cannot return an error value (Cleanup only) */
 #define FUNC_ERR_VAR_ERRCATCH(ret_typ, err) bool past_catch = false;

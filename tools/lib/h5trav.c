@@ -39,7 +39,7 @@ typedef struct {
 typedef struct {
     trav_addr_t *         seen;          /* List of addresses seen already */
     const trav_visitor_t *visitor;       /* Information for visiting each link/object */
-    bool               is_absolute;   /* Whether the traversal has absolute paths */
+    bool                  is_absolute;   /* Whether the traversal has absolute paths */
     const char *          base_grp_name; /* Name of the group that serves as the base
                                           * for iteration */
     unsigned fields;                     /* Fields needed in H5O_info2_t struct */
@@ -248,8 +248,8 @@ traverse_cb(hid_t loc_id, const char *path, const H5L_info2_t *linfo, void *_uda
  *-------------------------------------------------------------------------
  */
 static int
-traverse(hid_t file_id, const char *grp_name, bool visit_start, bool recurse,
-         const trav_visitor_t *visitor, unsigned fields)
+traverse(hid_t file_id, const char *grp_name, bool visit_start, bool recurse, const trav_visitor_t *visitor,
+         unsigned fields)
 {
     H5O_info2_t oinfo; /* Object info for starting group */
     int         ret_value = 0;
@@ -1042,8 +1042,8 @@ done:
  *-------------------------------------------------------------------------
  */
 int
-h5trav_visit(hid_t fid, const char *grp_name, bool visit_start, bool recurse,
-             h5trav_obj_func_t visit_obj, h5trav_lnk_func_t visit_lnk, void *udata, unsigned fields)
+h5trav_visit(hid_t fid, const char *grp_name, bool visit_start, bool recurse, h5trav_obj_func_t visit_obj,
+             h5trav_lnk_func_t visit_lnk, void *udata, unsigned fields)
 {
     trav_visitor_t visitor; /* Visitor structure for objects */
     int            ret_value = 0;

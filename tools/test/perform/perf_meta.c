@@ -37,13 +37,13 @@ int TEST_3   = 0x4; /* Test 3 */
 const char *FILENAME[] = {"meta_perf_1", "meta_perf_2", "meta_perf_3", NULL};
 
 /* Default values for performance. Can be changed through command line options */
-int     NUM_DSETS   = 16;
-int     NUM_ATTRS   = 8;
-int     BATCH_ATTRS = 2;
-bool flush_dset  = false;
-bool flush_attr  = false;
-int     nerrors     = 0; /* errors count */
-hid_t   fapl;
+int   NUM_DSETS   = 16;
+int   NUM_ATTRS   = 8;
+int   BATCH_ATTRS = 2;
+bool  flush_dset  = false;
+bool  flush_attr  = false;
+int   nerrors     = 0; /* errors count */
+hid_t fapl;
 
 /* Data space IDs */
 hid_t space;

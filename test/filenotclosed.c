@@ -65,7 +65,7 @@ main(void)
     int         buf[5]       = {1, 2, 3, 4, 5}; /* The data to be written to the dataset */
     char        filename[100];                  /* File name */
     const char *env_h5_drvr;                    /* File Driver value from environment */
-    bool     contig_addr_vfd;                /* Contiguous address vfd */
+    bool        contig_addr_vfd;                /* Contiguous address vfd */
 
     /* Get the VFD to use */
     env_h5_drvr = HDgetenv("HDF5_DRIVER");

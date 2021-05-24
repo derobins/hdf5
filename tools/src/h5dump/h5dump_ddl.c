@@ -1141,7 +1141,7 @@ dump_fcpl(hid_t fid)
     size_t                off_size;     /* size of offsets in the file */
     size_t                len_size;     /* size of lengths in the file */
     H5F_fspace_strategy_t fs_strategy;  /* file space strategy */
-    bool               fs_persist;   /* Persisting free-space or not */
+    bool                  fs_persist;   /* Persisting free-space or not */
     hsize_t               fs_threshold; /* free-space section threshold */
     hsize_t               fsp_size;     /* file space page size */
     H5F_info2_t           finfo;        /* file information */
@@ -2026,7 +2026,7 @@ dump_extlink(hid_t group, const char *linkname, const char *objname)
     table_t *   old_group_table = group_table;
     table_t *   old_dset_table  = dset_table;
     table_t *   old_type_table  = type_table;
-    bool     old_hit_elink;
+    bool        old_hit_elink;
     ssize_t     idx;
 
     /* Open target object */

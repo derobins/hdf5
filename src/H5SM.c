@@ -1266,7 +1266,7 @@ H5SM__write_mesg(H5F_t *f, H5O_t *open_oh, H5SM_index_header_t *header, bool def
     H5SM_mesg_key_t      key;                     /* Key used to search the index */
     H5SM_list_cache_ud_t cache_udata;             /* User-data for metadata cache callback */
     H5O_shared_t         shared;                  /* Shared H5O message */
-    bool              found = false;           /* Was the message in the index? */
+    bool                 found = false;           /* Was the message in the index? */
     H5HF_t *             fheap = NULL;            /* Fractal heap handle */
     H5B2_t *             bt2   = NULL;            /* v2 B-tree handle for index */
     size_t               buf_size;                /* Size of the encoded message */

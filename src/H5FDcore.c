@@ -56,10 +56,10 @@ typedef struct H5FD_core_t {
     haddr_t        eoa;              /* end of allocated region              */
     haddr_t        eof;              /* current allocated size               */
     size_t         increment;        /* multiples for mem allocation         */
-    bool        backing_store;    /* write to file name on flush          */
-    bool        write_tracking;   /* Whether to track writes              */
+    bool           backing_store;    /* write to file name on flush          */
+    bool           write_tracking;   /* Whether to track writes              */
     size_t         bstore_page_size; /* backing store page size              */
-    bool        ignore_disabled_file_locks;
+    bool           ignore_disabled_file_locks;
     int            fd; /* backing store file descriptor        */
     /* Information for determining uniqueness of a file with a backing store */
 #ifndef H5_HAVE_WIN32_API
@@ -89,17 +89,17 @@ typedef struct H5FD_core_t {
 
     HANDLE hFile; /* Native windows file handle */
 #endif                                        /* H5_HAVE_WIN32_API */
-    bool                     dirty;        /* changes not saved?       */
+    bool                        dirty;        /* changes not saved?       */
     H5FD_file_image_callbacks_t fi_callbacks; /* file image callbacks     */
     H5SL_t *                    dirty_list;   /* dirty parts of the file  */
 } H5FD_core_t;
 
 /* Driver-specific file access properties */
 typedef struct H5FD_core_fapl_t {
-    size_t  increment;      /* how much to grow memory */
-    bool backing_store;  /* write to file name on flush */
-    bool write_tracking; /* Whether to track writes */
-    size_t  page_size;      /* Page size for tracked writes */
+    size_t increment;      /* how much to grow memory */
+    bool   backing_store;  /* write to file name on flush */
+    bool   write_tracking; /* Whether to track writes */
+    size_t page_size;      /* Page size for tracked writes */
 } H5FD_core_fapl_t;
 
 /* Allocate memory in multiples of this size by default */
@@ -207,7 +207,7 @@ H5FD__core_add_dirty_region(H5FD_core_t *file, haddr_t start, haddr_t end)
     H5FD_core_region_t *item            = NULL;
     haddr_t             b_addr          = 0;
     haddr_t             a_addr          = 0;
-    bool             create_new_node = true;
+    bool                create_new_node = true;
     herr_t              ret_value       = SUCCEED;
 
     FUNC_ENTER_STATIC

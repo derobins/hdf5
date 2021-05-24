@@ -85,7 +85,7 @@ herr_t
 H5B2__create_internal(H5B2_hdr_t *hdr, void *parent, H5B2_node_ptr_t *node_ptr, uint16_t depth)
 {
     H5B2_internal_t *internal  = NULL;    /* Pointer to new internal node created */
-    bool          inserted  = false;   /* Whether the internal node was inserted into cache */
+    bool             inserted  = false;   /* Whether the internal node was inserted into cache */
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -181,8 +181,8 @@ done:
  *-------------------------------------------------------------------------
  */
 H5B2_internal_t *
-H5B2__protect_internal(H5B2_hdr_t *hdr, void *parent, H5B2_node_ptr_t *node_ptr, uint16_t depth,
-                       bool shadow, unsigned flags)
+H5B2__protect_internal(H5B2_hdr_t *hdr, void *parent, H5B2_node_ptr_t *node_ptr, uint16_t depth, bool shadow,
+                       unsigned flags)
 {
     H5B2_internal_cache_ud_t udata;            /* User data to pass through to cache 'deserialize' callback */
     H5B2_internal_t *        internal  = NULL; /* v2 B-tree internal node */
@@ -814,7 +814,7 @@ H5B2__remove_internal(H5B2_hdr_t *hdr, bool *depth_decreased, void *swap_loc, vo
     unsigned         internal_flags = H5AC__NO_FLAGS_SET;
     haddr_t          internal_addr  = HADDR_UNDEF; /* Address of internal node */
     size_t           merge_nrec;                   /* Number of records to merge node at */
-    bool          collapsed_root = false;       /* Whether the root was collapsed */
+    bool             collapsed_root = false;       /* Whether the root was collapsed */
     herr_t           ret_value      = SUCCEED;     /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1058,7 +1058,7 @@ H5B2__remove_internal_by_idx(H5B2_hdr_t *hdr, bool *depth_decreased, void *swap_
     unsigned         internal_flags = H5AC__NO_FLAGS_SET;
     haddr_t          internal_addr  = HADDR_UNDEF; /* Address of internal node */
     size_t           merge_nrec;                   /* Number of records to merge node at */
-    bool          collapsed_root = false;       /* Whether the root was collapsed */
+    bool             collapsed_root = false;       /* Whether the root was collapsed */
     herr_t           ret_value      = SUCCEED;     /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1124,7 +1124,7 @@ H5B2__remove_internal_by_idx(H5B2_hdr_t *hdr, bool *depth_decreased, void *swap_
     else {
         hsize_t  orig_n = n;    /* Original index looked for */
         unsigned idx;           /* Location of record which matches key */
-        bool  found = false; /* Comparison value of records */
+        bool     found = false; /* Comparison value of records */
         unsigned retries;       /* Number of times to attempt redistribution */
 
         /* Shadow the node if doing SWMR writes */

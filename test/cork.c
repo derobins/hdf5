@@ -1216,7 +1216,7 @@ verify_multiple_cork(bool swmr)
     H5O_info2_t oinfo1, oinfo2, oinfo3; /* Object metadata information */
     hsize_t     dim[1] = {5};           /* Dimension sizes */
     unsigned    flags;                  /* File access flags */
-    bool     corked;                 /* Cork status */
+    bool        corked;                 /* Cork status */
     herr_t      ret;                    /* Return value */
 
     /* Testing Macro */
@@ -1586,7 +1586,7 @@ test_objs_cork(bool swmr, bool new_format)
     hid_t    sid  = H5I_INVALID_HID; /* Dataspace ID */
     hid_t    aid  = H5I_INVALID_HID; /* Attribute ID */
     hsize_t  dims[RANK];             /* Dataset dimension sizes */
-    bool  corked;                 /* Cork status of an object */
+    bool     corked;                 /* Cork status of an object */
     unsigned flags;                  /* File access flags */
     herr_t   ret;                    /* Return value */
 
@@ -1895,7 +1895,7 @@ test_dset_cork(bool swmr, bool new_format)
     int **   wbuf      = NULL; /* Data buffer for writes (pointers to fake 2D array) */
     int *    wbuf_data = NULL; /* Data buffer for writes (real data) */
     int *    rbuf_data = NULL; /* Data buffer for reads (real data) */
-    bool  corked;           /* Cork status of an object */
+    bool     corked;           /* Cork status of an object */
     unsigned flags;            /* File access flags */
 
     /* Testing Macro */

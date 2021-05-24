@@ -2413,7 +2413,7 @@ main(void)
     unsigned            nerrors = 0;            /* Cumulative error count */
     time_t              curr_time;              /* Current time, for seeding random number generator */
     int                 ExpressMode;            /* Test express value */
-    bool             api_ctx_pushed = false; /* Whether API context pushed */
+    bool                api_ctx_pushed = false; /* Whether API context pushed */
 
     /* Reset library */
     h5_reset();

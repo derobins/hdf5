@@ -28,7 +28,7 @@
  *------------------------------------------------------------------------*/
 typedef struct {
     h5trav_type_t type[2];
-    bool       is_same_trgobj;
+    bool          is_same_trgobj;
 } diff_args_t;
 /*-------------------------------------------------------------------------
  * command line options
@@ -62,7 +62,7 @@ typedef struct {
     int                       use_system_epsilon; /* flag to use system epsilon (1 or 0) */
     int                       percent_bool;       /* relative error to compare*/
     double                    percent;            /* relative error value */
-    bool                   follow_links;       /* follow symbolic links */
+    bool                      follow_links;       /* follow symbolic links */
     int                       no_dangle_links;    /* return error when find dangling link */
     int                       cmn_objs;           /* do we have common objects */
     int                       not_cmp;            /* are the objects comparable */
@@ -89,7 +89,7 @@ typedef struct {
     char *                    obj_name[2];             /* name for object */
     struct subset_t *         sset[2];                 /* subsetting parameters */
     h5tools_vol_info_t        vol_info[2];             /* VOL information for input file, output file */
-    bool                   custom_vol[2];           /* Using a custom input, output VOL? */
+    bool                      custom_vol[2];           /* Using a custom input, output VOL? */
 } diff_opt_t;
 
 /*-------------------------------------------------------------------------

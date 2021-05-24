@@ -66,7 +66,7 @@ typedef struct H5P_genprop_t {
     size_t            size;        /* Size of property value */
     void *            value;       /* Pointer to property value */
     H5P_prop_within_t type;        /* Type of object the property is within */
-    bool           shared_name; /* Whether the name is shared or not */
+    bool              shared_name; /* Whether the name is shared or not */
 
     /* Callback function pointers & info */
     H5P_prp_create_func_t  create; /* Function to call when a property is created */
@@ -90,8 +90,8 @@ struct H5P_genclass_t {
              plists; /* Number of property lists that have been created since the last modification to the class */
     unsigned classes; /* Number of classes that have been derived since the last modification to the class */
     unsigned ref_count; /* Number of outstanding ID's open on this class object */
-    bool  deleted;  /* Whether this class has been deleted and is waiting for dependent classes & proplists
-                          to close */
+    bool     deleted;  /* Whether this class has been deleted and is waiting for dependent classes & proplists
+                             to close */
     unsigned revision; /* Revision number of a particular class (global) */
     H5SL_t * props;    /* Skip list containing properties */
 
@@ -109,7 +109,7 @@ struct H5P_genplist_t {
     H5P_genclass_t *pclass;     /* Pointer to class info */
     hid_t           plist_id;   /* Copy of the property list ID (for use in close callback) */
     size_t          nprops;     /* Number of properties in class */
-    bool         class_init; /* Whether the class initialization callback finished successfully */
+    bool            class_init; /* Whether the class initialization callback finished successfully */
     H5SL_t *        del;        /* Skip list containing names of deleted properties */
     H5SL_t *        props;      /* Skip list containing properties */
 };

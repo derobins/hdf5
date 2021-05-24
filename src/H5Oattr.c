@@ -654,8 +654,7 @@ done:
  */
 static void *
 H5O__attr_copy_file(H5F_t *file_src, const H5O_msg_class_t H5_ATTR_UNUSED *mesg_type, void *native_src,
-                    H5F_t *file_dst, bool *recompute_size, H5O_copy_t *cpy_info,
-                    void H5_ATTR_UNUSED *udata)
+                    H5F_t *file_dst, bool *recompute_size, H5O_copy_t *cpy_info, void H5_ATTR_UNUSED *udata)
 {
     void *ret_value = NULL; /* Return value */
 

@@ -2139,7 +2139,7 @@ test_copy_named_datatype_attr_self(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
     hsize_t     dims[2] = {3, 4};           /* Dataspace dimensions */
     H5O_info2_t oinfo, oinfo2;              /* Object info */
     H5G_info_t  ginfo;                      /* Group info */
-    bool     same_type;
+    bool        same_type;
     char        src_filename[NAME_BUF_SIZE];
     char        dst_filename[NAME_BUF_SIZE];
 
@@ -2778,8 +2778,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_copy_dataset_simple_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
-                               bool test_open)
+test_copy_dataset_simple_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl, bool test_open)
 {
     hid_t   fid_src = -1, fid_dst = -1; /* File IDs */
     hid_t   sid = -1;                   /* Dataspace ID */
@@ -4899,8 +4898,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_copy_dataset_no_edge_filt(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
-                               bool test_open)
+test_copy_dataset_no_edge_filt(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl, bool test_open)
 {
 #ifdef H5_HAVE_FILTER_DEFLATE
     hid_t   fid_src = -1, fid_dst = -1;                    /* File IDs */
@@ -10405,8 +10403,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_copy_dataset_contig_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
-                               bool test_open)
+test_copy_dataset_contig_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl, bool test_open)
 {
     hid_t        fid_src = -1, fid_dst = -1; /* File IDs */
     hid_t        tid = -1, tid2 = -1;        /* Datatype ID */
@@ -12860,8 +12857,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_copy_committed_dt_merge_sugg(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
-                                  bool reopen)
+test_copy_committed_dt_merge_sugg(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl, bool reopen)
 {
     hid_t        fid_src = -1, fid_dst = -1; /* File IDs */
     hid_t        tid       = -1;             /* Datatype ID */
@@ -13158,8 +13154,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_copy_committed_dt_merge_attr(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
-                                  bool reopen)
+test_copy_committed_dt_merge_attr(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl, bool reopen)
 {
     hid_t        fid_src = -1, fid_dst = -1; /* File IDs */
     hid_t        tid       = -1;             /* Datatype ID */
@@ -16028,8 +16023,7 @@ mcdt_search_cbB(void *_udata)
 
 /* The main test function */
 static int
-test_copy_set_get_mcdt_search_cb(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
-                                 bool reopen)
+test_copy_set_get_mcdt_search_cb(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl, bool reopen)
 {
     hid_t                  fid_src = -1, fid_dst = -1; /* File IDs */
     hid_t                  tid       = -1;             /* Datatype ID */
@@ -17299,7 +17293,7 @@ main(void)
     unsigned max_compact, min_dense;
     int      configuration; /* Configuration of tests. */
     int      ExpressMode;
-    bool  same_file; /* Whether to run tests that only use one file */
+    bool     same_file; /* Whether to run tests that only use one file */
 
     /* Setup */
     h5_reset();

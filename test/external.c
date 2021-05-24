@@ -45,7 +45,7 @@ files_have_same_contents(const char *name1, const char *name2)
     ssize_t n2  = 0;
     char    buf1[1024];
     char    buf2[1024];
-    bool ret = false; /* not equal until proven otherwise */
+    bool    ret = false; /* not equal until proven otherwise */
 
     if ((fd1 = HDopen(name1, O_RDONLY)) < 0)
         goto out;

@@ -95,7 +95,7 @@ typedef enum {
 //! <!-- [H5L_info2_t_snip] -->
 typedef struct {
     H5L_type_t type;         /**< Type of link                   */
-    bool    corder_valid; /**< Indicate if creation order is valid */
+    bool       corder_valid; /**< Indicate if creation order is valid */
     int64_t    corder;       /**< Creation order                 */
     H5T_cset_t cset;         /**< Character set of link name     */
     union {
@@ -1658,7 +1658,7 @@ H5_DLL herr_t H5Lcreate_external(const char *file_name, const char *obj_name, hi
  */
 typedef struct {
     H5L_type_t type;         /**< Type of link                   */
-    bool    corder_valid; /**< Indicate if creation order is valid */
+    bool       corder_valid; /**< Indicate if creation order is valid */
     int64_t    corder;       /**< Creation order                 */
     H5T_cset_t cset;         /**< Character set of link name     */
     union {

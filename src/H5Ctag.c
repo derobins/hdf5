@@ -52,19 +52,19 @@
 
 /* Typedef for tagged entry iterator callback context - evict tagged entries */
 typedef struct {
-    H5F_t * f;                           /* File pointer for evicting entry */
-    bool evicted_entries_last_pass;   /* Flag to indicate that an entry
-                                          * was evicted when iterating over
-                                          * cache
-                                          */
+    H5F_t *f;                         /* File pointer for evicting entry */
+    bool   evicted_entries_last_pass; /* Flag to indicate that an entry
+                                       * was evicted when iterating over
+                                       * cache
+                                       */
     bool pinned_entries_need_evicted; /* Flag to indicate that a pinned
-                                          * entry was attempted to be evicted
-                                          */
+                                       * entry was attempted to be evicted
+                                       */
     bool skipped_pf_dirty_entries;    /* Flag indicating that one or more
-                                          * entries marked prefetched_dirty
-                                          * were encountered and not
-                                          * evicted.
-                                          */
+                                       * entries marked prefetched_dirty
+                                       * were encountered and not
+                                       * evicted.
+                                       */
 } H5C_tag_iter_evict_ctx_t;
 
 /* Typedef for tagged entry iterator callback context - expunge tag type metadata */

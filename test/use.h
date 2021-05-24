@@ -51,7 +51,7 @@ typedef struct options_t {
     hsize_t     nplanes;            /* number of planes to write, default proportional to chunksize */
     char *      filename;           /* use case data filename               */
     part_t      launch;             /* launch writer, reader or both        */
-    bool     use_swmr;           /* use swmr open (1) or not             */
+    bool        use_swmr;           /* use swmr open (1) or not             */
     int         iterations;         /* iterations, default 1                */
     hid_t       fapl_id;            /* instance-specific FAPL ID            */
     const char *progname;           /* Program name (used in usage and dset name) */

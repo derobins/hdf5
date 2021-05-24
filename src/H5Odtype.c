@@ -38,8 +38,7 @@ static htri_t H5O__dtype_can_share(const void *_mesg);
 static herr_t H5O__dtype_pre_copy_file(H5F_t *file_src, const void *mesg_src, bool *deleted,
                                        const H5O_copy_t *cpy_info, void *_udata);
 static void * H5O__dtype_copy_file(H5F_t *file_src, const H5O_msg_class_t *mesg_type, void *native_src,
-                                   H5F_t *file_dst, bool *recompute_size, H5O_copy_t *cpy_info,
-                                   void *udata);
+                                   H5F_t *file_dst, bool *recompute_size, H5O_copy_t *cpy_info, void *udata);
 static herr_t H5O__dtype_shared_post_copy_upd(const H5O_loc_t *src_oloc, const void *mesg_src,
                                               H5O_loc_t *dst_oloc, void *mesg_dst, H5O_copy_t *cpy_info);
 static herr_t H5O__dtype_debug(H5F_t *f, const void *_mesg, FILE *stream, int indent, int fwidth);

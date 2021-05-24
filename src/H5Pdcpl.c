@@ -51,7 +51,7 @@
 /* Define default layout information */
 #define H5D_DEF_STORAGE_COMPACT_INIT                                                                         \
     {                                                                                                        \
-        (bool) false, (size_t)0, NULL                                                                     \
+        (bool)false, (size_t)0, NULL                                                                         \
     }
 #define H5D_DEF_STORAGE_CONTIG_INIT                                                                          \
     {                                                                                                        \
@@ -330,7 +330,7 @@ static H5O_layout_t H5D_def_layout_compact_g   = H5D_DEF_LAYOUT_COMPACT;
 static H5O_layout_t H5D_def_layout_contig_g    = H5D_DEF_LAYOUT_CONTIG;
 static H5O_layout_t H5D_def_layout_chunk_g     = H5D_DEF_LAYOUT_CHUNK;
 static H5O_layout_t H5D_def_layout_virtual_g   = H5D_DEF_LAYOUT_VIRTUAL;
-static bool      H5P_dcrt_def_layout_init_g = false;
+static bool         H5P_dcrt_def_layout_init_g = false;
 #endif /* H5_HAVE_C99_DESIGNATED_INITIALIZER */
 
 /*-------------------------------------------------------------------------
@@ -2233,8 +2233,8 @@ H5Pset_virtual(hid_t dcpl_id, hid_t vspace_id, const char *src_file_name, const 
     H5S_t *                    src_space;                  /* Source dataset space selection */
     H5O_storage_virtual_ent_t *old_list         = NULL;    /* List pointer previously on property list */
     H5O_storage_virtual_ent_t *ent              = NULL;    /* Convenience pointer to new VDS entry */
-    bool                    retrieved_layout = false;   /* Whether the layout has been retrieved */
-    bool                    free_list        = false;   /* Whether to free the list of virtual entries */
+    bool                       retrieved_layout = false;   /* Whether the layout has been retrieved */
+    bool                       free_list        = false;   /* Whether to free the list of virtual entries */
     herr_t                     ret_value        = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
@@ -3814,7 +3814,7 @@ done:
 herr_t
 H5Pget_dset_no_attrs_hint(hid_t dcpl_id, bool *minimize /*out*/)
 {
-    bool         setting   = false;
+    bool            setting   = false;
     H5P_genplist_t *plist     = NULL;
     herr_t          ret_value = SUCCEED;
 
@@ -3859,7 +3859,7 @@ herr_t
 H5Pset_dset_no_attrs_hint(hid_t dcpl_id, bool minimize)
 {
     H5P_genplist_t *plist     = NULL;
-    bool         prev_set  = false;
+    bool            prev_set  = false;
     herr_t          ret_value = SUCCEED;
 
     FUNC_ENTER_API(FAIL)

@@ -590,8 +590,8 @@ H5O__pline_free(void *mesg)
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5O__pline_pre_copy_file(H5F_t H5_ATTR_UNUSED *file_src, const void *mesg_src,
-                         bool H5_ATTR_UNUSED *deleted, const H5O_copy_t *cpy_info, void *_udata)
+H5O__pline_pre_copy_file(H5F_t H5_ATTR_UNUSED *file_src, const void *mesg_src, bool H5_ATTR_UNUSED *deleted,
+                         const H5O_copy_t *cpy_info, void *_udata)
 {
     const H5O_pline_t *        pline_src = (const H5O_pline_t *)mesg_src;       /* Source pline */
     H5O_copy_file_ud_common_t *udata     = (H5O_copy_file_ud_common_t *)_udata; /* Object copying user data */

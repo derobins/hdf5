@@ -789,7 +789,7 @@ H5Z__set_local_nbit(hid_t dcpl_id, hid_t type_id, hid_t space_id)
     unsigned *      cd_values = NULL;                 /* Filter parameters */
     hssize_t        npoints;                          /* Number of points in the dataspace */
     H5T_class_t     dtype_class;                      /* Datatype's class */
-    bool         need_not_compress;   /* Flag if TRUE indicating no need to do nbit compression */
+    bool            need_not_compress;   /* Flag if TRUE indicating no need to do nbit compression */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC

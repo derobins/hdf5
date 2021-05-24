@@ -329,7 +329,7 @@ H5Oopen_by_addr(hid_t loc_id, haddr_t addr)
     void *            opened_obj = NULL;        /* Opened object */
     H5VL_loc_params_t loc_params;               /* Location parameters */
     H5O_token_t       obj_token = {0};          /* Object token */
-    bool           is_native_vol_obj;
+    bool              is_native_vol_obj;
     hid_t             ret_value = H5I_INVALID_HID; /* Return value */
 
     FUNC_ENTER_API(H5I_INVALID_HID)
@@ -542,7 +542,7 @@ H5Oget_info2(hid_t loc_id, H5O_info1_t *oinfo /*out*/, unsigned fields)
 {
     H5VL_object_t *   vol_obj; /* Object of loc_id */
     H5VL_loc_params_t loc_params;
-    bool           is_native_vol_obj;
+    bool              is_native_vol_obj;
     herr_t            ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
@@ -598,7 +598,7 @@ H5Oget_info_by_name2(hid_t loc_id, const char *name, H5O_info1_t *oinfo /*out*/,
 {
     H5VL_object_t *   vol_obj; /* Object of loc_id */
     H5VL_loc_params_t loc_params;
-    bool           is_native_vol_obj;
+    bool              is_native_vol_obj;
     herr_t            ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
@@ -666,7 +666,7 @@ H5Oget_info_by_idx2(hid_t loc_id, const char *group_name, H5_index_t idx_type, H
 {
     H5VL_object_t *   vol_obj; /* Object of loc_id */
     H5VL_loc_params_t loc_params;
-    bool           is_native_vol_obj;
+    bool              is_native_vol_obj;
     herr_t            ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
@@ -917,7 +917,7 @@ H5Ovisit2(hid_t obj_id, H5_index_t idx_type, H5_iter_order_t order, H5O_iterate1
     H5VL_object_t *      vol_obj; /* Object of loc_id */
     H5VL_loc_params_t    loc_params;
     H5O_visit1_adapter_t shim_data; /* Adapter for passing app callback & user data */
-    bool              is_native_vol_obj;
+    bool                 is_native_vol_obj;
     herr_t               ret_value; /* Return value */
 
     FUNC_ENTER_API(FAIL)
@@ -1006,7 +1006,7 @@ H5Ovisit_by_name2(hid_t loc_id, const char *obj_name, H5_index_t idx_type, H5_it
     H5VL_object_t *      vol_obj; /* Object of loc_id */
     H5VL_loc_params_t    loc_params;
     H5O_visit1_adapter_t shim_data; /* Adapter for passing app callback & user data */
-    bool              is_native_vol_obj;
+    bool                 is_native_vol_obj;
     herr_t               ret_value; /* Return value */
 
     FUNC_ENTER_API(FAIL)

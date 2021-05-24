@@ -137,7 +137,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
     H5D_chunk_map_t *fm = NULL;                   /* Chunk file<->memory mapping */
     H5D_io_info_t    io_info;                     /* Dataset I/O info     */
     H5D_type_info_t  type_info;                   /* Datatype info for operation */
-    bool          type_info_init      = false; /* Whether the datatype info has been initialized */
+    bool             type_info_init      = false; /* Whether the datatype info has been initialized */
     H5S_t *          projected_mem_space = NULL;  /* If not NULL, ptr to dataspace containing a     */
                                                   /* projection of the supplied mem_space to a new  */
                                                   /* dataspace with rank equal to that of           */
@@ -153,7 +153,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
                                                   /* end of the function to avoid a memory leak.    */
     H5D_storage_t store;                          /* union of EFL and chunk pointer in file space */
     hsize_t       nelmts;                         /* total number of elmts	*/
-    bool       io_op_init = false;             /* Whether the I/O op has been initialized */
+    bool          io_op_init = false;             /* Whether the I/O op has been initialized */
     char          fake_char;                      /* Temporary variable for NULL buffer pointers */
     herr_t        ret_value = SUCCEED;            /* Return value	*/
 
@@ -353,7 +353,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
     H5D_chunk_map_t *fm = NULL;                   /* Chunk file<->memory mapping */
     H5D_io_info_t    io_info;                     /* Dataset I/O info     */
     H5D_type_info_t  type_info;                   /* Datatype info for operation */
-    bool          type_info_init      = false; /* Whether the datatype info has been initialized */
+    bool             type_info_init      = false; /* Whether the datatype info has been initialized */
     H5S_t *          projected_mem_space = NULL;  /* If not NULL, ptr to dataspace containing a     */
                                                   /* projection of the supplied mem_space to a new  */
                                                   /* dataspace with rank equal to that of           */
@@ -369,7 +369,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
                                                   /* end of the function to avoid a memory leak.    */
     H5D_storage_t store;                          /* union of EFL and chunk pointer in file space */
     hsize_t       nelmts;                         /* total number of elmts	*/
-    bool       io_op_init = false;             /* Whether the I/O op has been initialized */
+    bool          io_op_init = false;             /* Whether the I/O op has been initialized */
     char          fake_char;                      /* Temporary variable for NULL buffer pointers */
     herr_t        ret_value = SUCCEED;            /* Return value	*/
 
@@ -494,7 +494,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
     if (nelmts > 0 && dataset->shared->dcpl_cache.efl.nused == 0 &&
         !(*dataset->shared->layout.ops->is_space_alloc)(&dataset->shared->layout.storage)) {
         hssize_t file_nelmts;    /* Number of elements in file dataset's dataspace */
-        bool  full_overwrite; /* Whether we are over-writing all the elements */
+        bool     full_overwrite; /* Whether we are over-writing all the elements */
 
         /* Get the number of elements in file dataset's dataspace */
         if ((file_nelmts = H5S_GET_EXTENT_NPOINTS(file_space)) < 0)

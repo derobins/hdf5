@@ -176,19 +176,19 @@ compare_2D_arrays(int **dset1, int **dset2, const hsize_t *sizes, /*OUT*/ bool *
 static herr_t
 ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
 {
-    hid_t   did           = -1;           /* Dataset ID                                   */
-    hid_t   dxpl_id       = -1;           /* Dataset xfer property list ID                */
-    hid_t   write_dxpl_id = -1;           /* Dataset xfer property list ID for writing    */
-    hid_t   sid           = -1;           /* Dataspace ID                                 */
-    void *  tconv_buf     = NULL;         /* Temporary conversion buffer                  */
-    int **  orig          = NULL;         /* Data written to the dataset                  */
-    int **  read          = NULL;         /* Data read from the dataset                   */
-    size_t  r, c;                         /* Data rows and columns                        */
-    size_t  hs_r, hs_c, hs_offr, hs_offc; /* Hypserslab sizes and offsets                 */
-    size_t  i, j;                         /* Local index variables                        */
-    int     n = 0;                        /* Value written to point array                 */
-    bool are_same;                     /* Output from dataset compare function         */
-    int *** save_array = NULL;            /* (Global) array where the final data go       */
+    hid_t  did           = -1;           /* Dataset ID                                   */
+    hid_t  dxpl_id       = -1;           /* Dataset xfer property list ID                */
+    hid_t  write_dxpl_id = -1;           /* Dataset xfer property list ID for writing    */
+    hid_t  sid           = -1;           /* Dataspace ID                                 */
+    void * tconv_buf     = NULL;         /* Temporary conversion buffer                  */
+    int ** orig          = NULL;         /* Data written to the dataset                  */
+    int ** read          = NULL;         /* Data read from the dataset                   */
+    size_t r, c;                         /* Data rows and columns                        */
+    size_t hs_r, hs_c, hs_offr, hs_offc; /* Hypserslab sizes and offsets                 */
+    size_t i, j;                         /* Local index variables                        */
+    int    n = 0;                        /* Value written to point array                 */
+    bool   are_same;                     /* Output from dataset compare function         */
+    int ***save_array = NULL;            /* (Global) array where the final data go       */
 
     /* initialize */
     r = (size_t)sizes_g[0];

@@ -290,7 +290,7 @@ typedef struct h5tool_format_t {
      *
      * Numeric data is also subject to the formats for individual elements.
      */
-    bool     raw;
+    bool        raw;
     const char *fmt_raw;
     const char *fmt_int;
     const char *fmt_uint;
@@ -671,11 +671,11 @@ H5TOOLS_DLL hid_t   h5tools_get_little_endian_type(hid_t type);
 H5TOOLS_DLL hid_t   h5tools_get_big_endian_type(hid_t type);
 H5TOOLS_DLL htri_t  h5tools_detect_vlen(hid_t tid);
 H5TOOLS_DLL htri_t  h5tools_detect_vlen_str(hid_t tid);
-H5TOOLS_DLL bool h5tools_is_obj_same(hid_t loc_id1, const char *name1, hid_t loc_id2, const char *name2);
+H5TOOLS_DLL bool    h5tools_is_obj_same(hid_t loc_id1, const char *name1, hid_t loc_id2, const char *name2);
 H5TOOLS_DLL void    init_acc_pos(unsigned ndims, const hsize_t *dims, hsize_t *acc, hsize_t *pos,
                                  hsize_t *p_min_idx);
 H5TOOLS_DLL hsize_t calc_acc_pos(unsigned ndims, hsize_t elemtno, const hsize_t *acc, hsize_t *pos);
-H5TOOLS_DLL bool h5tools_is_zero(const void *_mem, size_t size);
+H5TOOLS_DLL bool    h5tools_is_zero(const void *_mem, size_t size);
 H5TOOLS_DLL int     h5tools_canreadf(const char *name, hid_t dcpl_id);
 H5TOOLS_DLL int     h5tools_can_encode(H5Z_filter_t filtn);
 
@@ -685,25 +685,25 @@ H5TOOLS_DLL void h5tools_region_simple_prefix(FILE *stream, const h5tool_format_
                                               h5tools_context_t *ctx, hsize_t elmtno, hsize_t *ptdata,
                                               int secnum);
 
-H5TOOLS_DLL int     render_bin_output(FILE *stream, hid_t container, hid_t tid, void *_mem, hsize_t nelmts);
-H5TOOLS_DLL int     render_bin_output_region_data_blocks(hid_t region_id, FILE *stream, hid_t container,
-                                                         unsigned ndims, hid_t type_id, hsize_t nblocks,
-                                                         const hsize_t *ptdata);
+H5TOOLS_DLL int  render_bin_output(FILE *stream, hid_t container, hid_t tid, void *_mem, hsize_t nelmts);
+H5TOOLS_DLL int  render_bin_output_region_data_blocks(hid_t region_id, FILE *stream, hid_t container,
+                                                      unsigned ndims, hid_t type_id, hsize_t nblocks,
+                                                      const hsize_t *ptdata);
 H5TOOLS_DLL bool render_bin_output_region_blocks(hid_t region_space, hid_t region_id, FILE *stream,
-                                                    hid_t container);
-H5TOOLS_DLL int     render_bin_output_region_data_points(hid_t region_space, hid_t region_id, FILE *stream,
-                                                         hid_t container, unsigned ndims, hid_t type_id,
-                                                         hsize_t npoints);
+                                                 hid_t container);
+H5TOOLS_DLL int  render_bin_output_region_data_points(hid_t region_space, hid_t region_id, FILE *stream,
+                                                      hid_t container, unsigned ndims, hid_t type_id,
+                                                      hsize_t npoints);
 H5TOOLS_DLL bool render_bin_output_region_points(hid_t region_space, hid_t region_id, FILE *stream,
-                                                    hid_t container);
+                                                 hid_t container);
 
 H5TOOLS_DLL bool h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_context_t *ctx,
-                                           h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols,
-                                           hsize_t local_elmt_counter, hsize_t elmt_counter);
+                                        h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols,
+                                        hsize_t local_elmt_counter, hsize_t elmt_counter);
 H5TOOLS_DLL bool h5tools_render_region_element(FILE *stream, const h5tool_format_t *info,
-                                                  h5tools_context_t *ctx, h5tools_str_t *buffer,
-                                                  hsize_t *curr_pos, size_t ncols, hsize_t *ptdata,
-                                                  hsize_t local_elmt_counter, hsize_t elmt_counter);
+                                               h5tools_context_t *ctx, h5tools_str_t *buffer,
+                                               hsize_t *curr_pos, size_t ncols, hsize_t *ptdata,
+                                               hsize_t local_elmt_counter, hsize_t elmt_counter);
 
 #ifdef __cplusplus
 }

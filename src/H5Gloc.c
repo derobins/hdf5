@@ -468,9 +468,9 @@ H5G__loc_find_by_idx_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char H5_
 {
     H5G_loc_fbi_t *udata = (H5G_loc_fbi_t *)_udata; /* User data passed in */
     H5O_link_t     fnd_lnk;                         /* Link within group */
-    bool        lnk_copied    = false;           /* Whether the link was copied */
-    bool        obj_loc_valid = false;           /* Flag to indicate that the object location is valid */
-    bool        obj_exists    = false;           /* Whether the object exists (unused) */
+    bool           lnk_copied    = false;           /* Whether the link was copied */
+    bool           obj_loc_valid = false;           /* Flag to indicate that the object location is valid */
+    bool           obj_exists    = false;           /* Whether the object exists (unused) */
     herr_t         ret_value     = SUCCEED;         /* Return value */
 
     FUNC_ENTER_STATIC

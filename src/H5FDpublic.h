@@ -326,7 +326,7 @@ struct H5FD_t {
     /* Space allocation management fields */
     hsize_t threshold;  /* Threshold for alignment  */
     hsize_t alignment;  /* Allocation alignment     */
-    bool paged_aggr; /* Paged aggregation for file space is enabled or not */
+    bool    paged_aggr; /* Paged aggregation for file space is enabled or not */
 };
 
 /**

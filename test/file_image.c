@@ -714,8 +714,8 @@ test_get_file_image(const char *test_banner, const int file_name_num, hid_t fapl
     void *    insertion_ptr   = NULL;
     void *    image_ptr       = NULL;
     void *    file_image_ptr  = NULL;
-    bool   is_family_file  = false;
-    bool   identical;
+    bool      is_family_file  = false;
+    bool      identical;
     int       data[100];
     int       i;
     int       fd = -1;

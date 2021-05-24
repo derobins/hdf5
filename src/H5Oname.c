@@ -120,8 +120,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5O__name_encode(H5F_t H5_ATTR_UNUSED *f, bool H5_ATTR_UNUSED disable_shared, uint8_t *p,
-                 const void *_mesg)
+H5O__name_encode(H5F_t H5_ATTR_UNUSED *f, bool H5_ATTR_UNUSED disable_shared, uint8_t *p, const void *_mesg)
 {
     const H5O_name_t *mesg = (const H5O_name_t *)_mesg;
 

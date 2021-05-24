@@ -88,9 +88,9 @@
 herr_t
 H5F__get_sohm_mesg_count_test(hid_t file_id, unsigned type_id, size_t *mesg_count)
 {
-    H5F_t * file;                     /* File info */
-    bool api_ctx_pushed = false;   /* Whether API context pushed */
-    herr_t  ret_value      = SUCCEED; /* Return value */
+    H5F_t *file;                     /* File info */
+    bool   api_ctx_pushed = false;   /* Whether API context pushed */
+    herr_t ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -132,9 +132,9 @@ done:
 herr_t
 H5F__check_cached_stab_test(hid_t file_id)
 {
-    H5F_t * file;                     /* File info */
-    bool api_ctx_pushed = false;   /* Whether API context pushed */
-    herr_t  ret_value      = SUCCEED; /* Return value */
+    H5F_t *file;                     /* File info */
+    bool   api_ctx_pushed = false;   /* Whether API context pushed */
+    herr_t ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
 

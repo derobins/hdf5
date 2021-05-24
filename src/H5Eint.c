@@ -652,7 +652,7 @@ H5E_printf_stack(H5E_t *estack, const char *file, const char *func, unsigned lin
 {
     va_list ap;                   /* Varargs info */
     char *  tmp        = NULL;    /* Buffer to place formatted description in */
-    bool va_started = false;   /* Whether the variable argument list is open */
+    bool    va_started = false;   /* Whether the variable argument list is open */
     herr_t  ret_value  = SUCCEED; /* Return value */
 
     /*

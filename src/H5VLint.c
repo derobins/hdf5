@@ -90,8 +90,7 @@ static herr_t         H5VL__free_cls(H5VL_class_t *cls, void **request);
 static int            H5VL__get_connector_cb(void *obj, hid_t id, void *_op_data);
 static herr_t         H5VL__set_def_conn(void);
 static void *         H5VL__wrap_obj(void *obj, H5I_type_t obj_type);
-static H5VL_object_t *H5VL__new_vol_obj(H5I_type_t type, void *object, H5VL_t *vol_connector,
-                                        bool wrap_obj);
+static H5VL_object_t *H5VL__new_vol_obj(H5I_type_t type, void *object, H5VL_t *vol_connector, bool wrap_obj);
 static void *         H5VL__object(hid_t id, H5I_type_t obj_type);
 static herr_t         H5VL__free_vol_wrapper(H5VL_wrap_ctx_t *vol_wrap_ctx);
 
@@ -544,7 +543,7 @@ static H5VL_object_t *
 H5VL__new_vol_obj(H5I_type_t type, void *object, H5VL_t *vol_connector, bool wrap_obj)
 {
     H5VL_object_t *new_vol_obj  = NULL;  /* Pointer to new VOL object                    */
-    bool        conn_rc_incr = false; /* Whether the VOL connector refcount has been incremented */
+    bool           conn_rc_incr = false; /* Whether the VOL connector refcount has been incremented */
     H5VL_object_t *ret_value    = NULL;  /* Return value                                 */
 
     FUNC_ENTER_STATIC
@@ -776,7 +775,7 @@ H5VL_register_using_vol_id(H5I_type_t type, void *obj, hid_t connector_id, bool 
 {
     H5VL_class_t *cls          = NULL;            /* VOL connector class */
     H5VL_t *      connector    = NULL;            /* VOL connector struct */
-    bool       conn_id_incr = false;           /* Whether the VOL connector ID has been incremented */
+    bool          conn_id_incr = false;           /* Whether the VOL connector ID has been incremented */
     hid_t         ret_value    = H5I_INVALID_HID; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -871,7 +870,7 @@ H5VL_create_object_using_vol_id(H5I_type_t type, void *obj, hid_t connector_id)
 {
     H5VL_class_t * cls          = NULL;  /* VOL connector class */
     H5VL_t *       connector    = NULL;  /* VOL connector struct */
-    bool        conn_id_incr = false; /* Whether the VOL connector ID has been incremented */
+    bool           conn_id_incr = false; /* Whether the VOL connector ID has been incremented */
     H5VL_object_t *ret_value    = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)

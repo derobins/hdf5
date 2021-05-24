@@ -166,7 +166,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
 
     /* Local variables */
     H5FA_hdr_t *hdr      = NULL;  /* Fixed array header */
-    bool     inserted = false; /* Whether the header was inserted into cache */
+    bool        inserted = false; /* Whether the header was inserted into cache */
 
     /* Check arguments */
     HDassert(f);

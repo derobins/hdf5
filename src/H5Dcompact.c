@@ -53,7 +53,7 @@
 
 /* Layout operation callbacks */
 static herr_t  H5D__compact_construct(H5F_t *f, H5D_t *dset);
-static bool H5D__compact_is_space_alloc(const H5O_storage_t *storage);
+static bool    H5D__compact_is_space_alloc(const H5O_storage_t *storage);
 static herr_t  H5D__compact_io_init(const H5D_io_info_t *io_info, const H5D_type_info_t *type_info,
                                     hsize_t nelmts, const H5S_t *file_space, const H5S_t *mem_space,
                                     H5D_chunk_map_t *cm);
@@ -102,7 +102,7 @@ herr_t
 H5D__compact_fill(const H5D_t *dset)
 {
     H5D_fill_buf_info_t fb_info;                /* Dataset's fill buffer info */
-    bool             fb_info_init = false;   /* Whether the fill value buffer has been initialized */
+    bool                fb_info_init = false;   /* Whether the fill value buffer has been initialized */
     herr_t              ret_value    = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

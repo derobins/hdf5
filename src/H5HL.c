@@ -525,7 +525,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL,
     H5HL_free_t *fl = NULL, *last_fl = NULL;
     size_t       need_size;
     size_t       offset = 0;
-    bool      found;
+    bool         found;
 
     /* Check arguments */
     HDassert(f);

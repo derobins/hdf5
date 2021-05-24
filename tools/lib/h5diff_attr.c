@@ -336,8 +336,8 @@ diff_attr_data(hid_t attr1_id, hid_t attr2_id, const char *name1, const char *na
     size_t     msize2;                      /* memory size of memory type */
     void *     buf1        = NULL;          /* data buffer */
     void *     buf2        = NULL;          /* data buffer */
-    bool    buf1hasdata = false;         /* buffer has data */
-    bool    buf2hasdata = false;         /* buffer has data */
+    bool       buf1hasdata = false;         /* buffer has data */
+    bool       buf2hasdata = false;         /* buffer has data */
     int        rank1;                       /* rank of dataset */
     int        rank2;                       /* rank of dataset */
     hsize_t    dims1[H5S_MAX_RANK];         /* dimensions of dataset */

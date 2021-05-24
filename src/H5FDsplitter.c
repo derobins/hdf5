@@ -34,11 +34,11 @@ static hid_t H5FD_SPLITTER_g = 0;
 
 /* Driver-specific file access properties */
 typedef struct H5FD_splitter_fapl_t {
-    hid_t   rw_fapl_id;                                /* fapl for the R/W channel       */
-    hid_t   wo_fapl_id;                                /* fapl for the W/O channel       */
-    char    wo_path[H5FD_SPLITTER_PATH_MAX + 1];       /* file name for the W/O channel */
-    char    log_file_path[H5FD_SPLITTER_PATH_MAX + 1]; /* file to record errors reported by the W/O channel */
-    bool ignore_wo_errs;                            /* TRUE to ignore errors on the W/O channel */
+    hid_t rw_fapl_id;                                /* fapl for the R/W channel       */
+    hid_t wo_fapl_id;                                /* fapl for the W/O channel       */
+    char  wo_path[H5FD_SPLITTER_PATH_MAX + 1];       /* file name for the W/O channel */
+    char  log_file_path[H5FD_SPLITTER_PATH_MAX + 1]; /* file to record errors reported by the W/O channel */
+    bool  ignore_wo_errs;                            /* TRUE to ignore errors on the W/O channel */
 } H5FD_splitter_fapl_t;
 
 /* The information of this splitter */

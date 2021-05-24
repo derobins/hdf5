@@ -542,7 +542,7 @@ struct H5SL_node_t {
     size_t               level;      /* The level of this node */
     size_t               log_nalloc; /* log2(Number of slots allocated in forward) */
     uint32_t             hashval;    /* Hash value for key (only for strings, currently) */
-    bool              removed;    /* Whether the node is "removed" (actual removal deferred) */
+    bool                 removed;    /* Whether the node is "removed" (actual removal deferred) */
     struct H5SL_node_t **forward;    /* Array of forward pointers from this node */
     struct H5SL_node_t * backward;   /* Backward pointer from this node */
 };
@@ -558,8 +558,8 @@ struct H5SL_t {
     size_t       nobjs;      /* Number of active objects in skip list */
     H5SL_node_t *header;     /* Header for nodes in skip list */
     H5SL_node_t *last;       /* Pointer to last node in skip list */
-    bool safe_iterating;  /* Whether a routine is "safely" iterating over the list and removals should be
-                                deferred */
+    bool safe_iterating;     /* Whether a routine is "safely" iterating over the list and removals should be
+                                   deferred */
 };
 
 /* Static functions */

@@ -350,7 +350,7 @@ static herr_t H5T__set_size(H5T_t *dt, size_t size);
 static herr_t H5T__close_cb(H5T_t *dt, void **request);
 static H5T_path_t *H5T__path_find_real(const H5T_t *src, const H5T_t *dst, const char *name,
                                        H5T_conv_func_t *conv);
-static bool     H5T__detect_vlen_ref(const H5T_t *dt);
+static bool        H5T__detect_vlen_ref(const H5T_t *dt);
 static H5T_t *     H5T__initiate_copy(const H5T_t *old_dt);
 static H5T_t *     H5T__copy_transient(H5T_t *old_dt);
 static H5T_t *     H5T__copy_all(H5T_t *old_dt);
@@ -797,7 +797,7 @@ H5T__init_package(void)
     H5T_t * ref       = NULL; /* Datatype structure for opaque references */
     hsize_t dim[1]    = {1};  /* Dimension info for array datatype */
     herr_t  status;
-    bool copied_dtype =
+    bool    copied_dtype =
         true; /* Flag to indicate whether datatype was copied or allocated (for error cleanup) */
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -4542,7 +4542,7 @@ H5T_cmp(const H5T_t *dt1, const H5T_t *dt2, bool superset)
 {
     unsigned *idx1 = NULL, *idx2 = NULL;
     size_t    base_size;
-    bool   swapped;
+    bool      swapped;
     unsigned  u;
     int       tmp;
     int       ret_value = 0;
@@ -6039,7 +6039,7 @@ static bool
 H5T__detect_vlen_ref(const H5T_t *dt)
 {
     unsigned u;                 /* Local index variable */
-    bool  ret_value = false; /* Return value */
+    bool     ret_value = false; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 

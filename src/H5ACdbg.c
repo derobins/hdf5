@@ -299,8 +299,8 @@ done:
 bool
 H5AC_get_serialization_in_progress(H5F_t *f)
 {
-    H5C_t * cache_ptr;
-    bool ret_value = false; /* Return value */
+    H5C_t *cache_ptr;
+    bool   ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -337,8 +337,8 @@ H5AC_get_serialization_in_progress(H5F_t *f)
 bool
 H5AC_cache_is_clean(const H5F_t *f, H5AC_ring_t inner_ring)
 {
-    H5C_t * cache_ptr;
-    bool ret_value = false; /* Return value */
+    H5C_t *cache_ptr;
+    bool   ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 

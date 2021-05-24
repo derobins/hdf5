@@ -165,7 +165,7 @@ typedef struct {
     int             stop;      /* # of iterations to stop after */
     hsize_t         curr;      /* Current creation order value */
     size_t          max_visit; /* Size of "visited attribute" flag array */
-    bool *       visited;   /* Pointer to array of "visited attribute" flags */
+    bool *          visited;   /* Pointer to array of "visited attribute" flags */
 } attr_iter_info_t;
 
 static herr_t attr_op1(hid_t loc_id, const char *name, const H5A_info_t *ainfo, void *op_data);
@@ -7176,7 +7176,7 @@ test_attr_iterate2(bool new_format, hid_t fcpl, hid_t fapl)
     H5_index_t       idx_type;                /* Type of index to operate on */
     H5_iter_order_t  order;                   /* Order within in the index */
     attr_iter_info_t iter_info;               /* Iterator info */
-    bool *        visited = NULL;          /* Array of flags for visiting links */
+    bool *           visited = NULL;          /* Array of flags for visiting links */
     hsize_t          idx;                     /* Start index for iteration */
     unsigned         use_index;               /* Use index on creation order values */
     const char *     dsetname;                /* Name of dataset for attributes */

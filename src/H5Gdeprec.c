@@ -58,7 +58,7 @@
 /* User data for path traversal routine for getting object info */
 typedef struct {
     H5G_stat_t *statbuf;     /* Stat buffer about object */
-    bool     follow_link; /* Whether we are following a link or not */
+    bool        follow_link; /* Whether we are following a link or not */
     H5F_t *     loc_file;    /* Pointer to the file the location is in */
 } H5G_trav_goi_t;
 

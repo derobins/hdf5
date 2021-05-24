@@ -189,12 +189,12 @@ error:
 int
 main(void)
 {
-    char *  driver = NULL;     /* name of current VFD (from env var)       */
-    bool vfd_supports_swmr; /* whether the current VFD supports SWMR    */
-    hid_t   fid     = -1;      /* file ID                                  */
-    hid_t   fapl_id = -1;      /* file access proplist ID                  */
-    char    filename[1024];    /* filename                                 */
-    bool use_swmr;          /* whether or not to use SWMR I/O           */
+    char *driver = NULL;     /* name of current VFD (from env var)       */
+    bool  vfd_supports_swmr; /* whether the current VFD supports SWMR    */
+    hid_t fid     = -1;      /* file ID                                  */
+    hid_t fapl_id = -1;      /* file access proplist ID                  */
+    char  filename[1024];    /* filename                                 */
+    bool  use_swmr;          /* whether or not to use SWMR I/O           */
 
     h5_reset();
     if ((fapl_id = h5_fileaccess()) < 0)
