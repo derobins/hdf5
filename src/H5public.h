@@ -227,7 +227,7 @@ typedef bool hbool_t;
  * }
  * \endcode
  */
-typedef int  htri_t;
+typedef int htri_t;
 
 /* Define the ssize_t type if it not is defined */
 #if H5_SIZEOF_SSIZE_T == 0
