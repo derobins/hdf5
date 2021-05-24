@@ -177,7 +177,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     H5EA_sblock_t *sblock = NULL;          /* Extensible array super block */
     haddr_t        sblock_addr;            /* Extensible array super block address */
     haddr_t        tmp_addr = HADDR_UNDEF; /* Address value to fill data block addresses with */
-    hbool_t        inserted = FALSE;       /* Whether the header was inserted into cache */
+    hbool_t        inserted = false;       /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);
@@ -204,7 +204,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     /* Cache the new extensible array super block */
     if (H5AC_insert_entry(hdr->f, H5AC_EARRAY_SBLOCK, sblock_addr, sblock, H5AC__NO_FLAGS_SET) < 0)
         H5E_THROW(H5E_CANTINSERT, "can't add extensible array super block to cache")
-    inserted = TRUE;
+    inserted = true;
 
     /* Add super block as child of 'top' proxy */
     if (hdr->top_proxy) {
@@ -218,7 +218,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     hdr->stats.stored.super_blk_size += sblock->size;
 
     /* Mark the statistics as changed */
-    *stats_changed = TRUE;
+    *stats_changed = true;
 
     /* Set address of super block to return */
     ret_value = sblock_addr;

@@ -182,7 +182,7 @@ options_add_layout(obj_list_t *obj_list, unsigned n_objs, pack_info_t *pack, pac
 {
     unsigned i, j, I;
     unsigned added     = 0;
-    hbool_t  found     = FALSE;
+    hbool_t  found     = false;
     int      ret_value = 0;
 
     /* increase the size of the collection by N_OBJS if necessary */
@@ -206,7 +206,7 @@ options_add_layout(obj_list_t *obj_list, unsigned n_objs, pack_info_t *pack, pac
                     /* insert the layout info */
                     else {
                         aux_tblinsert_layout(table, i, pack);
-                        found = TRUE;
+                        found = true;
                         break;
                     }
                 } /* if */
@@ -262,7 +262,7 @@ options_add_filter(obj_list_t *obj_list, unsigned n_objs, filter_info_t filt, pa
 {
     unsigned int i, j, I;
     unsigned     added = 0;
-    hbool_t      found = FALSE;
+    hbool_t      found = false;
 
     /* increase the size of the collection by N_OBJS if necessary */
     if (table->nelems + n_objs >= table->size)
@@ -279,7 +279,7 @@ options_add_filter(obj_list_t *obj_list, unsigned n_objs, filter_info_t filt, pa
                 if (HDstrcmp(obj_list[j].obj, table->objs[i].path) == 0) {
                     /* insert */
                     aux_tblinsert_filter(table, i, filt);
-                    found = TRUE;
+                    found = true;
                     break;
                 } /* if */
             }     /* i */

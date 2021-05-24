@@ -50,10 +50,10 @@
 #endif
 
 #define FILE_NAME_1 "overhead.h5"
-#ifndef FALSE
+#ifndef false
 #define FALSE 0
 #endif /* FALSE */
-#ifndef TRUE
+#ifndef true
 #define TRUE 1
 #endif /* TRUE */
 
@@ -349,7 +349,7 @@ main(int argc, char *argv[])
 {
     hid_t   xfer;
     fill_t  fill_style = FILL_ALL;
-    hbool_t use_cache  = FALSE;
+    hbool_t use_cache  = false;
     double  splits[3];
     int     i, j, nerrors = 0;
 
@@ -381,7 +381,7 @@ main(int argc, char *argv[])
             fill_style = FILL_RANDOM;
         }
         else if (!strcmp(argv[i], "cache")) {
-            use_cache = TRUE;
+            use_cache = true;
         }
         else if (j < 3 && (isdigit(argv[i][0]) || '.' == argv[i][0])) {
             splits[j++] = strtod(argv[i], NULL);
@@ -394,16 +394,16 @@ main(int argc, char *argv[])
     if (FILL_ALL == fill_style) {
         printf("%-7s %8s\n", "Style", "Bytes/Chunk");
         printf("%-7s %8s\n", "-----", "-----------");
-        nerrors += test(FILL_FORWARD, splits, FALSE, use_cache);
-        nerrors += test(FILL_REVERSE, splits, FALSE, use_cache);
-        nerrors += test(FILL_INWARD, splits, FALSE, use_cache);
-        nerrors += test(FILL_OUTWARD, splits, FALSE, use_cache);
-        nerrors += test(FILL_RANDOM, splits, FALSE, use_cache);
+        nerrors += test(FILL_FORWARD, splits, false, use_cache);
+        nerrors += test(FILL_REVERSE, splits, false, use_cache);
+        nerrors += test(FILL_INWARD, splits, false, use_cache);
+        nerrors += test(FILL_OUTWARD, splits, false, use_cache);
+        nerrors += test(FILL_RANDOM, splits, false, use_cache);
     }
     else {
         if (use_cache)
             usage(argv[0]);
-        nerrors += test(fill_style, splits, TRUE, FALSE);
+        nerrors += test(fill_style, splits, true, false);
     }
     if (nerrors > 0)
         goto error;

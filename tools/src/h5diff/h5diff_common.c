@@ -286,7 +286,7 @@ parse_command_line(int argc, const char *argv[], const char **fname1, const char
                 break;
 
             case 'l':
-                opts->follow_links = TRUE;
+                opts->follow_links = true;
                 break;
 
             case 'x':
@@ -404,13 +404,13 @@ parse_command_line(int argc, const char *argv[], const char **fname1, const char
             case '1':
                 opts->vol_info[0].type    = VOL_BY_VALUE;
                 opts->vol_info[0].u.value = (H5VL_class_value_t)HDatoi(opt_arg);
-                opts->custom_vol[0]       = TRUE;
+                opts->custom_vol[0]       = true;
                 break;
 
             case '2':
                 opts->vol_info[0].type   = VOL_BY_NAME;
                 opts->vol_info[0].u.name = opt_arg;
-                opts->custom_vol[0]      = TRUE;
+                opts->custom_vol[0]      = true;
                 break;
 
             case '3':
@@ -420,13 +420,13 @@ parse_command_line(int argc, const char *argv[], const char **fname1, const char
             case '4':
                 opts->vol_info[1].type    = VOL_BY_VALUE;
                 opts->vol_info[1].u.value = (H5VL_class_value_t)HDatoi(opt_arg);
-                opts->custom_vol[1]       = TRUE;
+                opts->custom_vol[1]       = true;
                 break;
 
             case '5':
                 opts->vol_info[1].type   = VOL_BY_NAME;
                 opts->vol_info[1].u.name = opt_arg;
-                opts->custom_vol[1]      = TRUE;
+                opts->custom_vol[1]      = true;
                 break;
 
             case '6':

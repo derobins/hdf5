@@ -1918,7 +1918,7 @@ test_misc11(void)
     ret = H5Pset_shared_mesg_nindexes(fcpl, MISC11_NINDEXES);
     CHECK(ret, FAIL, "H5Pset_shared_mesg");
 
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_NONE, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_NONE, false, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space");
 
     /* Creating a file with the non-default file creation property list should
@@ -1985,7 +1985,7 @@ test_misc11(void)
     ret = H5Pget_file_space_strategy(fcpl, &strategy, &persist, &threshold);
     CHECK(ret, FAIL, "H5Pget_file_space_strategy");
     VERIFY(strategy, 3, "H5Pget_file_space_strategy");
-    VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+    VERIFY(persist, false, "H5Pget_file_space_strategy");
     VERIFY(threshold, 1, "H5Pget_file_space_strategy");
 
     /* Close file */
@@ -2138,9 +2138,9 @@ misc13_verify_data_match(const unsigned *original_data, const unsigned *read_dat
 
     for (u = 0; u < MISC13_DIM1; u++)
         if (original_data[u] != read_data[u])
-            return FALSE;
+            return false;
 
-    return TRUE;
+    return true;
 }
 
 static void
@@ -2399,7 +2399,7 @@ misc13_verify_file(const char *name, const unsigned *data, hsize_t userblock_siz
     CHECK(tid, FAIL, "H5Topen2");
 
     /* Verify the type is correct */
-    VERIFY(H5Tequal(tid, H5T_NATIVE_INT), TRUE, "H5Tequal");
+    VERIFY(H5Tequal(tid, H5T_NATIVE_INT), true, "H5Tequal");
 
     /* Close named datatype */
     ret = H5Tclose(tid);
@@ -2420,7 +2420,7 @@ misc13_verify_file(const char *name, const unsigned *data, hsize_t userblock_siz
     CHECK(tid, FAIL, "H5Topen2");
 
     /* Verify the type is correct */
-    VERIFY(H5Tequal(tid, H5T_NATIVE_INT), TRUE, "H5Tequal");
+    VERIFY(H5Tequal(tid, H5T_NATIVE_INT), true, "H5Tequal");
 
     /* Close named datatype */
     ret = H5Tclose(tid);
@@ -2488,7 +2488,7 @@ test_misc13(void)
 
     /* Verify file contents are correct */
     userblock_size        = 0;
-    check_for_new_dataset = FALSE;
+    check_for_new_dataset = false;
     misc13_verify_file(MISC13_FILE_1, data, userblock_size, check_for_new_dataset);
 
     /* Create a new file by inserting a user block in front of the first file */
@@ -2496,7 +2496,7 @@ test_misc13(void)
 
     /* Verify file contents are still correct */
     userblock_size        = MISC13_USERBLOCK_SIZE;
-    check_for_new_dataset = FALSE;
+    check_for_new_dataset = false;
     misc13_verify_file(MISC13_FILE_2, data, userblock_size, check_for_new_dataset);
 
     /* Make certain we can modify the new file */
@@ -2504,7 +2504,7 @@ test_misc13(void)
 
     /* Verify file contents are still correct */
     userblock_size        = MISC13_USERBLOCK_SIZE;
-    check_for_new_dataset = TRUE;
+    check_for_new_dataset = true;
     misc13_verify_file(MISC13_FILE_2, data, userblock_size, check_for_new_dataset);
 
     /* Free the dataset buffer */
@@ -4138,7 +4138,7 @@ test_misc23(void)
     CHECK(create_id, FAIL, "H5Pcreate");
 
     /* Set flag for intermediate group creation */
-    status = H5Pset_create_intermediate_group(create_id, TRUE);
+    status = H5Pset_create_intermediate_group(create_id, true);
     CHECK(status, FAIL, "H5Pset_create_intermediate_group");
 
     tmp_id = H5Gcreate2(file_id, "/A/B01/grp", create_id, H5P_DEFAULT, access_id);
@@ -4199,7 +4199,7 @@ test_misc23(void)
     CHECK(create_id, FAIL, "H5Pcreate");
 
     /* Set flag for intermediate group creation */
-    status = H5Pset_create_intermediate_group(create_id, TRUE);
+    status = H5Pset_create_intermediate_group(create_id, true);
     CHECK(status, FAIL, "H5Pset_create_intermediate_group");
 
     tmp_id = H5Dcreate2(file_id, "/A/B06/dset", type_id, space_id, create_id, H5P_DEFAULT, H5P_DEFAULT);
@@ -4250,7 +4250,7 @@ test_misc23(void)
     CHECK(create_id, FAIL, "H5Pcreate");
 
     /* Set flag for intermediate group creation */
-    status = H5Pset_create_intermediate_group(create_id, TRUE);
+    status = H5Pset_create_intermediate_group(create_id, true);
     CHECK(status, FAIL, "H5Pset_create_intermediate_group");
 
     tmp_id = H5Tcopy(H5T_NATIVE_INT16);
@@ -4310,17 +4310,17 @@ test_misc23(void)
     CHECK(create_id, FAIL, "H5Pcreate");
 
     /* Set flag for intermediate group creation */
-    status = H5Pset_create_intermediate_group(create_id, TRUE);
+    status = H5Pset_create_intermediate_group(create_id, true);
     CHECK(status, FAIL, "H5Pset_create_intermediate_group");
 
     status = H5Lcopy(file_id, "/A/B01/grp", file_id, "/A/B16/grp", create_id, access_id);
     CHECK(status, FAIL, "H5Lcopy");
 
     tri_status = H5Lexists(file_id, "/A/B16/grp", access_id);
-    VERIFY(tri_status, TRUE, "H5Lexists");
+    VERIFY(tri_status, true, "H5Lexists");
 
     tri_status = H5Lexists(file_id, "/A/B01/grp", access_id);
-    VERIFY(tri_status, TRUE, "H5Lexists");
+    VERIFY(tri_status, true, "H5Lexists");
 
     /**********************************************************************
      * test H5Lmove()
@@ -4330,10 +4330,10 @@ test_misc23(void)
     CHECK(status, FAIL, "H5Lmove");
 
     tri_status = H5Lexists(file_id, "/A/B17/grp", access_id);
-    VERIFY(tri_status, TRUE, "H5Lexists");
+    VERIFY(tri_status, true, "H5Lexists");
 
     tri_status = H5Lexists(file_id, "/A/B16/grp", access_id);
-    VERIFY(tri_status, FALSE, "H5Lexists");
+    VERIFY(tri_status, false, "H5Lexists");
 
     /**********************************************************************
      * test H5Lcreate_hard()
@@ -4343,7 +4343,7 @@ test_misc23(void)
     CHECK(status, FAIL, "H5Lcreate_hard");
 
     tri_status = H5Lexists(file_id, "/A/B18/grp", access_id);
-    VERIFY(tri_status, TRUE, "H5Lexists");
+    VERIFY(tri_status, true, "H5Lexists");
 
     /**********************************************************************
      * test H5Lcreate_soft()
@@ -4353,7 +4353,7 @@ test_misc23(void)
     CHECK(status, FAIL, "H5Lcreate_soft");
 
     tri_status = H5Lexists(file_id, "/A/B19/grp", access_id);
-    VERIFY(tri_status, TRUE, "H5Lexists");
+    VERIFY(tri_status, true, "H5Lexists");
 
     /**********************************************************************
      * test H5Lcreate_external()
@@ -4363,7 +4363,7 @@ test_misc23(void)
     CHECK(status, FAIL, "H5Lcreate_external");
 
     tri_status = H5Lexists(file_id, "/A/B20/grp", access_id);
-    VERIFY(tri_status, TRUE, "H5Lexists");
+    VERIFY(tri_status, true, "H5Lexists");
 
     /**********************************************************************
      * test H5Lcreate_ud()
@@ -4374,7 +4374,7 @@ test_misc23(void)
     CHECK(status, FAIL, "H5Lcreate_ud");
 
     tri_status = H5Lexists(file_id, "/A/B21/grp", access_id);
-    VERIFY(tri_status, TRUE, "H5Lexists");
+    VERIFY(tri_status, true, "H5Lexists");
 
     /**********************************************************************
      * close
@@ -5477,7 +5477,7 @@ test_misc30(void)
     /* Output message about test being performed */
     MESSAGE(5, ("Local heap dropping free block info\n"));
 
-    for (get_info = FALSE; get_info <= TRUE; get_info++) {
+    for (get_info = false; get_info <= true; get_info++) {
         hid_t  fid; /* File ID */
         hid_t  gid; /* Group ID */
         int    i;   /* Local index counter */
@@ -5673,7 +5673,7 @@ test_misc32(void)
 
     /* Size zero returns NULL. Valgrind will confirm buffer is freed. */
     size    = 1024;
-    buffer  = H5allocate_memory(size, TRUE);
+    buffer  = H5allocate_memory(size, true);
     resized = H5resize_memory(buffer, 0);
     CHECK_PTR_NULL(resized, "H5resize_memory");
 
@@ -5917,10 +5917,10 @@ test_misc36_cb1(void *_ctx)
     herr_t  ret;               /* Return value */
 
     /* Check whether the library thinks it's terminating */
-    is_terminating = FALSE;
+    is_terminating = false;
     ret            = H5is_library_terminating(&is_terminating);
     CHECK(ret, FAIL, "H5is_library_terminating");
-    VERIFY(is_terminating, TRUE, "H5is_library_terminating");
+    VERIFY(is_terminating, true, "H5is_library_terminating");
 
     /* Verify correct ordering for 'atclose' callbacks */
     if (0 != *ctx)
@@ -5938,10 +5938,10 @@ test_misc36_cb2(void *_ctx)
     herr_t  ret;               /* Return value */
 
     /* Check whether the library thinks it's terminating */
-    is_terminating = FALSE;
+    is_terminating = false;
     ret            = H5is_library_terminating(&is_terminating);
     CHECK(ret, FAIL, "H5is_library_terminating");
-    VERIFY(is_terminating, TRUE, "H5is_library_terminating");
+    VERIFY(is_terminating, true, "H5is_library_terminating");
 
     /* Verify correct ordering for 'atclose' callbacks */
     if (1 != *ctx)
@@ -5966,20 +5966,20 @@ test_misc36(void)
     MESSAGE(5, ("H5atclose and H5is_library_terminating API calls"));
 
     /* Check whether the library thinks it's terminating */
-    is_terminating = TRUE;
+    is_terminating = true;
     ret            = H5is_library_terminating(&is_terminating);
     CHECK(ret, FAIL, "H5is_library_terminating");
-    VERIFY(is_terminating, FALSE, "H5is_library_terminating");
+    VERIFY(is_terminating, false, "H5is_library_terminating");
 
     /* Shut the library down */
     test_misc36_context = 0;
     H5close();
 
     /* Check whether the library thinks it's terminating */
-    is_terminating = TRUE;
+    is_terminating = true;
     ret            = H5is_library_terminating(&is_terminating);
     CHECK(ret, FAIL, "H5is_library_terminating");
-    VERIFY(is_terminating, FALSE, "H5is_library_terminating");
+    VERIFY(is_terminating, false, "H5is_library_terminating");
 
     /* Check the close context was not changed */
     VERIFY(test_misc36_context, 0, "H5atclose");
@@ -5988,10 +5988,10 @@ test_misc36(void)
     H5open();
 
     /* Check whether the library thinks it's terminating */
-    is_terminating = TRUE;
+    is_terminating = true;
     ret            = H5is_library_terminating(&is_terminating);
     CHECK(ret, FAIL, "H5is_library_terminating");
-    VERIFY(is_terminating, FALSE, "H5is_library_terminating");
+    VERIFY(is_terminating, false, "H5is_library_terminating");
 
     /* Register the 'atclose' callbacks */
     /* (Note that these will be called in reverse order, which is checked) */

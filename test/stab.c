@@ -307,7 +307,7 @@ test_large(hid_t fcpl, hid_t fapl, hbool_t new_format)
     if ((cwg = H5Gcreate2(fid, "/big", H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)) < 0)
         TEST_ERROR
     if (new_format)
-        if (H5G__has_stab_test(cwg) != FALSE)
+        if (H5G__has_stab_test(cwg) != false)
             TEST_ERROR
     for (i = 0; i < LARGE_NOBJS; i++) {
         HDsprintf(name, "%05d%05d", (HDrandom() % 100000), i);
@@ -317,7 +317,7 @@ test_large(hid_t fcpl, hid_t fapl, hbool_t new_format)
             TEST_ERROR
     }
     if (new_format)
-        if (H5G__is_new_dense_test(cwg) != TRUE)
+        if (H5G__is_new_dense_test(cwg) != true)
             TEST_ERROR
     if (H5Gclose(cwg) < 0)
         TEST_ERROR
@@ -448,7 +448,7 @@ lifecycle(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Use internal testing routine to check that the group has no links or symbol table */
-    if (H5G__is_empty_test(gid) != TRUE)
+    if (H5G__is_empty_test(gid) != true)
         TEST_ERROR
 
     /* Create first "bottom" group */
@@ -457,7 +457,7 @@ lifecycle(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on bottom group's status */
-    if (H5G__is_empty_test(gid2) != TRUE)
+    if (H5G__is_empty_test(gid2) != true)
         TEST_ERROR
 
     /* Close bottom group */
@@ -465,9 +465,9 @@ lifecycle(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, &nmsgs) != TRUE)
+    if (H5G__has_links_test(gid, &nmsgs) != true)
         TEST_ERROR
     if (nmsgs != 1)
         TEST_ERROR
@@ -480,7 +480,7 @@ lifecycle(hid_t fcpl, hid_t fapl2)
             TEST_ERROR
 
         /* Check on bottom group's status */
-        if (H5G__is_empty_test(gid2) != TRUE)
+        if (H5G__is_empty_test(gid2) != true)
             TEST_ERROR
 
         /* Close bottom group */
@@ -489,13 +489,13 @@ lifecycle(hid_t fcpl, hid_t fapl2)
     } /* end for */
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, &nmsgs) != TRUE)
+    if (H5G__has_links_test(gid, &nmsgs) != true)
         TEST_ERROR
     if (nmsgs != LIFECYCLE_MAX_COMPACT)
         TEST_ERROR
-    if (H5G__is_new_dense_test(gid) != FALSE)
+    if (H5G__is_new_dense_test(gid) != false)
         TEST_ERROR
 
     /* Check that the object header is only one chunk and the space has been allocated correctly */
@@ -516,7 +516,7 @@ lifecycle(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on bottom group's status */
-    if (H5G__is_empty_test(gid2) != TRUE)
+    if (H5G__is_empty_test(gid2) != true)
         TEST_ERROR
 
     /* Close bottom group */
@@ -524,11 +524,11 @@ lifecycle(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__is_new_dense_test(gid) != TRUE)
+    if (H5G__is_new_dense_test(gid) != true)
         TEST_ERROR
 
     /* Check that the object header is still one chunk and the space has been allocated correctly */
@@ -554,11 +554,11 @@ lifecycle(hid_t fcpl, hid_t fapl2)
     } /* end while */
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__is_new_dense_test(gid) != TRUE)
+    if (H5G__is_new_dense_test(gid) != true)
         TEST_ERROR
 
     /* Unlink one more object from the group, which should transform back to using links */
@@ -568,9 +568,9 @@ lifecycle(hid_t fcpl, hid_t fapl2)
     u--;
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, &nmsgs) != TRUE)
+    if (H5G__has_links_test(gid, &nmsgs) != true)
         TEST_ERROR
     if (nmsgs != (LIFECYCLE_MIN_DENSE - 1))
         TEST_ERROR
@@ -585,7 +585,7 @@ lifecycle(hid_t fcpl, hid_t fapl2)
         FAIL_STACK_ERROR
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) != TRUE)
+    if (H5G__is_empty_test(gid) != true)
         TEST_ERROR
 
     /* Close top group */
@@ -683,7 +683,7 @@ long_compact(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Use internal testing routine to check that the group has no links or dense storage */
-    if (H5G__is_empty_test(gid) != TRUE)
+    if (H5G__is_empty_test(gid) != true)
         TEST_ERROR
 
     /* Create first group with "long" name */
@@ -691,7 +691,7 @@ long_compact(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on bottom group's status */
-    if (H5G__is_empty_test(gid2) != TRUE)
+    if (H5G__is_empty_test(gid2) != true)
         TEST_ERROR
 
     /* Close bottom group */
@@ -700,11 +700,11 @@ long_compact(hid_t fcpl, hid_t fapl2)
 
     /* Check on top group's status */
     /* (Should have dense storage to hold links, since name is too long for object header message) */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__is_new_dense_test(gid) != TRUE)
+    if (H5G__is_new_dense_test(gid) != true)
         TEST_ERROR
 
     /* Create second group with "long" name */
@@ -713,7 +713,7 @@ long_compact(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on bottom group's status */
-    if (H5G__is_empty_test(gid2) != TRUE)
+    if (H5G__is_empty_test(gid2) != true)
         TEST_ERROR
 
     /* Close bottom group */
@@ -722,11 +722,11 @@ long_compact(hid_t fcpl, hid_t fapl2)
 
     /* Check on top group's status */
     /* (Should have dense storage to hold links, since name is too long for object header message) */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__is_new_dense_test(gid) != TRUE)
+    if (H5G__is_new_dense_test(gid) != true)
         TEST_ERROR
 
     /* Unlink second object from top group */
@@ -735,11 +735,11 @@ long_compact(hid_t fcpl, hid_t fapl2)
 
     /* Check on top group's status */
     /* (Should still be dense storage to hold links, since name is too long for object header message) */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__is_new_dense_test(gid) != TRUE)
+    if (H5G__is_new_dense_test(gid) != true)
         TEST_ERROR
 
     /* Unlink first object from top group */
@@ -749,7 +749,7 @@ long_compact(hid_t fcpl, hid_t fapl2)
 
     /* Check on top group's status */
     /* (Should have deleted the dense storage now) */
-    if (H5G__is_empty_test(gid) != TRUE)
+    if (H5G__is_empty_test(gid) != true)
         TEST_ERROR
 
     /* Free object name */
@@ -832,11 +832,11 @@ read_old(void)
         TEST_ERROR
 
     /* Check on old group's status */
-    if (H5G__is_empty_test(gid) == FALSE)
+    if (H5G__is_empty_test(gid) == false)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__has_stab_test(gid) != TRUE)
+    if (H5G__has_stab_test(gid) != true)
         TEST_ERROR
 
     /* Create a bunch of objects in the group */
@@ -846,7 +846,7 @@ read_old(void)
             TEST_ERROR
 
         /* Check on bottom group's status */
-        if (H5G__is_empty_test(gid2) != TRUE)
+        if (H5G__is_empty_test(gid2) != true)
             TEST_ERROR
 
         /* Close bottom group */
@@ -856,11 +856,11 @@ read_old(void)
 
     /* Check on old group's status */
     /* (Should stay in old "symbol table" form) */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__has_stab_test(gid) != TRUE)
+    if (H5G__has_stab_test(gid) != true)
         TEST_ERROR
 
     /* Delete new objects from old group */
@@ -872,11 +872,11 @@ read_old(void)
 
     /* Check on old group's status */
     /* (Should stay in old "symbol table" form, but have no links) */
-    if (H5G__is_empty_test(gid) == FALSE)
+    if (H5G__is_empty_test(gid) == false)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__has_stab_test(gid) != TRUE)
+    if (H5G__has_stab_test(gid) != true)
         TEST_ERROR
 
     /* Close old group */
@@ -973,7 +973,7 @@ no_compact(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Use internal testing routine to check that the group has no links or dense storage */
-    if (H5G__is_empty_test(gid) != TRUE)
+    if (H5G__is_empty_test(gid) != true)
         TEST_ERROR
 
     /* Create first "bottom" group */
@@ -982,7 +982,7 @@ no_compact(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on bottom group's status */
-    if (H5G__is_empty_test(gid2) != TRUE)
+    if (H5G__is_empty_test(gid2) != true)
         TEST_ERROR
 
     /* Close bottom group */
@@ -990,11 +990,11 @@ no_compact(hid_t fcpl, hid_t fapl2)
         TEST_ERROR
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) == TRUE)
+    if (H5G__is_empty_test(gid) == true)
         TEST_ERROR
-    if (H5G__has_links_test(gid, NULL) == TRUE)
+    if (H5G__has_links_test(gid, NULL) == true)
         TEST_ERROR
-    if (H5G__is_new_dense_test(gid) != TRUE)
+    if (H5G__is_new_dense_test(gid) != true)
         TEST_ERROR
 
     /* Unlink object from top group */
@@ -1003,7 +1003,7 @@ no_compact(hid_t fcpl, hid_t fapl2)
         FAIL_STACK_ERROR
 
     /* Check on top group's status */
-    if (H5G__is_empty_test(gid) != TRUE)
+    if (H5G__is_empty_test(gid) != true)
         TEST_ERROR
 
     /* Close top group */
@@ -1118,7 +1118,7 @@ gcpl_on_root(hid_t fapl2)
     /* Create a link creation property list, with intermediate group creation set */
     if ((lcpl = H5Pcreate(H5P_LINK_CREATE)) < 0)
         TEST_ERROR
-    if (H5Pset_create_intermediate_group(lcpl, TRUE) < 0)
+    if (H5Pset_create_intermediate_group(lcpl, true) < 0)
         TEST_ERROR
 
     /* Create a group and intermediate groups, to check if root group settings are inherited */
@@ -1451,7 +1451,7 @@ main(void)
         TEST_ERROR
 
     /* Loop over using new group format */
-    for (new_format = FALSE; new_format <= TRUE; new_format++) {
+    for (new_format = false; new_format <= true; new_format++) {
         hid_t my_fapl = fapl;
         hid_t my_fcpl = fcpl;
 

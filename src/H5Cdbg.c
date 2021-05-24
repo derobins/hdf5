@@ -862,10 +862,10 @@ H5C_stats__reset(H5C_t H5_ATTR_UNUSED *cache_ptr)
 herr_t
 H5C_flush_dependency_exists(H5C_t *cache_ptr, haddr_t parent_addr, haddr_t child_addr, hbool_t *fd_exists_ptr)
 {
-    hbool_t            fd_exists = FALSE; /* whether flush dependency exists */
+    hbool_t            fd_exists = false; /* whether flush dependency exists */
     H5C_cache_entry_t *parent_ptr;        /* Ptr to parent entry */
     H5C_cache_entry_t *child_ptr;         /* Ptr to child entry */
-    hbool_t            ret_value = FALSE; /* Return value */
+    hbool_t            ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -891,7 +891,7 @@ H5C_flush_dependency_exists(H5C_t *cache_ptr, haddr_t parent_addr, haddr_t child
 
             for (u = 0; u < child_ptr->flush_dep_nparents; u++) {
                 if (child_ptr->flush_dep_parent[u] == parent_ptr) {
-                    fd_exists = TRUE;
+                    fd_exists = true;
                     HDassert(parent_ptr->flush_dep_nchildren > 0);
                     break;
                 } /* end if */
@@ -1141,7 +1141,7 @@ hbool_t
 H5C_cache_is_clean(const H5C_t *cache_ptr, H5C_ring_t inner_ring)
 {
     H5C_ring_t ring      = H5C_RING_USER;
-    hbool_t    ret_value = TRUE; /* Return value */
+    hbool_t    ret_value = true; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -1153,7 +1153,7 @@ H5C_cache_is_clean(const H5C_t *cache_ptr, H5C_ring_t inner_ring)
 
     while (ring <= inner_ring) {
         if (cache_ptr->dirty_index_ring_size[ring] > 0)
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
 
         ring++;
     } /* end while */
@@ -1212,9 +1212,9 @@ H5C_verify_entry_type(H5C_t *cache_ptr, haddr_t addr, const H5C_class_t *expecte
         /* the entry doesn't exist in the cache -- report this
          * and quit.
          */
-        *in_cache_ptr = FALSE;
+        *in_cache_ptr = false;
     else {
-        *in_cache_ptr = TRUE;
+        *in_cache_ptr = true;
 
         if (entry_ptr->prefetched)
             *type_ok_ptr = (expected_type->id == entry_ptr->prefetch_type_id);

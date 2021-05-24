@@ -652,7 +652,7 @@ H5E_printf_stack(H5E_t *estack, const char *file, const char *func, unsigned lin
 {
     va_list ap;                   /* Varargs info */
     char *  tmp        = NULL;    /* Buffer to place formatted description in */
-    hbool_t va_started = FALSE;   /* Whether the variable argument list is open */
+    hbool_t va_started = false;   /* Whether the variable argument list is open */
     herr_t  ret_value  = SUCCEED; /* Return value */
 
     /*
@@ -677,7 +677,7 @@ H5E_printf_stack(H5E_t *estack, const char *file, const char *func, unsigned lin
 
     /* Start the variable-argument parsing */
     HDva_start(ap, fmt);
-    va_started = TRUE;
+    va_started = true;
 
     /* Use the vasprintf() routine, since it does what we're trying to do below */
     if (HDvasprintf(&tmp, fmt, ap) < 0)
@@ -763,13 +763,13 @@ H5E__push_stack(H5E_t *estack, const char *file, const char *func, unsigned line
 
     if (estack->nused < H5E_NSLOTS) {
         /* Increment the IDs to indicate that they are used in this stack */
-        if (H5I_inc_ref(cls_id, FALSE) < 0)
+        if (H5I_inc_ref(cls_id, false) < 0)
             HGOTO_DONE(FAIL)
         estack->slot[estack->nused].cls_id = cls_id;
-        if (H5I_inc_ref(maj_id, FALSE) < 0)
+        if (H5I_inc_ref(maj_id, false) < 0)
             HGOTO_DONE(FAIL)
         estack->slot[estack->nused].maj_num = maj_id;
-        if (H5I_inc_ref(min_id, FALSE) < 0)
+        if (H5I_inc_ref(min_id, false) < 0)
             HGOTO_DONE(FAIL)
         estack->slot[estack->nused].min_num = min_id;
         if (NULL == (estack->slot[estack->nused].func_name = H5MM_xstrdup(func)))

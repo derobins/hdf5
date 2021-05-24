@@ -231,7 +231,7 @@ H5O__cache_verify_chksum(const void *_image, size_t len, void *_udata)
 {
     const uint8_t * image     = (const uint8_t *)_image;  /* Pointer into raw data buffer */
     H5O_cache_ud_t *udata     = (H5O_cache_ud_t *)_udata; /* User data for callback */
-    htri_t          ret_value = TRUE;                     /* Return value */
+    htri_t          ret_value = true;                     /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -256,8 +256,8 @@ H5O__cache_verify_chksum(const void *_image, size_t len, void *_udata)
 
             /* Indicate that udata->oh is to be freed later
                in H5O__prefix_deserialize() */
-            udata->free_oh = TRUE;
-            ret_value      = FALSE;
+            udata->free_oh = true;
+            ret_value      = false;
         } /* end if */
     }     /* end if */
     else
@@ -338,7 +338,7 @@ H5O__cache_deserialize(const void *image, size_t H5_ATTR_NDEBUG_UNUSED len, void
         HGOTO_ERROR(H5E_OHDR, H5E_CANTINIT, NULL, "can't deserialize first object header chunk")
 
     /* Note that we've loaded the object header from the file */
-    udata->made_attempt = TRUE;
+    udata->made_attempt = true;
 
     /* Set return value */
     ret_value = oh;
@@ -578,7 +578,7 @@ H5O__cache_notify(H5AC_notify_action_t action, void *_thing)
             /* Mark messages stored with the object header (i.e. messages in chunk 0) as clean */
             for (u = 0; u < oh->nmesgs; u++)
                 if (oh->mesg[u].chunkno == 0)
-                    oh->mesg[u].dirty = FALSE;
+                    oh->mesg[u].dirty = false;
 #ifndef NDEBUG
             /* Reset the number of messages dirtied by decoding */
             oh->ndecode_dirtied = 0;
@@ -698,7 +698,7 @@ H5O__cache_chk_verify_chksum(const void *_image, size_t len, void *_udata)
 {
     const uint8_t *     image     = (const uint8_t *)_image;      /* Pointer into raw data buffer */
     H5O_chk_cache_ud_t *udata     = (H5O_chk_cache_ud_t *)_udata; /* User data for callback */
-    htri_t              ret_value = TRUE;                         /* Return value */
+    htri_t              ret_value = true;                         /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -714,7 +714,7 @@ H5O__cache_chk_verify_chksum(const void *_image, size_t len, void *_udata)
         H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
         if (stored_chksum != computed_chksum)
-            ret_value = FALSE;
+            ret_value = false;
     } /* end if */
 
     FUNC_LEAVE_NOAPI(ret_value)
@@ -955,7 +955,7 @@ H5O__cache_chk_notify(H5AC_notify_action_t action, void *_thing)
             /* Mark messages in chunk as clean */
             for (u = 0; u < chk_proxy->oh->nmesgs; u++)
                 if (chk_proxy->oh->mesg[u].chunkno == chk_proxy->chunkno)
-                    chk_proxy->oh->mesg[u].dirty = FALSE;
+                    chk_proxy->oh->mesg[u].dirty = false;
         } break;
 
         case H5AC_NOTIFY_ACTION_CHILD_DIRTIED:
@@ -1244,7 +1244,7 @@ H5O__prefix_deserialize(const uint8_t *_image, H5O_cache_ud_t *udata)
         udata->oh = oh;
         if (H5O__free(saved_oh) < 0)
             HGOTO_ERROR(H5E_OHDR, H5E_CANTRELEASE, FAIL, "can't destroy object header")
-        udata->free_oh = FALSE;
+        udata->free_oh = false;
     }
     else
         /* Save the object header for later use in 'deserialize' callback */
@@ -1286,7 +1286,7 @@ H5O__chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image
     unsigned nullcnt; /* Count of null messages (for sanity checking gaps in chunks) */
 #endif                /* NDEBUG */
     hbool_t mesgs_modified =
-        FALSE; /* Whether any messages were modified when the object header was deserialized */
+        false; /* Whether any messages were modified when the object header was deserialized */
     herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1408,7 +1408,7 @@ H5O__chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image
             /* Combine adjacent null messages */
             mesgno = oh->nmesgs - 1;
             oh->mesg[mesgno].raw_size += (size_t)H5O_SIZEOF_MSGHDR_OH(oh) + mesg_size;
-            oh->mesg[mesgno].dirty = TRUE;
+            oh->mesg[mesgno].dirty = true;
             merged_null_msgs++;
         } /* end if */
         else {
@@ -1427,7 +1427,7 @@ H5O__chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image
             oh->nmesgs++;
 
             /* Initialize information about message */
-            mesg->dirty    = FALSE;
+            mesg->dirty    = false;
             mesg->flags    = flags;
             mesg->crt_idx  = crt_idx;
             mesg->native   = NULL;
@@ -1482,8 +1482,8 @@ H5O__chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image
                     mesg->flags |= H5O_MSG_FLAG_WAS_UNKNOWN;
 
                     /* Mark the message and chunk as dirty */
-                    mesg->dirty    = TRUE;
-                    mesgs_modified = TRUE;
+                    mesg->dirty    = true;
+                    mesgs_modified = true;
                 } /* end if */
             }     /* end if */
             else {
@@ -1533,7 +1533,7 @@ H5O__chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image
                 mesg->native = refcount;
 
                 /* Set object header values */
-                oh->has_refcount_msg = TRUE;
+                oh->has_refcount_msg = true;
                 if (!refcount)
                     HGOTO_ERROR(H5E_OHDR, H5E_CANTSET, FAIL, "can't decode refcount")
                 oh->nlink = *refcount;
@@ -1551,8 +1551,8 @@ H5O__chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image
 
             /* Mark the message & chunk as dirty if the message was changed by decoding */
             if ((ioflags & H5O_DECODEIO_DIRTY) && (udata->file_intent & H5F_ACC_RDWR)) {
-                mesg->dirty    = TRUE;
-                mesgs_modified = TRUE;
+                mesg->dirty    = true;
+                mesgs_modified = true;
             } /* end if */
         }     /* end else */
 
@@ -1590,12 +1590,12 @@ H5O__chunk_deserialize(H5O_t *oh, haddr_t addr, size_t len, const uint8_t *image
 
     /* Mark the chunk dirty if we've modified messages */
     if (mesgs_modified)
-        *dirty = TRUE;
+        *dirty = true;
 
     /* Mark the chunk dirty if we've merged null messages */
     if (merged_null_msgs > 0) {
         udata->merged_null_msgs += merged_null_msgs;
-        *dirty = TRUE;
+        *dirty = true;
     } /* end if */
 
 done:

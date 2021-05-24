@@ -109,7 +109,7 @@ H5MP_pool_is_free_size_correct(const H5MP_pool_t *mp)
 {
     H5MP_page_t *page;             /* Pointer to current page */
     size_t       pool_free;        /* Size of pages' free space */
-    htri_t       ret_value = TRUE; /* Return value */
+    htri_t       ret_value = true; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -136,7 +136,7 @@ H5MP_pool_is_free_size_correct(const H5MP_pool_t *mp)
         /* Check that the free space from the blocks on the free list
          * corresponds to space in page */
         if (page_free != page->free_size)
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
 
         /* Increment the amount of free space in pool */
         pool_free += page->free_size;
@@ -148,7 +148,7 @@ H5MP_pool_is_free_size_correct(const H5MP_pool_t *mp)
     /* Check that the free space from the pages
      * corresponds to free space in pool */
     if (pool_free != mp->free_size)
-        HGOTO_DONE(FALSE)
+        HGOTO_DONE(false)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)

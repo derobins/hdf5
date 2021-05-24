@@ -62,7 +62,7 @@ static herr_t H5FD__query(const H5FD_t *f, unsigned long *flags /*out*/);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -144,7 +144,7 @@ H5FD_term_package(void)
 
     if (H5_PKG_INIT_VAR) {
         if (H5I_nmembers(H5I_VFL) > 0) {
-            (void)H5I_clear_type(H5I_VFL, FALSE, FALSE);
+            (void)H5I_clear_type(H5I_VFL, false, false);
             n++; /*H5I*/
         }        /* end if */
         else {
@@ -153,7 +153,7 @@ H5FD_term_package(void)
 
             /* Mark closed */
             if (0 == n)
-                H5_PKG_INIT_VAR = FALSE;
+                H5_PKG_INIT_VAR = false;
         } /* end else */
     }     /* end if */
 
@@ -239,7 +239,7 @@ H5FDregister(const H5FD_class_t *cls)
             HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, H5I_INVALID_HID, "invalid free-list mapping")
 
     /* Create the new class ID */
-    if ((ret_value = H5FD_register(cls, sizeof(H5FD_class_t), TRUE)) < 0)
+    if ((ret_value = H5FD_register(cls, sizeof(H5FD_class_t), true)) < 0)
         HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, H5I_INVALID_HID, "unable to register file driver ID")
 
 done:
@@ -365,7 +365,7 @@ H5FD_get_class(hid_t id)
         if (NULL == (plist = (H5P_genplist_t *)H5I_object(id)))
             HGOTO_ERROR(H5E_ID, H5E_BADID, NULL, "can't find object for ID")
 
-        if (TRUE == H5P_isa_class(id, H5P_FILE_ACCESS)) {
+        if (true == H5P_isa_class(id, H5P_FILE_ACCESS)) {
             H5FD_driver_prop_t driver_prop; /* Property for driver ID & info */
 
             if (H5P_peek(plist, H5F_ACS_FILE_DRV_NAME, &driver_prop) < 0)
@@ -649,7 +649,7 @@ H5FDopen(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr)
     /* Check arguments */
     if (H5P_DEFAULT == fapl_id)
         fapl_id = H5P_FILE_ACCESS_DEFAULT;
-    else if (TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+    else if (true != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, NULL, "not a file access property list")
 
     /* Call private function */
@@ -729,7 +729,7 @@ H5FD_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr)
      * driver ID to prevent it from being freed while this file is open.
      */
     file->driver_id = driver_prop.driver_id;
-    if (H5I_inc_ref(file->driver_id, FALSE) < 0)
+    if (H5I_inc_ref(file->driver_id, false) < 0)
         HGOTO_ERROR(H5E_VFL, H5E_CANTINC, NULL, "unable to increment ref count on VFL driver")
     file->cls     = driver;
     file->maxaddr = maxaddr;
@@ -1034,7 +1034,7 @@ H5FDalloc(H5FD_t *file, H5FD_mem_t type, hid_t dxpl_id, hsize_t size)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, HADDR_UNDEF, "zero-size request")
     if (H5P_DEFAULT == dxpl_id)
         dxpl_id = H5P_DATASET_XFER_DEFAULT;
-    else if (TRUE != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
+    else if (true != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, HADDR_UNDEF, "not a data transfer property list")
 
     /* Set DXPL for operation */
@@ -1082,7 +1082,7 @@ H5FDfree(H5FD_t *file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, hsize_t siz
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "invalid request type")
     if (H5P_DEFAULT == dxpl_id)
         dxpl_id = H5P_DATASET_XFER_DEFAULT;
-    else if (TRUE != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
+    else if (true != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a data transfer property list")
 
     /* Set DXPL for operation */
@@ -1374,7 +1374,7 @@ H5FDread(H5FD_t *file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, size_t size
     /* Get the default dataset transfer property list if the user didn't provide one */
     if (H5P_DEFAULT == dxpl_id)
         dxpl_id = H5P_DATASET_XFER_DEFAULT;
-    else if (TRUE != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
+    else if (true != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a data transfer property list")
 
     /* Set DXPL for operation */
@@ -1420,7 +1420,7 @@ H5FDwrite(H5FD_t *file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, size_t siz
     /* Get the default dataset transfer property list if the user didn't provide one */
     if (H5P_DEFAULT == dxpl_id)
         dxpl_id = H5P_DATASET_XFER_DEFAULT;
-    else if (TRUE != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
+    else if (true != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a data transfer property list")
 
     /* Set DXPL for operation */
@@ -1461,7 +1461,7 @@ H5FDflush(H5FD_t *file, hid_t dxpl_id, hbool_t closing)
 
     if (H5P_DEFAULT == dxpl_id)
         dxpl_id = H5P_DATASET_XFER_DEFAULT;
-    else if (TRUE != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
+    else if (true != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a data transfer property list")
 
     /* Set DXPL for operation */
@@ -1527,7 +1527,7 @@ H5FDtruncate(H5FD_t *file, hid_t dxpl_id, hbool_t closing)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "file class pointer cannot be NULL")
     if (H5P_DEFAULT == dxpl_id)
         dxpl_id = H5P_DATASET_XFER_DEFAULT;
-    else if (TRUE != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
+    else if (true != H5P_isa_class(dxpl_id, H5P_DATASET_XFER))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a data transfer property list")
 
     /* Set DXPL for operation */
@@ -1736,7 +1736,7 @@ H5FDget_vfd_handle(H5FD_t *file, hid_t fapl_id, void **file_handle /*out*/)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "file pointer cannot be NULL")
     if (!file->cls)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "file class pointer cannot be NULL")
-    if (FALSE == H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+    if (false == H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "fapl_id parameter is not a file access property list")
     if (!file_handle)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "file handle parameter cannot be NULL")
@@ -1910,7 +1910,7 @@ H5FDdelete(const char *filename, hid_t fapl_id)
 
     if (H5P_DEFAULT == fapl_id)
         fapl_id = H5P_FILE_ACCESS_DEFAULT;
-    else if (TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+    else if (true != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list")
 
     /* Call private function */

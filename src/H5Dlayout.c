@@ -351,7 +351,7 @@ H5D__layout_set_latest_indexing(H5O_layout_t *layout, const H5S_t *space, const 
             hsize_t  max_dims[H5O_LAYOUT_NDIMS]; /* Maximum dimension sizes */
             hsize_t  cur_dims[H5O_LAYOUT_NDIMS]; /* Current dimension sizes */
             unsigned unlim_count = 0;            /* Count of unlimited max. dimensions */
-            hbool_t  single      = TRUE;         /* Fulfill single chunk indexing */
+            hbool_t  single      = true;         /* Fulfill single chunk indexing */
             unsigned u;                          /* Local index variable */
 
             /* Query the dataspace's dimensions */
@@ -363,7 +363,7 @@ H5D__layout_set_latest_indexing(H5O_layout_t *layout, const H5S_t *space, const 
                 if (max_dims[u] == H5S_UNLIMITED)
                     unlim_count++;
                 if (cur_dims[u] != max_dims[u] || cur_dims[u] != layout->u.chunk.dim[u])
-                    single = FALSE;
+                    single = false;
             } /* end for */
 
             /* Chunked datasets with unlimited dimension(s) */
@@ -454,7 +454,7 @@ H5D__layout_oh_create(H5F_t *file, H5O_t *oh, H5D_t *dset, hid_t dapl_id)
     H5O_layout_t *    layout;                /* Dataset's layout information */
     const H5O_fill_t *fill_prop;             /* Pointer to dataset's fill value information */
     unsigned          layout_mesg_flags;     /* Flags for inserting layout message */
-    hbool_t           layout_init = FALSE;   /* Flag to indicate that chunk information was initialized */
+    hbool_t           layout_init = false;   /* Flag to indicate that chunk information was initialized */
     herr_t            ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE_TAG(dset->oloc.addr)
@@ -483,7 +483,7 @@ H5D__layout_oh_create(H5F_t *file, H5O_t *oh, H5D_t *dset, hid_t dapl_id)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize layout information")
 
     /* Indicate that the layout information was initialized */
-    layout_init = TRUE;
+    layout_init = true;
 
     /*
      * Allocate storage if space allocate time is early; otherwise delay
@@ -494,7 +494,7 @@ H5D__layout_oh_create(H5F_t *file, H5O_t *oh, H5D_t *dset, hid_t dapl_id)
 
         io_info.dset = dset;
 
-        if (H5D__alloc_storage(&io_info, H5D_ALLOC_CREATE, FALSE, NULL) < 0)
+        if (H5D__alloc_storage(&io_info, H5D_ALLOC_CREATE, false, NULL) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize storage")
     }
 
@@ -593,7 +593,7 @@ herr_t
 H5D__layout_oh_read(H5D_t *dataset, hid_t dapl_id, H5P_genplist_t *plist)
 {
     htri_t  msg_exists;              /* Whether a particular type of message exists */
-    hbool_t layout_copied = FALSE;   /* Flag to indicate that layout message was copied */
+    hbool_t layout_copied = false;   /* Flag to indicate that layout message was copied */
     herr_t  ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -623,7 +623,7 @@ H5D__layout_oh_read(H5D_t *dataset, hid_t dapl_id, H5P_genplist_t *plist)
      */
     if (NULL == H5O_msg_read(&(dataset->oloc), H5O_LAYOUT_ID, &(dataset->shared->layout)))
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to read data layout message")
-    layout_copied = TRUE;
+    layout_copied = true;
 
     /* Check for external file list message (which might not exist) */
     if ((msg_exists = H5O_msg_exists(&(dataset->oloc), H5O_EFL_ID)) < 0)

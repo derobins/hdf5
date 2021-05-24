@@ -987,7 +987,7 @@ find_err_msg_cb(unsigned H5_ATTR_UNUSED n, const H5E_error2_t *err_desc, void *_
 
     /* If the searched error message is found, stop the iteration */
     if (err_desc->desc != NULL && HDstrcmp(err_desc->desc, searched_err->message) == 0) {
-        searched_err->found = TRUE;
+        searched_err->found = true;
         status              = H5_ITER_STOP;
     }
 
@@ -1033,14 +1033,14 @@ test_corrupted_attnamelen(void)
     if (err_status == -1) {
         /* Initialize client data */
         HDstrcpy(err_caught.message, err_message);
-        err_caught.found = FALSE;
+        err_caught.found = false;
 
         /* Look for the correct error message */
         ret = H5Ewalk2(H5E_DEFAULT, H5E_WALK_UPWARD, find_err_msg_cb, &err_caught);
         CHECK(ret, FAIL, "H5Ewalk2");
 
         /* Fail if the indicated message is not found */
-        CHECK(err_caught.found, FALSE, "test_corrupted_attnamelen: Expected error not found");
+        CHECK(err_caught.found, false, "test_corrupted_attnamelen: Expected error not found");
     }
 
     /* Close the dataset and file */
@@ -1164,7 +1164,7 @@ test_iterate(void)
     CHECK(ret, FAIL, "H5Pset_libver_bounds");
 
     /* These next tests use the same file */
-    for (new_format = FALSE; new_format <= TRUE; new_format++) {
+    for (new_format = false; new_format <= true; new_format++) {
         test_iter_group(new_format ? fapl2 : fapl, new_format); /* Test group iteration */
         test_iter_group_large(new_format ? fapl2 : fapl); /* Test group iteration for large # of objects */
         test_iter_attr(new_format ? fapl2 : fapl, new_format); /* Test attribute iteration */

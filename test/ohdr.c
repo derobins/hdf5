@@ -135,7 +135,7 @@ test_cont(char *filename, hid_t fapl)
     nchunks = hdr_info.nchunks;
 
     /* remove the 1st H5O_NAME_ID message */
-    if (H5O_msg_remove(&oh_locA, H5O_NAME_ID, 0, FALSE) < 0)
+    if (H5O_msg_remove(&oh_locA, H5O_NAME_ID, 0, false) < 0)
         FAIL_STACK_ERROR
 
     if (H5O_get_hdr_info(&oh_locA, &hdr_info) < 0)
@@ -198,7 +198,7 @@ test_ohdr_cache(char *filename, hid_t fapl)
     mdc_config.version = H5AC__CURR_CACHE_CONFIG_VERSION;
     if (H5Pget_mdc_config(my_fapl, &mdc_config) < 0)
         FAIL_STACK_ERROR
-    mdc_config.set_initial_size = TRUE;
+    mdc_config.set_initial_size = true;
     mdc_config.initial_size     = 32 * 1024;
     mdc_config.max_size         = 64 * 1024;
     mdc_config.min_size         = 8 * 1024;
@@ -596,7 +596,7 @@ test_unknown(unsigned bogus_id, char *filename, hid_t fapl)
         FAIL_STACK_ERROR
 
     /* Check that the "unknown" message was _NOT_ marked */
-    if (H5O__check_msg_marked_test(did, FALSE) < 0)
+    if (H5O__check_msg_marked_test(did, false) < 0)
         FAIL_STACK_ERROR
 
     /* Close the dataset */
@@ -678,7 +678,7 @@ test_unknown(unsigned bogus_id, char *filename, hid_t fapl)
         FAIL_STACK_ERROR
 
     /* Check that the "unknown" message was marked */
-    if (H5O__check_msg_marked_test(did, TRUE) < 0)
+    if (H5O__check_msg_marked_test(did, true) < 0)
         FAIL_STACK_ERROR
 
     /* Close the dataset */
@@ -866,7 +866,7 @@ test_minimized_dset_ohdr_attribute_addition(hid_t fapl_id)
     /* Set the 'no attrs' hint on the dcpl */
     if ((dcpl_id = H5Pcreate(H5P_DATASET_CREATE)) == H5I_INVALID_HID)
         TEST_ERROR;
-    if (H5Pset_dset_no_attrs_hint(dcpl_id, TRUE) < 0)
+    if (H5Pset_dset_no_attrs_hint(dcpl_id, true) < 0)
         TEST_ERROR;
 
     /* The dataset doesn't need to contain data */
@@ -1082,14 +1082,14 @@ test_minimized_dset_ohdr_size_comparisons(hid_t fapl_id)
         dcpl_minimize = H5Pcreate(H5P_DATASET_CREATE);
         if (dcpl_minimize < 0)
             TEST_ERROR
-        ret = H5Pset_dset_no_attrs_hint(dcpl_minimize, TRUE);
+        ret = H5Pset_dset_no_attrs_hint(dcpl_minimize, true);
         if (ret < 0)
             TEST_ERROR
 
         dcpl_dontmin = H5Pcreate(H5P_DATASET_CREATE);
         if (dcpl_dontmin < 0)
             TEST_ERROR
-        ret = H5Pset_dset_no_attrs_hint(dcpl_dontmin, FALSE);
+        ret = H5Pset_dset_no_attrs_hint(dcpl_dontmin, false);
         if (ret < 0)
             TEST_ERROR
 
@@ -1135,7 +1135,7 @@ test_minimized_dset_ohdr_size_comparisons(hid_t fapl_id)
         file_F_id = H5Fcreate(filename_b, H5F_ACC_TRUNC, H5P_DEFAULT, fapl_id);
         if (file_F_id < 0)
             TEST_ERROR
-        ret = H5Fset_dset_no_attrs_hint(file_F_id, TRUE);
+        ret = H5Fset_dset_no_attrs_hint(file_F_id, true);
         if (ret < 0)
             TEST_ERROR
 
@@ -1260,7 +1260,7 @@ test_minimized_dset_ohdr_with_filter(hid_t fapl_id)
     dcpl_mx_id = H5Pcreate(H5P_DATASET_CREATE);
     if (dcpl_mx_id < 0)
         TEST_ERROR
-    ret = H5Pset_dset_no_attrs_hint(dcpl_mx_id, TRUE);
+    ret = H5Pset_dset_no_attrs_hint(dcpl_mx_id, true);
     if (ret < 0)
         TEST_ERROR
 
@@ -1276,7 +1276,7 @@ test_minimized_dset_ohdr_with_filter(hid_t fapl_id)
     dcpl_mZ_id = H5Pcreate(H5P_DATASET_CREATE);
     if (dcpl_mZ_id < 0)
         TEST_ERROR
-    ret = H5Pset_dset_no_attrs_hint(dcpl_mZ_id, TRUE);
+    ret = H5Pset_dset_no_attrs_hint(dcpl_mZ_id, true);
     if (ret < 0)
         TEST_ERROR
     ret = H5Pset_chunk(dcpl_mZ_id, ndims, chunk_dim);
@@ -1435,34 +1435,34 @@ test_minimized_dset_ohdr_modification_times(hid_t _fapl_id)
     dcpl_mx_id = H5Pcreate(H5P_DATASET_CREATE);
     if (dcpl_mx_id < 0)
         TEST_ERROR
-    ret = H5Pset_dset_no_attrs_hint(dcpl_mx_id, TRUE);
+    ret = H5Pset_dset_no_attrs_hint(dcpl_mx_id, true);
     if (ret < 0)
         TEST_ERROR
 
     dcpl_xT_id = H5Pcreate(H5P_DATASET_CREATE);
     if (dcpl_xT_id < 0)
         TEST_ERROR
-    ret = H5Pset_obj_track_times(dcpl_xT_id, TRUE);
+    ret = H5Pset_obj_track_times(dcpl_xT_id, true);
     if (ret < 0)
         TEST_ERROR
 
     dcpl_mT_id = H5Pcreate(H5P_DATASET_CREATE);
     if (dcpl_mT_id < 0)
         TEST_ERROR
-    ret = H5Pset_dset_no_attrs_hint(dcpl_mT_id, TRUE);
+    ret = H5Pset_dset_no_attrs_hint(dcpl_mT_id, true);
     if (ret < 0)
         TEST_ERROR
-    ret = H5Pset_obj_track_times(dcpl_mT_id, TRUE);
+    ret = H5Pset_obj_track_times(dcpl_mT_id, true);
     if (ret < 0)
         TEST_ERROR
 
     dcpl_mN_id = H5Pcreate(H5P_DATASET_CREATE);
     if (dcpl_mN_id < 0)
         TEST_ERROR
-    ret = H5Pset_dset_no_attrs_hint(dcpl_mN_id, TRUE);
+    ret = H5Pset_dset_no_attrs_hint(dcpl_mN_id, true);
     if (ret < 0)
         TEST_ERROR
-    ret = H5Pset_obj_track_times(dcpl_mN_id, FALSE);
+    ret = H5Pset_obj_track_times(dcpl_mN_id, false);
     if (ret < 0)
         TEST_ERROR
 
@@ -1638,7 +1638,7 @@ test_minimized_dset_ohdr_fillvalue_backwards_compatability(hid_t _fapl_id)
     if (dcpl_id < 0)
         TEST_ERROR
 
-    ret = H5Pset_dset_no_attrs_hint(dcpl_id, TRUE);
+    ret = H5Pset_dset_no_attrs_hint(dcpl_id, true);
     if (ret == FAIL)
         TEST_ERROR;
 
@@ -1756,7 +1756,7 @@ main(void)
     H5F_libver_t   low, high; /* File format bounds */
     time_t         time_new, ro;
     int            i;                      /* Local index variable */
-    hbool_t        api_ctx_pushed = FALSE; /* Whether API context pushed */
+    hbool_t        api_ctx_pushed = false; /* Whether API context pushed */
     herr_t         ret;                    /* Generic return value */
 
     /* Get the VFD to use */
@@ -1776,7 +1776,7 @@ main(void)
     /* Push API context */
     if (H5CX_push() < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Loop through all the combinations of low/high library format bounds */
     for (low = H5F_LIBVER_EARLIEST; low < H5F_LIBVER_NBOUNDS; low++) {
@@ -1951,9 +1951,9 @@ main(void)
              * Delete all time messages.
              */
             TESTING("message deletion");
-            if (H5O_msg_remove(&oh_loc, H5O_MTIME_NEW_ID, H5O_ALL, TRUE) < 0)
+            if (H5O_msg_remove(&oh_loc, H5O_MTIME_NEW_ID, H5O_ALL, true) < 0)
                 FAIL_STACK_ERROR
-            if (H5O_msg_remove(&oh_loc, H5O_MTIME_ID, H5O_ALL, TRUE) < 0)
+            if (H5O_msg_remove(&oh_loc, H5O_MTIME_ID, H5O_ALL, true) < 0)
                 FAIL_STACK_ERROR
             if (H5O_msg_read(&oh_loc, H5O_MTIME_NEW_ID, &ro))
                 FAIL_STACK_ERROR
@@ -1989,7 +1989,7 @@ main(void)
             H5E_END_TRY;
             if (ret >= 0)
                 TEST_ERROR
-            if (H5O_msg_remove(&oh_loc, H5O_MTIME_NEW_ID, H5O_ALL, TRUE) < 0)
+            if (H5O_msg_remove(&oh_loc, H5O_MTIME_NEW_ID, H5O_ALL, true) < 0)
                 FAIL_STACK_ERROR
             PASSED();
 
@@ -2052,15 +2052,15 @@ main(void)
         TEST_ERROR
 
     /* A test to exercise the re-read of the object header for SWMR access */
-    if (test_ohdr_swmr(TRUE) < 0)
+    if (test_ohdr_swmr(true) < 0)
         TEST_ERROR
-    if (test_ohdr_swmr(FALSE) < 0)
+    if (test_ohdr_swmr(false) < 0)
         TEST_ERROR
 
     /* Pop API context */
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = FALSE;
+    api_ctx_pushed = false;
 
     HDputs("All object header tests passed.");
     h5_cleanup(FILENAME, fapl);
@@ -2075,7 +2075,7 @@ error:
     H5E_END_TRY;
 
     if (api_ctx_pushed)
-        H5CX_pop(FALSE);
+        H5CX_pop(false);
 
     return 1;
 } /* end main() */

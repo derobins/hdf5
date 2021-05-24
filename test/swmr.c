@@ -135,7 +135,7 @@ test_metadata_read_attempts(hid_t in_fapl)
         FAIL_STACK_ERROR
     if (H5FDdriver_query(driver_id, &driver_flags) < 0)
         FAIL_STACK_ERROR
-    compat_w_default_vfd = (driver_flags & H5FD_FEAT_DEFAULT_VFD_COMPATIBLE) ? TRUE : FALSE;
+    compat_w_default_vfd = (driver_flags & H5FD_FEAT_DEFAULT_VFD_COMPATIBLE) ? true : false;
 
     if (!compat_w_default_vfd) {
         SKIPPED()
@@ -4345,7 +4345,7 @@ test_file_lock_same(hid_t in_fapl)
     /* Set locking in the fapl */
     if ((fapl = H5Pcopy(in_fapl)) < 0)
         FAIL_STACK_ERROR
-    if (H5Pset_file_locking(fapl, TRUE, TRUE) < 0)
+    if (H5Pset_file_locking(fapl, true, true) < 0)
         FAIL_STACK_ERROR
 
     /* Set the filename to use for this test (dependent on fapl) */
@@ -6432,7 +6432,7 @@ test_different_lock_flags(hid_t in_fapl)
         TEST_ERROR
 
     /* Set locking in the fapl */
-    if (H5Pset_file_locking(fapl_id, TRUE, TRUE) < 0)
+    if (H5Pset_file_locking(fapl_id, true, true) < 0)
         TEST_ERROR
 
     /* Set the filename to use for this test (dependent on fapl) */
@@ -6447,7 +6447,7 @@ test_different_lock_flags(hid_t in_fapl)
         TEST_ERROR
 
     /* Unset locking in the fapl */
-    if (H5Pset_file_locking(fapl_id, FALSE, FALSE) < 0)
+    if (H5Pset_file_locking(fapl_id, false, false) < 0)
         TEST_ERROR
 
     /* Open the test file with different flags (should FAIL) */
@@ -7362,7 +7362,7 @@ main(void)
     char *  driver       = NULL;          /* VFD string (from env variable) */
     char *  lock_env_var = NULL;          /* file locking env var pointer */
     hbool_t use_file_locking;             /* read from env var */
-    hbool_t file_locking_enabled = FALSE; /* Checks if the file system supports locks */
+    hbool_t file_locking_enabled = false; /* Checks if the file system supports locks */
 
     /* Skip this test if SWMR I/O is not supported for the VFD specified
      * by the environment variable.
@@ -7379,9 +7379,9 @@ main(void)
      */
     lock_env_var = HDgetenv("HDF5_USE_FILE_LOCKING");
     if (lock_env_var && !HDstrcmp(lock_env_var, "FALSE"))
-        use_file_locking = FALSE;
+        use_file_locking = false;
     else
-        use_file_locking = TRUE;
+        use_file_locking = true;
 
     /* Check if file locking is enabled on this file system */
     if (use_file_locking)
@@ -7399,10 +7399,10 @@ main(void)
 #ifdef OUT
     nerrors += test_bug_refresh(fapl);
 #endif
-    nerrors += test_refresh_concur(fapl, TRUE);
-    nerrors += test_refresh_concur(fapl, FALSE);
-    nerrors += test_multiple_same(fapl, TRUE);
-    nerrors += test_multiple_same(fapl, FALSE);
+    nerrors += test_refresh_concur(fapl, true);
+    nerrors += test_refresh_concur(fapl, false);
+    nerrors += test_multiple_same(fapl, true);
+    nerrors += test_multiple_same(fapl, false);
 
     /* Tests on H5Pget/set_metadata_read_attempts() and H5Fget_metadata_read_retry_info() */
     nerrors += test_metadata_read_attempts(fapl);
@@ -7414,12 +7414,12 @@ main(void)
      *   H5Fcreate(write, latest format) or  H5Fcreate(SWMR write, non-latest-format)
      *   --both result in v3 superblock and latest version suppport
      */
-    nerrors += test_start_swmr_write(fapl, TRUE);
-    nerrors += test_start_swmr_write(fapl, FALSE);
-    nerrors += test_err_start_swmr_write(fapl, TRUE);
-    nerrors += test_err_start_swmr_write(fapl, FALSE);
-    nerrors += test_start_swmr_write_concur(fapl, TRUE);
-    nerrors += test_start_swmr_write_concur(fapl, FALSE);
+    nerrors += test_start_swmr_write(fapl, true);
+    nerrors += test_start_swmr_write(fapl, false);
+    nerrors += test_err_start_swmr_write(fapl, true);
+    nerrors += test_err_start_swmr_write(fapl, false);
+    nerrors += test_start_swmr_write_concur(fapl, true);
+    nerrors += test_start_swmr_write_concur(fapl, false);
     nerrors += test_start_swmr_write_stress_ohdr(fapl);
 
     /* Tests for H5Pget/set_object_flush_cb() */
@@ -7466,10 +7466,10 @@ main(void)
      * so they should be run last.
      */
     if (use_file_locking && file_locking_enabled) {
-        nerrors += test_file_locking(fapl, TRUE, TRUE);
-        nerrors += test_file_locking(fapl, TRUE, FALSE);
-        nerrors += test_file_locking(fapl, FALSE, TRUE);
-        nerrors += test_file_locking(fapl, FALSE, FALSE);
+        nerrors += test_file_locking(fapl, true, true);
+        nerrors += test_file_locking(fapl, true, false);
+        nerrors += test_file_locking(fapl, false, true);
+        nerrors += test_file_locking(fapl, false, false);
     }
 
     if (nerrors)

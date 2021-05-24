@@ -509,7 +509,7 @@ trav_grp_symlinks(const char *path, const H5L_info2_t *linfo, void *udata)
             }
             else if (ret_value == 0) {
                 /* no dangling link option given and detect dangling link */
-                tinfo->symlink_visited.dangle_link = TRUE;
+                tinfo->symlink_visited.dangle_link = true;
                 trav_info_visit_lnk(path, linfo, tinfo);
                 if (opts->no_dangle_links)
                     opts->err_stat = H5DIFF_ERR; /* make dangling link is error */
@@ -524,7 +524,7 @@ trav_grp_symlinks(const char *path, const H5L_info2_t *linfo, void *udata)
             if (symlink_visit_add(&(tinfo->symlink_visited), linfo->type, NULL, lnk_info.trg_path) < 0)
                 H5TOOLS_GOTO_DONE(SUCCEED);
 
-            if (h5trav_visit(tinfo->fid, path, TRUE, TRUE, trav_grp_objs, trav_grp_symlinks, tinfo,
+            if (h5trav_visit(tinfo->fid, path, true, true, trav_grp_objs, trav_grp_symlinks, tinfo,
                              H5O_INFO_BASIC) < 0) {
                 parallel_print("Error: Could not get file contents\n");
                 opts->err_stat = H5DIFF_ERR;
@@ -538,7 +538,7 @@ trav_grp_symlinks(const char *path, const H5L_info2_t *linfo, void *udata)
             }
             else if (ret_value == 0) {
                 /* no dangling link option given and detect dangling link */
-                tinfo->symlink_visited.dangle_link = TRUE;
+                tinfo->symlink_visited.dangle_link = true;
                 trav_info_visit_lnk(path, linfo, tinfo);
                 if (opts->no_dangle_links)
                     opts->err_stat = H5DIFF_ERR; /* make dangling link is error */
@@ -556,7 +556,7 @@ trav_grp_symlinks(const char *path, const H5L_info2_t *linfo, void *udata)
             if (symlink_visit_add(&(tinfo->symlink_visited), linfo->type, ext_fname, ext_path) < 0)
                 H5TOOLS_GOTO_DONE(SUCCEED);
 
-            if (h5trav_visit(tinfo->fid, path, TRUE, TRUE, trav_grp_objs, trav_grp_symlinks, tinfo,
+            if (h5trav_visit(tinfo->fid, path, true, true, trav_grp_objs, trav_grp_symlinks, tinfo,
                              H5O_INFO_BASIC) < 0) {
                 parallel_print("Error: Could not get file contents\n");
                 opts->err_stat = H5DIFF_ERR;
@@ -655,7 +655,7 @@ h5diff(const char *fname1, const char *fname2, const char *objname1, const char 
         }
     }
 
-    if ((file1_id = h5tools_fopen(fname1, H5F_ACC_RDONLY, fapl1_id, FALSE, NULL, (size_t)0)) < 0) {
+    if ((file1_id = h5tools_fopen(fname1, H5F_ACC_RDONLY, fapl1_id, false, NULL, (size_t)0)) < 0) {
         parallel_print("h5diff: <%s>: unable to open file\n", fname1);
         H5TOOLS_GOTO_ERROR(H5DIFF_ERR, "<%s>: unable to open file\n", fname1);
     }
@@ -670,7 +670,7 @@ h5diff(const char *fname1, const char *fname2, const char *objname1, const char 
         }
     }
 
-    if ((file2_id = h5tools_fopen(fname2, H5F_ACC_RDONLY, fapl2_id, FALSE, NULL, (size_t)0)) < 0) {
+    if ((file2_id = h5tools_fopen(fname2, H5F_ACC_RDONLY, fapl2_id, false, NULL, (size_t)0)) < 0) {
         parallel_print("h5diff: <%s>: unable to open file\n", fname2);
         H5TOOLS_GOTO_ERROR(H5DIFF_ERR, "<%s>: unable to open file\n", fname2);
     }
@@ -953,7 +953,7 @@ h5diff(const char *fname1, const char *fname2, const char *objname1, const char 
         /* optional data pass */
         info1_grp->opts = (diff_opt_t *)opts;
 
-        if (h5trav_visit(file1_id, obj1fullname, TRUE, TRUE, trav_grp_objs, trav_grp_symlinks, info1_grp,
+        if (h5trav_visit(file1_id, obj1fullname, true, true, trav_grp_objs, trav_grp_symlinks, info1_grp,
                          H5O_INFO_BASIC) < 0) {
             parallel_print("Error: Could not get file contents\n");
             H5TOOLS_GOTO_ERROR(H5DIFF_ERR, "Could not get file contents");
@@ -967,7 +967,7 @@ h5diff(const char *fname1, const char *fname2, const char *objname1, const char 
         /* optional data pass */
         info2_grp->opts = (diff_opt_t *)opts;
 
-        if (h5trav_visit(file2_id, obj2fullname, TRUE, TRUE, trav_grp_objs, trav_grp_symlinks, info2_grp,
+        if (h5trav_visit(file2_id, obj2fullname, true, true, trav_grp_objs, trav_grp_symlinks, info2_grp,
                          H5O_INFO_BASIC) < 0) {
             parallel_print("Error: Could not get file contents\n");
             H5TOOLS_GOTO_ERROR(H5DIFF_ERR, "Could not get file contents");
@@ -1523,9 +1523,9 @@ diff(hid_t file1_id, const char *path1, hid_t file2_id, const char *path2, diff_
     hid_t         type2_id        = H5I_INVALID_HID;
     hid_t         grp1_id         = H5I_INVALID_HID;
     hid_t         grp2_id         = H5I_INVALID_HID;
-    hbool_t       is_dangle_link1 = FALSE;
-    hbool_t       is_dangle_link2 = FALSE;
-    hbool_t       is_hard_link    = FALSE;
+    hbool_t       is_dangle_link1 = false;
+    hbool_t       is_dangle_link2 = false;
+    hbool_t       is_hard_link    = false;
     hsize_t       nfound          = 0;
     h5trav_type_t object_type;
     diff_err_t    ret_value = opts->err_stat;
@@ -1566,7 +1566,7 @@ diff(hid_t file1_id, const char *path1, hid_t file2_id, const char *path2, diff_
                 H5TOOLS_GOTO_ERROR(H5DIFF_ERR, "dangling link is error");
             }
             else
-                is_dangle_link1 = TRUE;
+                is_dangle_link1 = true;
         }
 
         /* target object2 - get type and name */
@@ -1581,7 +1581,7 @@ diff(hid_t file1_id, const char *path1, hid_t file2_id, const char *path2, diff_
                 H5TOOLS_GOTO_ERROR(H5DIFF_ERR, "dangling link is error");
             }
             else
-                is_dangle_link2 = TRUE;
+                is_dangle_link2 = true;
         }
 
         /* found dangling link */

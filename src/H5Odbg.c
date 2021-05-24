@@ -407,7 +407,7 @@ H5O__debug_real(H5F_t *f, H5O_t *oh, haddr_t addr, FILE *stream, int indent, int
                   "Dirty:", oh->mesg[i].dirty ? "TRUE" : "FALSE");
         HDfprintf(stream, "%*s%-*s ", indent + 3, "", MAX(0, fwidth - 3), "Message flags:");
         if (oh->mesg[i].flags) {
-            hbool_t flag_printed = FALSE;
+            hbool_t flag_printed = false;
 
             /* Sanity check that all flags in format are covered below */
             HDcompile_assert(H5O_MSG_FLAG_BITS ==
@@ -418,36 +418,36 @@ H5O__debug_real(H5F_t *f, H5O_t *oh, haddr_t addr, FILE *stream, int indent, int
 
             if (oh->mesg[i].flags & H5O_MSG_FLAG_CONSTANT) {
                 HDfprintf(stream, "%sC", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (oh->mesg[i].flags & H5O_MSG_FLAG_SHARED) {
                 HDfprintf(stream, "%sS", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (oh->mesg[i].flags & H5O_MSG_FLAG_DONTSHARE) {
                 HDfprintf(stream, "%sDS", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (oh->mesg[i].flags & H5O_MSG_FLAG_FAIL_IF_UNKNOWN_AND_OPEN_FOR_WRITE) {
                 HDfprintf(stream, "%sFIUW", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (oh->mesg[i].flags & H5O_MSG_FLAG_MARK_IF_UNKNOWN) {
                 HDfprintf(stream, "%sMIU", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (oh->mesg[i].flags & H5O_MSG_FLAG_WAS_UNKNOWN) {
                 HDassert(oh->mesg[i].flags & H5O_MSG_FLAG_MARK_IF_UNKNOWN);
                 HDfprintf(stream, "%sWU", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (oh->mesg[i].flags & H5O_MSG_FLAG_SHAREABLE) {
                 HDfprintf(stream, "%sSA", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (oh->mesg[i].flags & H5O_MSG_FLAG_FAIL_IF_UNKNOWN_ALWAYS) {
                 HDfprintf(stream, "%sFIUA", (flag_printed ? ", " : "<"));
-                flag_printed = TRUE;
+                flag_printed = true;
             } /* end if */
             if (!flag_printed)
                 HDfprintf(stream, "-");
@@ -528,9 +528,9 @@ H5O_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent, int fwidth)
     /* Set up the object location */
     loc.file         = f;
     loc.addr         = addr;
-    loc.holding_file = FALSE;
+    loc.holding_file = false;
 
-    if (NULL == (oh = H5O_protect(&loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(&loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* debug */

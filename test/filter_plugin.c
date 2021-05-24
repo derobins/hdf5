@@ -148,7 +148,7 @@ compare_2D_arrays(int **dset1, int **dset2, const hsize_t *sizes, /*OUT*/ hbool_
 {
     hsize_t i, j; /* index variables */
 
-    *are_same = TRUE;
+    *are_same = true;
 
     /* Check all the array values. This could optionally emit any
      * bad data, but it's not clear how that would help debugging.
@@ -156,7 +156,7 @@ compare_2D_arrays(int **dset1, int **dset2, const hsize_t *sizes, /*OUT*/ hbool_
     for (i = 0; i < sizes[0]; i++)
         for (j = 0; j < sizes[1]; j++)
             if (dset1[i][j] != dset2[i][j]) {
-                *are_same = FALSE;
+                *are_same = false;
                 return SUCCEED;
             }
 
@@ -222,7 +222,7 @@ ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
     TESTING("    filters (setup)");
 
     /* Check if all the filters are available */
-    if (H5Pall_filters_avail(dcpl_id) != TRUE)
+    if (H5Pall_filters_avail(dcpl_id) != true)
         TEST_ERROR;
 
     /* Create the dataset */
@@ -243,7 +243,7 @@ ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
     /* The input buffer was calloc'd and has not been initialized yet */
     if (compare_2D_arrays(orig, read, sizes_g, &are_same) < 0)
         TEST_ERROR;
-    if (FALSE == are_same)
+    if (false == are_same)
         TEST_ERROR;
 
     PASSED();
@@ -278,7 +278,7 @@ ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
     /* Check that the values read are the same as the values written */
     if (compare_2D_arrays(orig, read, sizes_g, &are_same) < 0)
         TEST_ERROR;
-    if (FALSE == are_same)
+    if (false == are_same)
         TEST_ERROR;
 
     PASSED();
@@ -306,7 +306,7 @@ ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
     /* Check that the values read are the same as the values written */
     if (compare_2D_arrays(orig, read, sizes_g, &are_same) < 0)
         TEST_ERROR;
-    if (FALSE == are_same)
+    if (false == are_same)
         TEST_ERROR;
 
     PASSED();
@@ -330,7 +330,7 @@ ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
     /* Check that the values read are the same as the values written */
     if (compare_2D_arrays(orig, read, sizes_g, &are_same) < 0)
         TEST_ERROR;
-    if (FALSE == are_same)
+    if (false == are_same)
         TEST_ERROR;
 
     PASSED();
@@ -366,7 +366,7 @@ ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
     /* Check that the values read are the same as the values written */
     if (compare_2D_arrays(orig, read, sizes_g, &are_same) < 0)
         TEST_ERROR;
-    if (FALSE == are_same)
+    if (false == are_same)
         TEST_ERROR;
 
     PASSED();
@@ -958,7 +958,7 @@ test_path_api_calls(void)
 
     HDputs("Testing access to the filter path table");
 
-    if (H5Zfilter_avail(FILTER1_ID) != TRUE)
+    if (H5Zfilter_avail(FILTER1_ID) != true)
         TEST_ERROR;
 
     /* Set the number of paths to create for this test.
@@ -1355,7 +1355,7 @@ main(void)
     /* ENSURE THAT WRITING TO DATASETS AND CREATING GROUPS WORKS       */
     /*******************************************************************/
     /* Test with old & new format groups */
-    for (new_format = FALSE; new_format <= TRUE; new_format++) {
+    for (new_format = false; new_format <= true; new_format++) {
         hid_t my_fapl_id;
 
         /* Testing setup */

@@ -2654,7 +2654,7 @@ main(void)
     unsigned              nerrors = 0;            /* track errors */
     H5P_genplist_t *      plist;                  /* Property list pointer for FAPL */
     H5VL_connector_prop_t connector_prop;         /* Property for VOL connector ID & info */
-    hbool_t               api_ctx_pushed = FALSE; /* Whether API context pushed */
+    hbool_t               api_ctx_pushed = false; /* Whether API context pushed */
     int                   i;                      /* iterator */
 
     /* Test Setup */
@@ -2680,7 +2680,7 @@ main(void)
     /* Push API context */
     if (H5CX_push() < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get the VOL info from the fapl */
     plist = (H5P_genplist_t *)H5I_object(fapl_id);
@@ -2704,9 +2704,9 @@ main(void)
     nerrors += (h5_verify_cached_stabs(FILENAME, fapl_id) < 0 ? 1 : 0);
 
     /* Pop API context */
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = FALSE;
+    api_ctx_pushed = false;
 
     if (nerrors)
         goto error;
@@ -2731,7 +2731,7 @@ error:
     H5E_END_TRY
 
     if (api_ctx_pushed)
-        H5CX_pop(FALSE);
+        H5CX_pop(false);
 
     for (i = 0; i < N_FILENAMES; i++) {
         HDfree(filename[i]);

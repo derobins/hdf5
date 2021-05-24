@@ -1229,7 +1229,7 @@ refresh_verification(const char *obj_pathname)
     H5O_native_info_t refreshed_ninfo;
     int               tries = 800, sleep_tries = 400;
     int               token_cmp;
-    hbool_t           ok = FALSE;
+    hbool_t           ok = false;
 
     HDremove(SIGNAL_BETWEEN_PROCESSES_2);
 
@@ -1334,7 +1334,7 @@ refresh_verification(const char *obj_pathname)
             (flushed_ninfo.hdr.nmesgs != refreshed_ninfo.hdr.nmesgs) &&
             (flushed_ninfo.hdr.nchunks != refreshed_ninfo.hdr.nchunks) &&
             (flushed_ninfo.hdr.space.total != refreshed_ninfo.hdr.space.total)) {
-            ok = TRUE;
+            ok = true;
             break;
         }
 

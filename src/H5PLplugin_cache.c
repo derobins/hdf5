@@ -153,10 +153,10 @@ H5PL__close_plugin_cache(hbool_t *already_closed /*out*/)
         H5PL_cache_capacity_g = 0;
 
         /* Note that actually closed the table (needed by package close call) */
-        *already_closed = FALSE;
+        *already_closed = false;
     }
     else
-        *already_closed = TRUE;
+        *already_closed = true;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5PL__close_plugin_cache() */
@@ -258,7 +258,7 @@ H5PL__find_plugin_in_cache(const H5PL_search_params_t *search_params, hbool_t *f
     HDassert(plugin_info);
 
     /* Initialize output parameters */
-    *found       = FALSE;
+    *found       = false;
     *plugin_info = NULL;
 
     /* Loop over all the plugins, looking for one that matches */
@@ -281,7 +281,7 @@ H5PL__find_plugin_in_cache(const H5PL_search_params_t *search_params, hbool_t *f
                 HGOTO_ERROR(H5E_PLUGIN, H5E_CANTGET, FAIL, "can't get plugin info")
 
             /* Set output parameters */
-            *found       = TRUE;
+            *found       = true;
             *plugin_info = info;
 
             /* No need to continue processing */

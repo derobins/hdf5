@@ -2285,7 +2285,7 @@ main(void)
 
     /* Loop over test configurations */
     for (config = 0; config < CONFIG_END; config++) {
-        hbool_t need_comma = FALSE;
+        hbool_t need_comma = false;
 
         /* Check for invalid combinations */
         if ((config & CONFIG_REOPEN_FILE) && !(config & CONFIG_REOPEN_DSET))
@@ -2299,31 +2299,31 @@ main(void)
             if (need_comma)
                 HDprintf(", ");
             HDprintf("latest format");
-            need_comma = TRUE;
+            need_comma = true;
         } /* end if */
         if (config & CONFIG_REOPEN_FILE) {
             if (need_comma)
                 HDprintf(", ");
             HDprintf("reopen file");
-            need_comma = TRUE;
+            need_comma = true;
         } /* end if */
         else if (config & CONFIG_REOPEN_DSET) {
             if (need_comma)
                 HDprintf(", ");
             HDprintf("reopen dataset");
-            need_comma = TRUE;
+            need_comma = true;
         } /* end if */
         if (config & CONFIG_DIRECT_WRITE) {
             if (need_comma)
                 HDprintf(", ");
             HDprintf("direct write");
-            need_comma = TRUE;
+            need_comma = true;
         } /* end if */
         if (config & CONFIG_DIRECT_READ) {
             if (need_comma)
                 HDprintf(", ");
             HDprintf("direct read");
-            need_comma = TRUE;
+            need_comma = true;
         } /* end if */
         HDprintf(":\n");
         HDfflush(stdout);

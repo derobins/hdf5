@@ -126,7 +126,7 @@ parse_command_line(int argc, const char *argv[], mkgrp_opt_t *options)
 {
     int                opt;        /* Option from command line */
     size_t             curr_group; /* Current group name to copy */
-    hbool_t            custom_fapl = FALSE;
+    hbool_t            custom_fapl = false;
     h5tools_vol_info_t vol_info;
     hid_t              tmp_fapl_id = H5I_INVALID_HID;
 
@@ -150,17 +150,17 @@ parse_command_line(int argc, const char *argv[], mkgrp_opt_t *options)
 
             /* Create objects with the latest version of the format */
             case 'l':
-                options->latest = TRUE;
+                options->latest = true;
                 break;
 
             /* Create parent groups */
             case 'p':
-                options->parents = TRUE;
+                options->parents = true;
                 break;
 
             /* Verbose output */
             case 'v':
-                options->verbose = TRUE;
+                options->verbose = true;
                 break;
 
             /* Display version */
@@ -172,13 +172,13 @@ parse_command_line(int argc, const char *argv[], mkgrp_opt_t *options)
             case '1':
                 vol_info.type    = VOL_BY_VALUE;
                 vol_info.u.value = (H5VL_class_value_t)HDatoi(opt_arg);
-                custom_fapl      = TRUE;
+                custom_fapl      = true;
                 break;
 
             case '2':
                 vol_info.type   = VOL_BY_NAME;
                 vol_info.u.name = opt_arg;
-                custom_fapl     = TRUE;
+                custom_fapl     = true;
                 break;
 
             case '3':
@@ -296,7 +296,7 @@ main(int argc, const char *argv[])
     }
 
     /* Attempt to open an existing HDF5 file first */
-    fid = h5tools_fopen(params_g.fname, H5F_ACC_RDWR, params_g.fapl_id, FALSE, NULL, 0);
+    fid = h5tools_fopen(params_g.fname, H5F_ACC_RDWR, params_g.fapl_id, false, NULL, 0);
 
     /* If we couldn't open an existing file, try creating file */
     /* (use "EXCL" instead of "TRUNC", so we don't blow away existing non-HDF5 file) */
@@ -318,7 +318,7 @@ main(int argc, const char *argv[])
     /* Check for creating intermediate groups */
     if (params_g.parents) {
         /* Set the intermediate group creation property */
-        if (H5Pset_create_intermediate_group(lcpl_id, TRUE) < 0) {
+        if (H5Pset_create_intermediate_group(lcpl_id, true) < 0) {
             error_msg("Could not set property for creating parent groups\n");
             leave(EXIT_FAILURE);
         }

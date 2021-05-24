@@ -64,7 +64,7 @@
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -782,7 +782,7 @@ done:
 herr_t
 H5HF_close(H5HF_t *fh)
 {
-    hbool_t pending_delete = FALSE;       /* Whether the heap is pending deletion */
+    hbool_t pending_delete = false;       /* Whether the heap is pending deletion */
     haddr_t heap_addr      = HADDR_UNDEF; /* Address of heap (for deletion) */
     herr_t  ret_value      = SUCCEED;     /* Return value */
 
@@ -830,7 +830,7 @@ H5HF_close(H5HF_t *fh)
             /* Set local info, so heap deletion can occur after decrementing the
              *  header's ref count
              */
-            pending_delete = TRUE;
+            pending_delete = true;
             heap_addr      = fh->hdr->heap_addr;
         } /* end if */
     }     /* end if */
@@ -894,7 +894,7 @@ H5HF_delete(H5F_t *f, haddr_t fh_addr)
 
     /* Check for files using shared heap header */
     if (hdr->file_rc)
-        hdr->pending_delete = TRUE;
+        hdr->pending_delete = true;
     else {
         /* Delete heap now, starting with header (unprotects header) */
         if (H5HF__hdr_delete(hdr) < 0)

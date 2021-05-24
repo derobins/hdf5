@@ -84,7 +84,7 @@ static int    H5ES__close_failed_cb(H5ES_event_t *ev, void *_ctx);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -159,7 +159,7 @@ H5ES_term_package(void)
 
         /* Mark closed */
         if (0 == n)
-            H5_PKG_INIT_VAR = FALSE;
+            H5_PKG_INIT_VAR = false;
     } /* end if */
 
     FUNC_LEAVE_NOAPI(n)
@@ -254,7 +254,7 @@ H5ES_insert(hid_t es_id, H5VL_t *connector, void *token, const char *caller, con
     const char *  app_func;              /* Application source function name */
     const char *  s;                     /* Pointer to internal string from ref-counted string */
     va_list       ap;                    /* Varargs for caller */
-    hbool_t       arg_started = FALSE;   /* Whether the va_list has been started */
+    hbool_t       arg_started = false;   /* Whether the va_list has been started */
     herr_t        ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -279,7 +279,7 @@ H5ES_insert(hid_t es_id, H5VL_t *connector, void *token, const char *caller, con
 
     /* Start working on the API routines arguments */
     HDva_start(ap, caller_args);
-    arg_started = TRUE;
+    arg_started = true;
 
     /* Copy the app source information */
     (void)HDva_arg(ap, char *); /* Toss the 'app_file' parameter name */
@@ -358,7 +358,7 @@ H5ES__handle_fail(H5ES_t *es, H5ES_event_t *ev)
     HDassert(ev);
 
     /* Set error flag for event set */
-    es->err_occurred = TRUE;
+    es->err_occurred = true;
 
     /* Remove event from normal list */
     H5ES__list_remove(&es->active, ev);
@@ -410,7 +410,7 @@ H5ES__wait_cb(H5ES_event_t *ev, void *_ctx)
             HGOTO_ERROR(H5E_EVENTSET, H5E_CANTSET, H5_ITER_ERROR, "unable to handle failed event")
 
         /* Record the error */
-        *ctx->op_failed = TRUE;
+        *ctx->op_failed = true;
 
         /* Exit from the iteration */
         ret_value = H5_ITER_STOP;
@@ -472,7 +472,7 @@ H5ES__wait(H5ES_t *es, uint64_t timeout, size_t *num_in_progress, hbool_t *op_fa
 
     /* Set user's parameters to known values */
     *num_in_progress = 0;
-    *op_failed       = FALSE;
+    *op_failed       = false;
 
     /* Set up context for iterator callbacks */
     ctx.es              = es;

@@ -299,7 +299,7 @@ hbool_t
 H5FO_marked(const H5F_t *f, haddr_t addr)
 {
     H5FO_open_obj_t *open_obj;          /* Information about open object */
-    hbool_t          ret_value = FALSE; /* Return value */
+    hbool_t          ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOERR
 

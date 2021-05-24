@@ -203,7 +203,7 @@ read_records(const char *filename, hbool_t verbose, FILE *verbose_file, unsigned
     hid_t           fapl;                /* file access property list */
     symbol_t        record;              /* The record to read from the dataset */
     unsigned        v;                   /* Local index variable */
-    hbool_t         use_log_vfd = FALSE; /* Use the log VFD (set this manually) */
+    hbool_t         use_log_vfd = false; /* Use the log VFD (set this manually) */
 
     HDassert(filename);
     HDassert(nseconds != 0);
@@ -393,9 +393,9 @@ main(int argc, const char *argv[])
     int      poll_time    = 1;     /* # of seconds between polling */
     int      ncommon      = 5;     /* # of common symbols to poll */
     int      nrandom      = 10;    /* # of random symbols to poll */
-    hbool_t  verbose      = TRUE;  /* Whether to emit some informational messages */
+    hbool_t  verbose      = true;  /* Whether to emit some informational messages */
     FILE *   verbose_file = NULL;  /* File handle for verbose output */
-    hbool_t  use_seed     = FALSE; /* Set to 1 if a seed was set on the command line */
+    hbool_t  use_seed     = false; /* Set to 1 if a seed was set on the command line */
     unsigned random_seed  = 0;     /* Random # seed */
     unsigned u;                    /* Local index variables */
     int      temp;
@@ -426,13 +426,13 @@ main(int argc, const char *argv[])
 
                     /* Be quiet */
                     case 'q':
-                        verbose = FALSE;
+                        verbose = false;
                         u++;
                         break;
 
                     /* Random # seed */
                     case 'r':
-                        use_seed = TRUE;
+                        use_seed = true;
                         temp     = HDatoi(argv[u + 1]);
                         if (temp < 0)
                             usage();

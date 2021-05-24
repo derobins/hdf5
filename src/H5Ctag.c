@@ -131,7 +131,7 @@ H5C_ignore_tags(H5C_t *cache_ptr)
     HDassert(cache_ptr->magic == H5C__H5C_T_MAGIC);
 
     /* Set variable to ignore tag values upon assignment */
-    cache_ptr->ignore_tags = TRUE;
+    cache_ptr->ignore_tags = true;
 
     FUNC_LEAVE_NOAPI(SUCCEED)
 } /* H5C_ignore_tags */
@@ -473,17 +473,17 @@ H5C__evict_tagged_entries_cb(H5C_cache_entry_t *entry, void *_ctx)
         /* Can't evict at this time, but let's note that we hit a pinned
             entry and we'll loop back around again (as evicting other
             entries will hopefully unpin this entry) */
-        ctx->pinned_entries_need_evicted = TRUE;
+        ctx->pinned_entries_need_evicted = true;
     else if (!entry->prefetched_dirty) {
         /* Evict the Entry */
         if (H5C__flush_single_entry(ctx->f, entry,
                                     H5C__FLUSH_INVALIDATE_FLAG | H5C__FLUSH_CLEAR_ONLY_FLAG |
                                         H5C__DEL_FROM_SLIST_ON_DESTROY_FLAG) < 0)
             HGOTO_ERROR(H5E_CACHE, H5E_CANTFLUSH, H5_ITER_ERROR, "Entry eviction failed.")
-        ctx->evicted_entries_last_pass = TRUE;
+        ctx->evicted_entries_last_pass = true;
     }
     else
-        ctx->skipped_pf_dirty_entries = TRUE;
+        ctx->skipped_pf_dirty_entries = true;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -525,16 +525,16 @@ H5C_evict_tagged_entries(H5F_t *f, haddr_t tag, hbool_t match_global)
     /* Start evicting entries */
     do {
         /* Reset pinned/evicted tracking flags */
-        ctx.pinned_entries_need_evicted = FALSE;
-        ctx.evicted_entries_last_pass   = FALSE;
-        ctx.skipped_pf_dirty_entries    = FALSE;
+        ctx.pinned_entries_need_evicted = false;
+        ctx.evicted_entries_last_pass   = false;
+        ctx.skipped_pf_dirty_entries    = false;
 
         /* Iterate through entries in the cache */
         if (H5C__iter_tagged_entries(cache, tag, match_global, H5C__evict_tagged_entries_cb, &ctx) < 0)
             HGOTO_ERROR(H5E_CACHE, H5E_BADITER, FAIL, "Iteration of tagged entries failed")
 
         /* Keep doing this until we have stopped evicted entries */
-    } while (TRUE == ctx.evicted_entries_last_pass);
+    } while (true == ctx.evicted_entries_last_pass);
 
     /* In most cases, fail if we have finished evicting entries and pinned
      * entries still need evicted
@@ -593,7 +593,7 @@ H5C__mark_tagged_entries_cb(H5C_cache_entry_t *entry, void H5_ATTR_UNUSED *_ctx)
     /* We only want to set the flush marker on entries that
      * actually need flushed (i.e., dirty ones) */
     if (entry->is_dirty)
-        entry->flush_marker = TRUE;
+        entry->flush_marker = true;
 
     FUNC_LEAVE_NOAPI(H5_ITER_CONT)
 } /* H5C__mark_tagged_entries_cb() */
@@ -627,7 +627,7 @@ H5C__mark_tagged_entries(H5C_t *cache, haddr_t tag)
     /* Iterate through hash table entries, marking those with specified tag, as
      * well as any major global entries which should always be flushed
      * when flushing based on tag value */
-    if (H5C__iter_tagged_entries(cache, tag, TRUE, H5C__mark_tagged_entries_cb, NULL) < 0)
+    if (H5C__iter_tagged_entries(cache, tag, true, H5C__mark_tagged_entries_cb, NULL) < 0)
         HGOTO_ERROR(H5E_CACHE, H5E_BADITER, FAIL, "Iteration of tagged entries failed")
 
 done:
@@ -862,7 +862,7 @@ H5C_expunge_tag_type_metadata(H5F_t *f, haddr_t tag, int type_id, unsigned flags
     ctx.flags   = flags;
 
     /* Iterate through hash table entries, expunge those with specified tag and type id */
-    if (H5C__iter_tagged_entries(cache, tag, FALSE, H5C__expunge_tag_type_metadata_cb, &ctx) < 0)
+    if (H5C__iter_tagged_entries(cache, tag, false, H5C__expunge_tag_type_metadata_cb, &ctx) < 0)
         HGOTO_ERROR(H5E_CACHE, H5E_BADITER, FAIL, "Iteration of tagged entries failed")
 
 done:

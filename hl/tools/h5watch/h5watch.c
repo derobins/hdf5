@@ -33,15 +33,15 @@ static char *        g_list_of_fields = NULL;      /* command line input for "li
 static char *        g_dup_fields     = NULL;      /* copy of "list_of_fields" */
 static H5LD_memb_t **g_listv          = NULL;      /* vector info for "list_of_fields" */
 
-static hbool_t  g_monitor_size_only = FALSE; /* monitor changes in dataset dimension sizes */
+static hbool_t  g_monitor_size_only = false; /* monitor changes in dataset dimension sizes */
 static unsigned g_polling_interval  = 1;     /* polling interval to check appended data */
 
-static hbool_t  g_label         = FALSE;  /* label compound values */
+static hbool_t  g_label         = false;  /* label compound values */
 static int      g_display_width = 80;     /* output width in characters */
-static hbool_t  g_simple_output = FALSE;  /* make output more machine-readable */
+static hbool_t  g_simple_output = false;  /* make output more machine-readable */
 static unsigned g_retry = DEFAULT_RETRY;  /* # of times to try opening the file if somehow file is unstable */
-static hbool_t  g_display_hex    = FALSE; /* display data in hexadecimal format : LATER */
-static hbool_t  g_user_interrupt = FALSE; /* Flag to indicate that user interrupted execution */
+static hbool_t  g_display_hex    = false; /* display data in hexadecimal format : LATER */
+static hbool_t  g_user_interrupt = false; /* Flag to indicate that user interrupted execution */
 
 static herr_t doprint(hid_t did, const hsize_t *start, const hsize_t *block, int rank);
 static herr_t slicendump(hid_t did, hsize_t *prev_dims, hsize_t *cur_dims, hsize_t *start, hsize_t *block,
@@ -193,7 +193,7 @@ doprint(hid_t did, const hsize_t *start, const hsize_t *block, int rank)
     if (g_display_hex) {
         /* Print all data in hexadecimal format if the `-x' or `--hexdump'
          * command line switch was given. */
-        info.raw = TRUE;
+        info.raw = true;
     } /* end if */
 
     /* Print the values. */
@@ -497,7 +497,7 @@ check_dataset(hid_t fid, char *dsetname)
     unsigned     u;                      /* Local index variable */
     hsize_t      cur_dims[H5S_MAX_RANK]; /* size of dataspace dimensions */
     hsize_t      max_dims[H5S_MAX_RANK]; /* maximum size of dataspace dimensions */
-    hbool_t      unlim_max_dims = FALSE; /* whether dataset has unlimited or max. dimension setting */
+    hbool_t      unlim_max_dims = false; /* whether dataset has unlimited or max. dimension setting */
     void *       edata;
     H5E_auto2_t  func;
     H5D_layout_t layout;
@@ -553,7 +553,7 @@ check_dataset(hid_t fid, char *dsetname)
     /* Check whether dataset has unlimited dimension or max. dimension setting */
     for (u = 0; u < (unsigned)ndims; u++)
         if (max_dims[u] == H5S_UNLIMITED || cur_dims[u] != max_dims[u]) {
-            unlim_max_dims = TRUE;
+            unlim_max_dims = true;
             break;
         }
 
@@ -699,15 +699,15 @@ parse_command_line(int argc, const char *argv[])
                 break;
 
             case 'd': /* --dim */
-                g_monitor_size_only = TRUE;
+                g_monitor_size_only = true;
                 break;
 
             case 'S': /* --simple */
-                g_simple_output = TRUE;
+                g_simple_output = true;
                 break;
 
             case 'l': /* --label */
-                g_label = TRUE;
+                g_label = true;
                 break;
 
             case 'p': /* --polling=N */
@@ -774,7 +774,7 @@ static void
 catch_signal(int H5_ATTR_UNUSED signo)
 {
     /* Set the flag to get out of the main loop */
-    g_user_interrupt = TRUE;
+    g_user_interrupt = true;
 } /* catch_signal() */
 
 /*-------------------------------------------------------------------------
@@ -865,7 +865,7 @@ main(int argc, const char *argv[])
 
     do {
         while (fname && *fname) {
-            fid = h5tools_fopen(fname, H5F_ACC_RDONLY | H5F_ACC_SWMR_READ, fapl, FALSE, drivername,
+            fid = h5tools_fopen(fname, H5F_ACC_RDONLY | H5F_ACC_SWMR_READ, fapl, false, drivername,
                                 sizeof drivername);
 
             if (fid >= 0) {

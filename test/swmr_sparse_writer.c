@@ -189,7 +189,7 @@ add_records(hid_t fid, unsigned verbose, unsigned long nrecords, unsigned long f
              * flushed before the data has been written */
             if (H5Odisable_mdc_flushes(symbol->dsid) < 0)
                 return -1;
-            corked = TRUE;
+            corked = true;
 
             if (H5Dset_extent(symbol->dsid, dim) < 0)
                 return -1;
@@ -205,7 +205,7 @@ add_records(hid_t fid, unsigned verbose, unsigned long nrecords, unsigned long f
         else {
             if ((aid = H5Aopen(symbol->dsid, "seq", H5P_DEFAULT)) < 0)
                 return -1;
-            corked = FALSE;
+            corked = false;
         } /* end else */
 
         /* Get the coordinate to write */

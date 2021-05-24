@@ -310,7 +310,7 @@ H5S__point_iter_nelmts(const H5S_sel_iter_t *iter)
 static htri_t
 H5S__point_iter_has_next_block(const H5S_sel_iter_t *iter)
 {
-    htri_t ret_value = TRUE; /* Return value */
+    htri_t ret_value = true; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -319,7 +319,7 @@ H5S__point_iter_has_next_block(const H5S_sel_iter_t *iter)
 
     /* Check if there is another point in the list */
     if (iter->u.pnt.curr->next == NULL)
-        HGOTO_DONE(FALSE);
+        HGOTO_DONE(false);
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -962,7 +962,7 @@ static htri_t
 H5S__point_is_valid(const H5S_t *space)
 {
     unsigned u;                /* Counter */
-    htri_t   ret_value = TRUE; /* Return value */
+    htri_t   ret_value = true; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -973,9 +973,9 @@ H5S__point_is_valid(const H5S_t *space)
         /* Bounds check the selected point + offset against the extent */
         if ((space->select.sel_info.pnt_lst->high_bounds[u] + (hsize_t)space->select.offset[u]) >
             space->extent.size[u])
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
         if (((hssize_t)space->select.sel_info.pnt_lst->low_bounds[u] + space->select.offset[u]) < 0)
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
     } /* end for */
 
 done:
@@ -1052,8 +1052,8 @@ done:
 static herr_t
 H5S__point_get_version_enc_size(const H5S_t *space, uint32_t *version, uint8_t *enc_size)
 {
-    hbool_t      count_up_version = FALSE;   /* Whether number of points exceed H5S_UINT32_MAX */
-    hbool_t      bound_up_version = FALSE;   /* Whether high bounds exceed H5S_UINT32_MAX */
+    hbool_t      count_up_version = false;   /* Whether number of points exceed H5S_UINT32_MAX */
+    hbool_t      bound_up_version = false;   /* Whether high bounds exceed H5S_UINT32_MAX */
     H5F_libver_t low_bound;                  /* The 'low' bound of library format versions */
     H5F_libver_t high_bound;                 /* The 'high' bound of library format versions */
     uint32_t     tmp_version;                /* Local temporary version */
@@ -1072,11 +1072,11 @@ H5S__point_get_version_enc_size(const H5S_t *space, uint32_t *version, uint8_t *
 
     /* Determine whether number of points or high bounds exceeds (2^32 - 1) */
     if (space->select.num_elem > H5S_UINT32_MAX)
-        count_up_version = TRUE;
+        count_up_version = true;
     else
         for (u = 0; u < space->extent.rank; u++)
             if (bounds_end[u] > H5S_UINT32_MAX) {
-                bound_up_version = TRUE;
+                bound_up_version = true;
                 break;
             } /* end if */
 
@@ -1793,10 +1793,10 @@ H5S__point_is_contiguous(const H5S_t *space)
 
     /* One point is definitely contiguous */
     if (space->select.num_elem == 1)
-        ret_value = TRUE;
+        ret_value = true;
     else /* More than one point might be contiguous, but it's complex to check and we don't need it right now
           */
-        ret_value = FALSE;
+        ret_value = false;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5S__point_is_contiguous() */
@@ -1830,9 +1830,9 @@ H5S__point_is_single(const H5S_t *space)
 
     /* One point is definitely 'single' :-) */
     if (space->select.num_elem == 1)
-        ret_value = TRUE;
+        ret_value = true;
     else
-        ret_value = FALSE;
+        ret_value = false;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5S__point_is_single() */
@@ -1870,9 +1870,9 @@ H5S__point_is_regular(const H5S_t *space)
 
     /* Only simple check for regular points for now... */
     if (space->select.num_elem == 1)
-        ret_value = TRUE;
+        ret_value = true;
     else
-        ret_value = FALSE;
+        ret_value = false;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5S__point_is_regular() */
@@ -1905,7 +1905,7 @@ H5S__point_shape_same(const H5S_t *space1, const H5S_t *space2)
     unsigned        space2_rank;          /* Number of dimensions of second dataspace */
     int             space1_dim;           /* Current dimension in first dataspace */
     int             space2_dim;           /* Current dimension in second dataspace */
-    htri_t          ret_value = TRUE;     /* Return value */
+    htri_t          ret_value = true;     /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -1959,7 +1959,7 @@ H5S__point_shape_same(const H5S_t *space1, const H5S_t *space2)
         /* Compare locations in common dimensions, including relative offset */
         while (space2_dim >= 0) {
             if ((hsize_t)((hssize_t)pnt1->pnt[space1_dim] + offset[space1_dim]) != pnt2->pnt[space2_dim])
-                HGOTO_DONE(FALSE)
+                HGOTO_DONE(false)
 
             space1_dim--;
             space2_dim--;
@@ -1969,7 +1969,7 @@ H5S__point_shape_same(const H5S_t *space1, const H5S_t *space2)
         while (space1_dim >= 0) {
             /* Compare the absolute offset in the remaining dimensions */
             if ((hssize_t)pnt1->pnt[space1_dim] != offset[space1_dim])
-                HGOTO_DONE(FALSE)
+                HGOTO_DONE(false)
 
             space1_dim--;
         } /* end while */
@@ -2006,7 +2006,7 @@ htri_t
 H5S__point_intersect_block(const H5S_t *space, const hsize_t *start, const hsize_t *end)
 {
     H5S_pnt_node_t *pnt;               /* Point information node */
-    htri_t          ret_value = FALSE; /* Return value */
+    htri_t          ret_value = false; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -2028,7 +2028,7 @@ H5S__point_intersect_block(const H5S_t *space, const hsize_t *start, const hsize
 
         /* Check if point was within block for all dimensions */
         if (u == space->extent.rank)
-            HGOTO_DONE(TRUE)
+            HGOTO_DONE(true)
 
         /* Advance to next point */
         pnt = pnt->next;
@@ -2059,7 +2059,7 @@ done:
 static herr_t
 H5S__point_adjust_u(H5S_t *space, const hsize_t *offset)
 {
-    hbool_t         non_zero_offset = FALSE; /* Whether any offset is non-zero */
+    hbool_t         non_zero_offset = false; /* Whether any offset is non-zero */
     H5S_pnt_node_t *node;                    /* Point node */
     unsigned        rank;                    /* Dataspace rank */
     unsigned        u;                       /* Local index variable */
@@ -2072,7 +2072,7 @@ H5S__point_adjust_u(H5S_t *space, const hsize_t *offset)
     /* Check for an all-zero offset vector */
     for (u = 0; u < space->extent.rank; u++)
         if (0 != offset[u]) {
-            non_zero_offset = TRUE;
+            non_zero_offset = true;
             break;
         }
 
@@ -2126,7 +2126,7 @@ H5S__point_adjust_u(H5S_t *space, const hsize_t *offset)
 static herr_t
 H5S__point_adjust_s(H5S_t *space, const hssize_t *offset)
 {
-    hbool_t         non_zero_offset = FALSE; /* Whether any offset is non-zero */
+    hbool_t         non_zero_offset = false; /* Whether any offset is non-zero */
     H5S_pnt_node_t *node;                    /* Point node */
     unsigned        rank;                    /* Dataspace rank */
     unsigned        u;                       /* Local index variable */
@@ -2139,7 +2139,7 @@ H5S__point_adjust_s(H5S_t *space, const hssize_t *offset)
     /* Check for an all-zero offset vector */
     for (u = 0; u < space->extent.rank; u++)
         if (0 != offset[u]) {
-            non_zero_offset = TRUE;
+            non_zero_offset = true;
             break;
         } /* end if */
 

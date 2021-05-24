@@ -1664,7 +1664,7 @@ test_file_is_accessible(const char *env_h5_drvr)
 
     /* Verify that the file is an HDF5 file */
     is_hdf5 = H5Fis_accessible(filename, fapl_id);
-    VERIFY(is_hdf5, TRUE, "H5Fis_accessible");
+    VERIFY(is_hdf5, true, "H5Fis_accessible");
 
     /*****************************************/
     /* Newly created file that is still open */
@@ -1683,7 +1683,7 @@ test_file_is_accessible(const char *env_h5_drvr)
 
     /* Verify that the file is an HDF5 file */
     is_hdf5 = H5Fis_accessible(filename, fapl_id);
-    VERIFY(is_hdf5, TRUE, "H5Fis_accessible");
+    VERIFY(is_hdf5, true, "H5Fis_accessible");
 
     /* Close file */
     ret = H5Fclose(fid);
@@ -1718,7 +1718,7 @@ test_file_is_accessible(const char *env_h5_drvr)
 
         /* Verify that the file is an HDF5 file */
         is_hdf5 = H5Fis_accessible(filename, fapl_id);
-        VERIFY(is_hdf5, TRUE, "H5Fis_accessible");
+        VERIFY(is_hdf5, true, "H5Fis_accessible");
     } /* end if */
 
     /***********************/
@@ -1735,7 +1735,7 @@ test_file_is_accessible(const char *env_h5_drvr)
 
     /* Verify that the file is NOT an HDF5 file */
     is_hdf5 = H5Fis_accessible(filename, fapl_id);
-    VERIFY(is_hdf5, FALSE, "H5Fis_accessible (empty non-HDF5 file)");
+    VERIFY(is_hdf5, false, "H5Fis_accessible (empty non-HDF5 file)");
 
     /***************************/
     /* Non-empty non-HDF5 file */
@@ -1759,7 +1759,7 @@ test_file_is_accessible(const char *env_h5_drvr)
 
     /* Verify that the file is not an HDF5 file */
     is_hdf5 = H5Fis_accessible(filename, fapl_id);
-    VERIFY(is_hdf5, FALSE, "H5Fis_accessible (non-HDF5 file)");
+    VERIFY(is_hdf5, false, "H5Fis_accessible (non-HDF5 file)");
 
     /* Clean up files */
     h5_delete_test_file(filename, fapl_id);
@@ -1823,7 +1823,7 @@ test_file_ishdf5(const char *env_h5_drvr)
 
     /* Verify that the file is an HDF5 file */
     is_hdf5 = H5Fis_hdf5(sb_filename);
-    VERIFY(is_hdf5, TRUE, "H5Fis_hdf5");
+    VERIFY(is_hdf5, true, "H5Fis_hdf5");
 
     /*******************************/
     /* Non-default user block size */
@@ -1854,7 +1854,7 @@ test_file_ishdf5(const char *env_h5_drvr)
 
         /* Verify that the file is an HDF5 file */
         is_hdf5 = H5Fis_hdf5(sb_filename);
-        VERIFY(is_hdf5, TRUE, "H5Fis_hdf5");
+        VERIFY(is_hdf5, true, "H5Fis_hdf5");
     } /* end if */
 
     /***************************/
@@ -1882,7 +1882,7 @@ test_file_ishdf5(const char *env_h5_drvr)
 
     /* Verify that the file is not an HDF5 file */
     is_hdf5 = H5Fis_hdf5(sb_filename);
-    VERIFY(is_hdf5, FALSE, "H5Fis_hdf5");
+    VERIFY(is_hdf5, false, "H5Fis_hdf5");
 
     /* Clean up files */
     h5_delete_test_file(filename, fapl_id);
@@ -1931,7 +1931,7 @@ test_file_delete(hid_t fapl_id)
 
     /* Verify that the file is an HDF5 file */
     is_hdf5 = H5Fis_accessible(filename, fapl_id);
-    VERIFY(is_hdf5, TRUE, "H5Fis_accessible");
+    VERIFY(is_hdf5, true, "H5Fis_accessible");
 
     /* Delete the file */
     ret = H5Fdelete(filename, fapl_id);
@@ -1975,7 +1975,7 @@ test_file_delete(hid_t fapl_id)
         is_hdf5 = H5Fis_accessible(filename, fapl_id);
     }
     H5E_END_TRY;
-    CHECK(is_hdf5, TRUE, "H5Fis_accessible");
+    CHECK(is_hdf5, true, "H5Fis_accessible");
 
     /* Try to delete it (should fail) */
     H5E_BEGIN_TRY
@@ -3080,7 +3080,7 @@ cal_chksum(const char *file, uint32_t *chksum)
     if (file_data) {
         /* Read file's data into memory */
         bytes_read = HDread(fdes, file_data, (size_t)sb.st_size);
-        CHECK(bytes_read == sb.st_size, FALSE, "HDmalloc");
+        CHECK(bytes_read == sb.st_size, false, "HDmalloc");
 
         /* Calculate checksum */
         *chksum = H5_checksum_lookup3(file_data, sizeof(file_data), 0);
@@ -3318,7 +3318,7 @@ test_userblock_alignment(void)
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3348,7 +3348,7 @@ test_userblock_alignment(void)
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3378,7 +3378,7 @@ test_userblock_alignment(void)
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3482,9 +3482,9 @@ test_userblock_alignment(void)
     CHECK(ret, FAIL, "H5Pset_alignment");
 
     /* Call helper routines to perform file manipulations */
-    ret = test_userblock_alignment_helper2(fapl, FALSE);
+    ret = test_userblock_alignment_helper2(fapl, false);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3540,13 +3540,13 @@ test_userblock_alignment_paged(void)
     ret = H5Pset_libver_bounds(fapl, H5F_LIBVER_LATEST, H5F_LIBVER_LATEST);
     CHECK(ret, FAIL, "H5Pset_libver_bounds");
 
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
 
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3570,7 +3570,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)1024);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, (hsize_t)1);
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)512);
 
     /* Create file access property list */
@@ -3582,7 +3582,7 @@ test_userblock_alignment_paged(void)
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3644,7 +3644,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, TRUE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, true, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_file_space_page_size");
@@ -3658,7 +3658,7 @@ test_userblock_alignment_paged(void)
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3682,7 +3682,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_NONE, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_NONE, false, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_file_space_page_size");
@@ -3722,7 +3722,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)1024);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, TRUE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, true, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)1023);
     CHECK(ret, FAIL, "H5Pset_file_space_page_size");
@@ -3762,7 +3762,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)1024);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_FSM_AGGR, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_FSM_AGGR, false, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)1023);
     CHECK(ret, FAIL, "H5Pset_file_space_page_size");
@@ -3776,7 +3776,7 @@ test_userblock_alignment_paged(void)
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3800,7 +3800,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)1024);
     CHECK(ret, FAIL, "H5Pset_file_space_page_size");
@@ -3840,7 +3840,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_NONE, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_NONE, false, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)1024);
     CHECK(ret, FAIL, "H5Pset_file_space_page_size");
@@ -3854,7 +3854,7 @@ test_userblock_alignment_paged(void)
     /* Call helper routines to perform file manipulations */
     ret = test_userblock_alignment_helper1(fcpl, fapl);
     CHECK(ret, FAIL, "test_userblock_alignment_helper1");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3880,7 +3880,7 @@ test_userblock_alignment_paged(void)
     CHECK(fcpl, FAIL, "H5Pcreate");
     ret = H5Pset_userblock(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_userblock");
-    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, (hsize_t)1);
+    ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, (hsize_t)1);
     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
     ret = H5Pset_file_space_page_size(fcpl, (hsize_t)512);
     CHECK(ret, FAIL, "H5Pset_file_space_page_size");
@@ -3900,9 +3900,9 @@ test_userblock_alignment_paged(void)
     CHECK(ret, FAIL, "H5Pset_alignment");
 
     /* Call helper routines to perform file manipulations */
-    ret = test_userblock_alignment_helper2(fapl, FALSE);
+    ret = test_userblock_alignment_helper2(fapl, false);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
-    ret = test_userblock_alignment_helper2(fapl, TRUE);
+    ret = test_userblock_alignment_helper2(fapl, true);
     CHECK(ret, FAIL, "test_userblock_alignment_helper2");
 
     /* Release property lists */
@@ -3979,7 +3979,7 @@ test_filespace_info(const char *env_h5_drvr)
 
     /* Verify file space information */
     VERIFY(strategy, H5F_FSPACE_STRATEGY_FSM_AGGR, "H5Pget_file_space_strategy");
-    VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+    VERIFY(persist, false, "H5Pget_file_space_strategy");
     VERIFY(threshold, 1, "H5Pget_file_space_strategy");
 
     /* Retrieve file space page size */
@@ -4068,7 +4068,7 @@ test_filespace_info(const char *env_h5_drvr)
 
     /* Verify file space information */
     VERIFY(strategy, H5F_FSPACE_STRATEGY_FSM_AGGR, "H5Pget_file_space_strategy");
-    VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+    VERIFY(persist, false, "H5Pget_file_space_strategy");
     VERIFY(threshold, 1, "H5Pget_file_space_strategy");
 
     /* Retrieve file space page size */
@@ -4106,7 +4106,7 @@ test_filespace_info(const char *env_h5_drvr)
 
     /* Verify file space information */
     VERIFY(strategy, H5F_FSPACE_STRATEGY_FSM_AGGR, "H5Pget_file_space_strategy");
-    VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+    VERIFY(persist, false, "H5Pget_file_space_strategy");
     VERIFY(threshold, 1, "H5Pget_file_space_strategy");
 
     /* Retrieve file space page size */
@@ -4133,7 +4133,7 @@ test_filespace_info(const char *env_h5_drvr)
      *        File space page size: set to 512
      *
      */
-    for (new_format = FALSE; new_format <= TRUE; new_format++) {
+    for (new_format = false; new_format <= true; new_format++) {
         hid_t my_fapl;
 
         /* Set the FAPL for the type of format */
@@ -4147,7 +4147,7 @@ test_filespace_info(const char *env_h5_drvr)
         } /* end else */
 
         /* Test with TRUE or FALSE for persisting free-space */
-        for (fs_persist = FALSE; fs_persist <= TRUE; fs_persist++) {
+        for (fs_persist = false; fs_persist <= true; fs_persist++) {
 
             /* Test with free-space section threshold size: 0 to 10 */
             for (fs_threshold = 0; fs_threshold <= TEST_THRESHOLD10; fs_threshold++) {
@@ -4182,7 +4182,7 @@ test_filespace_info(const char *env_h5_drvr)
                         VERIFY(threshold, fs_threshold, "H5Pget_file_space_strategy");
                     }
                     else {
-                        VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+                        VERIFY(persist, false, "H5Pget_file_space_strategy");
                         VERIFY(threshold, 1, "H5Pget_file_space_strategy");
                     }
 
@@ -4211,7 +4211,7 @@ test_filespace_info(const char *env_h5_drvr)
                         VERIFY(threshold, fs_threshold, "H5Pget_file_space_strategy");
                     }
                     else {
-                        VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+                        VERIFY(persist, false, "H5Pget_file_space_strategy");
                         VERIFY(threshold, 1, "H5Pget_file_space_strategy");
                     }
 
@@ -4243,7 +4243,7 @@ test_filespace_info(const char *env_h5_drvr)
                         VERIFY(threshold, fs_threshold, "H5Pget_file_space_strategy");
                     }
                     else {
-                        VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+                        VERIFY(persist, false, "H5Pget_file_space_strategy");
                         VERIFY(threshold, 1, "H5Pget_file_space_strategy");
                     }
 
@@ -4374,7 +4374,7 @@ test_file_freespace(const char *env_h5_drvr)
         CHECK(fcpl, FAIL, "H5Pcreate");
 
         /* Test with old & new format */
-        for (new_format = FALSE; new_format <= TRUE; new_format++) {
+        for (new_format = false; new_format <= true; new_format++) {
             hid_t my_fapl;
 
             /* Set the FAPL for the type of format */
@@ -4388,7 +4388,7 @@ test_file_freespace(const char *env_h5_drvr)
                     CHECK(ret, FAIL, "set_multi_split");
                 }
 
-                ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, FALSE, (hsize_t)1);
+                ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, false, (hsize_t)1);
                 CHECK(ret, FAIL, "H5P_set_file_space_strategy");
 
                 expected_freespace = 4534;
@@ -4526,7 +4526,7 @@ test_sects_freespace(const char *env_h5_drvr, hbool_t new_format)
     hsize_t         dims[1];                /* Dimension sizes */
     unsigned        u;                      /* Local index variable */
     H5FD_mem_t      type;
-    hbool_t         split_vfd = FALSE, multi_vfd = FALSE;
+    hbool_t         split_vfd = false, multi_vfd = false;
     herr_t          ret; /* Return value */
 
     /* Output message about test being performed */
@@ -4549,7 +4549,7 @@ test_sects_freespace(const char *env_h5_drvr, hbool_t new_format)
             CHECK(ret, FAIL, "H5Pset_libver_bounds");
 
             /* Set to paged aggregation and persistent free-space */
-            ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, TRUE, (hsize_t)1);
+            ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_PAGE, true, (hsize_t)1);
             CHECK(ret, FAIL, "H5Pget_file_space_strategy");
 
             /* Set up paged aligned address space for multi/split driver */
@@ -4559,7 +4559,7 @@ test_sects_freespace(const char *env_h5_drvr, hbool_t new_format)
             }
         }
         else {
-            ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_FSM_AGGR, TRUE, (hsize_t)1);
+            ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_FSM_AGGR, true, (hsize_t)1);
             CHECK(ret, FAIL, "H5Pget_file_space_strategy");
         }
 
@@ -4814,7 +4814,7 @@ test_filespace_compatible(void)
         /* Persisting free-space should be FALSE */
         /* Free-space section threshold should be 1 */
         VERIFY(strategy, H5F_FSPACE_STRATEGY_FSM_AGGR, "H5Pget_file_space_strategy");
-        VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+        VERIFY(persist, false, "H5Pget_file_space_strategy");
         VERIFY(threshold, 1, "H5Pget_file_space_strategy");
 
         /* Generate raw data */
@@ -4942,7 +4942,7 @@ test_filespace_1_10_0_compatible(void)
 
             case 1:
                 VERIFY(strategy, H5F_FSPACE_STRATEGY_FSM_AGGR, "H5Pget_file_space_strategy");
-                VERIFY(persist, TRUE, "H5Pget_file_space_strategy");
+                VERIFY(persist, true, "H5Pget_file_space_strategy");
                 VERIFY(threshold, H5F_FREE_SPACE_THRESHOLD_DEF, "H5Pget_file_space_strategy");
 
                 /* Open the dataset */
@@ -5229,7 +5229,7 @@ test_filespace_round_compatible(void)
         ret = H5Pget_file_space_strategy(fcpl, &strategy, &persist, &threshold);
         CHECK(ret, FAIL, "H5Pget_file_space_strategy");
         VERIFY(strategy, H5F_FSPACE_STRATEGY_FSM_AGGR, "H5Pget_file_space_strategy");
-        VERIFY(persist, FALSE, "H5Pget_file_space_strategy");
+        VERIFY(persist, false, "H5Pget_file_space_strategy");
         VERIFY(threshold, 1, "H5Pget_file_space_strategy");
 
         /* There should not be any free space in the file */
@@ -5461,7 +5461,7 @@ test_libver_bounds_open(void)
         /* Get new low bound and verify that it has been upgraded properly */
         ret = H5Pget_libver_bounds(new_fapl, &new_low, NULL);
         CHECK(ret, FAIL, "H5Pget_libver_bounds");
-        VERIFY(new_low >= H5F_LIBVER_V110, TRUE, "Low bound should be upgraded to at least H5F_LIBVER_V110");
+        VERIFY(new_low >= H5F_LIBVER_V110, true, "Low bound should be upgraded to at least H5F_LIBVER_V110");
 
         ret = H5Pclose(new_fapl);
         CHECK(ret, FAIL, "H5Pclose");
@@ -5679,13 +5679,13 @@ test_libver_bounds_super(hid_t fapl)
 
     /* Verify superblock version when creating a file with input fapl,
        fcpl #A and with/without SWMR access */
-    test_libver_bounds_super_create(fapl, fcpl, TRUE, FALSE);
-    test_libver_bounds_super_create(fapl, fcpl, FALSE, FALSE);
+    test_libver_bounds_super_create(fapl, fcpl, true, false);
+    test_libver_bounds_super_create(fapl, fcpl, false, false);
 
     /* Verify superblock version when opening a file which is created
        with input fapl, fcpl #A and with/without SWMR access */
-    test_libver_bounds_super_open(fapl, fcpl, TRUE, FALSE);
-    test_libver_bounds_super_open(fapl, fcpl, FALSE, FALSE);
+    test_libver_bounds_super_open(fapl, fcpl, true, false);
+    test_libver_bounds_super_open(fapl, fcpl, false, false);
 
     /* Close the fcpl */
     ret = H5Pclose(fcpl);
@@ -5700,13 +5700,13 @@ test_libver_bounds_super(hid_t fapl)
 
     /* Verify superblock version when creating a file with input fapl,
        fcpl #B and with/without SWMR access */
-    test_libver_bounds_super_create(fapl, fcpl, TRUE, FALSE);
-    test_libver_bounds_super_create(fapl, fcpl, FALSE, FALSE);
+    test_libver_bounds_super_create(fapl, fcpl, true, false);
+    test_libver_bounds_super_create(fapl, fcpl, false, false);
 
     /* Verify superblock version when opening a file which is created
        with input fapl, fcpl #B and with/without SWMR access */
-    test_libver_bounds_super_open(fapl, fcpl, TRUE, FALSE);
-    test_libver_bounds_super_open(fapl, fcpl, FALSE, FALSE);
+    test_libver_bounds_super_open(fapl, fcpl, true, false);
+    test_libver_bounds_super_open(fapl, fcpl, false, false);
 
     /* Close the fcpl */
     ret = H5Pclose(fcpl);
@@ -5723,13 +5723,13 @@ test_libver_bounds_super(hid_t fapl)
 
     /* Verify superblock version when creating a file with input fapl,
        fcpl #C and with/without SWMR access */
-    test_libver_bounds_super_create(fapl, fcpl, TRUE, FALSE);
-    test_libver_bounds_super_create(fapl, fcpl, FALSE, FALSE);
+    test_libver_bounds_super_create(fapl, fcpl, true, false);
+    test_libver_bounds_super_create(fapl, fcpl, false, false);
 
     /* Verify superblock version when opening a file which is created
        with input fapl, fcpl #C and with/without SWMR access */
-    test_libver_bounds_super_open(fapl, fcpl, TRUE, FALSE);
-    test_libver_bounds_super_open(fapl, fcpl, FALSE, FALSE);
+    test_libver_bounds_super_open(fapl, fcpl, true, false);
+    test_libver_bounds_super_open(fapl, fcpl, false, false);
 
     /* Close the fcpl */
     ret = H5Pclose(fcpl);
@@ -5744,13 +5744,13 @@ test_libver_bounds_super(hid_t fapl)
 
     /* Verify superblock version when creating a file with input fapl,
        fcpl #D and with/without SWMR access */
-    test_libver_bounds_super_create(fapl, fcpl, TRUE, TRUE);
-    test_libver_bounds_super_create(fapl, fcpl, FALSE, TRUE);
+    test_libver_bounds_super_create(fapl, fcpl, true, true);
+    test_libver_bounds_super_create(fapl, fcpl, false, true);
 
     /* Verify superblock version when opening a file which is created
        with input fapl, fcpl #D and with/without SWMR access */
-    test_libver_bounds_super_open(fapl, fcpl, TRUE, TRUE);
-    test_libver_bounds_super_open(fapl, fcpl, FALSE, TRUE);
+    test_libver_bounds_super_open(fapl, fcpl, true, true);
+    test_libver_bounds_super_open(fapl, fcpl, false, true);
 
     /* Close the fcpl */
     ret = H5Pclose(fcpl);
@@ -5838,15 +5838,15 @@ test_libver_bounds_super_create(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t n
 
     else if (is_swmr) {                /* SWMR is enabled */
         if (high >= H5F_LIBVER_V110) { /* Should succeed */
-            VERIFY(fid >= 0, TRUE, "H5Fcreate");
+            VERIFY(fid >= 0, true, "H5Fcreate");
             VERIFY(HDF5_SUPERBLOCK_VERSION_3, f->shared->sblock->super_vers, "HDF5_superblock_ver_bounds");
-            VERIFY(f->shared->low_bound >= H5F_LIBVER_V110, TRUE, "HDF5_superblock_ver_bounds");
+            VERIFY(f->shared->low_bound >= H5F_LIBVER_V110, true, "HDF5_superblock_ver_bounds");
         }
         else /* Should fail */
-            VERIFY(fid >= 0, FALSE, "H5Fcreate");
+            VERIFY(fid >= 0, false, "H5Fcreate");
     }
     else { /* Should succeed */
-        VERIFY(fid >= 0, TRUE, "H5Fcreate");
+        VERIFY(fid >= 0, true, "H5Fcreate");
         VERIFY(low, f->shared->low_bound, "HDF5_superblock_ver_bounds");
 
         switch (low) {
@@ -5854,19 +5854,19 @@ test_libver_bounds_super_create(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t n
                 ok = (f->shared->sblock->super_vers == HDF5_SUPERBLOCK_VERSION_DEF ||
                       f->shared->sblock->super_vers == HDF5_SUPERBLOCK_VERSION_1 ||
                       f->shared->sblock->super_vers == HDF5_SUPERBLOCK_VERSION_2);
-                VERIFY(ok, TRUE, "HDF5_superblock_ver_bounds");
+                VERIFY(ok, true, "HDF5_superblock_ver_bounds");
                 break;
 
             case H5F_LIBVER_V18:
                 ok = (f->shared->sblock->super_vers == HDF5_SUPERBLOCK_VERSION_2);
-                VERIFY(ok, TRUE, "HDF5_superblock_ver_bounds");
+                VERIFY(ok, true, "HDF5_superblock_ver_bounds");
                 break;
 
             case H5F_LIBVER_V110:
             case H5F_LIBVER_V112:
             case H5F_LIBVER_V114:
                 ok = (f->shared->sblock->super_vers == HDF5_SUPERBLOCK_VERSION_3);
-                VERIFY(ok, TRUE, "HDF5_superblock_ver_bounds");
+                VERIFY(ok, true, "HDF5_superblock_ver_bounds");
                 break;
 
             case H5F_LIBVER_ERROR:
@@ -5998,7 +5998,7 @@ test_libver_bounds_super_open(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t non
         VERIFY(fid, H5I_INVALID_HID, "H5Fcreate");
     }
     else {
-        VERIFY(fid >= 0, TRUE, "H5Fcreate");
+        VERIFY(fid >= 0, true, "H5Fcreate");
 
         /* Get the internal file pointer */
         f = (H5F_t *)H5VL_object(fid);
@@ -6051,8 +6051,8 @@ test_libver_bounds_super_open(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t non
                     case 3:
                         if (high >= H5F_LIBVER_V110) {
                             /* Should succeed */
-                            VERIFY(fid >= 0, TRUE, "H5Fopen");
-                            VERIFY(f->shared->low_bound >= H5F_LIBVER_V110, TRUE,
+                            VERIFY(fid >= 0, true, "H5Fopen");
+                            VERIFY(f->shared->low_bound >= H5F_LIBVER_V110, true,
                                    "HDF5_superblock_ver_bounds");
 
                             /* Close the file */
@@ -6060,15 +6060,15 @@ test_libver_bounds_super_open(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t non
                             CHECK(ret, FAIL, "H5Fclose");
                         }
                         else /* Should fail */
-                            VERIFY(fid >= 0, FALSE, "H5Fopen");
+                            VERIFY(fid >= 0, false, "H5Fopen");
                         break;
 
                     case 2:
                         if (is_swmr) /* Should fail */
-                            VERIFY(fid >= 0, FALSE, "H5Fopen");
+                            VERIFY(fid >= 0, false, "H5Fopen");
                         else { /* Should succeed */
-                            VERIFY(fid >= 0, TRUE, "H5Fopen");
-                            VERIFY(f->shared->low_bound >= H5F_LIBVER_V18, TRUE,
+                            VERIFY(fid >= 0, true, "H5Fopen");
+                            VERIFY(f->shared->low_bound >= H5F_LIBVER_V18, true,
                                    "HDF5_superblock_ver_bounds");
 
                             /* Close the file */
@@ -6080,9 +6080,9 @@ test_libver_bounds_super_open(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t non
                     case 1:
                     case 0:
                         if (is_swmr) /* Should fail */
-                            VERIFY(fid >= 0, FALSE, "H5Fopen");
+                            VERIFY(fid >= 0, false, "H5Fopen");
                         else { /* Should succeed */
-                            VERIFY(fid >= 0, TRUE, "H5Fopen");
+                            VERIFY(fid >= 0, true, "H5Fopen");
                             VERIFY(f->shared->low_bound, low, "HDF5_superblock_ver_bounds");
 
                             ret = H5Fclose(fid);
@@ -7383,37 +7383,37 @@ test_libver_macros(void)
     /* Output message about test being performed */
     MESSAGE(5, ("Testing macros for library version comparison\n"));
 
-    VERIFY(H5_VERSION_GE(major, minor, release), TRUE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major - 1, minor, release), TRUE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major - 1, minor + 1, release), TRUE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major - 1, minor, release + 1), TRUE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major, minor - 1, release), TRUE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major, minor - 1, release + 1), TRUE, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major, minor, release), true, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major - 1, minor, release), true, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major - 1, minor + 1, release), true, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major - 1, minor, release + 1), true, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major, minor - 1, release), true, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major, minor - 1, release + 1), true, "H5_VERSION_GE");
     if (H5_VERS_RELEASE > 0)
-        VERIFY(H5_VERSION_GE(major, minor, release - 1), TRUE, "H5_VERSION_GE");
+        VERIFY(H5_VERSION_GE(major, minor, release - 1), true, "H5_VERSION_GE");
 
-    VERIFY(H5_VERSION_GE(major + 1, minor, release), FALSE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major + 1, minor - 1, release), FALSE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major + 1, minor - 1, release - 1), FALSE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major, minor + 1, release), FALSE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major, minor + 1, release - 1), FALSE, "H5_VERSION_GE");
-    VERIFY(H5_VERSION_GE(major, minor, release + 1), FALSE, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major + 1, minor, release), false, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major + 1, minor - 1, release), false, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major + 1, minor - 1, release - 1), false, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major, minor + 1, release), false, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major, minor + 1, release - 1), false, "H5_VERSION_GE");
+    VERIFY(H5_VERSION_GE(major, minor, release + 1), false, "H5_VERSION_GE");
 
-    VERIFY(H5_VERSION_LE(major, minor, release), TRUE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major + 1, minor, release), TRUE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major + 1, minor - 1, release), TRUE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major + 1, minor - 1, release - 1), TRUE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major, minor + 1, release), TRUE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major, minor + 1, release - 1), TRUE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major, minor, release + 1), TRUE, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major, minor, release), true, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major + 1, minor, release), true, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major + 1, minor - 1, release), true, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major + 1, minor - 1, release - 1), true, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major, minor + 1, release), true, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major, minor + 1, release - 1), true, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major, minor, release + 1), true, "H5_VERSION_LE");
 
-    VERIFY(H5_VERSION_LE(major - 1, minor, release), FALSE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major - 1, minor + 1, release), FALSE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major - 1, minor + 1, release + 1), FALSE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major, minor - 1, release), FALSE, "H5_VERSION_LE");
-    VERIFY(H5_VERSION_LE(major, minor - 1, release + 1), FALSE, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major - 1, minor, release), false, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major - 1, minor + 1, release), false, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major - 1, minor + 1, release + 1), false, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major, minor - 1, release), false, "H5_VERSION_LE");
+    VERIFY(H5_VERSION_LE(major, minor - 1, release + 1), false, "H5_VERSION_LE");
     if (H5_VERS_RELEASE > 0)
-        VERIFY(H5_VERSION_LE(major, minor, release - 1), FALSE, "H5_VERSION_LE");
+        VERIFY(H5_VERSION_LE(major, minor, release - 1), false, "H5_VERSION_LE");
 } /* test_libver_macros() */
 
 /****************************************************************
@@ -7461,7 +7461,7 @@ test_libver_macros2(void)
     CHECK(ret, FAIL, "H5Lunlink");
 
     status = H5Lexists(file, "Group", H5P_DEFAULT);
-    VERIFY(status, FALSE, "H5Lexists");
+    VERIFY(status, false, "H5Lexists");
 #else
     ret = H5Gunlink(file, "Group");
     CHECK(ret, FAIL, "H5Gunlink");
@@ -7527,7 +7527,7 @@ test_incr_filesize(void)
         CHECK(fcpl, FAIL, "H5Pcreate");
 
         /* Set file space strategy */
-        ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_FSM_AGGR, FALSE, (hsize_t)1);
+        ret = H5Pset_file_space_strategy(fcpl, H5F_FSPACE_STRATEGY_FSM_AGGR, false, (hsize_t)1);
         CHECK(ret, FAIL, "H5P_set_file_space_strategy");
 
         /* Create the test file */
@@ -7646,17 +7646,17 @@ test_min_dset_ohdr(void)
      */
     ret = H5Fget_dset_no_attrs_hint(file_id, &minimize);
     CHECK(ret, FAIL, "H5Fget_dset_no_attrs_hint");
-    VERIFY(minimize, FALSE, "minimize flag");
+    VERIFY(minimize, false, "minimize flag");
 
     /*----------------------------------------
      * TEST set to TRUE
      */
-    ret = H5Fset_dset_no_attrs_hint(file_id, TRUE);
+    ret = H5Fset_dset_no_attrs_hint(file_id, true);
     CHECK(ret, FAIL, "H5Fset_dset_no_attrs_hint");
 
     ret = H5Fget_dset_no_attrs_hint(file_id, &minimize);
     CHECK(ret, FAIL, "H5Fget_dset_no_attrs_hint");
-    VERIFY(minimize, TRUE, "minimize flag");
+    VERIFY(minimize, true, "minimize flag");
 
     /*----------------------------------------
      * TEST second file open on same filename
@@ -7668,37 +7668,37 @@ test_min_dset_ohdr(void)
      */
     ret = H5Fget_dset_no_attrs_hint(file_id, &minimize);
     CHECK(ret, FAIL, "H5Fget_dset_no_attrs_hint");
-    VERIFY(minimize, TRUE, "minimize flag");
+    VERIFY(minimize, true, "minimize flag");
 
     /* re-set to FALSE on first open
      */
-    ret = H5Fset_dset_no_attrs_hint(file_id, FALSE);
+    ret = H5Fset_dset_no_attrs_hint(file_id, false);
     CHECK(ret, FAIL, "H5Fset_dset_no_attrs_hint");
 
     /* verify FALSE set on both opens
      */
     ret = H5Fget_dset_no_attrs_hint(file_id, &minimize);
     CHECK(ret, FAIL, "H5Fget_dset_no_attrs_hint");
-    VERIFY(minimize, FALSE, "minimize flag");
+    VERIFY(minimize, false, "minimize flag");
 
     ret = H5Fget_dset_no_attrs_hint(file2_id, &minimize);
     CHECK(ret, FAIL, "H5Fget_dset_no_attrs_hint");
-    VERIFY(minimize, FALSE, "minimize flag");
+    VERIFY(minimize, false, "minimize flag");
 
     /* re-set to TRUE on second open
      */
-    ret = H5Fset_dset_no_attrs_hint(file2_id, TRUE);
+    ret = H5Fset_dset_no_attrs_hint(file2_id, true);
     CHECK(ret, FAIL, "H5Fset_dset_no_attrs_hint");
 
     /* verify TRUE set on both opens
      */
     ret = H5Fget_dset_no_attrs_hint(file_id, &minimize);
     CHECK(ret, FAIL, "H5Fget_dset_no_attrs_hint");
-    VERIFY(minimize, TRUE, "minimize flag");
+    VERIFY(minimize, true, "minimize flag");
 
     ret = H5Fget_dset_no_attrs_hint(file2_id, &minimize);
     CHECK(ret, FAIL, "H5Fget_dset_no_attrs_hint");
-    VERIFY(minimize, TRUE, "minimize flag");
+    VERIFY(minimize, true, "minimize flag");
 
     /*----------------------------------------
      * TEST error cases
@@ -7707,7 +7707,7 @@ test_min_dset_ohdr(void)
     /* trying to set with invalid file ID */
     H5E_BEGIN_TRY
     {
-        ret = H5Fset_dset_no_attrs_hint(-1, TRUE);
+        ret = H5Fset_dset_no_attrs_hint(-1, true);
     }
     H5E_END_TRY;
     VERIFY(ret, FAIL, "H5Fset_dset_no_attrs_hint");
@@ -8005,8 +8005,8 @@ test_file(void)
     test_file_double_group_open();        /* Test opening same group from two files works properly */
     test_file_double_dataset_open();      /* Test opening same dataset from two files works properly */
     test_file_double_datatype_open();     /* Test opening same named datatype from two files works properly */
-    test_file_double_file_dataset_open(TRUE);
-    test_file_double_file_dataset_open(FALSE);
+    test_file_double_file_dataset_open(true);
+    test_file_double_file_dataset_open(false);
     test_userblock_file_size(); /* Tests that files created with a userblock have the correct size */
     test_cached_stab_info();    /* Tests that files are created with cached stab info in the superblock */
     test_rw_noupdate();         /* Test to ensure that RW permissions don't write the file unless dirtied */
@@ -8021,10 +8021,10 @@ test_file(void)
                                       /* Skipped testing for multi/split drivers */
                                       /* Setup for multi/split drivers are there already */
     test_sects_freespace(env_h5_drvr,
-                         TRUE); /* Test file public routine H5Fget_free_sections() for new format */
+                         true); /* Test file public routine H5Fget_free_sections() for new format */
                                 /* Skipped testing for multi/split drivers */
                                 /* Setup for multi/split drivers are there already */
-    test_sects_freespace(env_h5_drvr, FALSE); /* Test file public routine H5Fget_free_sections() */
+    test_sects_freespace(env_h5_drvr, false); /* Test file public routine H5Fget_free_sections() */
                                               /* Skipped testing for multi/split drivers */
     test_filespace_compatible();              /* Test compatibility for file space management */
     test_filespace_round_compatible();  /* Testing file space compatibility for files from trunk to 1_8 to

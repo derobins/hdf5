@@ -280,7 +280,7 @@ H5S__all_iter_has_next_block(const H5S_sel_iter_t H5_ATTR_UNUSED *iter)
     /* Check args */
     HDassert(iter);
 
-    FUNC_LEAVE_NOAPI(FALSE)
+    FUNC_LEAVE_NOAPI(false)
 } /* end H5S__all_iter_has_next_block() */
 
 /*--------------------------------------------------------------------------
@@ -534,7 +534,7 @@ H5S__all_is_valid(const H5S_t H5_ATTR_UNUSED *space)
 
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__all_is_valid() */
 
 /*--------------------------------------------------------------------------
@@ -673,7 +673,7 @@ H5S__all_deserialize(H5S_t **space, const uint8_t **p)
     *p += 8;
 
     /* Change to "all" selection */
-    if (H5S_select_all(tmp_space, TRUE) < 0)
+    if (H5S_select_all(tmp_space, true) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTDELETE, FAIL, "can't change selection")
 
     /* Return space to the caller if allocated */
@@ -826,7 +826,7 @@ H5S__all_is_contiguous(const H5S_t H5_ATTR_UNUSED *space)
 
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__all_is_contiguous() */
 
 /*--------------------------------------------------------------------------
@@ -854,7 +854,7 @@ H5S__all_is_single(const H5S_t H5_ATTR_UNUSED *space)
 
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__all_is_single() */
 
 /*--------------------------------------------------------------------------
@@ -884,7 +884,7 @@ H5S__all_is_regular(const H5S_t H5_ATTR_UNUSED *space)
     /* Check args */
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__all_is_regular() */
 
 /*--------------------------------------------------------------------------
@@ -911,7 +911,7 @@ H5S__all_shape_same(const H5S_t *space1, const H5S_t *space2)
 {
     int    space1_dim;       /* Current dimension in first dataspace */
     int    space2_dim;       /* Current dimension in second dataspace */
-    htri_t ret_value = TRUE; /* Return value */
+    htri_t ret_value = true; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -930,7 +930,7 @@ H5S__all_shape_same(const H5S_t *space1, const H5S_t *space2)
      */
     while (space2_dim >= 0) {
         if (space1->extent.size[space1_dim] != space2->extent.size[space2_dim])
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
 
         space1_dim--;
         space2_dim--;
@@ -941,7 +941,7 @@ H5S__all_shape_same(const H5S_t *space1, const H5S_t *space2)
      */
     while (space1_dim >= 0) {
         if (space1->extent.size[space1_dim] != 1)
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
 
         space1_dim--;
     } /* end while */
@@ -981,7 +981,7 @@ H5S__all_intersect_block(const H5S_t H5_ATTR_UNUSED *space, const hsize_t H5_ATT
     HDassert(start);
     HDassert(end);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__all_intersect_block() */
 
 /*--------------------------------------------------------------------------
@@ -1099,7 +1099,7 @@ H5S__all_project_simple(const H5S_t H5_ATTR_UNUSED *base_space, H5S_t *new_space
     HDassert(offset);
 
     /* Select the entire new space */
-    if (H5S_select_all(new_space, TRUE) < 0)
+    if (H5S_select_all(new_space, true) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTSET, FAIL, "unable to set all selection")
 
 done:
@@ -1180,7 +1180,7 @@ H5Sselect_all(hid_t spaceid)
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a dataspace")
 
     /* Call internal routine to do the work */
-    if (H5S_select_all(space, TRUE) < 0)
+    if (H5S_select_all(space, true) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTDELETE, FAIL, "can't change selection")
 
 done:

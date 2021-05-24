@@ -441,11 +441,11 @@ H5D__scatgath_read(const H5D_io_info_t *io_info, const H5D_type_info_t *type_inf
 {
     void *          buf            = io_info->u.rbuf; /* Local pointer to application buffer */
     H5S_sel_iter_t *mem_iter       = NULL;            /* Memory selection iteration info*/
-    hbool_t         mem_iter_init  = FALSE; /* Memory selection iteration info has been initialized */
+    hbool_t         mem_iter_init  = false; /* Memory selection iteration info has been initialized */
     H5S_sel_iter_t *bkg_iter       = NULL;  /* Background iteration info*/
-    hbool_t         bkg_iter_init  = FALSE; /* Background iteration info has been initialized */
+    hbool_t         bkg_iter_init  = false; /* Background iteration info has been initialized */
     H5S_sel_iter_t *file_iter      = NULL;  /* File selection iteration info*/
-    hbool_t         file_iter_init = FALSE; /* File selection iteration info has been initialized */
+    hbool_t         file_iter_init = false; /* File selection iteration info has been initialized */
     hsize_t         smine_start;            /* Strip mine start loc	*/
     size_t          smine_nelmts;           /* Elements per strip	*/
     herr_t          ret_value = SUCCEED;    /* Return value		*/
@@ -475,13 +475,13 @@ H5D__scatgath_read(const H5D_io_info_t *io_info, const H5D_type_info_t *type_inf
     if (H5S_select_iter_init(file_iter, file_space, type_info->src_type_size,
                              H5S_SEL_ITER_GET_SEQ_LIST_SORTED) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize file selection information")
-    file_iter_init = TRUE; /*file selection iteration info has been initialized */
+    file_iter_init = true; /*file selection iteration info has been initialized */
     if (H5S_select_iter_init(mem_iter, mem_space, type_info->dst_type_size, 0) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize memory selection information")
-    mem_iter_init = TRUE; /*file selection iteration info has been initialized */
+    mem_iter_init = true; /*file selection iteration info has been initialized */
     if (H5S_select_iter_init(bkg_iter, mem_space, type_info->dst_type_size, 0) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize background selection information")
-    bkg_iter_init = TRUE; /*file selection iteration info has been initialized */
+    bkg_iter_init = true; /*file selection iteration info has been initialized */
 
     /* Start strip mining... */
     for (smine_start = 0; smine_start < nelmts; smine_start += smine_nelmts) {
@@ -581,11 +581,11 @@ H5D__scatgath_write(const H5D_io_info_t *io_info, const H5D_type_info_t *type_in
 {
     const void *    buf            = io_info->u.wbuf; /* Local pointer to application buffer */
     H5S_sel_iter_t *mem_iter       = NULL;            /* Memory selection iteration info*/
-    hbool_t         mem_iter_init  = FALSE; /* Memory selection iteration info has been initialized */
+    hbool_t         mem_iter_init  = false; /* Memory selection iteration info has been initialized */
     H5S_sel_iter_t *bkg_iter       = NULL;  /* Background iteration info*/
-    hbool_t         bkg_iter_init  = FALSE; /* Background iteration info has been initialized */
+    hbool_t         bkg_iter_init  = false; /* Background iteration info has been initialized */
     H5S_sel_iter_t *file_iter      = NULL;  /* File selection iteration info*/
-    hbool_t         file_iter_init = FALSE; /* File selection iteration info has been initialized */
+    hbool_t         file_iter_init = false; /* File selection iteration info has been initialized */
     hsize_t         smine_start;            /* Strip mine start loc	*/
     size_t          smine_nelmts;           /* Elements per strip	*/
     herr_t          ret_value = SUCCEED;    /* Return value		*/
@@ -615,14 +615,14 @@ H5D__scatgath_write(const H5D_io_info_t *io_info, const H5D_type_info_t *type_in
     if (H5S_select_iter_init(file_iter, file_space, type_info->dst_type_size,
                              H5S_SEL_ITER_GET_SEQ_LIST_SORTED) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize file selection information")
-    file_iter_init = TRUE; /*file selection iteration info has been initialized */
+    file_iter_init = true; /*file selection iteration info has been initialized */
     if (H5S_select_iter_init(mem_iter, mem_space, type_info->src_type_size, 0) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize memory selection information")
-    mem_iter_init = TRUE; /*file selection iteration info has been initialized */
+    mem_iter_init = true; /*file selection iteration info has been initialized */
     if (H5S_select_iter_init(bkg_iter, file_space, type_info->dst_type_size,
                              H5S_SEL_ITER_GET_SEQ_LIST_SORTED) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to initialize background selection information")
-    bkg_iter_init = TRUE; /*file selection iteration info has been initialized */
+    bkg_iter_init = true; /*file selection iteration info has been initialized */
 
     /* Start strip mining... */
     for (smine_start = 0; smine_start < nelmts; smine_start += smine_nelmts) {

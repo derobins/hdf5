@@ -142,7 +142,7 @@ static herr_t H5R__decode_string(const unsigned char *buf, size_t *nbytes, char 
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -153,7 +153,7 @@ hbool_t H5_PKG_INIT_VAR = FALSE;
 /*******************/
 
 /* Flag indicating "top" of interface has been initialized */
-static hbool_t H5R_top_package_initialize_s = FALSE;
+static hbool_t H5R_top_package_initialize_s = false;
 
 /*--------------------------------------------------------------------------
 NAME
@@ -173,7 +173,7 @@ H5R__init_package(void)
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     /* Mark "top" of interface as initialized */
-    H5R_top_package_initialize_s = TRUE;
+    H5R_top_package_initialize_s = true;
 
     /* Sanity check, if assert fails, H5R_REF_BUF_SIZE must be increased */
     HDcompile_assert(sizeof(H5R_ref_priv_t) <= H5R_REF_BUF_SIZE);
@@ -209,7 +209,7 @@ H5R_top_term_package(void)
     /* Mark closed if initialized */
     if (H5R_top_package_initialize_s)
         if (0 == n)
-            H5R_top_package_initialize_s = FALSE;
+            H5R_top_package_initialize_s = false;
 
     FUNC_LEAVE_NOAPI(n)
 } /* end H5R_top_term_package() */
@@ -243,11 +243,11 @@ H5R_term_package(void)
 
     if (H5_PKG_INIT_VAR) {
         /* Sanity checks */
-        HDassert(FALSE == H5R_top_package_initialize_s);
+        HDassert(false == H5R_top_package_initialize_s);
 
         /* Mark closed */
         if (0 == n)
-            H5_PKG_INIT_VAR = FALSE;
+            H5_PKG_INIT_VAR = false;
     }
 
     FUNC_LEAVE_NOAPI(n)
@@ -314,7 +314,7 @@ H5R__create_region(const H5O_token_t *obj_token, size_t token_size, H5S_t *space
 
     /* Create new reference */
     ref->info.obj.filename = NULL;
-    if (NULL == (ref->info.reg.space = H5S_copy(space, FALSE, TRUE)))
+    if (NULL == (ref->info.reg.space = H5S_copy(space, false, true)))
         HGOTO_ERROR(H5E_REFERENCE, H5E_CANTCOPY, FAIL, "unable to copy dataspace")
 
     ref->loc_id = H5I_INVALID_HID;
@@ -554,7 +554,7 @@ H5R__reopen_file(H5R_ref_priv_t *ref, hid_t fapl_id)
     /* TODO add search path */
 
     /* Verify access property list and set up collective metadata if appropriate */
-    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, TRUE) < 0)
+    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, true) < 0)
         HGOTO_ERROR(H5E_REFERENCE, H5E_CANTSET, H5I_INVALID_HID, "can't set access property list info")
 
     /* Get the VOL info from the fapl */
@@ -577,7 +577,7 @@ H5R__reopen_file(H5R_ref_priv_t *ref, hid_t fapl_id)
         HGOTO_ERROR(H5E_REFERENCE, H5E_CANTOPENFILE, H5I_INVALID_HID, "unable to open file")
 
     /* Get an ID for the file */
-    if ((ret_value = H5VL_register_using_vol_id(H5I_FILE, new_file, connector_prop.connector_id, TRUE)) < 0)
+    if ((ret_value = H5VL_register_using_vol_id(H5I_FILE, new_file, connector_prop.connector_id, true)) < 0)
         HGOTO_ERROR(H5E_REFERENCE, H5E_CANTREGISTER, H5I_INVALID_HID, "unable to register file handle")
 
     /* Get the file object */
@@ -595,7 +595,7 @@ H5R__reopen_file(H5R_ref_priv_t *ref, hid_t fapl_id)
                         "unable to make file 'post open' callback")
 
     /* Attach loc_id to reference */
-    if (H5R__set_loc_id((H5R_ref_priv_t *)ref, ret_value, FALSE, TRUE) < 0)
+    if (H5R__set_loc_id((H5R_ref_priv_t *)ref, ret_value, false, true) < 0)
         HGOTO_ERROR(H5E_REFERENCE, H5E_CANTSET, H5I_INVALID_HID, "unable to attach location id to reference")
 
 done:
@@ -637,7 +637,7 @@ H5R__get_type(const H5R_ref_priv_t *ref)
 htri_t
 H5R__equal(const H5R_ref_priv_t *ref1, const H5R_ref_priv_t *ref2)
 {
-    htri_t ret_value = TRUE;
+    htri_t ret_value = true;
 
     FUNC_ENTER_PACKAGE
 
@@ -646,21 +646,21 @@ H5R__equal(const H5R_ref_priv_t *ref1, const H5R_ref_priv_t *ref2)
 
     /* Compare reference types */
     if (ref1->type != ref2->type)
-        HGOTO_DONE(FALSE);
+        HGOTO_DONE(false);
 
     /* Compare object addresses */
     if (ref1->token_size != ref2->token_size)
-        HGOTO_DONE(FALSE);
+        HGOTO_DONE(false);
     if (0 != HDmemcmp(&ref1->info.obj.token, &ref2->info.obj.token, ref1->token_size))
-        HGOTO_DONE(FALSE);
+        HGOTO_DONE(false);
 
     /* Compare filenames */
     if ((ref1->info.obj.filename && (NULL == ref2->info.obj.filename)) ||
         ((NULL == ref1->info.obj.filename) && ref2->info.obj.filename))
-        HGOTO_DONE(FALSE);
+        HGOTO_DONE(false);
     if (ref1->info.obj.filename && ref1->info.obj.filename &&
         (0 != HDstrcmp(ref1->info.obj.filename, ref2->info.obj.filename)))
-        HGOTO_DONE(FALSE);
+        HGOTO_DONE(false);
 
     switch (ref1->type) {
         case H5R_OBJECT2:
@@ -672,7 +672,7 @@ H5R__equal(const H5R_ref_priv_t *ref1, const H5R_ref_priv_t *ref2)
         case H5R_ATTR:
             HDassert(ref1->info.attr.name && ref2->info.attr.name);
             if (0 != HDstrcmp(ref1->info.attr.name, ref2->info.attr.name))
-                HGOTO_DONE(FALSE);
+                HGOTO_DONE(false);
             break;
         case H5R_OBJECT1:
         case H5R_DATASET_REGION1:
@@ -716,7 +716,7 @@ H5R__copy(const H5R_ref_priv_t *src_ref, H5R_ref_priv_t *dst_ref)
         case H5R_OBJECT2:
             break;
         case H5R_DATASET_REGION2:
-            if (NULL == (dst_ref->info.reg.space = H5S_copy(src_ref->info.reg.space, FALSE, TRUE)))
+            if (NULL == (dst_ref->info.reg.space = H5S_copy(src_ref->info.reg.space, false, true)))
                 HGOTO_ERROR(H5E_REFERENCE, H5E_CANTCOPY, FAIL, "unable to copy dataspace")
             break;
         case H5R_ATTR:
@@ -747,9 +747,9 @@ H5R__copy(const H5R_ref_priv_t *src_ref, H5R_ref_priv_t *dst_ref)
 
         /* Set location ID and hold reference to it */
         dst_ref->loc_id = src_ref->loc_id;
-        if (H5I_inc_ref(dst_ref->loc_id, TRUE) < 0)
+        if (H5I_inc_ref(dst_ref->loc_id, true) < 0)
             HGOTO_ERROR(H5E_REFERENCE, H5E_CANTINC, FAIL, "incrementing location ID failed")
-        dst_ref->app_ref = TRUE;
+        dst_ref->app_ref = true;
     }
 
 done:
@@ -838,7 +838,7 @@ H5R__get_region(const H5R_ref_priv_t *ref, H5S_t *space)
     HDassert(space);
 
     /* Copy reference selection to destination */
-    if (H5S_select_copy(space, ref->info.reg.space, FALSE) < 0)
+    if (H5S_select_copy(space, ref->info.reg.space, false) < 0)
         HGOTO_ERROR(H5E_REFERENCE, H5E_CANTCOPY, FAIL, "unable to copy selection")
 
 done:

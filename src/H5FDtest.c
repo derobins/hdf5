@@ -92,12 +92,12 @@
 hbool_t
 H5FD__supports_swmr_test(const char *vfd_name)
 {
-    hbool_t ret_value = FALSE;
+    hbool_t ret_value = false;
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     if (!vfd_name || !HDstrcmp(vfd_name, "") || !HDstrcmp(vfd_name, "nomatch"))
-        ret_value = TRUE;
+        ret_value = true;
     else
         ret_value = !HDstrcmp(vfd_name, "log") || !HDstrcmp(vfd_name, "sec2");
 

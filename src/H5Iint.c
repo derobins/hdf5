@@ -86,7 +86,7 @@ static int    H5I__find_id_cb(void *_item, void *_key, void *_udata);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /* Declared extern in H5Ipkg.h and documented there */
 H5I_type_info_t *H5I_type_info_array_g[H5I_MAX_NUM_TYPES];
@@ -96,7 +96,7 @@ int              H5I_next_type_g = (int)H5I_NTYPES;
 H5FL_DEFINE_STATIC(H5I_id_info_t);
 
 /* Whether deletes are actually marks (for mark-and-sweep) */
-hbool_t H5I_marking_g = FALSE;
+hbool_t H5I_marking_g = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -150,7 +150,7 @@ H5I_term_package(void)
 
             /* Mark interface closed */
             if (0 == in_use)
-                H5_PKG_INIT_VAR = FALSE;
+                H5_PKG_INIT_VAR = false;
         }
     }
 
@@ -333,7 +333,7 @@ H5I_clear_type(H5I_type_t type, hbool_t force, hbool_t app_ref)
      */
 
     /* Set marking flag */
-    H5I_marking_g = TRUE;
+    H5I_marking_g = true;
 
     /* Mark nodes for deletion */
     HASH_ITER(hh, udata.type_info->hash_table, item, tmp)
@@ -344,7 +344,7 @@ H5I_clear_type(H5I_type_t type, hbool_t force, hbool_t app_ref)
     }
 
     /* Unset marking flag */
-    H5I_marking_g = FALSE;
+    H5I_marking_g = false;
 
     /* Perform sweep */
     HASH_ITER(hh, udata.type_info->hash_table, item, tmp)
@@ -377,7 +377,7 @@ H5I__mark_node(void *_info, void H5_ATTR_UNUSED *key, void *_udata)
 {
     H5I_id_info_t *      info  = (H5I_id_info_t *)_info;        /* Current ID info being worked with */
     H5I_clear_type_ud_t *udata = (H5I_clear_type_ud_t *)_udata; /* udata struct */
-    hbool_t              mark  = FALSE;
+    hbool_t              mark  = false;
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -406,12 +406,12 @@ H5I__mark_node(void *_info, void H5_ATTR_UNUSED *key, void *_udata)
 #endif /* H5I_DEBUG */
 
                     /* Indicate node should be removed from list */
-                    mark = TRUE;
+                    mark = true;
                 }
             }
             else {
                 /* Indicate node should be removed from list */
-                mark = TRUE;
+                mark = true;
             }
         }
         else {
@@ -429,12 +429,12 @@ H5I__mark_node(void *_info, void H5_ATTR_UNUSED *key, void *_udata)
 #endif /* H5I_DEBUG */
 
                     /* Indicate node should be removed from list */
-                    mark = TRUE;
+                    mark = true;
                 }
             }
             else {
                 /* Indicate node should be removed from list */
-                mark = TRUE;
+                mark = true;
             }
         }
         H5_GCC_DIAG_ON("cast-qual")
@@ -442,7 +442,7 @@ H5I__mark_node(void *_info, void H5_ATTR_UNUSED *key, void *_udata)
         /* Remove ID if requested */
         if (mark) {
             /* Mark ID for deletion */
-            info->marked = TRUE;
+            info->marked = true;
 
             /* Decrement the number of IDs in the type */
             udata->type_info->id_count--;
@@ -486,7 +486,7 @@ H5I__destroy_type(H5I_type_t type)
     /* Close/clear/destroy all IDs for this type */
     H5E_BEGIN_TRY
     {
-        H5I_clear_type(type, TRUE, FALSE);
+        H5I_clear_type(type, true, false);
     }
     H5E_END_TRY /* don't care about errors */
 
@@ -553,7 +553,7 @@ H5I__register(H5I_type_t type, const void *object, hbool_t app_ref, H5I_future_r
     info->is_future  = (NULL != realize_cb);
     info->realize_cb = realize_cb;
     info->discard_cb = discard_cb;
-    info->marked     = FALSE;
+    info->marked     = false;
 
     /* Insert into the type */
     HASH_ADD(hh, type_info->hash_table, id, sizeof(hid_t), info);
@@ -662,10 +662,10 @@ H5I_register_using_existing_id(H5I_type_t type, void *object, hbool_t app_ref, h
     /* This API call is only used by the native VOL connector, which is
      * not asynchronous.
      */
-    info->is_future  = FALSE;
+    info->is_future  = false;
     info->realize_cb = NULL;
     info->discard_cb = NULL;
-    info->marked     = FALSE;
+    info->marked     = false;
 
     /* Insert into the type */
     HASH_ADD(hh, type_info->hash_table, id, sizeof(hid_t), info);
@@ -847,7 +847,7 @@ H5I_is_file_object(hid_t id)
      * datatype), FALSE otherwise.
      */
     if (H5I_DATASET == type || H5I_GROUP == type || H5I_MAP == type)
-        ret_value = TRUE;
+        ret_value = true;
     else if (H5I_DATATYPE == type) {
 
         H5T_t *dt = NULL;
@@ -858,7 +858,7 @@ H5I_is_file_object(hid_t id)
         ret_value = H5T_is_named(dt);
     }
     else
-        ret_value = FALSE;
+        ret_value = false;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value);
@@ -929,7 +929,7 @@ H5I__remove_common(H5I_type_info_t *type_info, hid_t id)
         if (!H5I_marking_g)
             HASH_DELETE(hh, type_info->hash_table, info);
         else
-            info->marked = TRUE;
+            info->marked = true;
     }
     else
         HGOTO_ERROR(H5E_ID, H5E_CANTDELETE, NULL, "can't remove ID node from hash table")
@@ -1682,7 +1682,7 @@ H5I__find_id(hid_t id)
         future_object = NULL;
 
         /* Change the ID from 'future' to 'actual' */
-        id_info->is_future  = FALSE;
+        id_info->is_future  = false;
         id_info->realize_cb = NULL;
         id_info->discard_cb = NULL;
     }

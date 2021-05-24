@@ -1153,7 +1153,7 @@ set_vfd(parameters *param)
     }
     else if (vfd == core) {
         /* In-core temporary file with 1MB increment */
-        if (H5Pset_fapl_core(my_fapl, (size_t)1024 * 1024, TRUE) < 0)
+        if (H5Pset_fapl_core(my_fapl, (size_t)1024 * 1024, true) < 0)
             return -1;
     }
     else if (vfd == split) {
@@ -1183,7 +1183,7 @@ set_vfd(parameters *param)
             memb_addr[mt] = (haddr_t)MAX(mt - 1, 0) * (HADDR_MAX / 10);
         }
 
-        if (H5Pset_fapl_multi(my_fapl, memb_map, memb_fapl, memb_name, memb_addr, FALSE) < 0) {
+        if (H5Pset_fapl_multi(my_fapl, memb_map, memb_fapl, memb_name, memb_addr, false) < 0) {
             return -1;
         }
     }

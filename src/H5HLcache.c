@@ -433,7 +433,7 @@ H5HL__cache_prefix_deserialize(const void *_image, size_t H5_ATTR_NDEBUG_UNUSED 
         /* Check if heap data block is contiguous with header */
         if (H5F_addr_eq((heap->prfx_addr + heap->prfx_size), heap->dblk_addr)) {
             /* Note that the heap should be a single object in the cache */
-            heap->single_cache_obj = TRUE;
+            heap->single_cache_obj = true;
 
             /* Allocate space for the heap data image */
             if (NULL == (heap->dblk_image = H5FL_BLK_MALLOC(lheap_chunk, heap->dblk_size)))
@@ -455,7 +455,7 @@ H5HL__cache_prefix_deserialize(const void *_image, size_t H5_ATTR_NDEBUG_UNUSED 
             /* Note that the heap should _NOT_ be a single
              * object in the cache
              */
-            heap->single_cache_obj = FALSE;
+            heap->single_cache_obj = false;
     } /* end if */
 
     /* Set return value */

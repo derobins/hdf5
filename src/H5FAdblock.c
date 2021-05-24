@@ -175,7 +175,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     /* Local variables */
     H5FA_dblock_t *dblock = NULL;    /* Fixed array data block */
     haddr_t        dblock_addr;      /* Fixed array data block address */
-    hbool_t        inserted = FALSE; /* Whether the header was inserted into cache */
+    hbool_t        inserted = false; /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);
@@ -202,7 +202,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     /* Cache the new fixed array data block */
     if (H5AC_insert_entry(hdr->f, H5AC_FARRAY_DBLOCK, dblock_addr, dblock, H5AC__NO_FLAGS_SET) < 0)
         H5E_THROW(H5E_CANTINSERT, "can't add fixed array data block to cache")
-    inserted = TRUE;
+    inserted = true;
 
     /* Add data block as child of 'top' proxy */
     if (hdr->top_proxy) {
@@ -212,7 +212,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     } /* end if */
 
     /* Mark the header dirty (for updating statistics) */
-    *hdr_dirty = TRUE;
+    *hdr_dirty = true;
 
     /* Set address of data block to return */
     ret_value = dblock_addr;

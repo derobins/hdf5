@@ -29,10 +29,10 @@
 #include "hdf5.h"
 
 #ifndef FALSE
-#define FALSE 0
+#define false 0
 #endif
 #ifndef TRUE
-#define TRUE 1
+#define true 1
 #endif
 
 /* Windows doesn't like some POSIX names and redefines them with an
@@ -315,7 +315,7 @@ H5Pset_fapl_split(hid_t fapl, const char *meta_ext, hid_t meta_plist_id, const c
     memb_addr[H5FD_MEM_SUPER] = 0;
     memb_addr[H5FD_MEM_DRAW]  = HADDR_MAX / 2;
 
-    return H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, TRUE);
+    return H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, true);
 }
 
 /*-------------------------------------------------------------------------
@@ -414,7 +414,7 @@ H5Pset_fapl_multi(hid_t fapl_id, const H5FD_mem_t *memb_map, const hid_t *memb_f
     H5Eclear2(H5E_DEFAULT);
 
     /* Check arguments and supply default values */
-    if (H5I_GENPROP_LST != H5Iget_type(fapl_id) || TRUE != H5Pisa_class(fapl_id, H5P_FILE_ACCESS))
+    if (H5I_GENPROP_LST != H5Iget_type(fapl_id) || true != H5Pisa_class(fapl_id, H5P_FILE_ACCESS))
         H5Epush_ret(func, H5E_ERR_CLS, H5E_PLIST, H5E_BADVALUE, "not an access list", -1);
     if (!memb_map) {
         for (mt = H5FD_MEM_DEFAULT; mt < H5FD_MEM_NTYPES; mt = (H5FD_mem_t)(mt + 1))
@@ -452,7 +452,7 @@ H5Pset_fapl_multi(hid_t fapl_id, const H5FD_mem_t *memb_map, const hid_t *memb_f
          * All members of MEMB_FAPL must be either defaults or actual file
          * access property lists.
          */
-        if (H5P_DEFAULT != memb_fapl[mmt] && TRUE != H5Pisa_class(memb_fapl[mmt], H5P_FILE_ACCESS))
+        if (H5P_DEFAULT != memb_fapl[mmt] && true != H5Pisa_class(memb_fapl[mmt], H5P_FILE_ACCESS))
             H5Epush_ret(func, H5E_ERR_CLS, H5E_INTERNAL, H5E_BADVALUE, "file resource type incorrect", -1);
 
         /* All names must be defined */
@@ -508,7 +508,7 @@ H5Pget_fapl_multi(hid_t fapl_id, H5FD_mem_t *memb_map /*out*/, hid_t *memb_fapl 
     /* Clear the error stack */
     H5Eclear2(H5E_DEFAULT);
 
-    if (H5I_GENPROP_LST != H5Iget_type(fapl_id) || TRUE != H5Pisa_class(fapl_id, H5P_FILE_ACCESS))
+    if (H5I_GENPROP_LST != H5Iget_type(fapl_id) || true != H5Pisa_class(fapl_id, H5P_FILE_ACCESS))
         H5Epush_ret(func, H5E_ERR_CLS, H5E_PLIST, H5E_BADTYPE, "not an access list", -1);
     if (H5FD_MULTI != H5Pget_driver(fapl_id))
         H5Epush_ret(func, H5E_ERR_CLS, H5E_PLIST, H5E_BADVALUE, "incorrect VFL driver", -1);
@@ -697,7 +697,7 @@ H5FD_multi_sb_decode(H5FD_t *_file, const char *name, const unsigned char *buf)
     H5FD_mem_t         map[H5FD_MEM_NTYPES];
     int                i;
     size_t             nseen       = 0;
-    hbool_t            map_changed = FALSE;
+    hbool_t            map_changed = false;
     hbool_t            in_use[H5FD_MEM_NTYPES];
     const char *       memb_name[H5FD_MEM_NTYPES];
     haddr_t            memb_addr[H5FD_MEM_NTYPES];
@@ -728,7 +728,7 @@ H5FD_multi_sb_decode(H5FD_t *_file, const char *name, const unsigned char *buf)
     for (i = 0; i < 6; i++) {
         map[i + 1] = (H5FD_mem_t)buf[i];
         if (file->fa.memb_map[i + 1] != map[i + 1])
-            map_changed = TRUE;
+            map_changed = true;
     }
 
     UNIQUE_MEMBERS (map, mt) {
@@ -775,7 +775,7 @@ H5FD_multi_sb_decode(H5FD_t *_file, const char *name, const unsigned char *buf)
         /* Close files which are unused now */
         memset(in_use, 0, sizeof in_use);
         UNIQUE_MEMBERS (map, mt) {
-            in_use[mt] = TRUE;
+            in_use[mt] = true;
         }
         END_MEMBERS;
         ALL_MEMBERS (mt) {
@@ -988,7 +988,7 @@ H5FD_multi_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr
         H5Epush_ret(func, H5E_ERR_CLS, H5E_RESOURCE, H5E_NOSPACE, "memory allocation failed", NULL);
     if (H5P_FILE_ACCESS_DEFAULT == fapl_id || H5FD_MULTI != H5Pget_driver(fapl_id)) {
         close_fapl = fapl_id = H5Pcreate(H5P_FILE_ACCESS);
-        if (H5Pset_fapl_multi(fapl_id, NULL, NULL, NULL, NULL, TRUE) < 0)
+        if (H5Pset_fapl_multi(fapl_id, NULL, NULL, NULL, NULL, true) < 0)
             H5Epush_goto(func, H5E_ERR_CLS, H5E_FILE, H5E_CANTSET, "can't set property value", error)
     }
     fa = (const H5FD_multi_fapl_t *)H5Pget_driver_info(fapl_id);

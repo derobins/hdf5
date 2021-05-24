@@ -164,7 +164,7 @@ H5SM__cache_table_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNU
     const uint8_t *image = (const uint8_t *)_image; /* Pointer into raw data buffer */
     uint32_t       stored_chksum;                   /* Stored metadata checksum value */
     uint32_t       computed_chksum;                 /* Computed metadata checksum value */
-    htri_t         ret_value = TRUE;                /* Return value */
+    htri_t         ret_value = true;                /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -175,7 +175,7 @@ H5SM__cache_table_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNU
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5SM__cache_table_verify_chksum() */
@@ -512,7 +512,7 @@ H5SM__cache_list_verify_chksum(const void *_image, size_t H5_ATTR_UNUSED len, vo
     size_t                chk_size;         /* Exact size of the node with checksum at the end */
     uint32_t              stored_chksum;    /* Stored metadata checksum value */
     uint32_t              computed_chksum;  /* Computed metadata checksum value */
-    htri_t                ret_value = TRUE; /* Return value */
+    htri_t                ret_value = true; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -527,7 +527,7 @@ H5SM__cache_list_verify_chksum(const void *_image, size_t H5_ATTR_UNUSED len, vo
     H5F_get_checksums(image, chk_size, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5SM__cache_list_verify_chksum() */

@@ -71,7 +71,7 @@
  */
 #define H5HF_HEADER_SIZE(h)                                                                                  \
     (/* General metadata fields */                                                                           \
-     H5HF_METADATA_PREFIX_SIZE(TRUE)                                                                         \
+     H5HF_METADATA_PREFIX_SIZE(true)                                                                         \
                                                                                                              \
      /* Fractal Heap Header specific fields */                                                               \
                                                                                                              \
@@ -123,7 +123,7 @@
 /* Size of managed indirect block */
 #define H5HF_MAN_INDIRECT_SIZE(h, r)                                                                         \
     (/* General metadata fields */                                                                           \
-     H5HF_METADATA_PREFIX_SIZE(TRUE)                                                                         \
+     H5HF_METADATA_PREFIX_SIZE(true)                                                                         \
                                                                                                              \
      /* Fractal heap managed, absolutely mapped indirect block specific fields */                            \
      + (unsigned)(h)->sizeof_addr   /* File address of heap owning the block */                              \

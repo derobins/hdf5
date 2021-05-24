@@ -152,11 +152,11 @@ H5O__link_decode(H5F_t *f, H5O_t H5_ATTR_UNUSED *open_oh, unsigned H5_ATTR_UNUSE
     /* Get the link creation time from the file */
     if (link_flags & H5O_LINK_STORE_CORDER) {
         INT64DECODE(p, lnk->corder)
-        lnk->corder_valid = TRUE;
+        lnk->corder_valid = true;
     } /* end if */
     else {
         lnk->corder       = 0;
-        lnk->corder_valid = FALSE;
+        lnk->corder_valid = false;
     } /* end else */
 
     /* Check for non-default name character set */
@@ -694,7 +694,7 @@ H5O__link_pre_copy_file(H5F_t H5_ATTR_UNUSED *file_src, const void H5_ATTR_UNUSE
      *  on it.
      */
     if (cpy_info->max_depth >= 0 && cpy_info->curr_depth >= cpy_info->max_depth)
-        *deleted = TRUE;
+        *deleted = true;
 
     FUNC_LEAVE_NOAPI(SUCCEED)
 } /* end H5O__link_pre_copy_file() */

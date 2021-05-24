@@ -63,7 +63,7 @@
 /* Set to TRUE to enable the slist optimization.  If this field is TRUE,
  * the slist is disabled whenever a flush is not in progress.
  */
-#define H5C__SLIST_OPT_ENABLED                  TRUE
+#define H5C__SLIST_OPT_ENABLED                  true
 
 
 /****************************************************************************
@@ -1025,7 +1025,7 @@ if ( ( (cache_ptr) == NULL ) ||                                         \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ||     \
      ( (cache_ptr)->index_len != (cache_ptr)->il_len ) ||               \
      ( (cache_ptr)->index_size != (cache_ptr)->il_size ) ) {            \
-    HDassert(FALSE);                                                    \
+    HDassert(false);                                                    \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, fail_val, "pre HT insert SC failed") \
 }
 
@@ -1047,7 +1047,7 @@ if ( ( (cache_ptr) == NULL ) ||                                         \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ||     \
      ( (cache_ptr)->index_len != (cache_ptr)->il_len ) ||               \
      ( (cache_ptr)->index_size != (cache_ptr)->il_size) ) {             \
-    HDassert(FALSE);                                                    \
+    HDassert(false);                                                    \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, fail_val, "post HT insert SC failed") \
 }
 
@@ -1088,7 +1088,7 @@ if ( ( (cache_ptr) == NULL ) ||                                         \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ||     \
      ( (cache_ptr)->index_len != (cache_ptr)->il_len ) ||               \
      ( (cache_ptr)->index_size != (cache_ptr)->il_size ) ) {            \
-    HDassert(FALSE);                                                    \
+    HDassert(false);                                                    \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "pre HT remove SC failed") \
 }
 
@@ -1114,7 +1114,7 @@ if ( ( (cache_ptr) == NULL ) ||                                          \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ||      \
      ( (cache_ptr)->index_len != (cache_ptr)->il_len ) ||                \
      ( (cache_ptr)->index_size != (cache_ptr)->il_size ) ) {             \
-    HDassert(FALSE);                                                     \
+    HDassert(false);                                                     \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "post HT remove SC failed") \
 }
 
@@ -1191,7 +1191,7 @@ if ( ( (cache_ptr) == NULL ) ||                                         \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ||     \
      ( (cache_ptr)->index_len != (cache_ptr)->il_len ) ||               \
      ( (cache_ptr)->index_size != (cache_ptr)->il_size ) ) {            \
-    HDassert(FALSE);                                                    \
+    HDassert(false);                                                    \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "pre HT entry size change SC failed") \
 }
 
@@ -1221,7 +1221,7 @@ if ( ( (cache_ptr) == NULL ) ||                                           \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ||       \
      ( (cache_ptr)->index_len != (cache_ptr)->il_len ) ||                 \
      ( (cache_ptr)->index_size != (cache_ptr)->il_size ) ) {              \
-    HDassert(FALSE);                                                      \
+    HDassert(false);                                                      \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "post HT entry size change SC failed") \
 }
 
@@ -1231,7 +1231,7 @@ if (                                                                          \
     ( (cache_ptr)->magic != H5C__H5C_T_MAGIC ) ||                             \
     ( (cache_ptr)->index_len <= 0 ) ||                                        \
     ( (entry_ptr) == NULL ) ||                                                \
-    ( (entry_ptr)->is_dirty != FALSE ) ||                                     \
+    ( (entry_ptr)->is_dirty != false ) ||                                     \
     ( (cache_ptr)->index_size < (entry_ptr)->size ) ||                        \
     ( (cache_ptr)->dirty_index_size < (entry_ptr)->size ) ||                  \
     ( (cache_ptr)->index_size !=                                              \
@@ -1248,7 +1248,7 @@ if (                                                                          \
     ( (cache_ptr)->index_ring_size[(entry_ptr)->ring] !=                      \
       ((cache_ptr)->clean_index_ring_size[(entry_ptr)->ring] +                \
        (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ) {           \
-    HDassert(FALSE);                                                          \
+    HDassert(false);                                                          \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "pre HT update for entry clean SC failed") \
 }
 
@@ -1258,7 +1258,7 @@ if (                                                                          \
     ( (cache_ptr)->magic != H5C__H5C_T_MAGIC ) ||                             \
     ( (cache_ptr)->index_len <= 0 ) ||                                        \
     ( (entry_ptr) == NULL ) ||                                                \
-    ( (entry_ptr)->is_dirty != TRUE ) ||                                      \
+    ( (entry_ptr)->is_dirty != true ) ||                                      \
     ( (cache_ptr)->index_size < (entry_ptr)->size ) ||                        \
     ( (cache_ptr)->clean_index_size < (entry_ptr)->size ) ||                  \
     ( (cache_ptr)->index_size !=                                              \
@@ -1275,7 +1275,7 @@ if (                                                                          \
     ( (cache_ptr)->index_ring_size[(entry_ptr)->ring] !=                      \
       ((cache_ptr)->clean_index_ring_size[(entry_ptr)->ring] +                \
        (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ) {           \
-    HDassert(FALSE);                                                          \
+    HDassert(false);                                                          \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "pre HT update for entry dirty SC failed") \
 }
 
@@ -1291,7 +1291,7 @@ if ( ( (cache_ptr)->index_size !=                                           \
      ( (cache_ptr)->index_ring_size[(entry_ptr)->ring] !=                   \
        ((cache_ptr)->clean_index_ring_size[(entry_ptr)->ring] +             \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ) {        \
-    HDassert(FALSE);                                                        \
+    HDassert(false);                                                        \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "post HT update for entry clean SC failed") \
 }
 
@@ -1307,7 +1307,7 @@ if ( ( (cache_ptr)->index_size !=                                           \
      ( (cache_ptr)->index_ring_size[(entry_ptr)->ring] !=                   \
        ((cache_ptr)->clean_index_ring_size[(entry_ptr)->ring] +             \
         (cache_ptr)->dirty_index_ring_size[(entry_ptr)->ring]) ) ) {        \
-    HDassert(FALSE);                                                        \
+    HDassert(false);                                                        \
     HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "post HT update for entry dirty SC failed") \
 }
 
@@ -1608,7 +1608,7 @@ if ( ( (cache_ptr)->index_size !=                                           \
 
 #else /* H5C_DO_SLIST_SANITY_CHECKS */
 
-#define ENTRY_IN_SLIST(cache_ptr, entry_ptr) FALSE
+#define ENTRY_IN_SLIST(cache_ptr, entry_ptr) false
 
 #endif /* H5C_DO_SLIST_SANITY_CHECKS */
 
@@ -1639,8 +1639,8 @@ if ( ( (cache_ptr)->index_size !=                                           \
             HGOTO_ERROR(H5E_CACHE, H5E_BADVALUE, (fail_val),                   \
                         "can't insert entry in skip list")                     \
                                                                                \
-        (entry_ptr)->in_slist = TRUE;                                          \
-        (cache_ptr)->slist_changed = TRUE;                                     \
+        (entry_ptr)->in_slist = true;                                          \
+        (cache_ptr)->slist_changed = true;                                     \
         (cache_ptr)->slist_len++;                                              \
         (cache_ptr)->slist_size += (entry_ptr)->size;                          \
         ((cache_ptr)->slist_ring_len[(entry_ptr)->ring])++;                    \
@@ -1776,7 +1776,7 @@ if ( ( (cache_ptr)->index_size !=                                           \
                                                                                \
         HDassert( (cache_ptr)->slist_len > 0 );                                \
         if(!(during_flush))                                                    \
-            (cache_ptr)->slist_changed = TRUE;                                 \
+            (cache_ptr)->slist_changed = true;                                 \
         (cache_ptr)->slist_len--;                                              \
         HDassert( (cache_ptr)->slist_size >= (entry_ptr)->size );              \
         (cache_ptr)->slist_size -= (entry_ptr)->size;                          \
@@ -1786,7 +1786,7 @@ if ( ( (cache_ptr)->index_size !=                                           \
         ((cache_ptr)->slist_ring_size[(entry_ptr)->ring]) -= (entry_ptr)->size;\
         (cache_ptr)->slist_len_increase--;                                     \
         (cache_ptr)->slist_size_increase -= (int64_t)((entry_ptr)->size);      \
-        (entry_ptr)->in_slist = FALSE;                                         \
+        (entry_ptr)->in_slist = false;                                         \
                                                                                \
     } else { /* slist disabled */                                              \
                                                                                \

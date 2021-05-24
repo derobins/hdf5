@@ -634,7 +634,7 @@ size1_helper(hid_t file, const char *filename, hid_t fapl_id, hbool_t test_file_
      * local disks.  Don't close and reopen if express testing is enabled.
      */
     if (GetTestExpress() > 1)
-        test_file_closing = FALSE;
+        test_file_closing = false;
 
     /* Intialize wdata */
     HDmemset(&wdata, 0, sizeof(wdata));
@@ -894,9 +894,9 @@ test_sohm_size1(void)
             file_sizes[size_index++] = h5_get_file_size(FILENAME, fapl_id);
 
             /* size of populated file, with different populating behaviors */
-            test_open_close          = TRUE;
+            test_open_close          = true;
             file_sizes[size_index++] = getsize_testsize1(FILENAME, fcpl_id, fapl_id, test_open_close, &ninfo);
-            test_open_close          = FALSE;
+            test_open_close          = false;
             file_sizes[size_index++] = getsize_testsize1(FILENAME, fcpl_id, fapl_id, test_open_close, &ninfo);
             oh_sizes[oh_size_index++] = ninfo.hdr.space.total;
 
@@ -3610,54 +3610,54 @@ test_sohm_extend_dset(void)
     CHECK_I(ret, "H5Pset_shared_mesg_nindexes");
 
     /* No shared messages */
-    ret = verify_dataset_extension(fcpl_id, FALSE);
+    ret = verify_dataset_extension(fcpl_id, false);
     CHECK_I(ret, "verify_dataset_extension");
-    ret = verify_dataset_extension(fcpl_id, TRUE);
+    ret = verify_dataset_extension(fcpl_id, true);
     CHECK_I(ret, "verify_dataset_extension");
 
     /* Only dataspaces */
     ret = H5Pset_shared_mesg_index(fcpl_id, 0, H5O_SHMESG_SDSPACE_FLAG, 16);
     CHECK_I(ret, "H5Pset_shared_mesg_index");
 
-    ret = verify_dataset_extension(fcpl_id, FALSE);
+    ret = verify_dataset_extension(fcpl_id, false);
     CHECK_I(ret, "verify_dataset_extension");
-    ret = verify_dataset_extension(fcpl_id, TRUE);
+    ret = verify_dataset_extension(fcpl_id, true);
     CHECK_I(ret, "verify_dataset_extension");
 
     /* All messages */
     ret = H5Pset_shared_mesg_index(fcpl_id, 0, H5O_SHMESG_ALL_FLAG, 16);
     CHECK_I(ret, "H5Pset_shared_mesg_index");
 
-    ret = verify_dataset_extension(fcpl_id, FALSE);
+    ret = verify_dataset_extension(fcpl_id, false);
     CHECK_I(ret, "verify_dataset_extension");
-    ret = verify_dataset_extension(fcpl_id, TRUE);
+    ret = verify_dataset_extension(fcpl_id, true);
     CHECK_I(ret, "verify_dataset_extension");
 
     /* All messages in lists */
     ret = H5Pset_shared_mesg_phase_change(fcpl_id, 100, 50);
     CHECK_I(ret, "H5Pset_shared_mesg_phase_change");
 
-    ret = verify_dataset_extension(fcpl_id, FALSE);
+    ret = verify_dataset_extension(fcpl_id, false);
     CHECK_I(ret, "verify_dataset_extension");
-    ret = verify_dataset_extension(fcpl_id, TRUE);
+    ret = verify_dataset_extension(fcpl_id, true);
     CHECK_I(ret, "verify_dataset_extension");
 
     /* All messages in lists converted to B-trees */
     ret = H5Pset_shared_mesg_phase_change(fcpl_id, 1, 0);
     CHECK_I(ret, "H5Pset_shared_mesg_phase_change");
 
-    ret = verify_dataset_extension(fcpl_id, FALSE);
+    ret = verify_dataset_extension(fcpl_id, false);
     CHECK_I(ret, "verify_dataset_extension");
-    ret = verify_dataset_extension(fcpl_id, TRUE);
+    ret = verify_dataset_extension(fcpl_id, true);
     CHECK_I(ret, "verify_dataset_extension");
 
     /* All messages in B-trees */
     ret = H5Pset_shared_mesg_phase_change(fcpl_id, 0, 0);
     CHECK_I(ret, "H5Pset_shared_mesg_phase_change");
 
-    ret = verify_dataset_extension(fcpl_id, FALSE);
+    ret = verify_dataset_extension(fcpl_id, false);
     CHECK_I(ret, "verify_dataset_extension");
-    ret = verify_dataset_extension(fcpl_id, TRUE);
+    ret = verify_dataset_extension(fcpl_id, true);
     CHECK_I(ret, "verify_dataset_extension");
 
     ret = H5Pclose(fcpl_id);

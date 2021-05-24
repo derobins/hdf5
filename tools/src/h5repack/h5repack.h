@@ -30,7 +30,7 @@
 /* File space default information */
 #define FS_PAGESIZE_DEF  4096
 #define FS_STRATEGY_DEF  H5F_FSPACE_STRATEGY_FSM_AGGR
-#define FS_PERSIST_DEF   FALSE
+#define FS_PERSIST_DEF   false
 #define FS_THRESHOLD_DEF 1
 
 /*-------------------------------------------------------------------------

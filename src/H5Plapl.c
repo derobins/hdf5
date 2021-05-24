@@ -269,7 +269,7 @@ H5P__lacc_elink_fapl_set(hid_t H5_ATTR_UNUSED prop_id, const char H5_ATTR_UNUSED
 
         if (NULL == (l_fapl_plist = (H5P_genplist_t *)H5P_object_verify(l_fapl_id, H5P_FILE_ACCESS)))
             HGOTO_ERROR(H5E_PLIST, H5E_BADTYPE, FAIL, "can't get property list")
-        if (((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, FALSE)) < 0)
+        if (((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, false)) < 0)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTCOPY, FAIL, "unable to copy file access property list")
     } /* end if */
 
@@ -311,7 +311,7 @@ H5P__lacc_elink_fapl_get(hid_t H5_ATTR_UNUSED prop_id, const char H5_ATTR_UNUSED
 
         if (NULL == (l_fapl_plist = (H5P_genplist_t *)H5P_object_verify(l_fapl_id, H5P_FILE_ACCESS)))
             HGOTO_ERROR(H5E_PLIST, H5E_BADTYPE, FAIL, "can't get property list")
-        if (((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, FALSE)) < 0)
+        if (((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, false)) < 0)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTCOPY, FAIL, "unable to copy file access property list")
     } /* end if */
 
@@ -340,7 +340,7 @@ H5P__lacc_elink_fapl_enc(const void *value, void **_pp, size_t *size)
     const hid_t *   elink_fapl = (const hid_t *)value; /* Property to encode */
     uint8_t **      pp         = (uint8_t **)_pp;
     H5P_genplist_t *fapl_plist;                 /* Pointer to property list */
-    hbool_t         non_default_fapl = FALSE;   /* Whether the FAPL is non-default */
+    hbool_t         non_default_fapl = false;   /* Whether the FAPL is non-default */
     size_t          fapl_size        = 0;       /* FAPL's encoded size */
     herr_t          ret_value        = SUCCEED; /* Return value */
 
@@ -350,7 +350,7 @@ H5P__lacc_elink_fapl_enc(const void *value, void **_pp, size_t *size)
     if (*elink_fapl != H5P_DEFAULT) {
         if (NULL == (fapl_plist = (H5P_genplist_t *)H5P_object_verify(*elink_fapl, H5P_FILE_ACCESS)))
             HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get property list")
-        non_default_fapl = TRUE;
+        non_default_fapl = true;
     } /* end if */
 
     if (NULL != *pp) {
@@ -361,7 +361,7 @@ H5P__lacc_elink_fapl_enc(const void *value, void **_pp, size_t *size)
     /* Encode the property list, if non-default */
     /* (if *pp == NULL, will only compute the size) */
     if (non_default_fapl) {
-        if (H5P__encode(fapl_plist, TRUE, NULL, &fapl_size) < 0)
+        if (H5P__encode(fapl_plist, true, NULL, &fapl_size) < 0)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTENCODE, FAIL, "can't encode property list")
 
         if (*pp) {
@@ -376,7 +376,7 @@ H5P__lacc_elink_fapl_enc(const void *value, void **_pp, size_t *size)
             UINT64ENCODE_VAR(*pp, enc_value, enc_size);
 
             /* encode the plist */
-            if (H5P__encode(fapl_plist, TRUE, *pp, &fapl_size) < 0)
+            if (H5P__encode(fapl_plist, true, *pp, &fapl_size) < 0)
                 HGOTO_ERROR(H5E_PLIST, H5E_CANTENCODE, FAIL, "can't encode property list")
 
             *pp += fapl_size;
@@ -517,7 +517,7 @@ H5P__lacc_elink_fapl_copy(const char H5_ATTR_UNUSED *name, size_t H5_ATTR_UNUSED
 
         if (NULL == (l_fapl_plist = (H5P_genplist_t *)H5P_object_verify(l_fapl_id, H5P_FILE_ACCESS)))
             HGOTO_ERROR(H5E_PLIST, H5E_BADTYPE, FAIL, "can't get property list")
-        if (((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, FALSE)) < 0)
+        if (((*(hid_t *)value) = H5P_copy_plist(l_fapl_plist, false)) < 0)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTCOPY, FAIL, "unable to copy file access property list")
     } /* end if */
 

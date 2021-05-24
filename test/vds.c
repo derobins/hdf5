@@ -109,7 +109,7 @@ vds_select_equal(hid_t space1, hid_t space2)
     hsize_t *    buf1 = NULL;
     hsize_t *    buf2 = NULL;
     size_t       i;
-    htri_t       ret_value = TRUE;
+    htri_t       ret_value = true;
 
     /* Get and compare selection types */
     if ((type1 = H5Sget_select_type(space1)) < 0)
@@ -117,7 +117,7 @@ vds_select_equal(hid_t space1, hid_t space2)
     if ((type2 = H5Sget_select_type(space2)) < 0)
         TEST_ERROR
     if (type1 != type2)
-        return FALSE;
+        return false;
 
     /* Check selection type */
     switch (type1) {
@@ -137,7 +137,7 @@ vds_select_equal(hid_t space1, hid_t space2)
             if ((rank2 = H5Sget_simple_extent_ndims(space2)) < 0)
                 TEST_ERROR
             if (rank1 != rank2)
-                return FALSE;
+                return false;
 
             /* Get and compare number of points */
             if ((npoints1 = H5Sget_select_elem_npoints(space1)) < 0)
@@ -145,7 +145,7 @@ vds_select_equal(hid_t space1, hid_t space2)
             if ((npoints2 = H5Sget_select_elem_npoints(space2)) < 0)
                 TEST_ERROR
             if (npoints1 != npoints2)
-                return FALSE;
+                return false;
 
             /* Allocate point lists.  Do not return directly after
              * allocating, to make sure buffers are freed. */
@@ -161,7 +161,7 @@ vds_select_equal(hid_t space1, hid_t space2)
                 TEST_ERROR
             for (i = 0; i < ((size_t)rank1 * (size_t)npoints1); i++)
                 if (buf1[i] != buf2[i]) {
-                    ret_value = FALSE;
+                    ret_value = false;
                     break;
                 }
 
@@ -186,7 +186,7 @@ vds_select_equal(hid_t space1, hid_t space2)
             if ((rank2 = H5Sget_simple_extent_ndims(space2)) < 0)
                 TEST_ERROR
             if (rank1 != rank2)
-                return FALSE;
+                return false;
 
             /* Get and compare number of blocks */
             if ((nblocks1 = H5Sget_select_hyper_nblocks(space1)) < 0)
@@ -194,7 +194,7 @@ vds_select_equal(hid_t space1, hid_t space2)
             if ((nblocks2 = H5Sget_select_hyper_nblocks(space2)) < 0)
                 TEST_ERROR
             if (nblocks1 != nblocks2)
-                return FALSE;
+                return false;
 
             /* Allocate block lists.  Do not return directly afer
              * allocating, to make sure buffers are freed. */
@@ -212,7 +212,7 @@ vds_select_equal(hid_t space1, hid_t space2)
                 TEST_ERROR
             for (i = 0; i < ((size_t)2 * (size_t)rank1 * (size_t)nblocks1); i++)
                 if (buf1[i] != buf2[i]) {
-                    ret_value = FALSE;
+                    ret_value = false;
                     break;
                 }
 

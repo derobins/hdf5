@@ -357,9 +357,9 @@ main(int argc, const char *argv[])
     hid_t       fid;                  /* File ID for file opened */
     long        nrecords     = 0;     /* # of records to append */
     long        flush_count  = 10000; /* # of records to write between flushing file */
-    hbool_t     verbose      = TRUE;  /* Whether to emit some informational messages */
+    hbool_t     verbose      = true;  /* Whether to emit some informational messages */
     FILE *      verbose_file = NULL;  /* File handle for verbose output */
-    hbool_t     use_seed     = FALSE; /* Set to TRUE if a seed was set on the command line */
+    hbool_t     use_seed     = false; /* Set to TRUE if a seed was set on the command line */
     unsigned    random_seed  = 0;     /* Random # seed */
     int         comp_level   = -1;    /* Compression level (-1 is no compression) */
     const char *index_type   = "b1";  /* Chunk index type */
@@ -400,13 +400,13 @@ main(int argc, const char *argv[])
 
                     /* Be quiet */
                     case 'q':
-                        verbose = FALSE;
+                        verbose = false;
                         u++;
                         break;
 
                     /* Random # seed */
                     case 'r':
-                        use_seed = TRUE;
+                        use_seed = true;
                         temp     = HDatoi(argv[u + 1]);
                         if (temp < 0)
                             usage();

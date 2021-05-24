@@ -158,13 +158,13 @@ main(void)
     h5_reset();
     fapl = h5_fileaccess();
 
-    nerrors += external_link_env(fapl, FALSE) < 0 ? 1 : 0;
+    nerrors += external_link_env(fapl, false) < 0 ? 1 : 0;
 
     /* Set the "use the latest version of the format" bounds for creating objects in the file */
     if (H5Pset_libver_bounds(fapl, H5F_LIBVER_LATEST, H5F_LIBVER_LATEST) < 0)
         TEST_ERROR
 
-    nerrors += external_link_env(fapl, TRUE) < 0 ? 1 : 0;
+    nerrors += external_link_env(fapl, true) < 0 ? 1 : 0;
 
     /* Verify symbol table messages are cached */
     nerrors += (h5_verify_cached_stabs(FILENAME, fapl) < 0 ? 1 : 0);

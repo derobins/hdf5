@@ -149,7 +149,7 @@ H5FL_DEFINE(H5C_cache_entry_t);
 hbool_t
 H5C_cache_image_pending(const H5C_t *cache_ptr)
 {
-    hbool_t ret_value = TRUE; /* Return value */
+    hbool_t ret_value = true; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -463,7 +463,7 @@ herr_t
 H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t **entry_ptr_ptr,
                                   const H5C_class_t *type, haddr_t addr, void *udata)
 {
-    hbool_t dirty = FALSE;                  /* Flag indicating whether thing was
+    hbool_t dirty = false;                  /* Flag indicating whether thing was
                                              * dirtied during deserialize
                                              */
     size_t             len;                 /* Size of image in file */
@@ -597,7 +597,7 @@ H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t 
      * hence the value assigned to ds_entry_ptr->is_dirty below.
      */
 
-    HDassert((dirty == FALSE) || (type->id == 5 || type->id == 6));
+    HDassert((dirty == false) || (type->id == 5 || type->id == 6));
 
     ds_entry_ptr->magic     = H5C__H5C_CACHE_ENTRY_T_MAGIC;
     ds_entry_ptr->cache_ptr = f->shared->cache;
@@ -608,20 +608,20 @@ H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t 
     ds_entry_ptr->image_up_to_date = !dirty;
     ds_entry_ptr->type             = type;
     ds_entry_ptr->is_dirty         = dirty | pf_entry_ptr->is_dirty;
-    ds_entry_ptr->dirtied          = FALSE;
-    ds_entry_ptr->is_protected     = FALSE;
-    ds_entry_ptr->is_read_only     = FALSE;
+    ds_entry_ptr->dirtied          = false;
+    ds_entry_ptr->is_protected     = false;
+    ds_entry_ptr->is_read_only     = false;
     ds_entry_ptr->ro_ref_count     = 0;
-    ds_entry_ptr->is_pinned        = FALSE;
-    ds_entry_ptr->in_slist         = FALSE;
-    ds_entry_ptr->flush_marker     = FALSE;
+    ds_entry_ptr->is_pinned        = false;
+    ds_entry_ptr->in_slist         = false;
+    ds_entry_ptr->flush_marker     = false;
 #ifdef H5_HAVE_PARALLEL
     ds_entry_ptr->clear_on_unprotect = FALSE;
     ds_entry_ptr->flush_immediately  = FALSE;
     ds_entry_ptr->coll_access        = FALSE;
 #endif /* H5_HAVE_PARALLEL */
-    ds_entry_ptr->flush_in_progress   = FALSE;
-    ds_entry_ptr->destroy_in_progress = FALSE;
+    ds_entry_ptr->flush_in_progress   = false;
+    ds_entry_ptr->destroy_in_progress = false;
 
     ds_entry_ptr->ring = pf_entry_ptr->ring;
 
@@ -652,15 +652,15 @@ H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t 
 #endif /* H5_HAVE_PARALLEL */
 
     /* Initialize cache image related fields */
-    ds_entry_ptr->include_in_image     = FALSE;
+    ds_entry_ptr->include_in_image     = false;
     ds_entry_ptr->lru_rank             = 0;
-    ds_entry_ptr->image_dirty          = FALSE;
+    ds_entry_ptr->image_dirty          = false;
     ds_entry_ptr->fd_parent_count      = 0;
     ds_entry_ptr->fd_parent_addrs      = NULL;
     ds_entry_ptr->fd_child_count       = pf_entry_ptr->fd_child_count;
     ds_entry_ptr->fd_dirty_child_count = 0;
     ds_entry_ptr->image_fd_height      = 0;
-    ds_entry_ptr->prefetched           = FALSE;
+    ds_entry_ptr->prefetched           = false;
     ds_entry_ptr->prefetch_type_id     = 0;
     ds_entry_ptr->age                  = 0;
     ds_entry_ptr->prefetched_dirty     = pf_entry_ptr->prefetched_dirty;
@@ -740,7 +740,7 @@ H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t 
     i = 0;
     if (fd_children != NULL) {
         H5C__UPDATE_RP_FOR_PROTECT(cache_ptr, ds_entry_ptr, FAIL)
-        ds_entry_ptr->is_protected = TRUE;
+        ds_entry_ptr->is_protected = true;
         while (fd_children[i] != NULL) {
             /* Sanity checks */
             HDassert((fd_children[i])->magic == H5C__H5C_CACHE_ENTRY_T_MAGIC);
@@ -754,10 +754,10 @@ H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t 
                 hbool_t found;
 
                 j     = 0;
-                found = FALSE;
+                found = false;
                 while ((j < (int)((fd_children[i])->fd_parent_count)) && (!found)) {
                     if ((fd_children[i])->fd_parent_addrs[j] == ds_entry_ptr->addr)
-                        found = TRUE;
+                        found = true;
 
                     j++;
                 } /* end while */
@@ -772,7 +772,7 @@ H5C__deserialize_prefetched_entry(H5F_t *f, H5C_t *cache_ptr, H5C_cache_entry_t 
         } /* end while */
 
         H5C__UPDATE_RP_FOR_UNPROTECT(cache_ptr, ds_entry_ptr, FAIL);
-        ds_entry_ptr->is_protected = FALSE;
+        ds_entry_ptr->is_protected = false;
     } /* end if ( fd_children != NULL ) */
     HDassert((unsigned)i == ds_entry_ptr->fd_child_count);
 
@@ -1095,7 +1095,7 @@ H5C__load_cache_image(H5F_t *f)
          */
         H5C__UPDATE_STATS_FOR_CACHE_IMAGE_LOAD(cache_ptr)
 
-        cache_ptr->image_loaded = TRUE;
+        cache_ptr->image_loaded = true;
     } /* end if */
 
     /* If directed, free the on disk metadata cache image */
@@ -1159,7 +1159,7 @@ H5C_load_cache_image_on_next_protect(H5F_t *f, haddr_t addr, hsize_t len, hbool_
     /* Set information needed to load cache image */
     cache_ptr->image_addr   = addr;
     cache_ptr->image_len    = len;
-    cache_ptr->load_image   = TRUE;
+    cache_ptr->load_image   = true;
     cache_ptr->delete_image = rw;
 
     FUNC_LEAVE_NOAPI(SUCCEED)
@@ -1291,7 +1291,7 @@ H5C__prep_image_for_file_close(H5F_t *f, hbool_t *image_generated)
      * it exists) has not been read yet.  Do this now if required.
      */
     if (cache_ptr->load_image) {
-        cache_ptr->load_image = FALSE;
+        cache_ptr->load_image = false;
         if (H5C__load_cache_image(f) < 0)
             HGOTO_ERROR(H5E_CACHE, H5E_CANTLOAD, FAIL, "can't load cache image")
     } /* end if */
@@ -1335,7 +1335,7 @@ H5C__prep_image_for_file_close(H5F_t *f, hbool_t *image_generated)
          * cache_ptr->image_ctl.flags.
          */
         if (cache_ptr->image_ctl.flags & H5C_CI__GEN_MDCI_SBE_MESG)
-            if (H5C__write_cache_image_superblock_msg(f, TRUE) < 0)
+            if (H5C__write_cache_image_superblock_msg(f, true) < 0)
                 HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "creation of cache image SB mesg failed.")
 
         /* Serialize the cache */
@@ -1455,7 +1455,7 @@ H5C__prep_image_for_file_close(H5F_t *f, hbool_t *image_generated)
          * cache_ptr->image_ctl.flags.
          */
         if (cache_ptr->image_ctl.flags & H5C_CI__GEN_MDC_IMAGE_BLK)
-            if (H5C__write_cache_image_superblock_msg(f, FALSE) < 0)
+            if (H5C__write_cache_image_superblock_msg(f, false) < 0)
                 HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "update of cache image SB mesg failed")
 
         /* At this point:
@@ -1513,11 +1513,11 @@ H5C__prep_image_for_file_close(H5F_t *f, hbool_t *image_generated)
                     HGOTO_ERROR(H5E_CACHE, H5E_CANTREMOVE, FAIL,
                                 "can't remove MDC image msg from superblock ext")
 
-            cache_ptr->image_ctl.generate_image = FALSE;
+            cache_ptr->image_ctl.generate_image = false;
         } /* end else */
 
         /* Indicate that a cache image was generated */
-        *image_generated = TRUE;
+        *image_generated = true;
     } /* end if */
 
 done:
@@ -1646,7 +1646,7 @@ H5C_validate_cache_image_config(H5C_cache_image_ctl_t *ctl_ptr)
      * configuration in the cache image.  Thus the save_resize_status
      * field must be FALSE.
      */
-    if (ctl_ptr->save_resize_status != FALSE)
+    if (ctl_ptr->save_resize_status != false)
         HGOTO_ERROR(H5E_CACHE, H5E_BADVALUE, FAIL, "unexpected value in save_resize_status field")
 
     /* At present, we do not support prefetched entry ageouts.  Thus
@@ -1754,7 +1754,7 @@ H5C__decode_cache_image_header(const H5F_t *f, H5C_t *cache_ptr, const uint8_t *
 {
     uint8_t        version;
     uint8_t        flags;
-    hbool_t        have_resize_status = FALSE;
+    hbool_t        have_resize_status = false;
     size_t         actual_header_len;
     size_t         expected_header_len;
     const uint8_t *p;
@@ -1784,7 +1784,7 @@ H5C__decode_cache_image_header(const H5F_t *f, H5C_t *cache_ptr, const uint8_t *
     /* Decode flags */
     flags = *p++;
     if (flags & H5C__MDCI_HEADER_HAVE_RESIZE_STATUS)
-        have_resize_status = TRUE;
+        have_resize_status = true;
     if (have_resize_status)
         HGOTO_ERROR(H5E_CACHE, H5E_BADVALUE, FAIL, "MDC resize status not yet supported")
 
@@ -1837,10 +1837,10 @@ done:
 static herr_t
 H5C__decode_cache_image_entry(const H5F_t *f, const H5C_t *cache_ptr, const uint8_t **buf, unsigned entry_num)
 {
-    hbool_t            is_dirty     = FALSE;
-    hbool_t            in_lru       = FALSE; /* Only used in assertions */
-    hbool_t            is_fd_parent = FALSE; /* Only used in assertions */
-    hbool_t            is_fd_child  = FALSE; /* Only used in assertions */
+    hbool_t            is_dirty     = false;
+    hbool_t            in_lru       = false; /* Only used in assertions */
+    hbool_t            is_fd_parent = false; /* Only used in assertions */
+    hbool_t            is_fd_child  = false; /* Only used in assertions */
     haddr_t            addr;
     hsize_t            size = 0;
     void *             image_ptr;
@@ -1881,13 +1881,13 @@ H5C__decode_cache_image_entry(const H5F_t *f, const H5C_t *cache_ptr, const uint
     /* Decode flags */
     flags = *p++;
     if (flags & H5C__MDCI_ENTRY_DIRTY_FLAG)
-        is_dirty = TRUE;
+        is_dirty = true;
     if (flags & H5C__MDCI_ENTRY_IN_LRU_FLAG)
-        in_lru = TRUE;
+        in_lru = true;
     if (flags & H5C__MDCI_ENTRY_IS_FD_PARENT_FLAG)
-        is_fd_parent = TRUE;
+        is_fd_parent = true;
     if (flags & H5C__MDCI_ENTRY_IS_FD_CHILD_FLAG)
-        is_fd_child = TRUE;
+        is_fd_child = true;
 
     /* Decode ring */
     ring = *p++;
@@ -2041,7 +2041,7 @@ H5C__destroy_pf_entry_child_flush_deps(H5C_t *cache_ptr, H5C_cache_entry_t *pf_e
 
             /* Re-init */
             u     = 0;
-            found = FALSE;
+            found = false;
 
             /* Sanity checks */
             HDassert(entry_ptr->type);
@@ -2058,7 +2058,7 @@ H5C__destroy_pf_entry_child_flush_deps(H5C_t *cache_ptr, H5C_cache_entry_t *pf_e
 
                 /* Correct entry? */
                 if (pf_entry_ptr == entry_ptr->flush_dep_parent[u])
-                    found = TRUE;
+                    found = true;
 
                 u++;
             } /* end while */
@@ -2080,11 +2080,11 @@ H5C__destroy_pf_entry_child_flush_deps(H5C_t *cache_ptr, H5C_cache_entry_t *pf_e
                  * entry_ptr->fd_parent_addrs and entry_ptr->flush_dep_parent
                  * can list parents in different order.
                  */
-                found = FALSE;
+                found = false;
                 u     = 0;
                 while (!found && u < entry_ptr->fd_parent_count) {
                     if (pf_entry_ptr->addr == entry_ptr->fd_parent_addrs[u])
-                        found = TRUE;
+                        found = true;
                     u++;
                 } /* end while */
                 HDassert(found);
@@ -2361,7 +2361,7 @@ H5C__prep_for_file_close__compute_fd_heights(const H5C_t *cache_ptr)
     unsigned           entries_removed_from_image      = 0;
     unsigned           external_parent_fd_refs_removed = 0;
     unsigned           external_child_fd_refs_removed  = 0;
-    hbool_t            done                            = FALSE;
+    hbool_t            done                            = false;
     unsigned           u; /* Local index variable */
     herr_t             ret_value = SUCCEED;
 
@@ -2378,9 +2378,9 @@ H5C__prep_for_file_close__compute_fd_heights(const H5C_t *cache_ptr)
      * that the child will have dirty children of its own, this may take
      * multiple passes through the index list.
      */
-    done = FALSE;
+    done = false;
     while (!done) {
-        done      = TRUE;
+        done      = true;
         entry_ptr = cache_ptr->il_head;
         while (entry_ptr != NULL) {
             HDassert(entry_ptr->magic == H5C__H5C_CACHE_ENTRY_T_MAGIC);
@@ -2400,7 +2400,7 @@ H5C__prep_for_file_close__compute_fd_heights(const H5C_t *cache_ptr)
 
                         /* Must remove child from image -- only do this once */
                         entries_removed_from_image++;
-                        entry_ptr->include_in_image = FALSE;
+                        entry_ptr->include_in_image = false;
                     } /* end if */
                 }     /* for */
             }         /* end if */
@@ -2817,9 +2817,9 @@ H5C__prep_for_file_close__scan_entries(const H5F_t *f, H5C_t *cache_ptr)
          * of these entries later.
          */
         if (entry_ptr->ring > H5C_MAX_RING_IN_IMAGE)
-            include_in_image = FALSE;
+            include_in_image = false;
         else
-            include_in_image = TRUE;
+            include_in_image = true;
         entry_ptr->include_in_image = include_in_image;
 
         if (include_in_image) {
@@ -3092,7 +3092,7 @@ H5C__reconstruct_cache_contents(H5F_t *f, H5C_t *cache_ptr)
              * Do this now, and then uprotect when done.
              */
             H5C__UPDATE_RP_FOR_PROTECT(cache_ptr, parent_ptr, FAIL)
-            parent_ptr->is_protected = TRUE;
+            parent_ptr->is_protected = true;
 
             /* Setup the flush dependency */
             if (H5C_create_flush_dependency(parent_ptr, pf_entry_ptr) < 0)
@@ -3100,7 +3100,7 @@ H5C__reconstruct_cache_contents(H5F_t *f, H5C_t *cache_ptr)
 
             /* And now unprotect */
             H5C__UPDATE_RP_FOR_UNPROTECT(cache_ptr, parent_ptr, FAIL)
-            parent_ptr->is_protected = FALSE;
+            parent_ptr->is_protected = false;
         } /* end for */
     }     /* end for */
 
@@ -3182,7 +3182,7 @@ H5C__reconstruct_cache_contents(H5F_t *f, H5C_t *cache_ptr)
         /* cache is oversized -- call H5C__make_space_in_cache() with zero
          * space needed to repair the situation if possible.
          */
-        hbool_t write_permitted = FALSE;
+        hbool_t write_permitted = false;
 
         if (cache_ptr->check_write_permitted != NULL) {
             if ((cache_ptr->check_write_permitted)(f, &write_permitted) < 0)
@@ -3221,11 +3221,11 @@ H5C__reconstruct_cache_entry(const H5F_t *f, H5C_t *cache_ptr, const uint8_t **b
 {
     H5C_cache_entry_t *pf_entry_ptr = NULL; /* Reconstructed cache entry */
     uint8_t            flags        = 0;
-    hbool_t            is_dirty     = FALSE;
+    hbool_t            is_dirty     = false;
 #ifndef NDEBUG /* only used in assertions */
-    hbool_t in_lru       = FALSE;
-    hbool_t is_fd_parent = FALSE;
-    hbool_t is_fd_child  = FALSE;
+    hbool_t in_lru       = false;
+    hbool_t is_fd_parent = false;
+    hbool_t is_fd_child  = false;
 #endif /* NDEBUG */ /* only used in assertions */
     const uint8_t *    p;
     hbool_t            file_is_rw;
@@ -3255,14 +3255,14 @@ H5C__reconstruct_cache_entry(const H5F_t *f, H5C_t *cache_ptr, const uint8_t **b
     /* Decode flags */
     flags = *p++;
     if (flags & H5C__MDCI_ENTRY_DIRTY_FLAG)
-        is_dirty = TRUE;
+        is_dirty = true;
 #ifndef NDEBUG /* only used in assertions */
     if (flags & H5C__MDCI_ENTRY_IN_LRU_FLAG)
-        in_lru = TRUE;
+        in_lru = true;
     if (flags & H5C__MDCI_ENTRY_IS_FD_PARENT_FLAG)
-        is_fd_parent = TRUE;
+        is_fd_parent = true;
     if (flags & H5C__MDCI_ENTRY_IS_FD_CHILD_FLAG)
-        is_fd_child = TRUE;
+        is_fd_child = true;
 #endif /* NDEBUG */ /* only used in assertions */
 
     /* Force dirty entries to clean if the file read only -- must do
@@ -3354,9 +3354,9 @@ H5C__reconstruct_cache_entry(const H5F_t *f, H5C_t *cache_ptr, const uint8_t **b
     /* (Only need to set non-zero/NULL/FALSE fields, due to calloc() above) */
     pf_entry_ptr->magic            = H5C__H5C_CACHE_ENTRY_T_MAGIC;
     pf_entry_ptr->cache_ptr        = cache_ptr;
-    pf_entry_ptr->image_up_to_date = TRUE;
+    pf_entry_ptr->image_up_to_date = true;
     pf_entry_ptr->type             = H5AC_PREFETCHED_ENTRY;
-    pf_entry_ptr->prefetched       = TRUE;
+    pf_entry_ptr->prefetched       = true;
     pf_entry_ptr->prefetched_dirty = is_dirty && (!file_is_rw);
 
     /* Sanity checks */

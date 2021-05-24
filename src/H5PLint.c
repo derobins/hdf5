@@ -47,7 +47,7 @@
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -66,7 +66,7 @@ static unsigned int H5PL_plugin_control_mask_g = H5PL_ALL_PLUGIN;
  * environment variable was set to H5PL_NO_PLUGIN at
  * package initialization.
  */
-static hbool_t H5PL_allow_plugins_g = TRUE;
+static hbool_t H5PL_allow_plugins_g = true;
 
 /*-------------------------------------------------------------------------
  * Function:    H5PL__get_plugin_control_mask
@@ -147,7 +147,7 @@ H5PL__init_package(void)
     if (NULL != (env_var = HDgetenv("HDF5_PLUGIN_PRELOAD")))
         if (!HDstrcmp(env_var, H5PL_NO_PLUGIN)) {
             H5PL_plugin_control_mask_g = 0;
-            H5PL_allow_plugins_g       = FALSE;
+            H5PL_allow_plugins_g       = false;
         }
 
     /* Create the table of previously-loaded plugins */
@@ -178,7 +178,7 @@ done:
 int
 H5PL_term_package(void)
 {
-    hbool_t already_closed = FALSE;
+    hbool_t already_closed = false;
     int     ret_value      = 0;
 
     FUNC_ENTER_NOAPI_NOINIT
@@ -199,7 +199,7 @@ H5PL_term_package(void)
 
         /* Mark the interface as uninitialized */
         if (0 == ret_value)
-            H5_PKG_INIT_VAR = FALSE;
+            H5_PKG_INIT_VAR = false;
     } /* end if */
 
 done:
@@ -224,7 +224,7 @@ const void *
 H5PL_load(H5PL_type_t type, const H5PL_key_t *key)
 {
     H5PL_search_params_t search_params;       /* Plugin search parameters     */
-    hbool_t              found       = FALSE; /* Whether the plugin was found */
+    hbool_t              found       = false; /* Whether the plugin was found */
     const void *         plugin_info = NULL;  /* Information from the plugin  */
     const void *         ret_value   = NULL;
 
@@ -310,7 +310,7 @@ H5PL__open(const char *path, H5PL_type_t type, const H5PL_key_t *key, hbool_t *s
     HDassert(plugin_info);
 
     /* Initialize out parameters */
-    *success     = FALSE;
+    *success     = false;
     *plugin_info = NULL;
     if (plugin_type)
         *plugin_type = H5PL_TYPE_ERROR;
@@ -360,7 +360,7 @@ H5PL__open(const char *path, H5PL_type_t type, const H5PL_key_t *key, hbool_t *s
                 if (plugin_type)
                     *plugin_type = H5PL_TYPE_FILTER;
                 *plugin_info = (const void *)filter_info;
-                *success     = TRUE;
+                *success     = true;
             }
 
             break;

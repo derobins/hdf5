@@ -76,7 +76,7 @@ static H5EA_t *H5EA__new(H5F_t *f, haddr_t ea_addr, hbool_t from_open, void *ctx
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /* Extensible array client ID to class mapping */
 
@@ -200,7 +200,7 @@ BEGIN_FUNC(PRIV, ERR, H5EA_t *, NULL, NULL,
         H5E_THROW(H5E_CANTINIT, "can't create extensible array header")
 
     /* Allocate and initialize new extensible array wrapper */
-    if (NULL == (ea = H5EA__new(f, ea_addr, FALSE, ctx_udata)))
+    if (NULL == (ea = H5EA__new(f, ea_addr, false, ctx_udata)))
         H5E_THROW(H5E_CANTINIT, "allocation and/or initialization failed for extensible array wrapper")
 
     /* Set the return value */
@@ -239,7 +239,7 @@ BEGIN_FUNC(PRIV, ERR, H5EA_t *, NULL, NULL, H5EA_open(H5F_t *f, haddr_t ea_addr,
     HDassert(H5F_addr_defined(ea_addr));
 
     /* Allocate and initialize new extensible array wrapper */
-    if (NULL == (ea = H5EA__new(f, ea_addr, TRUE, ctx_udata)))
+    if (NULL == (ea = H5EA__new(f, ea_addr, true, ctx_udata)))
         H5E_THROW(H5E_CANTINIT, "allocation and/or initialization failed for extensible array wrapper")
 
     /* Set the return value */
@@ -334,8 +334,8 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
     H5EA_dblk_page_t *dblk_page          = NULL;               /* Pointer to data block page for EA */
     unsigned          iblock_cache_flags = H5AC__NO_FLAGS_SET; /* Flags to unprotecting index block */
     unsigned          sblock_cache_flags = H5AC__NO_FLAGS_SET; /* Flags to unprotecting super block */
-    hbool_t           stats_changed      = FALSE;              /* Whether array statistics changed */
-    hbool_t           hdr_dirty          = FALSE;              /* Whether the array header changed */
+    hbool_t           stats_changed      = false;              /* Whether array statistics changed */
+    hbool_t           hdr_dirty          = false;              /* Whether the array header changed */
 
     /*
      * Check arguments.
@@ -366,7 +366,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
             hdr->idx_blk_addr = H5EA__iblock_create(hdr, &stats_changed);
             if (!H5F_addr_defined(hdr->idx_blk_addr))
                 H5E_THROW(H5E_CANTCREATE, "unable to create index block")
-            hdr_dirty = TRUE;
+            hdr_dirty = true;
         } /* end if */
         else
             H5_LEAVE(SUCCEED)
@@ -441,7 +441,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                     H5E_THROW(H5E_CANTDEPEND,
                               "unable to create flush dependency between data block and header, index = %llu",
                               (unsigned long long)idx)
-                dblock->has_hdr_depend = TRUE;
+                dblock->has_hdr_depend = true;
             } /* end if */
 
             /* Set 'thing' info to refer to the data block */
@@ -513,7 +513,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                                 "unable to create flush dependency between super block and header, address "
                                 "= %llu",
                                 (unsigned long long)sblock->addr)
-                        sblock->has_hdr_depend = TRUE;
+                        sblock->has_hdr_depend = true;
                     } /* end if */
                 }     /* end if */
                 else
@@ -551,7 +551,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                             H5E_THROW(H5E_CANTCREATE, "unable to create data block page")
 
                         /* Mark data block page as initialized in super block */
-                        H5VM_bit_set(sblock->page_init, page_init_idx, TRUE);
+                        H5VM_bit_set(sblock->page_init, page_init_idx, true);
                         sblock_cache_flags |= H5AC__DIRTIED_FLAG;
                     } /* end if */
                     else
@@ -571,7 +571,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                                   "unable to create flush dependency between data block page and header, "
                                   "index = %llu",
                                   (unsigned long long)idx)
-                    dblk_page->has_hdr_depend = TRUE;
+                    dblk_page->has_hdr_depend = true;
                 } /* end if */
 
                 /* Set 'thing' info to refer to the data block page */
@@ -595,7 +595,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                             H5E_CANTDEPEND,
                             "unable to create flush dependency between data block and header, index = %llu",
                             (unsigned long long)idx)
-                    dblock->has_hdr_depend = TRUE;
+                    dblock->has_hdr_depend = true;
                 } /* end if */
 
                 /* Set 'thing' info to refer to the data block */
@@ -622,7 +622,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
 
     /* Check for updating array statistics */
     if (stats_changed)
-        hdr_dirty = TRUE;
+        hdr_dirty = true;
 
     /* Check for header modified */
     if (hdr_dirty)
@@ -745,7 +745,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5EA_get(const H5EA_t *ea, hsize_t 
         hdr->f = ea->f;
 
         /* Look up the array metadata containing the element we want to set */
-        if (H5EA__lookup_elmt(ea, idx, FALSE, H5AC__READ_ONLY_FLAG, &thing, &thing_elmt_buf, &thing_elmt_idx,
+        if (H5EA__lookup_elmt(ea, idx, false, H5AC__READ_ONLY_FLAG, &thing, &thing_elmt_buf, &thing_elmt_idx,
                               &thing_unprot_func) < 0)
             H5E_THROW(H5E_CANTPROTECT, "unable to protect array metadata")
 
@@ -830,7 +830,7 @@ END_FUNC(PRIV) /* end H5EA_depend() */
 BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5EA_close(H5EA_t *ea))
 
     /* Local variables */
-    hbool_t pending_delete = FALSE;       /* Whether the array is pending deletion */
+    hbool_t pending_delete = false;       /* Whether the array is pending deletion */
     haddr_t ea_addr        = HADDR_UNDEF; /* Address of array (for deletion) */
 
     /*
@@ -853,7 +853,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5EA_close(H5EA_t *ea))
                 /* Set local info, so array deletion can occur after decrementing the
                  *  header's ref count
                  */
-                pending_delete = TRUE;
+                pending_delete = true;
                 ea_addr        = ea->hdr->addr;
             } /* end if */
         }     /* end if */
@@ -944,7 +944,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5EA_delete(H5F_t *f, haddr_t ea_ad
 
     /* Check for files using shared array header */
     if (hdr->file_rc)
-        hdr->pending_delete = TRUE;
+        hdr->pending_delete = true;
     else {
         /* Set the shared array header's file context for this operation */
         hdr->f = f;

@@ -156,7 +156,7 @@ int
 H5LD_construct_vector(char *fields, H5LD_memb_t *listv[] /*OUT*/, hid_t par_tid)
 {
     int     nfields;               /* The # of comma-separated fields in "fields" */
-    hbool_t end_of_fields = FALSE; /* end of "fields" */
+    hbool_t end_of_fields = false; /* end of "fields" */
     char *  fields_ptr;            /* Pointer to "fields" */
     int     ret_value = FAIL;      /* Return value */
 
@@ -171,9 +171,9 @@ H5LD_construct_vector(char *fields, H5LD_memb_t *listv[] /*OUT*/, hid_t par_tid)
         H5LD_memb_t *memb = NULL;       /* Pointer to structure for storing a field's info */
         char *       cur;               /* Pointer to a member in a field */
         size_t       len;               /* Estimated # of members in a field */
-        hbool_t      gotcomma  = FALSE; /* A comma encountered */
-        hbool_t      gotmember = FALSE; /* Getting member in a field */
-        hbool_t      valid     = TRUE;  /* Whether a field being processed is valid or not */
+        hbool_t      gotcomma  = false; /* A comma encountered */
+        hbool_t      gotmember = false; /* Getting member in a field */
+        hbool_t      valid     = true;  /* Whether a field being processed is valid or not */
         int          j         = 0;     /* The # of members in a field */
 
         len = (HDstrlen(fields_ptr) / 2) + 2;
@@ -200,17 +200,17 @@ H5LD_construct_vector(char *fields, H5LD_memb_t *listv[] /*OUT*/, hid_t par_tid)
                         memb->names[++j] = NULL;
                     }    /* end if */
                     else /* getting nothing but end of list */
-                        valid = FALSE;
-                    end_of_fields = TRUE;
+                        valid = false;
+                    end_of_fields = true;
                     break;
 
                 case '\\':        /* escape character */
                     ++fields_ptr; /* skip it */
                     if (*fields_ptr == '\0')
-                        valid = FALSE;
+                        valid = false;
                     else {
                         *cur++    = *fields_ptr++;
-                        gotmember = TRUE;
+                        gotmember = true;
                     } /* end else */
                     break;
 
@@ -219,10 +219,10 @@ H5LD_construct_vector(char *fields, H5LD_memb_t *listv[] /*OUT*/, hid_t par_tid)
                     ;
                     if (gotmember) {
                         memb->names[++j] = cur;
-                        gotmember        = FALSE;
+                        gotmember        = false;
                     } /* end if */
                     else
-                        valid = FALSE;
+                        valid = false;
                     break;
 
                 case ',': /* field separator */
@@ -230,16 +230,16 @@ H5LD_construct_vector(char *fields, H5LD_memb_t *listv[] /*OUT*/, hid_t par_tid)
                     ;
                     if (gotmember) {
                         memb->names[++j] = NULL;
-                        gotmember        = FALSE;
+                        gotmember        = false;
                     } /* end if */
                     else
-                        valid = FALSE;
-                    gotcomma = TRUE;
+                        valid = false;
+                    gotcomma = true;
                     break;
 
                 default:
                     *cur++    = *fields_ptr++;
-                    gotmember = TRUE;
+                    gotmember = true;
                     break;
             } /* end switch */
         }     /* while (valid && !gotcomma && !end_of_fields) */

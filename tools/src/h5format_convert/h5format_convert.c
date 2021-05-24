@@ -30,8 +30,8 @@
 
 static char *fname_g   = NULL;
 static char *dname_g   = NULL;
-static int   dset_g    = FALSE;
-static int   noop_g    = FALSE;
+static int   dset_g    = false;
+static int   noop_g    = false;
 static int   verbose_g = 0;
 
 /*
@@ -136,7 +136,7 @@ parse_command_line(int argc, const char **argv)
                 goto error;
 
             case 'v':
-                verbose_g = TRUE;
+                verbose_g = true;
                 break;
 
             case 'd': /* -d dname */
@@ -148,11 +148,11 @@ parse_command_line(int argc, const char **argv)
                     usage(h5tools_getprogname());
                     goto error;
                 }
-                dset_g = TRUE;
+                dset_g = true;
                 break;
 
             case 'n': /* -n */
-                noop_g = TRUE;
+                noop_g = true;
                 break;
 
             case 'E':
@@ -423,7 +423,7 @@ main(int argc, const char *argv[])
     h5tools_error_report();
 
     /* Open the HDF5 file */
-    if ((fid = h5tools_fopen(fname_g, H5F_ACC_RDWR, H5P_DEFAULT, FALSE, NULL, 0)) < 0) {
+    if ((fid = h5tools_fopen(fname_g, H5F_ACC_RDWR, H5P_DEFAULT, false, NULL, 0)) < 0) {
         error_msg("unable to open file \"%s\"\n", fname_g);
         h5tools_setstatus(EXIT_FAILURE);
         goto done;
@@ -440,7 +440,7 @@ main(int argc, const char *argv[])
     else { /* Convert all datasets in the file */
         if (verbose_g)
             HDfprintf(stdout, "Processing all datasets in the file...\n");
-        if (h5trav_visit(fid, "/", TRUE, TRUE, convert_dsets_cb, NULL, &fid, H5O_INFO_BASIC) < 0)
+        if (h5trav_visit(fid, "/", true, true, convert_dsets_cb, NULL, &fid, H5O_INFO_BASIC) < 0)
             goto done;
     } /* end else */
 

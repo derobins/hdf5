@@ -102,27 +102,27 @@ static hbool_t not_comparable;
 #define PER(A, B)                                                                                            \
     {                                                                                                        \
         per            = -1;                                                                                 \
-        not_comparable = FALSE;                                                                              \
-        both_zero      = FALSE;                                                                              \
+        not_comparable = false;                                                                              \
+        both_zero      = false;                                                                              \
         if (H5_DBL_ABS_EQUAL(0, (double)A) && H5_DBL_ABS_EQUAL(0, (double)B))                                \
-            both_zero = TRUE;                                                                                \
+            both_zero = true;                                                                                \
         if (!H5_DBL_ABS_EQUAL(0, (double)A))                                                                 \
             per = (double)ABS((double)((B) - (A)) / (double)(A));                                            \
         else                                                                                                 \
-            not_comparable = TRUE;                                                                           \
+            not_comparable = true;                                                                           \
     }
 
 #define PER_UNSIGN(TYPE, A, B)                                                                               \
     {                                                                                                        \
         per            = -1;                                                                                 \
-        not_comparable = FALSE;                                                                              \
-        both_zero      = FALSE;                                                                              \
+        not_comparable = false;                                                                              \
+        both_zero      = false;                                                                              \
         if (H5_DBL_ABS_EQUAL(0, (double)A) && H5_DBL_ABS_EQUAL(0, (double)B))                                \
-            both_zero = TRUE;                                                                                \
+            both_zero = true;                                                                                \
         if (!H5_DBL_ABS_EQUAL(0, (double)A))                                                                 \
             per = ABS((double)((TYPE)((B) - (A))) / (double)(A));                                            \
         else                                                                                                 \
-            not_comparable = TRUE;                                                                           \
+            not_comparable = true;                                                                           \
     }
 
 #define PDIFF(a, b) (((b) > (a)) ? ((b) - (a)) : ((a) - (b)))
@@ -1306,9 +1306,9 @@ all_zero(const void *_mem, size_t size)
 
     while (size-- > 0)
         if (mem[size])
-            return FALSE;
+            return false;
 
-    return TRUE;
+    return true;
 }
 
 /*-------------------------------------------------------------------------
@@ -1617,7 +1617,7 @@ character_compare_opt(unsigned char *mem1, unsigned char *mem2, hsize_t elemtno,
     hsize_t       nfound = 0; /* differences found */
     unsigned char temp1_uchar;
     unsigned char temp2_uchar;
-    hbool_t       both_zero = FALSE;
+    hbool_t       both_zero = false;
     double        per;
 
     HDmemcpy(&temp1_uchar, mem1, sizeof(unsigned char));
@@ -1689,9 +1689,9 @@ diff_float_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     float   temp1_float;
     float   temp2_float;
     double  per;
-    hbool_t both_zero = FALSE;
-    hbool_t isnan1    = FALSE;
-    hbool_t isnan2    = FALSE;
+    hbool_t both_zero = false;
+    hbool_t isnan1    = false;
+    hbool_t isnan2    = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -1839,7 +1839,7 @@ diff_float_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
      *-------------------------------------------------------------------------
      */
     else {
-        if (equal_float(temp1_float, temp2_float, opts) == FALSE) {
+        if (equal_float(temp1_float, temp2_float, opts) == false) {
             opts->print_percentage = 0;
             print_pos(opts, elem_idx, 0);
             if (print_data(opts)) {
@@ -1869,9 +1869,9 @@ diff_double_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, 
     double  temp1_double;
     double  temp2_double;
     double  per;
-    hbool_t both_zero = FALSE;
-    hbool_t isnan1    = FALSE;
-    hbool_t isnan2    = FALSE;
+    hbool_t both_zero = false;
+    hbool_t isnan1    = false;
+    hbool_t isnan2    = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2012,7 +2012,7 @@ diff_double_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, 
      *-------------------------------------------------------------------------
      */
     else {
-        if (equal_double(temp1_double, temp2_double, opts) == FALSE) {
+        if (equal_double(temp1_double, temp2_double, opts) == false) {
             opts->print_percentage = 0;
             print_pos(opts, elem_idx, 0);
             if (print_data(opts)) {
@@ -2043,9 +2043,9 @@ diff_ldouble_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx,
     long double temp1_double;
     long double temp2_double;
     double      per;
-    hbool_t     both_zero = FALSE;
-    hbool_t     isnan1    = FALSE;
-    hbool_t     isnan2    = FALSE;
+    hbool_t     both_zero = false;
+    hbool_t     isnan1    = false;
+    hbool_t     isnan2    = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2187,7 +2187,7 @@ diff_ldouble_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx,
      * no -d and -p
      *-------------------------------------------------------------------------
      */
-    else if (equal_ldouble(temp1_double, temp2_double, opts) == FALSE) {
+    else if (equal_ldouble(temp1_double, temp2_double, opts) == false) {
         opts->print_percentage = 0;
         print_pos(opts, elem_idx, 0);
         if (print_data(opts)) {
@@ -2217,7 +2217,7 @@ diff_schar_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     char    temp1_char;
     char    temp2_char;
     double  per;
-    hbool_t both_zero = FALSE;
+    hbool_t both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
     HDmemcpy(&temp1_char, mem1, sizeof(char));
@@ -2305,7 +2305,7 @@ diff_uchar_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     unsigned char temp1_uchar;
     unsigned char temp2_uchar;
     double        per;
-    hbool_t       both_zero = FALSE;
+    hbool_t       both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2393,7 +2393,7 @@ diff_short_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     short   temp1_short;
     short   temp2_short;
     double  per;
-    hbool_t both_zero = FALSE;
+    hbool_t both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2481,7 +2481,7 @@ diff_ushort_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, 
     unsigned short temp1_ushort;
     unsigned short temp2_ushort;
     double         per;
-    hbool_t        both_zero = FALSE;
+    hbool_t        both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2573,7 +2573,7 @@ diff_int_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, dif
     int     temp1_int;
     int     temp2_int;
     double  per;
-    hbool_t both_zero = FALSE;
+    hbool_t both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2661,7 +2661,7 @@ diff_uint_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, di
     unsigned int temp1_uint;
     unsigned int temp2_uint;
     double       per;
-    hbool_t      both_zero = FALSE;
+    hbool_t      both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2749,7 +2749,7 @@ diff_long_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, di
     long    temp1_long;
     long    temp2_long;
     double  per;
-    hbool_t both_zero = FALSE;
+    hbool_t both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2837,7 +2837,7 @@ diff_ulong_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     unsigned long temp1_ulong;
     unsigned long temp2_ulong;
     double        per;
-    hbool_t       both_zero = FALSE;
+    hbool_t       both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2927,7 +2927,7 @@ diff_llong_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     long long temp1_llong;
     long long temp2_llong;
     double    per;
-    hbool_t   both_zero = FALSE;
+    hbool_t   both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -3021,7 +3021,7 @@ diff_ullong_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, 
     unsigned long long temp2_ullong;
     float              f1, f2;
     double             per;
-    hbool_t            both_zero = FALSE;
+    hbool_t            both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -3172,28 +3172,28 @@ equal_double(double value, double expected, diff_opt_t *opts)
          *-------------------------------------------------------------------------
          */
         if (isnan1 && isnan2)
-            return TRUE;
+            return true;
 
         /*-------------------------------------------------------------------------
          * one is a NaN, do not compare but assume difference
          *-------------------------------------------------------------------------
          */
         if ((isnan1 && !isnan2) || (!isnan1 && isnan2))
-            return FALSE;
+            return false;
     }
 
     if (opts->use_system_epsilon) {
         /* Check equality within some epsilon */
         if (H5_DBL_ABS_EQUAL(value, expected))
-            return TRUE;
+            return true;
     }
     else {
         /* Check bits */
         if (!HDmemcmp(&value, &expected, sizeof(double)))
-            return TRUE;
+            return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 /*-------------------------------------------------------------------------
@@ -3220,28 +3220,28 @@ equal_ldouble(long double value, long double expected, diff_opt_t *opts)
          *-------------------------------------------------------------------------
          */
         if (isnan1 && isnan2)
-            return TRUE;
+            return true;
 
         /*-------------------------------------------------------------------------
          * one is a NaN, do not compare but assume difference
          *-------------------------------------------------------------------------
          */
         if ((isnan1 && !isnan2) || (!isnan1 && isnan2))
-            return FALSE;
+            return false;
     }
 
     if (opts->use_system_epsilon) {
         /* Check equality within some epsilon */
         if (H5_LDBL_ABS_EQUAL(value, expected))
-            return TRUE;
+            return true;
     }
     else {
         /* Check bits */
         if (!HDmemcmp(&value, &expected, sizeof(long double)))
-            return TRUE;
+            return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 #endif /* #if H5_SIZEOF_LONG_DOUBLE !=0 */
@@ -3268,28 +3268,28 @@ equal_float(float value, float expected, diff_opt_t *opts)
          *-------------------------------------------------------------------------
          */
         if (isnan1 && isnan2)
-            return TRUE;
+            return true;
 
         /*-------------------------------------------------------------------------
          * one is a NaN, do not compare but assume difference
          *-------------------------------------------------------------------------
          */
         if ((isnan1 && !isnan2) || (!isnan1 && isnan2))
-            return FALSE;
+            return false;
     }
 
     if (opts->use_system_epsilon) {
         /* Check equality within some epsilon */
         if (H5_FLT_ABS_EQUAL(value, expected))
-            return TRUE;
+            return true;
     }
     else {
         /* Check bits */
         if (!HDmemcmp(&value, &expected, sizeof(float)))
-            return TRUE;
+            return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 /*-------------------------------------------------------------------------

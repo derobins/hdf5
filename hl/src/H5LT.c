@@ -849,7 +849,7 @@ H5LTopen_file_image(void *buf_ptr, size_t buf_size, unsigned flags)
         alloc_incr = min_incr;
 
     /* Configure FAPL to use the core file driver */
-    if (H5Pset_fapl_core(fapl, alloc_incr, FALSE) < 0)
+    if (H5Pset_fapl_core(fapl, alloc_incr, false) < 0)
         goto out;
 
     /* Set callbacks for file image ops ONLY if the file image is NOT copied */
@@ -2973,7 +2973,7 @@ next:
             HDsnprintf(dt_str, *slen, "H5T_NO_CLASS");
             break;
         case H5T_REFERENCE:
-            if (H5Tequal(dtype, H5T_STD_REF_DSETREG) == TRUE) {
+            if (H5Tequal(dtype, H5T_STD_REF_DSETREG) == true) {
                 HDsnprintf(dt_str, *slen, " H5T_REFERENCE { H5T_STD_REF_DSETREG }");
             }
             else {
@@ -3585,7 +3585,7 @@ H5LTpath_valid(hid_t loc_id, const char *path, hbool_t check_object_valid)
     htri_t     ret_value;
 
     /* Initialize */
-    ret_value = FALSE;
+    ret_value = false;
 
     /* check the arguments */
     if (path == NULL) {
@@ -3610,7 +3610,7 @@ H5LTpath_valid(hid_t loc_id, const char *path, hbool_t check_object_valid)
             goto done;
         }
         else {
-            ret_value = TRUE; /* Since the object is the identifier itself,
+            ret_value = true; /* Since the object is the identifier itself,
                                * we can only check if loc_id is a valid type */
             goto done;
         }
@@ -3636,7 +3636,7 @@ H5LTpath_valid(hid_t loc_id, const char *path, hbool_t check_object_valid)
         /* Change the delimiter to terminate the string */
         *delimit = '\0';
 
-        obj_exists = FALSE;
+        obj_exists = false;
         if ((link_exists = H5Lexists(loc_id, tmp_path, H5P_DEFAULT)) < 0) {
             ret_value = FAIL;
             goto done;
@@ -3644,8 +3644,8 @@ H5LTpath_valid(hid_t loc_id, const char *path, hbool_t check_object_valid)
 
         /* If target link does not exist then no reason to
          *  continue checking the path */
-        if (link_exists != TRUE) {
-            ret_value = FALSE;
+        if (link_exists != true) {
+            ret_value = false;
             goto done;
         }
 
@@ -3655,7 +3655,7 @@ H5LTpath_valid(hid_t loc_id, const char *path, hbool_t check_object_valid)
             goto done;
         }
 
-        if (obj_exists != TRUE)
+        if (obj_exists != true)
             break;
 
         /* Change the delimiter back to '/' */
@@ -3675,7 +3675,7 @@ H5LTpath_valid(hid_t loc_id, const char *path, hbool_t check_object_valid)
     else {
         ret_value = link_exists;
         /* Determine if link resolves to an actual object for check_object_valid TRUE */
-        if (check_object_valid == TRUE && link_exists == TRUE) {
+        if (check_object_valid == true && link_exists == true) {
             if ((obj_exists = H5Oexists_by_name(loc_id, tmp_path, H5P_DEFAULT)) < 0) {
                 ret_value = FAIL;
             }

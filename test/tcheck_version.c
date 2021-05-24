@@ -121,7 +121,7 @@ abort_intercept(int H5_ATTR_UNUSED sig)
 int
 handle_crt_abort(int reportType, char *message, int *returnValue)
 {
-    return TRUE;
+    return true;
 }
 #endif
 

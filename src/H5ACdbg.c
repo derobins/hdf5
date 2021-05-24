@@ -85,7 +85,7 @@ H5AC_stats(const H5F_t *f)
     HDassert(f->shared->cache);
 
     /* at present, this can't fail */
-    (void)H5C_stats(f->shared->cache, H5F_OPEN_NAME(f), FALSE);
+    (void)H5C_stats(f->shared->cache, H5F_OPEN_NAME(f), false);
 
     FUNC_LEAVE_NOAPI(SUCCEED)
 } /* H5AC_stats() */
@@ -300,7 +300,7 @@ hbool_t
 H5AC_get_serialization_in_progress(H5F_t *f)
 {
     H5C_t * cache_ptr;
-    hbool_t ret_value = FALSE; /* Return value */
+    hbool_t ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -338,7 +338,7 @@ hbool_t
 H5AC_cache_is_clean(const H5F_t *f, H5AC_ring_t inner_ring)
 {
     H5C_t * cache_ptr;
-    hbool_t ret_value = FALSE; /* Return value */
+    hbool_t ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 

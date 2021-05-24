@@ -80,7 +80,7 @@ typedef struct H5FD_splitter_t {
 #define H5FD_SPLITTER_WO_ERROR(file, funcname, errmajor, errminor, ret, mesg)                                \
     {                                                                                                        \
         H5FD__splitter_log_error((file), (funcname), (mesg));                                                \
-        if (FALSE == (file)->fa.ignore_wo_errs)                                                              \
+        if (false == (file)->fa.ignore_wo_errs)                                                              \
             HGOTO_ERROR((errmajor), (errminor), (ret), (mesg))                                               \
     }
 
@@ -266,14 +266,14 @@ H5FD__copy_plist(hid_t fapl_id, hid_t *id_out_ptr)
 
     HDassert(id_out_ptr != NULL);
 
-    if (FALSE == H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+    if (false == H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, -1, "not a file access property list");
 
     plist_ptr = (H5P_genplist_t *)H5I_object(fapl_id);
     if (NULL == plist_ptr)
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, -1, "unable to get property list");
 
-    *id_out_ptr = H5P_copy_plist(plist_ptr, FALSE);
+    *id_out_ptr = H5P_copy_plist(plist_ptr, false);
     if (H5I_INVALID_HID == *id_out_ptr)
         HGOTO_ERROR(H5E_VFL, H5E_BADTYPE, -1, "unable to copy file access property list");
 
@@ -347,12 +347,12 @@ H5Pset_fapl_splitter(hid_t fapl_id, H5FD_splitter_vfd_config_t *vfd_config)
 
     /* Set non-default channel FAPL IDs in splitter configuration info */
     if (H5P_DEFAULT != vfd_config->rw_fapl_id) {
-        if (FALSE == H5P_isa_class(vfd_config->rw_fapl_id, H5P_FILE_ACCESS))
+        if (false == H5P_isa_class(vfd_config->rw_fapl_id, H5P_FILE_ACCESS))
             HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access list")
         info->rw_fapl_id = vfd_config->rw_fapl_id;
     }
     if (H5P_DEFAULT != vfd_config->wo_fapl_id) {
-        if (FALSE == H5P_isa_class(vfd_config->wo_fapl_id, H5P_FILE_ACCESS))
+        if (false == H5P_isa_class(vfd_config->wo_fapl_id, H5P_FILE_ACCESS))
             HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access list")
         info->wo_fapl_id = vfd_config->wo_fapl_id;
     }
@@ -391,7 +391,7 @@ H5Pget_fapl_splitter(hid_t fapl_id, H5FD_splitter_vfd_config_t *config /*out*/)
     H5FD_SPLITTER_LOG_CALL(FUNC);
 
     /* Check arguments */
-    if (TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+    if (true != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a file access property list")
     if (config == NULL)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "config pointer is null")

@@ -221,7 +221,7 @@ H5MF__aggr_alloc(H5F_t *f, H5F_blk_aggr_t *aggr, H5F_blk_aggr_t *other_aggr, H5F
 
             /* Check if the space requested is larger than the space left in the block */
             if ((size + aggr_frag_size) > aggr->size) {
-                htri_t extended = FALSE; /* Whether the file was extended */
+                htri_t extended = false; /* Whether the file was extended */
 
                 /* Check if the block asked for is too large for 'normal' aggregator block */
                 if (size >= aggr->alloc_size) {
@@ -420,7 +420,7 @@ done:
     htri_t H5MF__aggr_try_extend(H5F_t * f, H5F_blk_aggr_t * aggr, H5FD_mem_t type, haddr_t blk_end,
                                  hsize_t extra_requested)
     {
-        htri_t ret_value = FALSE; /* Return value */
+        htri_t ret_value = false; /* Return value */
 
         FUNC_ENTER_PACKAGE
 
@@ -451,7 +451,7 @@ done:
                         aggr->addr += extra_requested;
 
                         /* Indicate success */
-                        HGOTO_DONE(TRUE);
+                        HGOTO_DONE(true);
                     } /* end if */
                     /*
                      * If extra_requested is above percentage threshold:
@@ -464,7 +464,7 @@ done:
 
                         if ((ret_value = H5F__try_extend(f, type, (aggr->addr + aggr->size), extra)) < 0)
                             HGOTO_ERROR(H5E_RESOURCE, H5E_CANTEXTEND, FAIL, "error extending file")
-                        else if (ret_value == TRUE) {
+                        else if (ret_value == true) {
                             /* Shift the aggregator block by the extra requested */
                             /* (allocates the space for the extra_requested) */
                             aggr->addr += extra_requested;
@@ -490,7 +490,7 @@ done:
                         aggr->addr += extra_requested;
 
                         /* Indicate success */
-                        HGOTO_DONE(TRUE);
+                        HGOTO_DONE(true);
                     } /* end if */
                 }     /* end else */
             }         /* end if */
@@ -518,7 +518,7 @@ done:
     htri_t H5MF__aggr_can_absorb(const H5F_t *f, const H5F_blk_aggr_t *aggr, const H5MF_free_section_t *sect,
                                  H5MF_shrink_type_t *shrink)
     {
-        htri_t ret_value = FALSE; /* Return value */
+        htri_t ret_value = false; /* Return value */
 
         FUNC_ENTER_PACKAGE_NOERR
 
@@ -546,7 +546,7 @@ done:
                     *shrink = H5MF_SHRINK_AGGR_ABSORB_SECT;
 
                 /* Indicate success */
-                HGOTO_DONE(TRUE)
+                HGOTO_DONE(true)
             } /* end if */
         }     /* end if */
 
@@ -822,7 +822,7 @@ done:
     static htri_t H5MF__aggr_can_shrink_eoa(H5F_t * f, H5FD_mem_t type, H5F_blk_aggr_t * aggr)
     {
         haddr_t eoa       = HADDR_UNDEF; /* EOA for the file */
-        htri_t  ret_value = FALSE;       /* Return value */
+        htri_t  ret_value = false;       /* Return value */
 
         FUNC_ENTER_STATIC
 

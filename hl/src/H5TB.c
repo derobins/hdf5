@@ -2109,7 +2109,7 @@ H5TBinsert_field(hid_t loc_id, const char *dset_name, const char *field_name, hi
         goto out;
 
     curr_offset = 0;
-    inserted    = FALSE;
+    inserted    = false;
 
     /* insert the old fields, counting with the new one */
     for (i = 0; i < nfields + 1; i++) {
@@ -2130,7 +2130,7 @@ H5TBinsert_field(hid_t loc_id, const char *dset_name, const char *field_name, hi
 
             curr_offset += new_member_size;
 
-            inserted = TRUE;
+            inserted = true;
         } /* end if */
         else {
             /* get the member name */
@@ -2449,7 +2449,7 @@ H5TBdelete_field(hid_t loc_id, const char *dset_name, const char *field_name)
     char *         member_name  = NULL;
     unsigned char *tmp_buf      = NULL;
     unsigned char *tmp_fill_buf = NULL;
-    htri_t         has_fill     = FALSE;
+    htri_t         has_fill     = false;
     herr_t         ret_val      = -1;
 
     /* check the arguments */
@@ -2897,7 +2897,7 @@ H5TBAget_fill(hid_t loc_id, const char *dset_name, hid_t dset_id, unsigned char 
     hsize_t i;
     size_t *src_offset = NULL;
     char    attr_name[255];
-    htri_t  has_fill = FALSE;
+    htri_t  has_fill = false;
     htri_t  ret_val  = -1;
 
     /* check the arguments */
@@ -3167,22 +3167,22 @@ H5TB_find_field(const char *field, const char *field_list)
 
     /* check the arguments */
     if (field == NULL)
-        return FALSE;
+        return false;
     if (field_list == NULL)
-        return FALSE;
+        return false;
 
     while ((end = HDstrstr(start, ",")) != 0) {
         ptrdiff_t count = end - start;
 
         if (HDstrncmp(start, field, (size_t)count) == 0 && (size_t)count == HDstrlen(field))
-            return TRUE;
+            return true;
         start = end + 1;
     } /* end while */
 
     if (HDstrncmp(start, field, HDstrlen(field)) == 0)
-        return TRUE;
+        return true;
 
-    return FALSE;
+    return false;
 } /* end H5TB_find_field() */
 
 /*-------------------------------------------------------------------------

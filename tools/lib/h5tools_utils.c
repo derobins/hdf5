@@ -706,7 +706,7 @@ find_objs_cb(const char *name, const H5O_info2_t *oinfo, const char *already_see
     switch (oinfo->type) {
         case H5O_TYPE_GROUP:
             if (NULL == already_seen)
-                add_obj(info->group_table, &oinfo->token, name, TRUE);
+                add_obj(info->group_table, &oinfo->token, name, true);
             break;
 
         case H5O_TYPE_DATASET:
@@ -714,7 +714,7 @@ find_objs_cb(const char *name, const H5O_info2_t *oinfo, const char *already_see
                 hid_t dset = H5I_INVALID_HID;
 
                 /* Add the dataset to the list of objects */
-                add_obj(info->dset_table, &oinfo->token, name, TRUE);
+                add_obj(info->dset_table, &oinfo->token, name, true);
 
                 /* Check for a dataset that uses a named datatype */
                 if ((dset = H5Dopen2(info->fid, name, H5P_DEFAULT)) >= 0) {
@@ -725,7 +725,7 @@ find_objs_cb(const char *name, const H5O_info2_t *oinfo, const char *already_see
 
                         H5Oget_info3(type, &type_oinfo, H5O_INFO_BASIC);
                         if (search_obj(info->type_table, &type_oinfo.token) == NULL)
-                            add_obj(info->type_table, &type_oinfo.token, name, FALSE);
+                            add_obj(info->type_table, &type_oinfo.token, name, false);
                     } /* end if */
 
                     H5Tclose(type);
@@ -741,14 +741,14 @@ find_objs_cb(const char *name, const H5O_info2_t *oinfo, const char *already_see
                 obj_t *found_obj;
 
                 if ((found_obj = search_obj(info->type_table, &oinfo->token)) == NULL)
-                    add_obj(info->type_table, &oinfo->token, name, TRUE);
+                    add_obj(info->type_table, &oinfo->token, name, true);
                 else {
                     /* Use latest version of name */
                     HDfree(found_obj->objname);
                     found_obj->objname = HDstrdup(name);
 
                     /* Mark named datatype as having valid name */
-                    found_obj->recorded = TRUE;
+                    found_obj->recorded = true;
                 } /* end else */
             }     /* end if */
             break;
@@ -790,7 +790,7 @@ init_objs(hid_t fid, find_objs_t *info, table_t **group_table, table_t **dset_ta
     info->dset_table  = *dset_table;
 
     /* Find all shared objects */
-    if ((ret_value = h5trav_visit(fid, "/", TRUE, TRUE, find_objs_cb, NULL, info, H5O_INFO_BASIC)) < 0)
+    if ((ret_value = h5trav_visit(fid, "/", true, true, find_objs_cb, NULL, info, H5O_INFO_BASIC)) < 0)
         H5TOOLS_GOTO_ERROR(FAIL, "finding shared objects failed");
 
 done:
@@ -951,7 +951,7 @@ H5tools_get_symlink_info(hid_t file_id, const char *linkpath, h5tool_link_info_t
         l_ret = H5Oexists_by_name(file_id, linkpath, lapl);
 
         /* detect dangling link */
-        if (l_ret == FALSE) {
+        if (l_ret == false) {
             H5TOOLS_GOTO_DONE(0);
         }
         else if (l_ret < 0) { /* function failed */

@@ -436,7 +436,7 @@ h5trav_getinfo(hid_t file_id, trav_info_t *info)
     info_visitor.udata     = info;
 
     /* Traverse all objects in the file, visiting each object & link */
-    if (traverse(file_id, "/", TRUE, TRUE, &info_visitor, H5O_INFO_BASIC) < 0)
+    if (traverse(file_id, "/", true, true, &info_visitor, H5O_INFO_BASIC) < 0)
         H5TOOLS_GOTO_ERROR((-1), "traverse failed");
 
 done:
@@ -494,7 +494,7 @@ trav_info_init(const char *filename, hid_t fileid, trav_info_t **_info)
     info->symlink_visited.nused       = 0;
     info->symlink_visited.nalloc      = 0;
     info->symlink_visited.objs        = NULL;
-    info->symlink_visited.dangle_link = FALSE;
+    info->symlink_visited.dangle_link = false;
     *_info                            = info;
 } /* end trav_info_init() */
 
@@ -595,7 +595,7 @@ h5trav_gettable(hid_t fid, trav_table_t *table)
     table_visitor.udata     = table;
 
     /* Traverse all objects in the file, visiting each object & link */
-    if (traverse(fid, "/", TRUE, TRUE, &table_visitor, H5O_INFO_BASIC) < 0)
+    if (traverse(fid, "/", true, true, &table_visitor, H5O_INFO_BASIC) < 0)
         H5TOOLS_GOTO_ERROR((-1), "traverse failed");
 
 done:
@@ -1025,7 +1025,7 @@ h5trav_print(hid_t fid)
     print_visitor.udata     = &print_udata;
 
     /* Traverse all objects in the file, visiting each object & link */
-    if (traverse(fid, "/", TRUE, TRUE, &print_visitor, H5O_INFO_BASIC) < 0)
+    if (traverse(fid, "/", true, true, &print_visitor, H5O_INFO_BASIC) < 0)
         H5TOOLS_GOTO_ERROR(FAIL, "traverse failed");
 
 done:
@@ -1132,12 +1132,12 @@ symlink_is_visited(symlink_trav_t *visited, H5L_type_t type, const char *file, c
             /* if external link, file need to be matched as well */
             if (visited->objs[u].type == H5L_TYPE_EXTERNAL)
                 if (!HDstrcmp(visited->objs[u].file, file))
-                    return (TRUE);
+                    return (true);
 
-            return (TRUE);
+            return (true);
         } /* end if */
     }     /* end for */
 
     /* Didn't find symlink */
-    return (FALSE);
+    return (false);
 } /* end symlink_is_visited() */

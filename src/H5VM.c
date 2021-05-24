@@ -324,23 +324,23 @@ H5VM_hyper_eq(unsigned n, const hsize_t *offset1, const hsize_t *size1, const hs
 {
     hsize_t  nelmts1 = 1, nelmts2 = 1;
     unsigned i;
-    htri_t   ret_value = TRUE; /* Return value */
+    htri_t   ret_value = true; /* Return value */
 
     /* Use FUNC_ENTER_NOAPI_NOINIT_NOERR here to avoid performance issues */
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     if (n == 0)
-        HGOTO_DONE(TRUE)
+        HGOTO_DONE(true)
 
     for (i = 0; i < n; i++) {
         if ((offset1 ? offset1[i] : 0) != (offset2 ? offset2[i] : 0))
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
         if ((size1 ? size1[i] : 0) != (size2 ? size2[i] : 0))
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
         if (0 == (nelmts1 *= (size1 ? size1[i] : 0)))
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
         if (0 == (nelmts2 *= (size2 ? size2[i] : 0)))
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
     }
 
 done:
@@ -615,11 +615,11 @@ H5VM_stride_fill(unsigned n, hsize_t elmt_size, const hsize_t *size, const hsize
         HDmemset(dst, (int)fill_value, (size_t)elmt_size); /*lint !e671 The elmt_size will be OK */
 
         /* Decrement indices and advance pointer */
-        for (j = (int)(n - 1), carry = TRUE; j >= 0 && carry; --j) {
+        for (j = (int)(n - 1), carry = true; j >= 0 && carry; --j) {
             dst += stride[j];
 
             if (--idx[j])
-                carry = FALSE;
+                carry = false;
             else {
                 HDassert(size);
                 idx[j] = size[j];
@@ -675,12 +675,12 @@ H5VM_stride_copy(unsigned n, hsize_t elmt_size, const hsize_t *size, const hsize
             H5MM_memcpy(dst, src, (size_t)elmt_size); /*lint !e671 The elmt_size will be OK */
 
             /* Decrement indices and advance pointers */
-            for (j = (int)(n - 1), carry = TRUE; j >= 0 && carry; --j) {
+            for (j = (int)(n - 1), carry = true; j >= 0 && carry; --j) {
                 src += src_stride[j];
                 dst += dst_stride[j];
 
                 if (--idx[j])
-                    carry = FALSE;
+                    carry = false;
                 else {
                     HDassert(size);
                     idx[j] = size[j];
@@ -741,12 +741,12 @@ H5VM_stride_copy_s(unsigned n, hsize_t elmt_size, const hsize_t *size, const hss
             H5MM_memcpy(dst, src, (size_t)elmt_size); /*lint !e671 The elmt_size will be OK */
 
             /* Decrement indices and advance pointers */
-            for (j = (int)(n - 1), carry = TRUE; j >= 0 && carry; --j) {
+            for (j = (int)(n - 1), carry = true; j >= 0 && carry; --j) {
                 src += src_stride[j];
                 dst += dst_stride[j];
 
                 if (--idx[j])
-                    carry = FALSE;
+                    carry = false;
                 else {
                     HDassert(size);
                     idx[j] = size[j];

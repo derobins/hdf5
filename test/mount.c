@@ -509,17 +509,17 @@ test_hide(hid_t fapl)
     if (H5Oget_info_by_name3(file1, "/file1", &oi2, H5O_INFO_BASIC, H5P_DEFAULT) < 0)
         FAIL_STACK_ERROR
 
-    same_obj = TRUE;
+    same_obj = true;
     if (oi1.fileno == oi2.fileno) {
         int token_cmp;
 
         if (H5Otoken_cmp(file1, &oi1.token, &oi2.token, &token_cmp) < 0)
             FAIL_STACK_ERROR
         if (token_cmp)
-            same_obj = FALSE;
+            same_obj = false;
     }
     else
-        same_obj = FALSE;
+        same_obj = false;
 
     if (!same_obj) {
         H5_FAILED();
@@ -598,17 +598,17 @@ test_assoc(hid_t fapl)
     if (H5Oget_info_by_name3(file1, "/mnt1", &oi2, H5O_INFO_BASIC, H5P_DEFAULT) < 0)
         FAIL_STACK_ERROR
 
-    same_obj = TRUE;
+    same_obj = true;
     if (oi1.fileno == oi2.fileno) {
         int token_cmp;
 
         if (H5Otoken_cmp(file1, &oi1.token, &oi2.token, &token_cmp) < 0)
             FAIL_STACK_ERROR
         if (token_cmp)
-            same_obj = FALSE;
+            same_obj = false;
     }
     else
-        same_obj = FALSE;
+        same_obj = false;
 
     if (!same_obj) {
         H5_FAILED();

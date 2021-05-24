@@ -62,7 +62,7 @@ static herr_t H5FS__sinfo_free_node_cb(void *item, void *key, void *op_data);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the H5FS_section_class_t sequence information */
 H5FL_SEQ_DEFINE(H5FS_section_class_t);
@@ -507,7 +507,7 @@ H5FS_close(H5F_t *f, H5FS_t *fspace)
                                                       fspace->alloc_sect_size)) < 0)
                             HGOTO_ERROR(H5E_FSPACE, H5E_CANTMERGE, FAIL,
                                         "can't check for absorbing section info")
-                        else if (status == FALSE) {
+                        else if (status == false) {
                             /* Section info can't "go away", but it's free.  Allow
                              *      header to record it
                              */

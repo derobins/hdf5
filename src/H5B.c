@@ -158,7 +158,7 @@ static H5B_t *H5B__copy(const H5B_t *old_bt);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the haddr_t sequence information */
 H5FL_SEQ_DEFINE(haddr_t);
@@ -337,7 +337,7 @@ H5B_find(H5F_t *f, const H5B_class_t *type, haddr_t addr, hbool_t *found, void *
 
     /* Check if not found */
     if (cmp)
-        *found = FALSE;
+        *found = false;
     else {
         /*
          * Follow the link to the subtree or to the data node.
@@ -545,7 +545,7 @@ H5B_insert(H5F_t *f, const H5B_class_t *type, haddr_t addr, void *udata)
     uint8_t *md_key = (uint8_t *)_md_key;
     uint8_t *rt_key = (uint8_t *)_rt_key;
 
-    hbool_t        lt_key_changed = FALSE, rt_key_changed = FALSE;
+    hbool_t        lt_key_changed = false, rt_key_changed = false;
     haddr_t        old_root_addr = HADDR_UNDEF;
     unsigned       level;
     H5B_ins_ud_t   bt_ud       = H5B_INS_UD_T_NULL; /* (Old) root node */
@@ -814,8 +814,8 @@ H5B__insert_helper(H5F_t *f, H5B_ins_ud_t *bt_ud, const H5B_class_t *type, uint8
 
     bt = bt_ud->bt;
 
-    *lt_key_changed = FALSE;
-    *rt_key_changed = FALSE;
+    *lt_key_changed = false;
+    *rt_key_changed = false;
 
     /* Get shared info for B-tree */
     if (NULL == (rc_shared = (type->get_shared)(f, udata)))
@@ -903,7 +903,7 @@ H5B__insert_helper(H5F_t *f, H5B_ins_ud_t *bt_ud, const H5B_class_t *type, uint8
             if ((type->new_node)(f, H5B_INS_LEFT, H5B_NKEY(bt, shared, idx), udata, md_key,
                                  &new_child_bt_ud.addr /*out*/) < 0)
                 HGOTO_ERROR(H5E_BTREE, H5E_CANTINSERT, H5B_INS_ERROR, "can't insert minimum leaf node")
-            *lt_key_changed = TRUE;
+            *lt_key_changed = true;
         } /* end else */
 
 #ifdef H5_STRICT_FORMAT_CHECKS
@@ -954,7 +954,7 @@ H5B__insert_helper(H5F_t *f, H5B_ins_ud_t *bt_ud, const H5B_class_t *type, uint8
             if ((type->new_node)(f, H5B_INS_RIGHT, md_key, udata, H5B_NKEY(bt, shared, idx + 1),
                                  &new_child_bt_ud.addr /*out*/) < 0)
                 HGOTO_ERROR(H5E_BTREE, H5E_CANTINSERT, H5B_INS_ERROR, "can't insert maximum leaf node")
-            *rt_key_changed = TRUE;
+            *rt_key_changed = true;
         } /* end else */
 
 #ifdef H5_STRICT_FORMAT_CHECKS
@@ -1009,7 +1009,7 @@ H5B__insert_helper(H5F_t *f, H5B_ins_ud_t *bt_ud, const H5B_class_t *type, uint8
         if (idx > 0) {
             HDassert(type->critical_key == H5B_LEFT);
             HDassert(!(H5B_INS_LEFT == my_ins || H5B_INS_RIGHT == my_ins));
-            *lt_key_changed = FALSE;
+            *lt_key_changed = false;
         } /* end if */
         else
             H5MM_memcpy(lt_key, H5B_NKEY(bt, shared, idx), type->sizeof_nkey);
@@ -1019,7 +1019,7 @@ H5B__insert_helper(H5F_t *f, H5B_ins_ud_t *bt_ud, const H5B_class_t *type, uint8
         if (idx + 1 < bt->nchildren) {
             HDassert(type->critical_key == H5B_RIGHT);
             HDassert(!(H5B_INS_LEFT == my_ins || H5B_INS_RIGHT == my_ins));
-            *rt_key_changed = FALSE;
+            *rt_key_changed = false;
         } /* end if */
         else
             H5MM_memcpy(rt_key, H5B_NKEY(bt, shared, idx + 1), type->sizeof_nkey);
@@ -1305,8 +1305,8 @@ H5B__remove_helper(H5F_t *f, haddr_t addr, const H5B_class_t *type, int level, u
          * method.  The best we can do is to leave the object alone but
          * remove the B-tree reference to the object.
          */
-        *lt_key_changed = FALSE;
-        *rt_key_changed = FALSE;
+        *lt_key_changed = false;
+        *rt_key_changed = false;
         ret_value       = H5B_INS_REMOVE;
     }
 
@@ -1324,7 +1324,7 @@ H5B__remove_helper(H5F_t *f, haddr_t addr, const H5B_class_t *type, int level, u
 
         if (idx > 0)
             /* Don't propagate change out of this B-tree node */
-            *lt_key_changed = FALSE;
+            *lt_key_changed = false;
         else
             H5MM_memcpy(lt_key, H5B_NKEY(bt, shared, idx), type->sizeof_nkey);
     } /* end if */
@@ -1333,7 +1333,7 @@ H5B__remove_helper(H5F_t *f, haddr_t addr, const H5B_class_t *type, int level, u
         bt_flags |= H5AC__DIRTIED_FLAG;
         if (idx + 1 < bt->nchildren)
             /* Don't propagate change out of this B-tree node */
-            *rt_key_changed = FALSE;
+            *rt_key_changed = false;
         else
             H5MM_memcpy(rt_key, H5B_NKEY(bt, shared, idx + 1), type->sizeof_nkey);
     } /* end if */
@@ -1437,7 +1437,7 @@ H5B__remove_helper(H5F_t *f, haddr_t addr, const H5B_class_t *type, int level, u
                 HDmemmove(H5B_NKEY(bt, shared, 0), H5B_NKEY(bt, shared, 1),
                           bt->nchildren * type->sizeof_nkey);
                 H5MM_memcpy(lt_key, H5B_NKEY(bt, shared, 0), type->sizeof_nkey);
-                *lt_key_changed = TRUE;
+                *lt_key_changed = true;
             }
             else
                 /* Slide all but the leftmost 2 keys down, leaving the leftmost
@@ -1466,7 +1466,7 @@ H5B__remove_helper(H5F_t *f, haddr_t addr, const H5B_class_t *type, int level, u
             else {
                 /* Just update rt_key */
                 H5MM_memcpy(rt_key, H5B_NKEY(bt, shared, bt->nchildren - 1), type->sizeof_nkey);
-                *rt_key_changed = TRUE;
+                *rt_key_changed = true;
             } /* end else */
 
             bt->nchildren -= 1;
@@ -1560,8 +1560,8 @@ H5B_remove(H5F_t *f, const H5B_class_t *type, haddr_t addr, void *udata)
     uint64_t _lt_key[128], _rt_key[128];
     uint8_t *lt_key         = (uint8_t *)_lt_key; /*left key*/
     uint8_t *rt_key         = (uint8_t *)_rt_key; /*right key*/
-    hbool_t  lt_key_changed = FALSE;              /*left key changed?*/
-    hbool_t  rt_key_changed = FALSE;              /*right key changed?*/
+    hbool_t  lt_key_changed = false;              /*left key changed?*/
+    hbool_t  rt_key_changed = false;              /*right key changed?*/
     herr_t   ret_value      = SUCCEED;            /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)

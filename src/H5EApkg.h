@@ -55,7 +55,7 @@
 /* Size of the extensible array header on disk */
 #define H5EA_HEADER_SIZE(sizeof_addr, sizeof_size)                                                           \
     (/* General metadata fields */                                                                           \
-     H5EA_METADATA_PREFIX_SIZE(TRUE)                                                                         \
+     H5EA_METADATA_PREFIX_SIZE(true)                                                                         \
                                                                                                              \
      /* General array information */                                                                         \
      + 1 /* Element Size */                                                                                  \
@@ -87,7 +87,7 @@
 /* Size of the extensible array index block on disk */
 #define H5EA_IBLOCK_SIZE(i)                                                                                  \
     (/* General metadata fields */                                                                           \
-     H5EA_METADATA_PREFIX_SIZE(TRUE)                                                                         \
+     H5EA_METADATA_PREFIX_SIZE(true)                                                                         \
                                                                                                              \
      /* Sanity-checking fields */                                                                            \
      + (i)->hdr->sizeof_addr /* File address of array owning the block */                                    \
@@ -102,7 +102,7 @@
 /* Size of the extensible array super block on disk */
 #define H5EA_SBLOCK_SIZE(s)                                                                                  \
     (/* General metadata fields */                                                                           \
-     H5EA_METADATA_PREFIX_SIZE(TRUE)                                                                         \
+     H5EA_METADATA_PREFIX_SIZE(true)                                                                         \
                                                                                                              \
      /* Sanity-checking fields */                                                                            \
      + (s)->hdr->sizeof_addr  /* File address of array owning the block */                                   \
@@ -118,7 +118,7 @@
 /* Size of the extensible array data block prefix on disk */
 #define H5EA_DBLOCK_PREFIX_SIZE(d)                                                                           \
     (/* General metadata fields */                                                                           \
-     H5EA_METADATA_PREFIX_SIZE(TRUE)                                                                         \
+     H5EA_METADATA_PREFIX_SIZE(true)                                                                         \
                                                                                                              \
      /* Sanity-checking fields */                                                                            \
      + (d)->hdr->sizeof_addr  /* File address of array owning the block */                                   \

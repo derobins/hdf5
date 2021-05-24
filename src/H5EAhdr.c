@@ -333,7 +333,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
 
     /* Local variables */
     H5EA_hdr_t *hdr      = NULL;  /* Extensible array header */
-    hbool_t     inserted = FALSE; /* Whether the header was inserted into cache */
+    hbool_t     inserted = false; /* Whether the header was inserted into cache */
 
     /* Check arguments */
     HDassert(f);
@@ -403,7 +403,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     /* Cache the new extensible array header */
     if (H5AC_insert_entry(f, H5AC_EARRAY_HDR, hdr->addr, hdr, H5AC__NO_FLAGS_SET) < 0)
         H5E_THROW(H5E_CANTINSERT, "can't add extensible array header to cache")
-    inserted = TRUE;
+    inserted = true;
 
     /* Add header as child of 'top' proxy */
     if (hdr->top_proxy)

@@ -228,7 +228,7 @@ BEGIN_FUNC(PKG, ERR, herr_t, SUCCEED, FAIL, H5HL__dblk_realloc(H5F_t *f, H5HL_t 
             dblk = NULL;
 
             /* Reset 'single cache object' flag */
-            heap->single_cache_obj = FALSE;
+            heap->single_cache_obj = false;
         } /* end if */
         else {
             /* Resize the heap data block in the cache */

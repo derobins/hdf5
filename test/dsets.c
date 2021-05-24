@@ -1926,7 +1926,7 @@ test_filter_internal(hid_t fid, const char *name, hid_t dcpl, int if_fletcher32,
     TESTING("    filters (setup)");
 
     /* Check if all the filters are available */
-    if (H5Pall_filters_avail(dcpl) != TRUE) {
+    if (H5Pall_filters_avail(dcpl) != true) {
         H5_FAILED();
         HDprintf("    Line %d: Incorrect filter availability\n", __LINE__);
         goto error;
@@ -2840,7 +2840,7 @@ test_missing_filter(hid_t file)
     size_t        i, j;                                   /* Local index variables */
     herr_t        ret;                                    /* Generic return value */
     const char *  testfile       = H5_get_srcdir_filename(FILE_DEFLATE_NAME); /* Corrected test file name */
-    hbool_t       api_ctx_pushed = FALSE;                                     /* Whether API context pushed */
+    hbool_t       api_ctx_pushed = false;                                     /* Whether API context pushed */
 
     TESTING("dataset access with missing filter");
 
@@ -2867,7 +2867,7 @@ test_missing_filter(hid_t file)
     }  /* end if */
 #endif /* H5_HAVE_FILTER_DEFLATE */
     /* Verify deflate filter is not registered currently */
-    if (H5Zfilter_avail(H5Z_FILTER_DEFLATE) != FALSE) {
+    if (H5Zfilter_avail(H5Z_FILTER_DEFLATE) != false) {
         H5_FAILED();
         HDprintf("    Line %d: Deflate filter available\n", __LINE__);
         goto error;
@@ -2897,7 +2897,7 @@ test_missing_filter(hid_t file)
         HDprintf("    Line %d: Can't check filter availability\n", __LINE__);
         goto error;
     } /* end if */
-    if (ret != FALSE) {
+    if (ret != false) {
         H5_FAILED();
         HDprintf("    Line %d: Filter shouldn't be available\n", __LINE__);
         goto error;
@@ -3035,7 +3035,7 @@ test_missing_filter(hid_t file)
 
     /* Re-register the deflate filter */
     /* Verify deflate filter is not registered currently */
-    if (H5Zfilter_avail(H5Z_FILTER_DEFLATE) != FALSE) {
+    if (H5Zfilter_avail(H5Z_FILTER_DEFLATE) != false) {
         H5_FAILED();
         HDprintf("    Line %d: Deflate filter available\n", __LINE__);
         goto error;
@@ -3057,16 +3057,16 @@ test_missing_filter(hid_t file)
 #endif /* H5_HAVE_FILTER_DEFLATE */
 
     /* Pop API context */
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = FALSE;
+    api_ctx_pushed = false;
 
     PASSED();
     return SUCCEED;
 
 error:
     if (api_ctx_pushed)
-        H5CX_pop(FALSE);
+        H5CX_pop(false);
 
     return FAIL;
 } /* end test_missing_filter() */
@@ -8362,8 +8362,8 @@ test_random_chunks(hid_t fapl)
     int nerrors = 0; /* Errors in sub-tests */
 
     nerrors +=
-        test_random_chunks_real("Write/read on randomly selected chunks w/non-implicit index", FALSE, fapl);
-    nerrors += test_random_chunks_real("Write/read on randomly selected chunks w/implicit index", TRUE, fapl);
+        test_random_chunks_real("Write/read on randomly selected chunks w/non-implicit index", false, fapl);
+    nerrors += test_random_chunks_real("Write/read on randomly selected chunks w/implicit index", true, fapl);
 
     return nerrors;
     ;
@@ -10188,7 +10188,7 @@ test_chunk_expand(hid_t fapl)
             FAIL_STACK_ERROR
 
         /* Check that the filter was registered */
-        if (TRUE != H5Zfilter_avail(H5Z_FILTER_EXPAND))
+        if (true != H5Zfilter_avail(H5Z_FILTER_EXPAND))
             FAIL_STACK_ERROR
 
         /* Loop over storage allocation time */
@@ -10639,7 +10639,7 @@ test_chunk_expand(hid_t fapl)
             FAIL_STACK_ERROR
 
         /* Check that the filter was unregistered */
-        if (FALSE != H5Zfilter_avail(H5Z_FILTER_EXPAND))
+        if (false != H5Zfilter_avail(H5Z_FILTER_EXPAND))
             FAIL_STACK_ERROR
 
         PASSED();
@@ -13544,7 +13544,7 @@ gather_cb(const void *dst_buf, size_t dst_buf_bytes_used, void *_gather_info)
     if (gather_info->last_call)
         TEST_ERROR
     if (nelmts < gather_info->max_nelmts)
-        gather_info->last_call = TRUE;
+        gather_info->last_call = true;
 
     /* Compare data and expected data */
     for (i = 0; i < (int)nelmts; i++)
@@ -13612,7 +13612,7 @@ test_gather(void)
         /* Initialize gather_info */
         gather_info.expect_dst_buf = expect_dst_buf;
         gather_info.max_nelmts     = dst_buf_size;
-        gather_info.last_call      = FALSE;
+        gather_info.last_call      = false;
 
         /* Gather data */
         if (H5Dgather(sid, src_buf, H5T_NATIVE_INT, dst_buf_size * sizeof(dst_buf[0]), dst_buf, gather_cb,
@@ -13649,7 +13649,7 @@ test_gather(void)
     /* Initialize gather_info */
     gather_info.expect_dst_buf = expect_dst_buf;
     gather_info.max_nelmts     = dst_buf_size - 1;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
 
     /* Gather data */
     if (H5Dgather(sid, src_buf, H5T_NATIVE_INT, dst_buf_size * sizeof(dst_buf[0]) - 1, dst_buf, gather_cb,
@@ -13689,7 +13689,7 @@ test_gather(void)
         /* Initialize gather_info */
         gather_info.expect_dst_buf = expect_dst_buf;
         gather_info.max_nelmts     = dst_buf_size;
-        gather_info.last_call      = FALSE;
+        gather_info.last_call      = false;
 
         /* Gather data */
         if (H5Dgather(sid, src_buf, H5T_NATIVE_INT, dst_buf_size * sizeof(dst_buf[0]), dst_buf, gather_cb,
@@ -13745,7 +13745,7 @@ test_gather(void)
         /* Initialize gather_info */
         gather_info.expect_dst_buf = expect_dst_buf;
         gather_info.max_nelmts     = dst_buf_size;
-        gather_info.last_call      = FALSE;
+        gather_info.last_call      = false;
 
         /* Gather data */
         if (H5Dgather(sid, src_buf, H5T_NATIVE_INT, dst_buf_size * sizeof(dst_buf[0]), dst_buf, gather_cb,
@@ -13802,7 +13802,7 @@ test_gather(void)
         /* Initialize gather_info */
         gather_info.expect_dst_buf = expect_dst_buf;
         gather_info.max_nelmts     = dst_buf_size;
-        gather_info.last_call      = FALSE;
+        gather_info.last_call      = false;
 
         /* Gather data */
         if (H5Dgather(sid, src_buf, H5T_NATIVE_INT, dst_buf_size * sizeof(dst_buf[0]), dst_buf, gather_cb,
@@ -13836,7 +13836,7 @@ test_gather(void)
         /* Initialize gather_info */
         gather_info.expect_dst_buf = expect_dst_buf;
         gather_info.max_nelmts     = dst_buf_size;
-        gather_info.last_call      = FALSE;
+        gather_info.last_call      = false;
 
         /* Gather data */
         if (H5Dgather(sid, src_buf, H5T_NATIVE_INT, dst_buf_size * sizeof(dst_buf[0]), dst_buf, gather_cb,
@@ -14155,7 +14155,7 @@ test_gather_error(void)
     /* Verify that base configuration passes */
     gather_info.expect_dst_buf = expect_dst_buf;
     gather_info.max_nelmts     = 6;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     if (H5Dgather(sid, src_buf, H5T_NATIVE_INT, 6 * sizeof(dst_buf[0]), dst_buf, gather_cb, &gather_info) < 0)
         TEST_ERROR
 
@@ -14163,7 +14163,7 @@ test_gather_error(void)
      * Test invalid parameters
      */
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(H5T_NATIVE_INT, src_buf, H5T_NATIVE_INT, 6 * sizeof(dst_buf[0]), dst_buf, gather_cb,
@@ -14174,7 +14174,7 @@ test_gather_error(void)
         TEST_ERROR
 
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(sid, NULL, H5T_NATIVE_INT, 6 * sizeof(dst_buf[0]), dst_buf, gather_cb, &gather_info);
@@ -14184,7 +14184,7 @@ test_gather_error(void)
         TEST_ERROR
 
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(sid, src_buf, sid, 6 * sizeof(dst_buf[0]), dst_buf, gather_cb, &gather_info);
@@ -14194,7 +14194,7 @@ test_gather_error(void)
         TEST_ERROR
 
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(sid, src_buf, H5T_NATIVE_INT, 0, dst_buf, gather_cb, &gather_info);
@@ -14204,7 +14204,7 @@ test_gather_error(void)
         TEST_ERROR
 
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(sid, src_buf, H5T_NATIVE_INT, 1, dst_buf, gather_cb, &gather_info);
@@ -14214,7 +14214,7 @@ test_gather_error(void)
         TEST_ERROR
 
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(sid, src_buf, H5T_NATIVE_INT, 6 * sizeof(dst_buf[0]), NULL, gather_cb, &gather_info);
@@ -14224,7 +14224,7 @@ test_gather_error(void)
         TEST_ERROR
 
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(sid, src_buf, H5T_NATIVE_INT, 5 * sizeof(dst_buf[0]), dst_buf, NULL, &gather_info);
@@ -14237,7 +14237,7 @@ test_gather_error(void)
      * Test callback returns failure
      */
     gather_info.expect_dst_buf = expect_dst_buf;
-    gather_info.last_call      = FALSE;
+    gather_info.last_call      = false;
     H5E_BEGIN_TRY
     {
         ret = H5Dgather(sid, src_buf, H5T_NATIVE_INT, 6 * sizeof(dst_buf[0]), dst_buf, gather_error_cb_fail,
@@ -14781,7 +14781,7 @@ test_versionbounds(void)
             if (vdset > 0) /* dataset created successfully */
             {
                 /* Virtual dataset is only available starting in V110 */
-                VERIFY(high >= H5F_LIBVER_V110, TRUE, "virtual dataset");
+                VERIFY(high >= H5F_LIBVER_V110, true, "virtual dataset");
 
                 if (H5Dclose(vdset) < 0)
                     TEST_ERROR
@@ -14858,7 +14858,7 @@ test_object_header_minimization_dcpl(void)
     hid_t   dcpl_id                     = -1;
     hid_t   file_id                     = -1;
     char    filename[FILENAME_BUF_SIZE] = "";
-    hbool_t minimize                    = FALSE;
+    hbool_t minimize                    = false;
     herr_t  ret;
 
     TESTING("dcpl flags to minimize dataset object header");
@@ -14886,25 +14886,25 @@ test_object_header_minimization_dcpl(void)
      */
     if (H5Pget_dset_no_attrs_hint(dcpl_id, &minimize) == FAIL)
         TEST_ERROR
-    if (FALSE != minimize)
+    if (false != minimize)
         TEST_ERROR
 
     /* FALSE-set value
      */
-    if (H5Pset_dset_no_attrs_hint(dcpl_id, FALSE) == FAIL)
+    if (H5Pset_dset_no_attrs_hint(dcpl_id, false) == FAIL)
         TEST_ERROR
     if (H5Pget_dset_no_attrs_hint(dcpl_id, &minimize) == FAIL)
         TEST_ERROR
-    if (FALSE != minimize)
+    if (false != minimize)
         TEST_ERROR
 
     /* TRUE-set value
      */
-    if (H5Pset_dset_no_attrs_hint(dcpl_id, TRUE) == FAIL)
+    if (H5Pset_dset_no_attrs_hint(dcpl_id, true) == FAIL)
         TEST_ERROR
     if (H5Pget_dset_no_attrs_hint(dcpl_id, &minimize) == FAIL)
         TEST_ERROR
-    if (TRUE != minimize)
+    if (true != minimize)
         TEST_ERROR
 
     /* error cases
@@ -14919,7 +14919,7 @@ test_object_header_minimization_dcpl(void)
 
             H5E_BEGIN_TRY
         {
-            ret = H5Pset_dset_no_attrs_hint(-1, FALSE);
+            ret = H5Pset_dset_no_attrs_hint(-1, false);
         }
     H5E_END_TRY;
     if (ret == SUCCEED)
@@ -14927,7 +14927,7 @@ test_object_header_minimization_dcpl(void)
 
             H5E_BEGIN_TRY
         {
-            ret = H5Pset_dset_no_attrs_hint(-1, TRUE);
+            ret = H5Pset_dset_no_attrs_hint(-1, true);
         }
     H5E_END_TRY;
     if (ret == SUCCEED)
@@ -15006,7 +15006,7 @@ test_0sized_dset_metadata_alloc(hid_t fapl_id)
     /*************/
 
     /* Iterate over file format versions */
-    for (new_format = FALSE; new_format <= TRUE; new_format++) {
+    for (new_format = false; new_format <= true; new_format++) {
         H5D_layout_t     layout;     /* Dataset layout type */
         H5D_alloc_time_t alloc_time; /* Storage allocation time */
 
@@ -15256,23 +15256,23 @@ main(void)
         TEST_ERROR
 
     /* Set file space strategy to paged aggregation and persisting free-space */
-    if (H5Pset_file_space_strategy(fcpl2, H5F_FSPACE_STRATEGY_PAGE, TRUE, (hsize_t)1) < 0)
+    if (H5Pset_file_space_strategy(fcpl2, H5F_FSPACE_STRATEGY_PAGE, true, (hsize_t)1) < 0)
         TEST_ERROR
 
     h5_fixname(FILENAME[0], fapl, filename, sizeof filename);
 
     /* Test with paged aggregation enabled or not */
-    for (paged = FALSE; paged <= TRUE; paged++) {
+    for (paged = false; paged <= true; paged++) {
 
         /* Temporary: skip testing for multi/split drivers:
              fail file create when persisting free-space or using paged aggregation strategy */
         if (!contig_addr_vfd && paged)
             continue;
 
-        for (minimized_ohdr = FALSE; minimized_ohdr <= TRUE; minimized_ohdr++) {
+        for (minimized_ohdr = false; minimized_ohdr <= true; minimized_ohdr++) {
 
             /* Test with old & new format groups */
-            for (new_format = FALSE; new_format <= TRUE; new_format++) {
+            for (new_format = false; new_format <= true; new_format++) {
                 hid_t my_fapl, my_fcpl;
 
                 /* Set the FAPL for the type of format */
@@ -15303,8 +15303,8 @@ main(void)
                 if ((file = H5Fcreate(filename, H5F_ACC_TRUNC, my_fcpl, my_fapl)) < 0)
                     goto error;
 
-                if (TRUE == minimized_ohdr) {
-                    if (0 > H5Fset_dset_no_attrs_hint(file, TRUE))
+                if (true == minimized_ohdr) {
+                    if (0 > H5Fset_dset_no_attrs_hint(file, true))
                         goto error;
                     HDputs("(minimized dataset object headers with file setting)");
                 }

@@ -226,16 +226,16 @@ token_lookup(hid_t loc_id, H5O_info2_t *oi)
     int    token_cmp;
 
     if (oi->rc < 2)
-        return FALSE; /*only one link possible*/
+        return false; /*only one link possible*/
 
     for (n = 0; n < idtab_g.nobjs; n++) {
         if (H5Otoken_cmp(loc_id, &idtab_g.obj[n], &oi->token, &token_cmp) < 0)
-            return FALSE;
+            return false;
         if (!token_cmp)
-            return TRUE;
+            return true;
     }
 
-    return FALSE;
+    return false;
 } /* end token_lookup() */
 
 /*-------------------------------------------------------------------------
@@ -824,7 +824,7 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
         TEST_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* Determine the size of datatype (for later) */
@@ -842,7 +842,7 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
         TEST_ERROR
 
     /* Compare the dataspaces */
-    if (H5Sextent_equal(sid, sid2) != TRUE)
+    if (H5Sextent_equal(sid, sid2) != true)
         TEST_ERROR
 
     /* Determine the number of elements in dataspace (for later) */
@@ -877,10 +877,10 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
         TEST_ERROR
 
     /* Reclaim vlen data, if necessary */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE)
+    if (H5Tdetect_class(tid, H5T_VLEN) == true)
         if (H5Treclaim(tid, sid, H5P_DEFAULT, rbuf) < 0)
             TEST_ERROR
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE)
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true)
         if (H5Treclaim(tid2, sid2, H5P_DEFAULT, rbuf2) < 0)
             TEST_ERROR
 
@@ -906,7 +906,7 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
     if (H5Tclose(tid2) < 0)
         TEST_ERROR
 
-    return TRUE;
+    return true;
 
 error:
     if (rbuf)
@@ -921,7 +921,7 @@ error:
         H5Tclose(tid);
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_attribute() */
 
 /*-------------------------------------------------------------------------
@@ -999,7 +999,7 @@ compare_std_attributes(hid_t oid, hid_t oid2, hid_t pid)
     }     /* end if */
 
     /* Objects should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
@@ -1008,7 +1008,7 @@ error:
         H5Aclose(aid);
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_std_attributes() */
 
 /*-------------------------------------------------------------------------
@@ -1036,7 +1036,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
     /* If the type is a compound containing a vlen, loop over all elements for
      * each compound member.  Compounds containing reference  are not supported
      * yet. */
-    if ((H5Tget_class(tid) == H5T_COMPOUND) && (H5Tdetect_class(tid, H5T_VLEN) == TRUE)) {
+    if ((H5Tget_class(tid) == H5T_COMPOUND) && (H5Tdetect_class(tid, H5T_VLEN) == true)) {
         hid_t          memb_id;   /* Member id */
         const uint8_t *memb1;     /* Pointer to current member */
         const uint8_t *memb2;     /* Pointer to current member */
@@ -1099,7 +1099,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
             else {
                 /* vlens cannot currently be nested below the top layer of a
                  * compound */
-                HDassert(H5Tdetect_class(memb_id, H5T_VLEN) == FALSE);
+                HDassert(H5Tdetect_class(memb_id, H5T_VLEN) == false);
 
                 /* Iterate over all elements, calling memcmp() for each */
                 for (elmt = 0; elmt < nelmts; elmt++) {
@@ -1113,7 +1113,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
             }     /* end else */
         }         /* end for */
     }
-    else if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    else if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         const hvl_t *vl_buf1, *vl_buf2; /* Aliases for buffers to compare */
         hid_t        base_tid;          /* Base type of vlen datatype */
         size_t       u;                 /* Local index variable */
@@ -1143,7 +1143,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
         if (H5Tclose(base_tid) < 0)
             TEST_ERROR
     } /* end if */
-    else if (H5Tdetect_class(tid, H5T_REFERENCE) == TRUE) {
+    else if (H5Tdetect_class(tid, H5T_REFERENCE) == true) {
         size_t u; /* Local index variable */
 
         /* Check for "simple" reference datatype */
@@ -1191,24 +1191,24 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
                             TEST_ERROR
                         if (H5Oclose(obj2_id) < 0)
                             TEST_ERROR
-                        return TRUE;
+                        return true;
                     }
                 }
 
                 /* Check for types of objects handled */
                 switch (obj1_type) {
                     case H5O_TYPE_DATASET:
-                        if (compare_datasets(obj1_id, obj2_id, pid, NULL) != TRUE)
+                        if (compare_datasets(obj1_id, obj2_id, pid, NULL) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_GROUP:
-                        if (compare_groups(obj1_id, obj2_id, pid, -1, 0) != TRUE)
+                        if (compare_groups(obj1_id, obj2_id, pid, -1, 0) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_NAMED_DATATYPE:
-                        if (H5Tequal(obj1_id, obj2_id) != TRUE)
+                        if (H5Tequal(obj1_id, obj2_id) != true)
                             TEST_ERROR
                         break;
 
@@ -1269,24 +1269,24 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
                             TEST_ERROR
                         if (H5Oclose(obj2_id) < 0)
                             TEST_ERROR
-                        return TRUE;
+                        return true;
                     }
                 }
 
                 /* Check for types of objects handled */
                 switch (obj1_type) {
                     case H5O_TYPE_DATASET:
-                        if (compare_datasets(obj1_id, obj2_id, pid, NULL) != TRUE)
+                        if (compare_datasets(obj1_id, obj2_id, pid, NULL) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_GROUP:
-                        if (compare_groups(obj1_id, obj2_id, pid, -1, 0) != TRUE)
+                        if (compare_groups(obj1_id, obj2_id, pid, -1, 0) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_NAMED_DATATYPE:
-                        if (H5Tequal(obj1_id, obj2_id) != TRUE)
+                        if (H5Tequal(obj1_id, obj2_id) != true)
                             TEST_ERROR
                         break;
 
@@ -1329,10 +1329,10 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
         TEST_ERROR
 
     /* Data should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
-    return FALSE;
+    return false;
 } /* end compare_data() */
 
 /*-------------------------------------------------------------------------
@@ -1382,7 +1382,7 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* Determine the size of datatype (for later) */
@@ -1400,7 +1400,7 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Compare the dataspaces */
-    if (H5Sextent_equal(sid, sid2) != TRUE)
+    if (H5Sextent_equal(sid, sid2) != true)
         TEST_ERROR
 
     /* Determine the number of elements in dataspace (for later) */
@@ -1418,7 +1418,7 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Compare the rest of the dataset creation property lists */
-    if (H5Pequal(dcpl, dcpl2) != TRUE)
+    if (H5Pequal(dcpl, dcpl2) != true)
         TEST_ERROR
 
     /* Get the number of filters on dataset (for later) */
@@ -1484,10 +1484,10 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Reclaim vlen data, if necessary */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE)
+    if (H5Tdetect_class(tid, H5T_VLEN) == true)
         if (H5Treclaim(tid, sid, H5P_DEFAULT, rbuf) < 0)
             TEST_ERROR
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE)
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true)
         if (H5Treclaim(tid2, sid2, H5P_DEFAULT, rbuf2) < 0)
             TEST_ERROR
 
@@ -1514,11 +1514,11 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Check if the attributes are equal */
-    if (compare_std_attributes(did, did2, pid) != TRUE)
+    if (compare_std_attributes(did, did2, pid) != true)
         TEST_ERROR
 
     /* Datasets should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
@@ -1535,7 +1535,7 @@ error:
         H5Tclose(tid);
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_datasets() */
 
 /*-------------------------------------------------------------------------
@@ -1659,19 +1659,19 @@ compare_groups(hid_t gid, hid_t gid2, hid_t pid, int depth, unsigned copy_flags)
                 switch (oinfo.type) {
                     case H5O_TYPE_GROUP:
                         /* Compare groups */
-                        if (compare_groups(oid, oid2, pid, depth - 1, copy_flags) != TRUE)
+                        if (compare_groups(oid, oid2, pid, depth - 1, copy_flags) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_DATASET:
                         /* Compare datasets */
-                        if (compare_datasets(oid, oid2, pid, NULL) != TRUE)
+                        if (compare_datasets(oid, oid2, pid, NULL) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_NAMED_DATATYPE:
                         /* Compare datatypes */
-                        if (H5Tequal(oid, oid2) != TRUE)
+                        if (H5Tequal(oid, oid2) != true)
                             TEST_ERROR
                         break;
 
@@ -1721,18 +1721,18 @@ compare_groups(hid_t gid, hid_t gid2, hid_t pid, int depth, unsigned copy_flags)
     }             /* end if */
 
     /* Check if the attributes are equal */
-    if (compare_std_attributes(gid, gid2, pid) != TRUE)
+    if (compare_std_attributes(gid, gid2, pid) != true)
         TEST_ERROR
 
     /* Groups should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
     {
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_groups() */
 
 /*-------------------------------------------------------------------------
@@ -1771,9 +1771,9 @@ compare_idx_type(hid_t fapl, hid_t did, H5D_chunk_index_t new_type, H5D_chunk_in
     else if (idx_type != old_type)
         TEST_ERROR
 
-    return TRUE;
+    return true;
 error:
-    return FALSE;
+    return false;
 } /* compare_idx_type() */
 
 /*-------------------------------------------------------------------------
@@ -1852,7 +1852,7 @@ test_copy_named_datatype(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t d
         FAIL_STACK_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* close the destination datatype */
@@ -1962,7 +1962,7 @@ test_copy_named_datatype_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_
         FAIL_STACK_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* close the destination datatype */
@@ -2080,7 +2080,7 @@ test_copy_named_datatype_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, h
         FAIL_STACK_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* close the destination datatype */
@@ -2218,7 +2218,7 @@ test_copy_named_datatype_attr_self(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         FAIL_STACK_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* close the source datatype */
@@ -2234,7 +2234,7 @@ test_copy_named_datatype_attr_self(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         TEST_ERROR
 
     /* verify that the attribute's datatype is committed */
-    if (H5Tcommitted(tid) != TRUE)
+    if (H5Tcommitted(tid) != true)
         TEST_ERROR
 
     /* verify that the tokens of the datatypes are the same */
@@ -2243,16 +2243,16 @@ test_copy_named_datatype_attr_self(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
     if (H5Oget_info3(tid2, &oinfo2, H5O_INFO_BASIC) < 0)
         TEST_ERROR
 
-    same_type = TRUE;
+    same_type = true;
     if (oinfo.fileno == oinfo2.fileno) {
         int token_cmp;
         if (H5Otoken_cmp(tid2, &oinfo.token, &oinfo2.token, &token_cmp) < 0)
             TEST_ERROR
         if (token_cmp)
-            same_type = FALSE;
+            same_type = false;
     }
     else
-        same_type = FALSE;
+        same_type = false;
 
     if (!same_type)
         FAIL_PUTS_ERROR("destination attribute does not use the same committed datatype")
@@ -2399,7 +2399,7 @@ test_copy_dataset_simple(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t d
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -2599,7 +2599,7 @@ test_copy_dataset_versionbounds(hid_t fcpl_src, hid_t fapl_src)
                 TEST_ERROR
 
             /* Check if the datasets are equal */
-            if (compare_datasets(did_src, did_dst, H5P_DEFAULT, buf) != TRUE)
+            if (compare_datasets(did_src, did_dst, H5P_DEFAULT, buf) != true)
                 TEST_ERROR
 
             /* Close the datasets */
@@ -2730,7 +2730,7 @@ test_copy_dataset_simple_samefile(hid_t fcpl, hid_t fapl)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -2866,7 +2866,7 @@ test_copy_dataset_simple_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, h
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3020,7 +3020,7 @@ test_copy_dataset_compound(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3398,11 +3398,11 @@ test_copy_dataset_chunked(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_EARRAY, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_EARRAY, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf1d) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf1d) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3422,11 +3422,11 @@ test_copy_dataset_chunked(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf1d) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf1d) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3446,11 +3446,11 @@ test_copy_dataset_chunked(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3470,11 +3470,11 @@ test_copy_dataset_chunked(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3494,11 +3494,11 @@ test_copy_dataset_chunked(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3518,11 +3518,11 @@ test_copy_dataset_chunked(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3542,11 +3542,11 @@ test_copy_dataset_chunked(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf2d) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3901,11 +3901,11 @@ test_copy_dataset_chunked_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_EARRAY, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_EARRAY, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3925,11 +3925,11 @@ test_copy_dataset_chunked_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3949,11 +3949,11 @@ test_copy_dataset_chunked_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3973,11 +3973,11 @@ test_copy_dataset_chunked_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -3997,11 +3997,11 @@ test_copy_dataset_chunked_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -4021,11 +4021,11 @@ test_copy_dataset_chunked_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -4045,11 +4045,11 @@ test_copy_dataset_chunked_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_SINGLE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -4354,11 +4354,11 @@ test_copy_dataset_chunked_sparse(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl,
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_EARRAY, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_EARRAY, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -4378,11 +4378,11 @@ test_copy_dataset_chunked_sparse(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl,
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_BT2, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_BT2, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -4402,11 +4402,11 @@ test_copy_dataset_chunked_sparse(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl,
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -4426,11 +4426,11 @@ test_copy_dataset_chunked_sparse(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl,
         TEST_ERROR
 
     /* Check if the array index type is correct */
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -5188,7 +5188,7 @@ test_copy_dataset_compact(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -5336,7 +5336,7 @@ test_copy_dataset_external(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -5481,7 +5481,7 @@ test_copy_dataset_named_dtype(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hi
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -5647,7 +5647,7 @@ test_copy_dataset_named_dtype_hier(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -5815,7 +5815,7 @@ test_copy_dataset_named_dtype_hier_outside(hid_t fcpl_src, hid_t fcpl_dst, hid_t
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -5994,7 +5994,7 @@ test_copy_dataset_multi_ohdr_chunks(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fa
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -6164,7 +6164,7 @@ test_copy_dataset_attr_named_dtype(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -6304,7 +6304,7 @@ test_copy_dataset_contig_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -6324,7 +6324,7 @@ test_copy_dataset_contig_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -6493,11 +6493,11 @@ test_copy_dataset_chunked_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid
     if ((did2 = H5Dopen2(fid_dst, NAME_DATASET_VL, H5P_DEFAULT)) < 0)
         TEST_ERROR
 
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -6516,11 +6516,11 @@ test_copy_dataset_chunked_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid
     if ((did2 = H5Dopen2(fid_dst, NAME_DATASET_VL2, H5P_DEFAULT)) < 0)
         TEST_ERROR
 
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -6540,7 +6540,7 @@ test_copy_dataset_chunked_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -6692,7 +6692,7 @@ test_copy_dataset_compact_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -6712,7 +6712,7 @@ test_copy_dataset_compact_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -6850,7 +6850,7 @@ test_copy_attribute_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
     if ((aid2 = H5Aopen_by_idx(did2, ".", H5_INDEX_CRT_ORDER, H5_ITER_INC, (hsize_t)0, H5P_DEFAULT,
                                H5P_DEFAULT)) < 0)
         TEST_ERROR
-    if (compare_attribute(aid, aid2, H5P_DEFAULT, NULL, did) != TRUE)
+    if (compare_attribute(aid, aid2, H5P_DEFAULT, NULL, did) != true)
         TEST_ERROR
     if (H5Aclose(aid) < 0)
         TEST_ERROR
@@ -7056,7 +7056,7 @@ compare_attribute_compound_vlstr(hid_t loc, hid_t loc2)
         FAIL_STACK_ERROR
     if (H5Aclose(aid2) < 0)
         FAIL_STACK_ERROR
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
@@ -7072,7 +7072,7 @@ error:
         H5Pclose(dxpl_id);
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 
 } /* compare_attribute_compound_vlstr() */
 
@@ -7505,7 +7505,7 @@ test_copy_group_empty(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -7661,7 +7661,7 @@ test_copy_root_group(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_f
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -7820,7 +7820,7 @@ test_copy_group(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl)
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -7989,7 +7989,7 @@ test_copy_group_deep(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_f
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -8122,7 +8122,7 @@ test_copy_group_loop(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_f
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -8275,7 +8275,7 @@ test_copy_group_wide_loop(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t 
         FAIL_STACK_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the destination group */
@@ -8516,7 +8516,7 @@ test_copy_group_links(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_
                     TEST_ERROR
                 if ((did2 = H5Dopen2(fid_dst, NAME_LINK_SOFT, H5P_DEFAULT)) < 0)
                     TEST_ERROR
-                if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+                if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
                     TEST_ERROR
 
                 /* Delete expanded dataset, add soft link */
@@ -8549,7 +8549,7 @@ test_copy_group_links(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_
                     TEST_ERROR
                 if ((did2 = H5Dopen2(fid_dst, NAME_LINK_EXTERN, H5P_DEFAULT)) < 0)
                     TEST_ERROR
-                if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+                if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
                     TEST_ERROR
 
                 /* Delete expanded dataset, add external link */
@@ -8569,7 +8569,7 @@ test_copy_group_links(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_
             } /* end if */
 
             /* Check if the groups are equal */
-            if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+            if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
                 TEST_ERROR
 
             /* close the destination group */
@@ -8593,7 +8593,7 @@ test_copy_group_links(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_
                 TEST_ERROR
 
             /* Compare the groups */
-            if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+            if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
                 TEST_ERROR
 
             /* Close groups */
@@ -8762,7 +8762,7 @@ test_copy_soft_link(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fa
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -8922,7 +8922,7 @@ test_copy_ext_link(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fap
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -9219,7 +9219,7 @@ test_copy_path(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -9304,7 +9304,7 @@ test_copy_same_file_named_datatype(hid_t fcpl_src, hid_t fapl)
         FAIL_STACK_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* close the destination datatype */
@@ -9414,7 +9414,7 @@ test_copy_old_layout(hid_t fcpl_dst, hid_t fapl, hbool_t test_open)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, NULL) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -9574,7 +9574,7 @@ test_copy_dataset_compact_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -9594,7 +9594,7 @@ test_copy_dataset_compact_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid_copy, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid_copy, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -9748,7 +9748,7 @@ test_copy_dataset_contig_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -9768,7 +9768,7 @@ test_copy_dataset_contig_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid_copy, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid_copy, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -9947,7 +9947,7 @@ test_copy_dataset_chunked_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -9967,7 +9967,7 @@ test_copy_dataset_chunked_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid_copy, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid_copy, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -10135,7 +10135,7 @@ test_copy_dataset_compressed_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -10155,7 +10155,7 @@ test_copy_dataset_compressed_named_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid_copy, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid_copy, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -10325,7 +10325,7 @@ test_copy_dataset_compact_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -10345,7 +10345,7 @@ test_copy_dataset_compact_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -10528,7 +10528,7 @@ test_copy_dataset_contig_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, h
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -10548,7 +10548,7 @@ test_copy_dataset_contig_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, h
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -10736,11 +10736,11 @@ test_copy_dataset_chunked_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
     if ((did2 = H5Dopen2(fid_dst, NAME_DATASET_VL_VL, H5P_DEFAULT)) < 0)
         TEST_ERROR
 
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_FARRAY, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -10759,11 +10759,11 @@ test_copy_dataset_chunked_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
     if ((did2 = H5Dopen2(fid_dst, NAME_DATASET_VL_VL2, H5P_DEFAULT)) < 0)
         TEST_ERROR
 
-    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != TRUE)
+    if (compare_idx_type(src_fapl, did2, H5D_CHUNK_IDX_NONE, H5D_CHUNK_IDX_BTREE) != true)
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -10783,7 +10783,7 @@ test_copy_dataset_chunked_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, 
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -10970,7 +10970,7 @@ test_copy_dataset_compressed_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -10990,7 +10990,7 @@ test_copy_dataset_compressed_vl_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fap
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -11156,7 +11156,7 @@ test_copy_dataset_contig_cmpd_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl,
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -11176,7 +11176,7 @@ test_copy_dataset_contig_cmpd_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl,
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -11341,7 +11341,7 @@ test_copy_dataset_chunked_cmpd_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -11361,7 +11361,7 @@ test_copy_dataset_chunked_cmpd_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -11526,7 +11526,7 @@ test_copy_dataset_compact_cmpd_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the destination dataset */
@@ -11546,7 +11546,7 @@ test_copy_dataset_compact_cmpd_vl(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl
         TEST_ERROR
 
     /* Reclaim vlen buffer */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         if ((dxpl_id = H5Pcreate(H5P_DATASET_XFER)) < 0)
             TEST_ERROR
         if (H5Pset_vlen_mem_manager(dxpl_id, NULL, NULL, NULL, NULL) < 0)
@@ -12083,7 +12083,7 @@ test_copy_attr_crt_order(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t d
         TEST_ERROR
 
     /* Compare the attributes */
-    if (compare_std_attributes(gid1, gid2, H5P_DEFAULT) != TRUE)
+    if (compare_std_attributes(gid1, gid2, H5P_DEFAULT) != true)
         TEST_ERROR
 
     /* Close groups */
@@ -12099,7 +12099,7 @@ test_copy_attr_crt_order(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t d
         TEST_ERROR
 
     /* Compare the attributes */
-    if (compare_std_attributes(gid1, gid2, H5P_DEFAULT) != TRUE)
+    if (compare_std_attributes(gid1, gid2, H5P_DEFAULT) != true)
         TEST_ERROR
 
     /* Close groups */
@@ -16718,7 +16718,7 @@ test_copy_option(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
         /* Create link creation plist to pass in intermediate group creation */
         if ((lcpl_id = H5Pcreate(H5P_LINK_CREATE)) < 0)
             TEST_ERROR
-        if (H5Pset_create_intermediate_group(lcpl_id, TRUE) < 0)
+        if (H5Pset_create_intermediate_group(lcpl_id, true) < 0)
             TEST_ERROR
 
         if (H5Ocopy(fid_src, NAME_GROUP_TOP, fid_dst, "/new_g0/new_g00", pid, lcpl_id) < 0)
@@ -16798,7 +16798,7 @@ test_copy_option(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
     } /* end else */
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, pid, depth, flag) != TRUE)
+    if (compare_groups(gid, gid2, pid, depth, flag) != true)
         TEST_ERROR
     if (H5Gclose(gid2) < 0)
         TEST_ERROR
@@ -16985,9 +16985,9 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did3, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did3, H5P_DEFAULT, buf) != true)
         TEST_ERROR
-    if (compare_datasets(did2, did4, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did2, did4, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the copied dataset */
@@ -17012,9 +17012,9 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did3, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did3, H5P_DEFAULT, buf) != true)
         TEST_ERROR
-    if (compare_datasets(did2, did4, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did2, did4, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the copied dataset in DST file */
@@ -17060,9 +17060,9 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did3, H5P_DEFAULT, newbuf) != TRUE)
+    if (compare_datasets(did, did3, H5P_DEFAULT, newbuf) != true)
         TEST_ERROR
-    if (compare_datasets(did2, did4, H5P_DEFAULT, newbuf) != TRUE)
+    if (compare_datasets(did2, did4, H5P_DEFAULT, newbuf) != true)
         TEST_ERROR
 
     /* close the copied dataset in SRC file */
@@ -17086,9 +17086,9 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did3, H5P_DEFAULT, newbuf) != TRUE)
+    if (compare_datasets(did, did3, H5P_DEFAULT, newbuf) != true)
         TEST_ERROR
-    if (compare_datasets(did2, did4, H5P_DEFAULT, newbuf) != TRUE)
+    if (compare_datasets(did2, did4, H5P_DEFAULT, newbuf) != true)
         TEST_ERROR
 
     /* close the copied dataset in DST file */
@@ -17144,7 +17144,7 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the copied dataset in SRC file */
@@ -17164,7 +17164,7 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the datasets are equal */
-    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != TRUE)
+    if (compare_datasets(did, did2, H5P_DEFAULT, buf) != true)
         TEST_ERROR
 
     /* close the copied dataset in DST file */
@@ -17210,7 +17210,7 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the DST dataset */
@@ -17229,7 +17229,7 @@ test_copy_dataset_open(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst
         TEST_ERROR
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != TRUE)
+    if (compare_groups(gid, gid2, H5P_DEFAULT, -1, 0) != true)
         TEST_ERROR
 
     /* close the group in DST file */
@@ -17343,7 +17343,7 @@ main(void)
         /* Start with same_file == TRUE.  Use source file settings for these
          * tests.  Don't run with a non-default destination file setting, as
          * destination settings have no effect. */
-        same_file = TRUE;
+        same_file = true;
 
         /* No need to test dense attributes with old format */
         if (!(configuration & CONFIG_SRC_NEW_FORMAT) && (configuration & CONFIG_DENSE))
@@ -17361,7 +17361,7 @@ main(void)
         if (configuration & CONFIG_SHARE_DST) {
             HDputs("Testing with shared dst messages:");
             fcpl_dst  = fcpl_shared;
-            same_file = FALSE;
+            same_file = false;
         }
         else {
             HDputs("Testing without shared dst messages:");
@@ -17393,7 +17393,7 @@ main(void)
         if (configuration & CONFIG_DST_NEW_FORMAT) {
             HDputs("Testing with latest format for destination file:");
             dst_fapl  = fapl2;
-            same_file = FALSE;
+            same_file = false;
         } /* end if */
         else {
             HDputs("Testing with oldest file format for destination file:");
@@ -17406,8 +17406,8 @@ main(void)
         nerrors += test_copy_dataset_simple_samefile(fcpl_src, src_fapl);
 
         /* Test with dataset opened in the file or not */
-        nerrors += test_copy_dataset_simple_empty(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-        nerrors += test_copy_dataset_simple_empty(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+        nerrors += test_copy_dataset_simple_empty(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+        nerrors += test_copy_dataset_simple_empty(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
         nerrors += test_copy_dataset_compound(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
         nerrors += test_copy_dataset_chunked(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
@@ -17416,15 +17416,15 @@ main(void)
         nerrors += test_copy_dataset_compressed(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
         /* Test with dataset opened in the file or not */
-        nerrors += test_copy_dataset_no_edge_filt(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-        nerrors += test_copy_dataset_no_edge_filt(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+        nerrors += test_copy_dataset_no_edge_filt(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+        nerrors += test_copy_dataset_no_edge_filt(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
         /* Test with dataset opened in the file or not */
-        nerrors += test_copy_dataset_compact(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-        nerrors += test_copy_dataset_compact(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+        nerrors += test_copy_dataset_compact(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+        nerrors += test_copy_dataset_compact(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
-        nerrors += test_copy_dataset_multi_ohdr_chunks(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-        nerrors += test_copy_dataset_multi_ohdr_chunks(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+        nerrors += test_copy_dataset_multi_ohdr_chunks(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+        nerrors += test_copy_dataset_multi_ohdr_chunks(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
         nerrors += test_copy_dataset_attr_named_dtype(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
@@ -17437,8 +17437,8 @@ main(void)
         nerrors += test_copy_group_links(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
         /* Test with dataset opened in the file or not */
-        nerrors += test_copy_soft_link(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-        nerrors += test_copy_soft_link(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+        nerrors += test_copy_soft_link(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+        nerrors += test_copy_soft_link(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
         nerrors += test_copy_ext_link(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
         nerrors += test_copy_exist(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
@@ -17448,25 +17448,25 @@ main(void)
 
         nerrors += test_copy_attr_crt_order(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
-        nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_WITHOUT_ATTR_FLAG, FALSE,
+        nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_WITHOUT_ATTR_FLAG, false,
                                     "H5Ocopy(): without attributes");
-        nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, 0, TRUE,
+        nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, 0, true,
                                     "H5Ocopy(): with missing groups");
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_EXPAND_SOFT_LINK_FLAG,
-                                    FALSE, "H5Ocopy(): expand soft link");
+                                    false, "H5Ocopy(): expand soft link");
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_EXPAND_EXT_LINK_FLAG,
-                                    FALSE, "H5Ocopy(): expand external link");
+                                    false, "H5Ocopy(): expand external link");
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl,
-                                    H5O_COPY_EXPAND_SOFT_LINK_FLAG | H5O_COPY_EXPAND_EXT_LINK_FLAG, FALSE,
+                                    H5O_COPY_EXPAND_SOFT_LINK_FLAG | H5O_COPY_EXPAND_EXT_LINK_FLAG, false,
                                     "H5Ocopy(): expand soft and external links");
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_SHALLOW_HIERARCHY_FLAG,
-                                    FALSE, "H5Ocopy(): shallow group copy");
+                                    false, "H5Ocopy(): shallow group copy");
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_EXPAND_REFERENCE_FLAG,
-                                    FALSE, "H5Ocopy(): expand object reference");
+                                    false, "H5Ocopy(): expand object reference");
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_PRESERVE_NULL_FLAG,
-                                    FALSE, "H5Ocopy(): preserve NULL messages");
+                                    false, "H5Ocopy(): preserve NULL messages");
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl,
-                                    H5O_COPY_WITHOUT_ATTR_FLAG | H5O_COPY_PRESERVE_NULL_FLAG, TRUE,
+                                    H5O_COPY_WITHOUT_ATTR_FLAG | H5O_COPY_PRESERVE_NULL_FLAG, true,
                                     "H5Ocopy(): preserve NULL messages");
         nerrors += test_copy_dataset_open(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
@@ -17480,7 +17480,7 @@ main(void)
             nerrors += test_copy_named_datatype_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
             /* Loop over reopening the file */
-            for (reopen = FALSE; reopen <= TRUE; reopen++) {
+            for (reopen = false; reopen <= true; reopen++) {
                 nerrors += test_copy_committed_datatype_merge(fcpl_src, fcpl_dst, src_fapl, dst_fapl, reopen);
 
                 if (same_file)
@@ -17514,21 +17514,21 @@ main(void)
             nerrors += test_copy_dataset_contig_named_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
             /* Test with dataset opened in the file or not */
-            nerrors += test_copy_dataset_chunked_named_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-            nerrors += test_copy_dataset_chunked_named_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+            nerrors += test_copy_dataset_chunked_named_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+            nerrors += test_copy_dataset_chunked_named_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
             nerrors += test_copy_dataset_compressed_named_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
             nerrors += test_copy_dataset_compact_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
             /* Test with dataset opened in the file or not */
-            nerrors += test_copy_dataset_contig_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-            nerrors += test_copy_dataset_contig_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+            nerrors += test_copy_dataset_contig_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+            nerrors += test_copy_dataset_contig_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
             nerrors += test_copy_dataset_chunked_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
 
             /* Test with dataset opened in the file or not */
-            nerrors += test_copy_dataset_compressed_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, FALSE);
-            nerrors += test_copy_dataset_compressed_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, TRUE);
+            nerrors += test_copy_dataset_compressed_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, false);
+            nerrors += test_copy_dataset_compressed_vl_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl, true);
 
             nerrors += test_copy_dataset_contig_cmpd_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
             nerrors += test_copy_dataset_chunked_cmpd_vl(fcpl_src, fcpl_dst, src_fapl, dst_fapl);
@@ -17537,8 +17537,8 @@ main(void)
             nerrors += test_copy_same_file_named_datatype(fcpl_src, src_fapl);
 
             /* Test with dataset opened in the file or not */
-            nerrors += test_copy_old_layout(fcpl_dst, dst_fapl, FALSE);
-            nerrors += test_copy_old_layout(fcpl_dst, dst_fapl, TRUE);
+            nerrors += test_copy_old_layout(fcpl_dst, dst_fapl, false);
+            nerrors += test_copy_old_layout(fcpl_dst, dst_fapl, true);
 
             /* Test with dataset opened in the file or not */
             nerrors += test_copy_null_ref(fcpl_src, fcpl_dst, src_fapl, dst_fapl);

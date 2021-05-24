@@ -1636,7 +1636,7 @@ main(void)
     unsigned            nerrors = 0;            /* Cumulative error count */
     time_t              curr_time;              /* Current time, for seeding random number generator */
     int                 ExpressMode;            /* Test express value */
-    hbool_t             api_ctx_pushed = FALSE; /* Whether API context pushed */
+    hbool_t             api_ctx_pushed = false; /* Whether API context pushed */
 
     /* Reset library */
     h5_reset();
@@ -1651,7 +1651,7 @@ main(void)
     /* Push API context */
     if (H5CX_push() < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Seed random #'s */
     curr_time = HDtime(NULL);
@@ -1753,10 +1753,10 @@ main(void)
         } /* end for */
 
         /* Check skipping elements */
-        nerrors += test_skip_elmts(fapl, &cparam, &tparam, (hsize_t)1, TRUE, "skipping to first element");
+        nerrors += test_skip_elmts(fapl, &cparam, &tparam, (hsize_t)1, true, "skipping to first element");
         nerrors += test_skip_elmts(fapl, &cparam, &tparam, ((hsize_t)1 << cparam.max_dblk_page_nelmts_bits),
-                                   TRUE, "skipping to first element in data block page");
-        nerrors += test_skip_elmts(fapl, &cparam, &tparam, (hsize_t)(tparam.nelmts - 1), TRUE,
+                                   true, "skipping to first element in data block page");
+        nerrors += test_skip_elmts(fapl, &cparam, &tparam, (hsize_t)(tparam.nelmts - 1), true,
                                    "skipping to last element");
 
         /* Create Fixed Array */
@@ -1774,7 +1774,7 @@ main(void)
         init_cparam(&cparam, &tparam);
 
         /* Set the last element in the Fixed Array */
-        nerrors += test_skip_elmts(fapl, &cparam, &tparam, (hsize_t)(tparam.nelmts - 1), FALSE,
+        nerrors += test_skip_elmts(fapl, &cparam, &tparam, (hsize_t)(tparam.nelmts - 1), false,
                                    "skipping to last element");
     } /* end for */
 
@@ -1782,9 +1782,9 @@ main(void)
     nerrors += (h5_verify_cached_stabs(FILENAME, fapl) < 0 ? 1 : 0);
 
     /* Pop API context */
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = FALSE;
+    api_ctx_pushed = false;
 
     if (nerrors)
         goto error;
@@ -1805,7 +1805,7 @@ error:
     H5E_END_TRY;
 
     if (api_ctx_pushed)
-        H5CX_pop(FALSE);
+        H5CX_pop(false);
 
     HDexit(EXIT_FAILURE);
 } /* end main() */

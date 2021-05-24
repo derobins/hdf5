@@ -72,7 +72,7 @@ static herr_t H5AC__verify_tag(const H5AC_class_t *type);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -207,7 +207,7 @@ H5AC_term_package(void)
 
     if (H5_PKG_INIT_VAR)
         /* Reset interface initialization flag */
-        H5_PKG_INIT_VAR = FALSE;
+        H5_PKG_INIT_VAR = false;
 
     FUNC_LEAVE_NOAPI(0)
 } /* end H5AC_term_package() */
@@ -233,7 +233,7 @@ hbool_t
 H5AC_cache_image_pending(const H5F_t *f)
 {
     H5C_t * cache_ptr;
-    hbool_t ret_value = FALSE; /* Return value */
+    hbool_t ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -367,7 +367,7 @@ H5AC_create(const H5F_t *f, H5AC_cache_config_t *config_ptr, H5AC_cache_image_co
          */
         f->shared->cache =
             H5C_create(H5AC__DEFAULT_MAX_CACHE_SIZE, H5AC__DEFAULT_MIN_CLEAN_SIZE, (H5AC_NTYPES - 1),
-                       H5AC_class_s, H5AC__check_if_write_permitted, TRUE, NULL, NULL);
+                       H5AC_class_s, H5AC__check_if_write_permitted, true, NULL, NULL);
 #ifdef H5_HAVE_PARALLEL
     }  /* end else */
 #endif /* H5_HAVE_PARALLEL */
@@ -1256,7 +1256,7 @@ H5AC_prep_for_file_flush(H5F_t *f)
     HDassert(f->shared);
     HDassert(f->shared->cache);
 
-    if (H5C_set_slist_enabled(f->shared->cache, TRUE, FALSE) < 0)
+    if (H5C_set_slist_enabled(f->shared->cache, true, false) < 0)
 
         HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "slist enabled failed")
 
@@ -1308,7 +1308,7 @@ H5AC_secure_from_file_flush(H5F_t *f)
     HDassert(f->shared);
     HDassert(f->shared->cache);
 
-    if (H5C_set_slist_enabled(f->shared->cache, FALSE, FALSE) < 0)
+    if (H5C_set_slist_enabled(f->shared->cache, false, false) < 0)
 
         HGOTO_ERROR(H5E_CACHE, H5E_SYSTEM, FAIL, "slist enabled failed")
 
@@ -1734,11 +1734,11 @@ H5AC_get_cache_auto_resize_config(const H5AC_t *cache_ptr, H5AC_cache_config_t *
 
     /* Set the information to return */
     if (internal_config.rpt_fcn == NULL)
-        config_ptr->rpt_fcn_enabled = FALSE;
+        config_ptr->rpt_fcn_enabled = false;
     else
-        config_ptr->rpt_fcn_enabled = TRUE;
-    config_ptr->open_trace_file        = FALSE;
-    config_ptr->close_trace_file       = FALSE;
+        config_ptr->rpt_fcn_enabled = true;
+    config_ptr->open_trace_file        = false;
+    config_ptr->close_trace_file       = false;
     config_ptr->trace_file_name[0]     = '\0';
     config_ptr->evictions_enabled      = evictions_enabled;
     config_ptr->set_initial_size       = internal_config.set_initial_size;
@@ -1945,7 +1945,7 @@ H5AC_set_cache_auto_resize_config(H5AC_t *cache_ptr, H5AC_cache_config_t *config
          * This will be trace output until we create a special API call. JSON
          * output is generated when logging is controlled by the H5P calls.
          */
-        if (H5C_log_set_up((H5C_t *)cache_ptr, config_ptr->trace_file_name, H5C_LOG_STYLE_TRACE, TRUE) < 0)
+        if (H5C_log_set_up((H5C_t *)cache_ptr, config_ptr->trace_file_name, H5C_LOG_STYLE_TRACE, true) < 0)
             HGOTO_ERROR(H5E_CACHE, H5E_LOGGING, FAIL, "mdc logging setup failed")
     }
 
@@ -2032,7 +2032,7 @@ H5AC_validate_config(H5AC_cache_config_t *config_ptr)
             HGOTO_ERROR(H5E_CACHE, H5E_BADVALUE, FAIL, "config_ptr->trace_file_name too long")
     } /* end if */
 
-    if ((config_ptr->evictions_enabled == FALSE) &&
+    if ((config_ptr->evictions_enabled == false) &&
         ((config_ptr->incr_mode != H5C_incr__off) || (config_ptr->flash_incr_mode != H5C_flash_incr__off) ||
          (config_ptr->decr_mode != H5C_decr__off)))
         HGOTO_ERROR(H5E_CACHE, H5E_BADVALUE, FAIL, "Can't disable evictions while auto-resize is enabled")
@@ -2140,7 +2140,7 @@ H5AC__check_if_write_permitted(const H5F_t
 #ifdef H5_HAVE_PARALLEL
     H5AC_aux_t *aux_ptr = NULL;
 #endif /* H5_HAVE_PARALLEL */
-    hbool_t write_permitted = TRUE;
+    hbool_t write_permitted = true;
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -2492,7 +2492,7 @@ H5AC_cork(H5F_t *f, haddr_t obj_addr, unsigned action, hbool_t *corked)
     if (action == H5AC__GET_CORKED) {
         HDassert(corked);
         if (H5C_get_num_objs_corked(f->shared->cache) == 0) {
-            *corked = FALSE;
+            *corked = false;
             HGOTO_DONE(SUCCEED)
         }
     }

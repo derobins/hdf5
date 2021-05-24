@@ -81,9 +81,9 @@ H5D__select_io(const H5D_io_info_t *io_info, size_t elmt_size, size_t nelmts, co
                const H5S_t *mem_space)
 {
     H5S_sel_iter_t *mem_iter       = NULL;  /* Memory selection iteration info */
-    hbool_t         mem_iter_init  = FALSE; /* Memory selection iteration info has been initialized */
+    hbool_t         mem_iter_init  = false; /* Memory selection iteration info has been initialized */
     H5S_sel_iter_t *file_iter      = NULL;  /* File selection iteration info */
-    hbool_t         file_iter_init = FALSE; /* File selection iteration info has been initialized */
+    hbool_t         file_iter_init = false; /* File selection iteration info has been initialized */
     hsize_t *       mem_off        = NULL;  /* Pointer to sequence offsets in memory */
     hsize_t *       file_off       = NULL;  /* Pointer to sequence offsets in the file */
     size_t *        mem_len        = NULL;  /* Pointer to sequence lengths in memory */

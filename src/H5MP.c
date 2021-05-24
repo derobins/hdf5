@@ -59,7 +59,7 @@
 /********************************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /********************/
 /* Static Variables */
@@ -146,20 +146,20 @@ H5MP__new_page(H5MP_pool_t *mp, size_t page_size)
         if (NULL == (new_page = (H5MP_page_t *)H5MM_malloc(page_size)))
             HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, NULL, "memory allocation failed for page")
         new_page->free_size = page_size - H5MP_BLOCK_ALIGN(sizeof(H5MP_page_t));
-        new_page->fac_alloc = FALSE;
+        new_page->fac_alloc = false;
     } /* end if */
     else {
         if (NULL == (new_page = (H5MP_page_t *)H5FL_FAC_MALLOC(mp->page_fac)))
             HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, NULL, "memory allocation failed for page")
         new_page->free_size = mp->max_size;
-        new_page->fac_alloc = TRUE;
+        new_page->fac_alloc = true;
     } /* end else */
 
     /* Initialize page information */
     first_blk          = H5MP_PAGE_FIRST_BLOCK(new_page);
     first_blk->size    = new_page->free_size;
     first_blk->page    = new_page;
-    first_blk->is_free = TRUE;
+    first_blk->is_free = true;
     first_blk->prev    = NULL;
     first_blk->next    = NULL;
 
@@ -287,14 +287,14 @@ found:
 
         /* Set blocks' information */
         new_free->size      = alloc_free->size - needed;
-        new_free->is_free   = TRUE;
+        new_free->is_free   = true;
         new_free->page      = alloc_free->page;
         alloc_free->size    = needed;
-        alloc_free->is_free = FALSE;
+        alloc_free->is_free = false;
     } /* end if */
     else {
         /* Use whole free space block for new block */
-        alloc_free->is_free = FALSE;
+        alloc_free->is_free = false;
     } /* end else */
 
     /* Update page & pool's free size information */
@@ -342,8 +342,8 @@ H5MP_free(H5MP_pool_t *mp, void *spc)
         (H5MP_page_blk_t *)((void *)(((unsigned char *)spc) - H5MP_BLOCK_ALIGN(sizeof(H5MP_page_blk_t))));
 
     /* Mark block as free */
-    HDassert(spc_blk->is_free == FALSE);
-    spc_blk->is_free = TRUE;
+    HDassert(spc_blk->is_free == false);
+    spc_blk->is_free = true;
 
     /* Add it's space to the amount of free space in the page & pool */
     spc_page = spc_blk->page;

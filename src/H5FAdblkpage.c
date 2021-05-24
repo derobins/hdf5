@@ -136,7 +136,7 @@ BEGIN_FUNC(PKG, ERR, herr_t, SUCCEED, FAIL,
 
     /* Local variables */
     H5FA_dblk_page_t *dblk_page = NULL;  /* Fixed array data block page */
-    hbool_t           inserted  = FALSE; /* Whether the header was inserted into cache */
+    hbool_t           inserted  = false; /* Whether the header was inserted into cache */
 
 #ifdef H5FA_DEBUG
     HDfprintf(stderr, "%s: Called, addr = %a\n", FUNC, addr);
@@ -163,7 +163,7 @@ BEGIN_FUNC(PKG, ERR, herr_t, SUCCEED, FAIL,
     /* Cache the new fixed array data block page */
     if (H5AC_insert_entry(hdr->f, H5AC_FARRAY_DBLK_PAGE, dblk_page->addr, dblk_page, H5AC__NO_FLAGS_SET) < 0)
         H5E_THROW(H5E_CANTINSERT, "can't add fixed array data block page to cache")
-    inserted = TRUE;
+    inserted = true;
 
     /* Add data block page as child of 'top' proxy */
     if (hdr->top_proxy) {

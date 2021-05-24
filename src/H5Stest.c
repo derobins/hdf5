@@ -171,7 +171,7 @@ H5S__check_spans_tail_ptr(const H5S_hyper_span_info_t *span_lst)
 {
     H5S_hyper_span_t *cur_elem;
     H5S_hyper_span_t *actual_tail = NULL;
-    htri_t            ret_value   = TRUE; /* Return value */
+    htri_t            ret_value   = true; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -219,7 +219,7 @@ H5S__check_points_tail_ptr(const H5S_pnt_list_t *pnt_lst)
 {
     H5S_pnt_node_t *cur_elem;
     H5S_pnt_node_t *actual_tail = NULL;
-    htri_t          ret_value   = TRUE; /* Return value */
+    htri_t          ret_value   = true; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -352,7 +352,7 @@ htri_t
 H5S__internal_consistency_test(hid_t space_id)
 {
     H5S_t *space;            /* Pointer to 1st dataspace */
-    htri_t ret_value = TRUE; /* Return value */
+    htri_t ret_value = true; /* Return value */
 
     FUNC_ENTER_PACKAGE
 

@@ -40,8 +40,8 @@ const char *FILENAME[] = {"meta_perf_1", "meta_perf_2", "meta_perf_3", NULL};
 int     NUM_DSETS   = 16;
 int     NUM_ATTRS   = 8;
 int     BATCH_ATTRS = 2;
-hbool_t flush_dset  = FALSE;
-hbool_t flush_attr  = FALSE;
+hbool_t flush_dset  = false;
+hbool_t flush_attr  = false;
 int     nerrors     = 0; /* errors count */
 hid_t   fapl;
 
@@ -126,9 +126,9 @@ parse_options(int argc, char **argv)
 
                 case 'f': /* Call H5Fflush for each dataset or attribute */
                     if (!strcmp("a", (*argv + 2)))
-                        flush_attr = TRUE;
+                        flush_attr = true;
                     else if (!strcmp("d", (*argv + 2)))
-                        flush_dset = TRUE;
+                        flush_dset = true;
                     else {
                         nerrors++;
                         return (1);

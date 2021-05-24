@@ -276,7 +276,7 @@ test_core(void)
             FAIL_PUTS_ERROR("unable to remove backing store file");
 
     /* Create and close file w/ backing store off */
-    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, FALSE) < 0)
+    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, false) < 0)
         TEST_ERROR;
 
     /* Check that the VFD feature flags are correct.
@@ -319,7 +319,7 @@ test_core(void)
      ************************************************************************/
 
     /* Turn the backing store on */
-    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, TRUE) < 0)
+    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, true) < 0)
         TEST_ERROR;
 
     /* Check that write tracking is off by default and that the default
@@ -327,13 +327,13 @@ test_core(void)
      */
     if (H5Pget_core_write_tracking(fapl_id, &use_write_tracking, &write_tracking_page_size) < 0)
         TEST_ERROR;
-    if (FALSE != use_write_tracking)
+    if (false != use_write_tracking)
         FAIL_PUTS_ERROR("write tracking should be off by default");
     if (0 == write_tracking_page_size)
         FAIL_PUTS_ERROR("write tracking page size should never be zero");
 
     /* Set core VFD properties */
-    if (H5Pset_core_write_tracking(fapl_id, TRUE, CORE_PAGE_SIZE) < 0)
+    if (H5Pset_core_write_tracking(fapl_id, true, CORE_PAGE_SIZE) < 0)
         TEST_ERROR;
 
     /* Create the file */
@@ -355,7 +355,7 @@ test_core(void)
         TEST_ERROR
     if (increment != (size_t)CORE_INCREMENT)
         FAIL_PUTS_ERROR("incorrect increment from file fapl");
-    if (backing_store != TRUE)
+    if (backing_store != true)
         FAIL_PUTS_ERROR("incorrect backing store flag from file fapl");
 
     /* Check that the backing store write tracking info was saved */
@@ -365,7 +365,7 @@ test_core(void)
      */
     if (H5Pget_core_write_tracking(fapl_id, &use_write_tracking, &write_tracking_page_size) < 0)
         TEST_ERROR;
-    if (TRUE != use_write_tracking)
+    if (true != use_write_tracking)
         FAIL_PUTS_ERROR("write tracking flag incorrect in fapl obtained from H5Fget_access_plist");
     if (CORE_PAGE_SIZE != write_tracking_page_size)
         FAIL_PUTS_ERROR("write tracking page size incorrect in fapl obtained from H5Fget_access_plist");
@@ -404,7 +404,7 @@ test_core(void)
     /* Open the file with backing store off for read and write.
      * Changes won't be saved in file.
      */
-    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, FALSE) < 0)
+    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, false) < 0)
         TEST_ERROR;
     if ((fid = H5Fopen(filename, H5F_ACC_RDWR, fapl_id)) < 0)
         TEST_ERROR;
@@ -487,7 +487,7 @@ test_core(void)
     /* Open the file with backing store on for read and write.
      * Changes will be saved in file.
      */
-    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, TRUE) < 0)
+    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, true) < 0)
         TEST_ERROR;
     if ((fid = H5Fopen(filename, H5F_ACC_RDWR, fapl_id)) < 0)
         TEST_ERROR;
@@ -558,7 +558,7 @@ test_core(void)
      ************************************************************************/
 
     /* Create and close a file */
-    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, TRUE) < 0)
+    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, true) < 0)
         TEST_ERROR;
     if ((fid = H5Fcreate(filename, H5F_ACC_TRUNC, H5P_DEFAULT, fapl_id)) < 0)
         TEST_ERROR;
@@ -566,7 +566,7 @@ test_core(void)
         TEST_ERROR;
 
     /* Try to delete the file with the backing store off (shouldn't delete anything) */
-    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, FALSE) < 0)
+    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, false) < 0)
         TEST_ERROR;
     if (H5Fdelete(filename, fapl_id) < 0)
         TEST_ERROR;
@@ -574,7 +574,7 @@ test_core(void)
         FAIL_PUTS_ERROR("file deleted when backing store set to FALSE");
 
     /* Try to delete the file with the backing store on (should work) */
-    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, TRUE) < 0)
+    if (H5Pset_fapl_core(fapl_id, (size_t)CORE_INCREMENT, true) < 0)
         TEST_ERROR;
     if (H5Fdelete(filename, fapl_id) < 0)
         TEST_ERROR;
@@ -1478,7 +1478,7 @@ test_multi(void)
     memb_name[H5FD_MEM_GHEAP] = sv[H5FD_MEM_GHEAP];
     memb_addr[H5FD_MEM_GHEAP] = (HADDR_MAX / 4) * 3;
 
-    if (H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, TRUE) < 0)
+    if (H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, true) < 0)
         TEST_ERROR;
     h5_fixname(FILENAME[4], fapl, filename, sizeof filename);
 
@@ -1720,7 +1720,7 @@ test_multi_compat(void)
     memb_name[H5FD_MEM_DRAW] = sv[H5FD_MEM_DRAW];
     memb_addr[H5FD_MEM_DRAW] = HADDR_MAX / 2;
 
-    if (H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, TRUE) < 0)
+    if (H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, true) < 0)
         TEST_ERROR;
 
     h5_fixname(FILENAME[9], fapl, newname, sizeof newname);
@@ -2425,7 +2425,7 @@ run_splitter_test(const struct splitter_dataset_def *data, hbool_t ignore_wo_err
         SPLITTER_TEST_FAULT("can't prepare file paths\n");
     }
 
-    if (provide_logfile_path == FALSE) {
+    if (provide_logfile_path == false) {
         vfd_config->log_file_path[0] = '\0'; /* reset as empty string */
     }
 
@@ -2524,8 +2524,8 @@ run_splitter_test(const struct splitter_dataset_def *data, hbool_t ignore_wo_err
 
     /* Verify existence of logfile if appropriate */
     logfile = HDfopen(vfd_config->log_file_path, "r");
-    if ((TRUE == provide_logfile_path && NULL == logfile) ||
-        (FALSE == provide_logfile_path && NULL != logfile)) {
+    if ((true == provide_logfile_path && NULL == logfile) ||
+        (false == provide_logfile_path && NULL != logfile)) {
         SPLITTER_TEST_FAULT("no logfile when one was expected\n");
     }
 
@@ -2584,7 +2584,7 @@ driver_is_splitter_compatible(hid_t fapl_id)
     }
     vfd_config->magic          = H5FD_SPLITTER_MAGIC;
     vfd_config->version        = H5FD_CURR_SPLITTER_VFD_CONFIG_VERSION;
-    vfd_config->ignore_wo_errs = FALSE;
+    vfd_config->ignore_wo_errs = false;
     vfd_config->rw_fapl_id     = H5P_DEFAULT;
     vfd_config->wo_fapl_id     = fapl_id;
     HDstrncpy(vfd_config->wo_path, "nonesuch", H5FD_SPLITTER_PATH_MAX);
@@ -2649,7 +2649,7 @@ splitter_RO_test(const struct splitter_dataset_def *data, hid_t child_fapl_id)
 
     vfd_config->magic          = H5FD_SPLITTER_MAGIC;
     vfd_config->version        = H5FD_CURR_SPLITTER_VFD_CONFIG_VERSION;
-    vfd_config->ignore_wo_errs = FALSE;
+    vfd_config->ignore_wo_errs = false;
     vfd_config->rw_fapl_id     = child_fapl_id;
     vfd_config->wo_fapl_id     = child_fapl_id;
 
@@ -3012,7 +3012,7 @@ splitter_tentative_open_test(hid_t child_fapl_id)
 
     vfd_config->magic          = H5FD_SPLITTER_MAGIC;
     vfd_config->version        = H5FD_CURR_SPLITTER_VFD_CONFIG_VERSION;
-    vfd_config->ignore_wo_errs = FALSE;
+    vfd_config->ignore_wo_errs = false;
     vfd_config->rw_fapl_id     = child_fapl_id;
     vfd_config->wo_fapl_id     = child_fapl_id;
 
@@ -3361,8 +3361,8 @@ test_splitter(void)
      * specified), logfile, and Write Channel error ignoring behavior.
      */
     for (i = 0; i < 4; i++) {
-        hbool_t ignore_wo_errors     = (i & 1) ? TRUE : FALSE;
-        hbool_t provide_logfile_path = (i & 2) ? TRUE : FALSE;
+        hbool_t ignore_wo_errors     = (i & 1) ? true : false;
+        hbool_t provide_logfile_path = (i & 2) ? true : false;
         hid_t   child_fapl_ids[2]    = {H5P_DEFAULT, H5P_DEFAULT};
 
         /* Test child driver definition/default combination */

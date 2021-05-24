@@ -64,7 +64,7 @@ void accum_printf(const H5F_t *f);
 #define accum_read(a, s, b)  H5F_block_read(f, H5FD_MEM_DEFAULT, (haddr_t)(a), (size_t)(s), (b))
 #define accum_free(f, a, s)  H5F__accum_free(f->shared, H5FD_MEM_DEFAULT, (haddr_t)(a), (hsize_t)(s))
 #define accum_flush(f)       H5F__accum_flush(f->shared)
-#define accum_reset(f)       H5F__accum_reset(f->shared, TRUE)
+#define accum_reset(f)       H5F__accum_reset(f->shared, true)
 
 /* ================= */
 /* Main Test Routine */
@@ -87,7 +87,7 @@ int
 main(void)
 {
     unsigned nerrors        = 0;     /* track errors */
-    hbool_t  api_ctx_pushed = FALSE; /* Whether API context pushed */
+    hbool_t  api_ctx_pushed = false; /* Whether API context pushed */
     hid_t    fid            = -1;
     hid_t    fapl           = -1; /* File access property list */
     char     filename[1024];
@@ -109,7 +109,7 @@ main(void)
     /* Push API context */
     if (H5CX_push() < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get H5F_t * to internal file structure */
     if (NULL == (f = (H5F_t *)H5VL_object(fid)))
@@ -139,17 +139,17 @@ main(void)
     nerrors += test_random_write(f);
 
     /* Pop API context */
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = FALSE;
+    api_ctx_pushed = false;
 
     /* End of test code, close and delete file */
     if (H5Fclose(fid) < 0)
         TEST_ERROR
 
     /* This test uses a different file */
-    nerrors += test_swmr_write_big(TRUE);
-    nerrors += test_swmr_write_big(FALSE);
+    nerrors += test_swmr_write_big(true);
+    nerrors += test_swmr_write_big(false);
 
     if (nerrors)
         goto error;
@@ -160,7 +160,7 @@ main(void)
 
 error:
     if (api_ctx_pushed)
-        H5CX_pop(FALSE);
+        H5CX_pop(false);
 
     HDputs("*** TESTS FAILED ***");
     return 1;
@@ -2101,9 +2101,9 @@ test_swmr_write_big(hbool_t newest_format)
     uint8_t *wbuf2 = NULL, *rbuf = NULL; /* Buffers for reading & writing */
     uint8_t  wbuf[1024];                 /* Buffer for reading & writing */
     unsigned u;                          /* Local index variable */
-    hbool_t  process_success = FALSE;
+    hbool_t  process_success = false;
     char *   driver          = NULL;  /* VFD string (from env variable) */
-    hbool_t  api_ctx_pushed  = FALSE; /* Whether API context pushed */
+    hbool_t  api_ctx_pushed  = false; /* Whether API context pushed */
 
     if (newest_format)
         TESTING("SWMR write of large metadata: with latest format")
@@ -2157,7 +2157,7 @@ test_swmr_write_big(hbool_t newest_format)
     /* Push API context */
     if (H5CX_push() < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get H5F_t * to internal file structure */
     if (NULL == (rf = (H5F_t *)H5VL_object(fid)))
@@ -2237,17 +2237,17 @@ test_swmr_write_big(hbool_t newest_format)
         si.cb = sizeof(si);
         ZeroMemory(&pi, sizeof(pi));
 
-        if (0 == CreateProcess(NULL, SWMR_READER, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
+        if (0 == CreateProcess(NULL, SWMR_READER, NULL, NULL, false, 0, NULL, NULL, &si, &pi)) {
             HDprintf("CreateProcess failed (%d).\n", GetLastError());
             FAIL_STACK_ERROR;
         }
 
         (void)WaitForSingleObject(pi.hProcess, INFINITE);
 
-        if (FALSE == GetExitCodeProcess(pi.hProcess, &exit_code) || EXIT_FAILURE == exit_code)
-            process_success = FALSE;
+        if (false == GetExitCodeProcess(pi.hProcess, &exit_code) || EXIT_FAILURE == exit_code)
+            process_success = false;
         else
-            process_success = TRUE;
+            process_success = true;
 
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
@@ -2303,9 +2303,9 @@ test_swmr_write_big(hbool_t newest_format)
         FAIL_STACK_ERROR;
 
     /* Pop API context */
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         FAIL_STACK_ERROR
-    api_ctx_pushed = FALSE;
+    api_ctx_pushed = false;
 
     /* Release memory */
     if (wbuf2)
@@ -2321,7 +2321,7 @@ error:
     H5Fclose(fid);
 
     if (api_ctx_pushed)
-        H5CX_pop(FALSE);
+        H5CX_pop(false);
 
     H5Pclose(fapl);
 

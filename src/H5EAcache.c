@@ -250,7 +250,7 @@ END_FUNC(STATIC) /* end H5EA__cache_hdr_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5EA__cache_hdr_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -265,7 +265,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5EA__cache_hdr_verify_chksum() */
 
@@ -641,7 +641,7 @@ END_FUNC(STATIC) /* end H5EA__cache_iblock_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5EA__cache_iblock_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -656,7 +656,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5EA__cache_iblock_verify_chksum() */
 
@@ -1041,7 +1041,7 @@ END_FUNC(STATIC) /* end H5EA__cache_sblock_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5EA__cache_sblock_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -1056,7 +1056,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5EA__cache_sblock_verify_chksum() */
 
@@ -1303,7 +1303,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                         H5E_CANTUNDEPEND,
                         "unable to destroy flush dependency between super block and header, address = %llu",
                         (unsigned long long)sblock->addr)
-                sblock->has_hdr_depend = FALSE;
+                sblock->has_hdr_depend = false;
             } /* end if */
             break;
 
@@ -1322,7 +1322,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                         H5E_CANTUNDEPEND,
                         "unable to destroy flush dependency between super block and header, address = %llu",
                         (unsigned long long)sblock->addr)
-                sblock->has_hdr_depend = FALSE;
+                sblock->has_hdr_depend = false;
             } /* end if */
 
             /* Detach from 'top' proxy for extensible array */
@@ -1449,7 +1449,7 @@ END_FUNC(STATIC) /* end H5EA__cache_dblock_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5EA__cache_dblock_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -1464,7 +1464,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5EA__cache_sblock_verify_chksum() */
 
@@ -1708,7 +1708,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                         H5E_CANTUNDEPEND,
                         "unable to destroy flush dependency between direct block and header, address = %llu",
                         (unsigned long long)dblock->addr)
-                dblock->has_hdr_depend = FALSE;
+                dblock->has_hdr_depend = false;
             } /* end if */
             break;
 
@@ -1726,7 +1726,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                         H5E_CANTUNDEPEND,
                         "unable to destroy flush dependency between data block and header, address = %llu",
                         (unsigned long long)dblock->addr)
-                dblock->has_hdr_depend = FALSE;
+                dblock->has_hdr_depend = false;
             } /* end if */
 
             /* Detach from 'top' proxy for extensible array */
@@ -1871,7 +1871,7 @@ END_FUNC(STATIC) /* end H5EA__cache_dblk_page_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5EA__cache_dblk_page_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -1886,7 +1886,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5EA__cache_dblk_page_verify_chksum() */
 
@@ -2081,7 +2081,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                               "unable to destroy flush dependency between data block page and header, "
                               "address = %llu",
                               (unsigned long long)dblk_page->addr)
-                dblk_page->has_hdr_depend = FALSE;
+                dblk_page->has_hdr_depend = false;
             } /* end if */
             break;
 
@@ -2100,7 +2100,7 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
                               "unable to destroy flush dependency between data block page and header, "
                               "address = %llu",
                               (unsigned long long)dblk_page->addr)
-                dblk_page->has_hdr_depend = FALSE;
+                dblk_page->has_hdr_depend = false;
             } /* end if */
 
             /* Detach from 'top' proxy for extensible array */

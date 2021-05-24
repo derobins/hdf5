@@ -412,16 +412,6 @@
 #define H5_EXP2(n) (1 << (n))
 
 /*
- * HDF Boolean type.
- */
-#ifndef FALSE
-#define FALSE false
-#endif
-#ifndef TRUE
-#define TRUE true
-#endif
-
-/*
  * Numeric data types.  Some of these might be defined in Posix.1g, otherwise
  * we define them with the closest available type which is at least as large
  * as the number of bits indicated in the type name.  The `int8' types *must*
@@ -2139,7 +2129,7 @@ extern hbool_t H5_MPEinit_g; /* Has the MPE Library been initialized? */
         H5_PKG_INIT_VAR = TRUE;
 #define H5_PACKAGE_INIT(pkg_init, err) H5_GLUE3(H5_PACKAGE_, pkg_init, _INIT)(err)
 #else /* H5_MY_PKG */
-#define H5_PKG_INIT_VAR (TRUE)
+#define H5_PKG_INIT_VAR (true)
 #define H5_PACKAGE_INIT(pkg_init, err)
 #endif /* H5_MY_PKG */
 
@@ -2151,7 +2141,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
 #ifndef NDEBUG
 #define FUNC_ENTER_CHECK_NAME(asrt)                                                                          \
     {                                                                                                        \
-        static hbool_t func_check = FALSE;                                                                   \
+        static hbool_t func_check = false;                                                                   \
                                                                                                              \
         if (!func_check) {                                                                                   \
             /* Check function naming status */                                                               \
@@ -2160,7 +2150,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
                      "H5private.h (this is usually due to an incorrect number of underscores)");             \
                                                                                                              \
             /* Don't check again */                                                                          \
-            func_check = TRUE;                                                                               \
+            func_check = true;                                                                               \
         } /* end if */                                                                                       \
     }     /* end scope */
 #else     /* NDEBUG */
@@ -2168,7 +2158,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
 #endif /* NDEBUG */
 
 #define FUNC_ENTER_COMMON(asrt)                                                                              \
-    hbool_t err_occurred = FALSE;                                                                            \
+    hbool_t err_occurred = false;                                                                            \
                                                                                                              \
     FUNC_ENTER_CHECK_NAME(asrt);
 
@@ -2504,10 +2494,10 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
 
 #define FUNC_LEAVE_API(ret_value)                                                                            \
     FUNC_LEAVE_API_COMMON(ret_value);                                                                        \
-    (void)H5CX_pop(TRUE);                                                                                    \
+    (void)H5CX_pop(true);                                                                                    \
     H5_POP_FUNC                                                                                              \
     if (err_occurred)                                                                                        \
-        (void)H5E_dump_api_stack(TRUE);                                                                      \
+        (void)H5E_dump_api_stack(true);                                                                      \
     FUNC_LEAVE_API_THREADSAFE                                                                                \
     return (ret_value);                                                                                      \
     }                                                                                                        \
@@ -2518,7 +2508,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
     FUNC_LEAVE_API_COMMON(ret_value);                                                                        \
     H5_POP_FUNC                                                                                              \
     if (err_occurred)                                                                                        \
-        (void)H5E_dump_api_stack(TRUE);                                                                      \
+        (void)H5E_dump_api_stack(true);                                                                      \
     FUNC_LEAVE_API_THREADSAFE                                                                                \
     return (ret_value);                                                                                      \
     }                                                                                                        \
@@ -2540,7 +2530,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
     ;                                                                                                        \
     } /*end scope from end of FUNC_ENTER*/                                                                   \
     if (err_occurred)                                                                                        \
-        (void)H5E_dump_api_stack(TRUE);                                                                      \
+        (void)H5E_dump_api_stack(true);                                                                      \
     FUNC_LEAVE_API_THREADSAFE                                                                                \
     return (ret_value);                                                                                      \
     }                                                                                                        \
@@ -2617,9 +2607,9 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
 /* Macros to initialize package, if a package initialization routine is defined */
 #define H5_PKG_YES_INIT(pkg)                                                                                 \
     if (!H5_PACKAGE_INIT_VAR(pkg) && !H5_TERM_GLOBAL) {                                                      \
-        H5_PACKAGE_INIT_VAR(pkg) = TRUE;                                                                     \
+        H5_PACKAGE_INIT_VAR(pkg) = true;                                                                     \
         if (H5_PACKAGE_INIT_FUNC(pkg)() < 0) {                                                               \
-            H5_PACKAGE_INIT_VAR(pkg) = FALSE;                                                                \
+            H5_PACKAGE_INIT_VAR(pkg) = false;                                                                \
             /* (Can't use H5E_THROW here) */                                                                 \
             H5E_PRINTF(H5E_CANTINIT, "interface initialization failed");                                     \
             ret_value = fail_value;                                                                          \
@@ -2628,7 +2618,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
     }     /* end if */
 #define H5_PKG_NO_INIT(pkg)                                                                                  \
     if (!H5_PACKAGE_INIT_VAR(pkg) && !H5_TERM_GLOBAL)                                                        \
-        H5_PACKAGE_INIT_VAR(pkg) = TRUE;
+        H5_PACKAGE_INIT_VAR(pkg) = true;
 #define H5_PKG_INIT(pkg_init, pkg) H5_GLUE3(H5_PKG_, pkg_init, _INIT)(pkg)
 
 /* Macros to declare package initialization function, if a package initialization routine is defined */
@@ -2710,7 +2700,7 @@ extern hbool_t H5_api_entered_g; /* Has library already been entered through API
                                                                                                              \
     /* Check for re-entering API routine */                                                                  \
     HDassert(!H5_api_entered_g);                                                                             \
-    H5_api_entered_g = TRUE;                                                                                 \
+    H5_api_entered_g = true;                                                                                 \
                                                                                                              \
     /* Start logging MPI's MPE information */                                                                \
     BEGIN_MPE_LOG                                                                                            \
@@ -2740,10 +2730,10 @@ extern hbool_t H5_api_entered_g; /* Has library already been entered through API
 /* Macros for declaring error variables */
 /* Function can detect errors and has a specific error return value */
 #define FUNC_ERR_VAR_ERR(ret_typ, err)                                                                       \
-    hbool_t past_catch = FALSE;                                                                              \
+    hbool_t past_catch = false;                                                                              \
     ret_typ fail_value = err;
 /* Function can detect errors but cannot return an error value (Cleanup only) */
-#define FUNC_ERR_VAR_ERRCATCH(ret_typ, err) hbool_t past_catch = FALSE;
+#define FUNC_ERR_VAR_ERRCATCH(ret_typ, err) hbool_t past_catch = false;
 /* Function has no need to detect or clean up from errors */
 #define FUNC_ERR_VAR_NOERR(ret_typ, err)
 
@@ -2814,7 +2804,7 @@ func_init_failed:                                                               
                                                                                                              \
     /* Dump error stack if an error occurred during API routine */                                           \
     if (ret_value == fail_value)                                                                             \
-        (void)H5E_dump_api_stack(TRUE);                                                                      \
+        (void)H5E_dump_api_stack(true);                                                                      \
                                                                                                              \
     /* Finish the API tracing info */                                                                        \
     H5TRACE_RETURN(ret_value);                                                                               \
@@ -2827,7 +2817,7 @@ func_init_failed:                                                               
                                                                                                              \
     /* Check for leaving API routine */                                                                      \
     HDassert(H5_api_entered_g);                                                                              \
-    H5_api_entered_g = FALSE;                                                                                \
+    H5_api_entered_g = false;                                                                                \
                                                                                                              \
     /* Release thread-safety semaphore */                                                                    \
     FUNC_LEAVE_API_THREADSAFE

@@ -186,7 +186,7 @@ gen_skeleton(const char *filename, hbool_t verbose, hbool_t swmr_write, int comp
             hid_t   dsid; /* Dataset ID */
             char    name_buf[64];
             hbool_t move_dataspace_message =
-                FALSE; /* Whether to move the dataspace message out of object header chunk #0 */
+                false; /* Whether to move the dataspace message out of object header chunk #0 */
 
             generate_name(name_buf, u, v);
             if ((dsid = H5Dcreate2(fid, name_buf, tid, sid, H5P_DEFAULT, dcpl, H5P_DEFAULT)) < 0)
@@ -261,10 +261,10 @@ int
 main(int argc, const char *argv[])
 {
     int         comp_level  = -1;    /* Compression level (-1 is no compression) */
-    hbool_t     verbose     = TRUE;  /* Whether to emit some informational messages */
-    hbool_t     swmr_write  = FALSE; /* Whether to create file with SWMR_WRITE access */
+    hbool_t     verbose     = true;  /* Whether to emit some informational messages */
+    hbool_t     swmr_write  = false; /* Whether to create file with SWMR_WRITE access */
     const char *index_type  = "b1";  /* Chunk index type */
-    hbool_t     use_seed    = FALSE; /* Set to TRUE if a seed was set on the command line */
+    hbool_t     use_seed    = false; /* Set to TRUE if a seed was set on the command line */
     unsigned    random_seed = 0;     /* Random # seed */
     unsigned    u;                   /* Local index variables */
     int         temp;
@@ -293,7 +293,7 @@ main(int argc, const char *argv[])
 
                     /* Random # seed */
                     case 'r':
-                        use_seed = TRUE;
+                        use_seed = true;
                         temp     = HDatoi(argv[u + 1]);
                         if (temp < 0)
                             usage();
@@ -304,13 +304,13 @@ main(int argc, const char *argv[])
 
                     /* Be quiet */
                     case 'q':
-                        verbose = FALSE;
+                        verbose = false;
                         u++;
                         break;
 
                     /* Run with SWMR_WRITE */
                     case 's':
-                        swmr_write = TRUE;
+                        swmr_write = true;
                         u++;
                         break;
 

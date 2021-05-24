@@ -134,16 +134,16 @@ token_lookup(hid_t loc_id, H5O_info2_t *oinfo)
     int    token_cmp;
 
     if (oinfo->rc < 2)
-        return FALSE; /*only one link possible*/
+        return false; /*only one link possible*/
 
     for (n = 0; n < idtab_g.nobjs; n++) {
         if (H5Otoken_cmp(loc_id, &(idtab_g.obj[n]), &oinfo->token, &token_cmp) < 0)
-            return FALSE;
+            return false;
         if (0 == token_cmp)
-            return TRUE;
+            return true;
     }
 
-    return FALSE;
+    return false;
 } /* end token_lookup() */
 
 /*-------------------------------------------------------------------------
@@ -608,7 +608,7 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
         TEST_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* Determine the size of datatype (for later) */
@@ -626,7 +626,7 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
         TEST_ERROR
 
     /* Compare the dataspaces */
-    if (H5Sextent_equal(sid, sid2) != TRUE)
+    if (H5Sextent_equal(sid, sid2) != true)
         TEST_ERROR
 
     /* Determine the number of elements in dataspace (for later) */
@@ -661,10 +661,10 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
         TEST_ERROR
 
     /* Reclaim vlen data, if necessary */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE || H5Tdetect_class(tid, H5T_REFERENCE) == TRUE)
+    if (H5Tdetect_class(tid, H5T_VLEN) == true || H5Tdetect_class(tid, H5T_REFERENCE) == true)
         if (H5Treclaim(tid, sid, H5P_DEFAULT, rbuf) < 0)
             TEST_ERROR
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE || H5Tdetect_class(tid2, H5T_REFERENCE) == TRUE)
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true || H5Tdetect_class(tid2, H5T_REFERENCE) == true)
         if (H5Treclaim(tid2, sid2, H5P_DEFAULT, rbuf2) < 0)
             TEST_ERROR
 
@@ -690,7 +690,7 @@ compare_attribute(hid_t aid, hid_t aid2, hid_t pid, const void *wbuf, hid_t obj_
     if (H5Tclose(tid2) < 0)
         TEST_ERROR
 
-    return TRUE;
+    return true;
 
 error:
     if (rbuf)
@@ -705,7 +705,7 @@ error:
         H5Tclose(tid);
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_attribute() */
 
 /*-------------------------------------------------------------------------
@@ -783,7 +783,7 @@ compare_std_attributes(hid_t oid, hid_t oid2, hid_t pid)
     }     /* end if */
 
     /* Objects should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
@@ -792,7 +792,7 @@ error:
         H5Aclose(aid);
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_std_attributes() */
 
 /*-------------------------------------------------------------------------
@@ -820,7 +820,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
     /* If the type is a compound containing a vlen, loop over all elements for
      * each compound member.  Compounds containing reference  are not supported
      * yet. */
-    if ((H5Tget_class(tid) == H5T_COMPOUND) && (H5Tdetect_class(tid, H5T_VLEN) == TRUE)) {
+    if ((H5Tget_class(tid) == H5T_COMPOUND) && (H5Tdetect_class(tid, H5T_VLEN) == true)) {
         hid_t          memb_id;   /* Member id */
         const uint8_t *memb1;     /* Pointer to current member */
         const uint8_t *memb2;     /* Pointer to current member */
@@ -883,7 +883,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
             else {
                 /* vlens cannot currently be nested below the top layer of a
                  * compound */
-                HDassert(H5Tdetect_class(memb_id, H5T_VLEN) == FALSE);
+                HDassert(H5Tdetect_class(memb_id, H5T_VLEN) == false);
 
                 /* Iterate over all elements, calling memcmp() for each */
                 for (elmt = 0; elmt < nelmts; elmt++) {
@@ -897,7 +897,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
             }     /* end else */
         }         /* end for */
     }
-    else if (H5Tdetect_class(tid, H5T_VLEN) == TRUE) {
+    else if (H5Tdetect_class(tid, H5T_VLEN) == true) {
         const hvl_t *vl_buf1, *vl_buf2; /* Aliases for buffers to compare */
         hid_t        base_tid;          /* Base type of vlen datatype */
         size_t       u;                 /* Local index variable */
@@ -927,7 +927,7 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
         if (H5Tclose(base_tid) < 0)
             TEST_ERROR
     } /* end if */
-    else if (H5Tdetect_class(tid, H5T_REFERENCE) == TRUE) {
+    else if (H5Tdetect_class(tid, H5T_REFERENCE) == true) {
         size_t u; /* Local index variable */
 
         /* Check for "simple" reference datatype */
@@ -975,24 +975,24 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
                             TEST_ERROR
                         if (H5Oclose(obj2_id) < 0)
                             TEST_ERROR
-                        return TRUE;
+                        return true;
                     }
                 }
 
                 /* Check for types of objects handled */
                 switch (obj1_type) {
                     case H5O_TYPE_DATASET:
-                        if (compare_datasets(obj1_id, obj2_id, pid, NULL) != TRUE)
+                        if (compare_datasets(obj1_id, obj2_id, pid, NULL) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_GROUP:
-                        if (compare_groups(obj1_id, obj2_id, pid, -1, 0) != TRUE)
+                        if (compare_groups(obj1_id, obj2_id, pid, -1, 0) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_NAMED_DATATYPE:
-                        if (H5Tequal(obj1_id, obj2_id) != TRUE)
+                        if (H5Tequal(obj1_id, obj2_id) != true)
                             TEST_ERROR
                         break;
 
@@ -1039,10 +1039,10 @@ compare_data(hid_t parent1, hid_t parent2, hid_t pid, hid_t tid, size_t nelmts, 
         TEST_ERROR
 
     /* Data should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
-    return FALSE;
+    return false;
 } /* end compare_data() */
 
 /*-------------------------------------------------------------------------
@@ -1092,7 +1092,7 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Compare the datatypes */
-    if (H5Tequal(tid, tid2) != TRUE)
+    if (H5Tequal(tid, tid2) != true)
         TEST_ERROR
 
     /* Determine the size of datatype (for later) */
@@ -1110,7 +1110,7 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Compare the dataspaces */
-    if (H5Sextent_equal(sid, sid2) != TRUE)
+    if (H5Sextent_equal(sid, sid2) != true)
         TEST_ERROR
 
     /* Determine the number of elements in dataspace (for later) */
@@ -1128,7 +1128,7 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Compare the rest of the dataset creation property lists */
-    if (H5Pequal(dcpl, dcpl2) != TRUE)
+    if (H5Pequal(dcpl, dcpl2) != true)
         TEST_ERROR
 
     /* Get the number of filters on dataset (for later) */
@@ -1194,10 +1194,10 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Reclaim vlen data, if necessary */
-    if (H5Tdetect_class(tid, H5T_VLEN) == TRUE || H5Tdetect_class(tid, H5T_REFERENCE) == TRUE)
+    if (H5Tdetect_class(tid, H5T_VLEN) == true || H5Tdetect_class(tid, H5T_REFERENCE) == true)
         if (H5Treclaim(tid, sid, H5P_DEFAULT, rbuf) < 0)
             TEST_ERROR
-    if (H5Tdetect_class(tid2, H5T_VLEN) == TRUE || H5Tdetect_class(tid2, H5T_REFERENCE) == TRUE)
+    if (H5Tdetect_class(tid2, H5T_VLEN) == true || H5Tdetect_class(tid2, H5T_REFERENCE) == true)
         if (H5Treclaim(tid2, sid2, H5P_DEFAULT, rbuf2) < 0)
             TEST_ERROR
 
@@ -1224,11 +1224,11 @@ compare_datasets(hid_t did, hid_t did2, hid_t pid, const void *wbuf)
         TEST_ERROR
 
     /* Check if the attributes are equal */
-    if (compare_std_attributes(did, did2, pid) != TRUE)
+    if (compare_std_attributes(did, did2, pid) != true)
         TEST_ERROR
 
     /* Datasets should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
@@ -1245,7 +1245,7 @@ error:
         H5Tclose(tid);
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_datasets() */
 
 /*-------------------------------------------------------------------------
@@ -1369,19 +1369,19 @@ compare_groups(hid_t gid, hid_t gid2, hid_t pid, int depth, unsigned copy_flags)
                 switch (oinfo.type) {
                     case H5O_TYPE_GROUP:
                         /* Compare groups */
-                        if (compare_groups(oid, oid2, pid, depth - 1, copy_flags) != TRUE)
+                        if (compare_groups(oid, oid2, pid, depth - 1, copy_flags) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_DATASET:
                         /* Compare datasets */
-                        if (compare_datasets(oid, oid2, pid, NULL) != TRUE)
+                        if (compare_datasets(oid, oid2, pid, NULL) != true)
                             TEST_ERROR
                         break;
 
                     case H5O_TYPE_NAMED_DATATYPE:
                         /* Compare datatypes */
-                        if (H5Tequal(oid, oid2) != TRUE)
+                        if (H5Tequal(oid, oid2) != true)
                             TEST_ERROR
                         break;
 
@@ -1431,18 +1431,18 @@ compare_groups(hid_t gid, hid_t gid2, hid_t pid, int depth, unsigned copy_flags)
     }             /* end if */
 
     /* Check if the attributes are equal */
-    if (compare_std_attributes(gid, gid2, pid) != TRUE)
+    if (compare_std_attributes(gid, gid2, pid) != true)
         TEST_ERROR
 
     /* Groups should be the same. :-) */
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
     {
     }
     H5E_END_TRY;
-    return FALSE;
+    return false;
 } /* end compare_groups() */
 
 /*-------------------------------------------------------------------------
@@ -1707,7 +1707,7 @@ test_copy_option(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
         /* Create link creation plist to pass in intermediate group creation */
         if ((lcpl_id = H5Pcreate(H5P_LINK_CREATE)) < 0)
             TEST_ERROR
-        if (H5Pset_create_intermediate_group(lcpl_id, TRUE) < 0)
+        if (H5Pset_create_intermediate_group(lcpl_id, true) < 0)
             TEST_ERROR
 
         if (H5Ocopy(fid_src, NAME_GROUP_TOP, fid_dst, "/new_g0/new_g00", pid, lcpl_id) < 0)
@@ -1787,7 +1787,7 @@ test_copy_option(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl,
     } /* end else */
 
     /* Check if the groups are equal */
-    if (compare_groups(gid, gid2, pid, depth, flag) != TRUE)
+    if (compare_groups(gid, gid2, pid, depth, flag) != true)
         TEST_ERROR
     if (H5Gclose(gid2) < 0)
         TEST_ERROR
@@ -1953,7 +1953,7 @@ main(void)
 
         /* The tests... */
         nerrors += test_copy_option(fcpl_src, fcpl_dst, src_fapl, dst_fapl, H5O_COPY_EXPAND_REFERENCE_FLAG,
-                                    FALSE, "H5Ocopy(): expand object reference");
+                                    false, "H5Ocopy(): expand object reference");
     } /* end for */
 
     /* Reset file token checking info */

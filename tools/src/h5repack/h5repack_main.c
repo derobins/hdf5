@@ -486,8 +486,8 @@ parse_command_line(int argc, const char **argv, pack_opt_t *options)
 {
     h5tools_vol_info_t in_vol_info;
     h5tools_vol_info_t out_vol_info;
-    hbool_t            custom_in_fapl  = FALSE;
-    hbool_t            custom_out_fapl = FALSE;
+    hbool_t            custom_in_fapl  = false;
+    hbool_t            custom_out_fapl = false;
     hid_t              tmp_fapl        = H5I_INVALID_HID;
     int                bound, opt;
     int                ret_value = 0;
@@ -572,7 +572,7 @@ parse_command_line(int argc, const char **argv, pack_opt_t *options)
                 break;
 
             case 'L':
-                options->latest = TRUE;
+                options->latest = true;
                 break;
 
             case 'j':
@@ -598,30 +598,30 @@ parse_command_line(int argc, const char **argv, pack_opt_t *options)
                 break;
 
             case 'X':
-                options->merge = TRUE;
+                options->merge = true;
                 break;
 
             case 'W':
-                options->prune = TRUE;
+                options->prune = true;
                 break;
 
             case 'c':
                 options->grp_compact = HDatoi(opt_arg);
                 if (options->grp_compact > 0)
-                    options->latest = TRUE; /* must use latest format */
+                    options->latest = true; /* must use latest format */
                 break;
 
             case 'd':
                 options->grp_indexed = HDatoi(opt_arg);
                 if (options->grp_indexed > 0)
-                    options->latest = TRUE; /* must use latest format */
+                    options->latest = true; /* must use latest format */
                 break;
 
             case 's': {
                 int   idx       = 0;
                 int   ssize     = 0;
                 char *msgPtr    = HDstrchr(opt_arg, ':');
-                options->latest = TRUE; /* must use latest format */
+                options->latest = true; /* must use latest format */
                 if (msgPtr == NULL) {
                     ssize = HDatoi(opt_arg);
                     for (idx = 0; idx < 5; idx++)
@@ -741,13 +741,13 @@ parse_command_line(int argc, const char **argv, pack_opt_t *options)
             case '1':
                 in_vol_info.type    = VOL_BY_VALUE;
                 in_vol_info.u.value = (H5VL_class_value_t)HDatoi(opt_arg);
-                custom_in_fapl      = TRUE;
+                custom_in_fapl      = true;
                 break;
 
             case '2':
                 in_vol_info.type   = VOL_BY_NAME;
                 in_vol_info.u.name = opt_arg;
-                custom_in_fapl     = TRUE;
+                custom_in_fapl     = true;
                 break;
 
             case '3':
@@ -757,13 +757,13 @@ parse_command_line(int argc, const char **argv, pack_opt_t *options)
             case '4':
                 out_vol_info.type    = VOL_BY_VALUE;
                 out_vol_info.u.value = (H5VL_class_value_t)HDatoi(opt_arg);
-                custom_out_fapl      = TRUE;
+                custom_out_fapl      = true;
                 break;
 
             case '5':
                 out_vol_info.type   = VOL_BY_NAME;
                 out_vol_info.u.name = opt_arg;
-                custom_out_fapl     = TRUE;
+                custom_out_fapl     = true;
                 break;
 
             case '6':
@@ -879,7 +879,7 @@ main(int argc, const char **argv)
     }
 
     /* initialize options  */
-    if (h5repack_init(&options, 0, FALSE) < 0) {
+    if (h5repack_init(&options, 0, false) < 0) {
         HDprintf("Error occurred while initializing repack options\n");
         h5tools_setstatus(EXIT_FAILURE);
         goto done;

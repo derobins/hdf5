@@ -1210,7 +1210,7 @@ H5Pget_preserve(hid_t plist_id)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "unable to get value")
 
     /* Set return value */
-    ret_value = need_bkg ? TRUE : FALSE;
+    ret_value = need_bkg ? true : false;
 
 done:
     FUNC_LEAVE_API(ret_value)

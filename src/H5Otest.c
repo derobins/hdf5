@@ -89,7 +89,7 @@ H5O__is_attr_dense_test(hid_t oid)
     H5O_t *     oh = NULL;              /* Object header */
     H5O_ainfo_t ainfo;                  /* Attribute information for object */
     H5O_loc_t * loc;                    /* Pointer to object's location */
-    hbool_t     api_ctx_pushed = FALSE; /* Whether API context pushed */
+    hbool_t     api_ctx_pushed = false; /* Whether API context pushed */
     htri_t      ret_value      = FAIL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -101,10 +101,10 @@ H5O__is_attr_dense_test(hid_t oid)
     /* Set API context */
     if (H5CX_push() < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTSET, FAIL, "can't set API context")
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
@@ -120,15 +120,15 @@ H5O__is_attr_dense_test(hid_t oid)
         /* Check for any messages in object header */
         HDassert(H5O__msg_count_real(oh, H5O_MSG_ATTR) == 0);
 
-        ret_value = TRUE;
+        ret_value = true;
     } /* end if */
     else
-        ret_value = FALSE;
+        ret_value = false;
 
 done:
     if (oh && H5O_unprotect(loc, oh, H5AC__NO_FLAGS_SET) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTRESET, FAIL, "can't reset API context")
 
     FUNC_LEAVE_NOAPI(ret_value)
@@ -158,10 +158,10 @@ H5O__is_attr_empty_test(hid_t oid)
     H5O_t *     oh       = NULL;        /* Object header */
     H5B2_t *    bt2_name = NULL;        /* v2 B-tree handle for name index */
     H5O_ainfo_t ainfo;                  /* Attribute information for object */
-    htri_t      ainfo_exists = FALSE;   /* Whether the attribute info exists in the file */
+    htri_t      ainfo_exists = false;   /* Whether the attribute info exists in the file */
     H5O_loc_t * loc;                    /* Pointer to object's location */
     hsize_t     nattrs;                 /* Number of attributes */
-    hbool_t     api_ctx_pushed = FALSE; /* Whether API context pushed */
+    hbool_t     api_ctx_pushed = false; /* Whether API context pushed */
     htri_t      ret_value      = FAIL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -173,10 +173,10 @@ H5O__is_attr_empty_test(hid_t oid)
     /* Set API context */
     if (H5CX_push() < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTSET, FAIL, "can't set API context")
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
@@ -222,7 +222,7 @@ H5O__is_attr_empty_test(hid_t oid)
     } /* end if */
 
     /* Set the return value */
-    ret_value = (nattrs == 0) ? TRUE : FALSE;
+    ret_value = (nattrs == 0) ? true : false;
 
 done:
     /* Release resources */
@@ -230,7 +230,7 @@ done:
         HDONE_ERROR(H5E_OHDR, H5E_CANTCLOSEOBJ, FAIL, "can't close v2 B-tree for name index")
     if (oh && H5O_unprotect(loc, oh, H5AC__NO_FLAGS_SET) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTRESET, FAIL, "can't reset API context")
 
     FUNC_LEAVE_NOAPI(ret_value)
@@ -263,7 +263,7 @@ H5O__num_attrs_test(hid_t oid, hsize_t *nattrs)
     H5O_ainfo_t ainfo;                    /* Attribute information for object */
     H5O_loc_t * loc;                      /* Pointer to object's location */
     hsize_t     obj_nattrs;               /* Number of attributes */
-    hbool_t     api_ctx_pushed = FALSE;   /* Whether API context pushed */
+    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -275,10 +275,10 @@ H5O__num_attrs_test(hid_t oid, hsize_t *nattrs)
     /* Set API context */
     if (H5CX_push() < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTSET, FAIL, "can't set API context")
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
@@ -327,7 +327,7 @@ done:
         HDONE_ERROR(H5E_OHDR, H5E_CANTCLOSEOBJ, FAIL, "can't close v2 B-tree for name index")
     if (oh && H5O_unprotect(loc, oh, H5AC__NO_FLAGS_SET) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTRESET, FAIL, "can't reset API context")
 
     FUNC_LEAVE_NOAPI(ret_value)
@@ -362,7 +362,7 @@ H5O__attr_dense_info_test(hid_t oid, hsize_t *name_count, hsize_t *corder_count)
     H5B2_t *    bt2_corder = NULL;        /* v2 B-tree handle for creation order index */
     H5O_ainfo_t ainfo;                    /* Attribute information for object */
     H5O_loc_t * loc;                      /* Pointer to object's location */
-    hbool_t     api_ctx_pushed = FALSE;   /* Whether API context pushed */
+    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -374,13 +374,13 @@ H5O__attr_dense_info_test(hid_t oid, hsize_t *name_count, hsize_t *corder_count)
     /* Set API context */
     if (H5CX_push() < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTSET, FAIL, "can't set API context")
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Set metadata tag in API context */
     H5_BEGIN_TAG(loc->addr);
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR_TAG(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Check for attribute info stored */
@@ -431,7 +431,7 @@ done:
         HDONE_ERROR(H5E_OHDR, H5E_CANTCLOSEOBJ, FAIL, "can't close v2 B-tree for creation order index")
     if (oh && H5O_unprotect(loc, oh, H5AC__NO_FLAGS_SET) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTRESET, FAIL, "can't reset API context")
 
     FUNC_LEAVE_NOAPI(ret_value)
@@ -474,7 +474,7 @@ H5O__check_msg_marked_test(hid_t oid, hbool_t flag_val)
         HGOTO_ERROR(H5E_SYM, H5E_NOTFOUND, FAIL, "object not found")
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Locate "unknown" message  */
@@ -531,7 +531,7 @@ H5O__expunge_chunks_test(const H5O_loc_t *loc)
     FUNC_ENTER_PACKAGE
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__NO_FLAGS_SET, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__NO_FLAGS_SET, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to protect object header")
 
     /* Safety check */
@@ -590,7 +590,7 @@ H5O__get_rc_test(const H5O_loc_t *loc, unsigned *rc)
     HDassert(rc);
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to protect object header")
 
     /* Save the refcount for the object header */
@@ -632,7 +632,7 @@ H5O__msg_get_chunkno_test(hid_t oid, unsigned msg_type, unsigned *chunk_num)
     H5O_loc_t * loc;                      /* Pointer to object's location */
     H5O_mesg_t *idx_msg;                  /* Pointer to message */
     unsigned    idx;                      /* Index of message */
-    hbool_t     api_ctx_pushed = FALSE;   /* Whether API context pushed */
+    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -644,10 +644,10 @@ H5O__msg_get_chunkno_test(hid_t oid, unsigned msg_type, unsigned *chunk_num)
     /* Set API context */
     if (H5CX_push() < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTSET, FAIL, "can't set API context")
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Locate first message of given type */
@@ -667,7 +667,7 @@ H5O__msg_get_chunkno_test(hid_t oid, unsigned msg_type, unsigned *chunk_num)
 done:
     if (oh && H5O_unprotect(loc, oh, H5AC__NO_FLAGS_SET) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTRESET, FAIL, "can't reset API context")
 
     FUNC_LEAVE_NOAPI(ret_value)
@@ -699,7 +699,7 @@ H5O__msg_move_to_new_chunk_test(hid_t oid, unsigned msg_type)
     H5O_loc_t * loc;                      /* Pointer to object's location */
     H5O_mesg_t *curr_msg;                 /* Pointer to current message */
     unsigned    idx;                      /* Index of message */
-    hbool_t     api_ctx_pushed = FALSE;   /* Whether API context pushed */
+    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -711,10 +711,10 @@ H5O__msg_move_to_new_chunk_test(hid_t oid, unsigned msg_type)
     /* Set API context */
     if (H5CX_push() < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTSET, FAIL, "can't set API context")
-    api_ctx_pushed = TRUE;
+    api_ctx_pushed = true;
 
     /* Get the object header */
-    if (NULL == (oh = H5O_protect(loc, H5AC__NO_FLAGS_SET, FALSE)))
+    if (NULL == (oh = H5O_protect(loc, H5AC__NO_FLAGS_SET, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to load object header")
 
     /* Locate first message of given type */
@@ -778,7 +778,7 @@ H5O__msg_move_to_new_chunk_test(hid_t oid, unsigned msg_type)
 done:
     if (oh && H5O_unprotect(loc, oh, H5AC__NO_FLAGS_SET) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTUNPROTECT, FAIL, "unable to release object header")
-    if (api_ctx_pushed && H5CX_pop(FALSE) < 0)
+    if (api_ctx_pushed && H5CX_pop(false) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTRESET, FAIL, "can't reset API context")
 
     FUNC_LEAVE_NOAPI(ret_value)

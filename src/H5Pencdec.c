@@ -379,7 +379,7 @@ H5P__encode(const H5P_genplist_t *plist, hbool_t enc_all_prop, void *buf, size_t
     uint8_t *         p = (uint8_t *)buf;    /* Temporary pointer to encoding buffer */
     int               idx;                   /* Index of property to start at */
     size_t            encode_size = 0;       /* Size of buffer needed to encode properties */
-    hbool_t           encode      = TRUE;    /* Whether the property list should be encoded */
+    hbool_t           encode      = true;    /* Whether the property list should be encoded */
     herr_t            ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -392,7 +392,7 @@ H5P__encode(const H5P_genplist_t *plist, hbool_t enc_all_prop, void *buf, size_t
      * space is needed to encode a property.
      */
     if (NULL == p)
-        encode = FALSE;
+        encode = false;
 
     /* Encode property list description info */
     if (encode) {

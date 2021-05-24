@@ -93,7 +93,7 @@ dset_ok(hid_t fid, const char *dset_name)
 
     HDfree(data);
 
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
@@ -105,7 +105,7 @@ error:
 
     HDfree(data);
 
-    return FALSE;
+    return false;
 } /* end dset_ok() */
 
 /*-------------------------------------------------------------------------
@@ -156,7 +156,7 @@ file_ok(const char *filename, hid_t fapl_id, hbool_t check_second_dset)
     if (H5Fclose(fid) < 0)
         goto error;
 
-    return TRUE;
+    return true;
 
 error:
     H5E_BEGIN_TRY
@@ -167,7 +167,7 @@ error:
     }
     H5E_END_TRY;
 
-    return FALSE;
+    return false;
 } /* end file_ok() */
 
 /*-------------------------------------------------------------------------
@@ -188,7 +188,7 @@ clear_status_flags(const char *filename, hid_t fapl_id)
 {
     hid_t   new_fapl_id = -1; /* copy of the file access plist ID */
     hid_t   fid         = -1; /* file ID                          */
-    hbool_t clear       = TRUE;
+    hbool_t clear       = true;
 
     /* Get a copy of fapl */
     if ((new_fapl_id = H5Pcopy(fapl_id)) < 0)
@@ -258,7 +258,7 @@ main(void)
     /* Check the case where the file was flushed */
     TESTING("H5Fflush (part2 with flush)");
     h5_fixname(FILENAME[0], fapl_id, filename, sizeof(filename));
-    check_second_dset = FALSE;
+    check_second_dset = false;
     if (file_ok(filename, fapl_id, check_second_dset))
         PASSED();
     else
@@ -269,7 +269,7 @@ main(void)
     TESTING("H5Fflush (part2 with flush + SWMR)");
     if (vfd_supports_swmr) {
         h5_fixname(FILENAME[1], fapl_id, filename, sizeof(filename));
-        check_second_dset = FALSE;
+        check_second_dset = false;
         if (clear_status_flags(filename, fapl_id) < 0)
             TEST_ERROR
         if (file_ok(filename, fapl_id, check_second_dset))
@@ -289,7 +289,7 @@ main(void)
     if (H5Eset_auto2(H5E_DEFAULT, NULL, NULL) < 0)
         FAIL_STACK_ERROR
     h5_fixname(FILENAME[2], fapl_id, filename, sizeof(filename));
-    check_second_dset = FALSE;
+    check_second_dset = false;
     if (file_ok(filename, fapl_id, check_second_dset)) {
 #if defined H5_HAVE_WIN32_API && !defined(hdf5_EXPORTS)
         SKIPPED();
@@ -314,7 +314,7 @@ main(void)
         if (H5Eset_auto2(H5E_DEFAULT, NULL, NULL) < 0)
             FAIL_STACK_ERROR
         h5_fixname(FILENAME[3], fapl_id, filename, sizeof(filename));
-        check_second_dset = FALSE;
+        check_second_dset = false;
         if (clear_status_flags(filename, fapl_id) < 0)
             TEST_ERROR
         if (file_ok(filename, fapl_id, check_second_dset)) {
@@ -339,7 +339,7 @@ main(void)
      * added afterward and then flushed
      */
     TESTING("H5Fflush (part2 with flush and later addition and another flush)");
-    check_second_dset = TRUE;
+    check_second_dset = true;
     h5_fixname(FILENAME[4], fapl_id, filename, sizeof(filename));
     if (file_ok(filename, fapl_id, check_second_dset))
         PASSED();
@@ -352,7 +352,7 @@ main(void)
      */
     TESTING("H5Fflush (part2 with flush and later addition and another flush + SWMR)");
     if (vfd_supports_swmr) {
-        check_second_dset = TRUE;
+        check_second_dset = true;
         h5_fixname(FILENAME[5], fapl_id, filename, sizeof(filename));
         if (clear_status_flags(filename, fapl_id) < 0)
             TEST_ERROR
@@ -375,7 +375,7 @@ main(void)
     if (H5Eset_auto2(H5E_DEFAULT, NULL, NULL) < 0)
         FAIL_STACK_ERROR
     h5_fixname(FILENAME[6], fapl_id, filename, sizeof(filename));
-    check_second_dset = TRUE;
+    check_second_dset = true;
     if (file_ok(filename, fapl_id, check_second_dset)) {
 #if defined H5_HAVE_WIN32_API && !defined(hdf5_EXPORTS)
         SKIPPED()
@@ -402,7 +402,7 @@ main(void)
         if (H5Eset_auto2(H5E_DEFAULT, NULL, NULL) < 0)
             FAIL_STACK_ERROR
         h5_fixname(FILENAME[7], fapl_id, filename, sizeof(filename));
-        check_second_dset = TRUE;
+        check_second_dset = true;
         if (clear_status_flags(filename, fapl_id) < 0)
             TEST_ERROR
         if (file_ok(filename, fapl_id, check_second_dset)) {

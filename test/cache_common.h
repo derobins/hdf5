@@ -38,7 +38,7 @@
 #define CACHE_ERROR(s)                                                                                       \
     {                                                                                                        \
         failure_mssg = "Line #" H5_TOSTRING(__LINE__) ": " s;                                                \
-        pass         = FALSE;                                                                                \
+        pass         = false;                                                                                \
         goto done;                                                                                           \
     }
 
@@ -153,7 +153,7 @@
                                                                                                              \
         clear_slist = ((flags & H5C__FLUSH_MARKED_ENTRIES_FLAG) != 0);                                       \
                                                                                                              \
-        rslt = H5C_set_slist_enabled((file)->shared->cache, TRUE, FALSE);                                    \
+        rslt = H5C_set_slist_enabled((file)->shared->cache, true, false);                                    \
                                                                                                              \
         if (rslt >= 0) {                                                                                     \
                                                                                                              \
@@ -162,12 +162,12 @@
                                                                                                              \
         if (rslt >= 0) {                                                                                     \
                                                                                                              \
-            rslt = H5C_set_slist_enabled((file)->shared->cache, FALSE, clear_slist);                         \
+            rslt = H5C_set_slist_enabled((file)->shared->cache, false, clear_slist);                         \
         }                                                                                                    \
                                                                                                              \
         if (rslt < 0) {                                                                                      \
                                                                                                              \
-            pass         = FALSE;                                                                            \
+            pass         = false;                                                                            \
             failure_mssg = (fail_mssg);                                                                      \
         }                                                                                                    \
     } /* H5C_FLUSH_CACHE */
@@ -470,7 +470,7 @@ typedef struct test_entry_t {
 #define CACHE_CONFIGS_EQUAL(a, b, cmp_set_init, cmp_init_size)                                               \
     (((a).version == (b).version) && ((a).rpt_fcn_enabled == (b).rpt_fcn_enabled) &&                         \
      ((a).open_trace_file == (b).open_trace_file) && ((a).close_trace_file == (b).close_trace_file) &&       \
-     (((a).open_trace_file == FALSE) || (strcmp((a).trace_file_name, (b).trace_file_name) == 0)) &&          \
+     (((a).open_trace_file == false) || (strcmp((a).trace_file_name, (b).trace_file_name) == 0)) &&          \
      ((a).evictions_enabled == (b).evictions_enabled) &&                                                     \
      ((!cmp_set_init) || ((a).set_initial_size == (b).set_initial_size)) &&                                  \
      ((!cmp_init_size) || ((a).initial_size == (b).initial_size)) &&                                         \

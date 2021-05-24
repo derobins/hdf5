@@ -1006,7 +1006,7 @@ verify_accessors(hid_t fid, const char *table_name, hbool_t uses_vlen_type)
          * expected_value passed in, then print the error message.
          */
         char lenthtype[20];
-        if (uses_vlen_type == TRUE)
+        if (uses_vlen_type == true)
             HDstrcpy(lenthtype, "variable-length");
         else
             HDstrcpy(lenthtype, "fixed-length");
@@ -1050,11 +1050,11 @@ test_accessors(void)
     if (fid < 0)
         goto error;
 
-    ret = verify_accessors(fid, PT_VLEN_ATOMIC, TRUE);
+    ret = verify_accessors(fid, PT_VLEN_ATOMIC, true);
     if (ret < 0)
         goto error;
 
-    ret = verify_accessors(fid, PT_FIXED_LEN, FALSE);
+    ret = verify_accessors(fid, PT_FIXED_LEN, false);
     if (ret < 0)
         goto error;
 

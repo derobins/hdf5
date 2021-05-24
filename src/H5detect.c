@@ -327,7 +327,7 @@ precision(detected_t *d)
         fix_order(sizeof(TYPE), _last, INFO.perm, (const char **)&_mesg);                                    \
                                                                                                              \
         if (!HDstrcmp(_mesg, "VAX"))                                                                         \
-            INFO.is_vax = TRUE;                                                                              \
+            INFO.is_vax = true;                                                                              \
                                                                                                              \
         /* Implicit mantissa bit */                                                                          \
         _v1      = (TYPE)0.5L;                                                                               \

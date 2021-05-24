@@ -509,7 +509,7 @@ h5tools_set_fapl_vfd(hid_t fapl_id, h5tools_vfd_info_t *vfd_info)
     }
     else if (!HDstrcmp(vfd_info->name, drivernames[CORE_VFD_IDX])) {
         /* Core Driver */
-        if (H5Pset_fapl_core(fapl_id, (size_t)H5_MB, TRUE) < 0)
+        if (H5Pset_fapl_core(fapl_id, (size_t)H5_MB, true) < 0)
             H5TOOLS_GOTO_ERROR(FAIL, "H5Pset_fapl_core failed");
     }
     else if (!HDstrcmp(vfd_info->name, drivernames[FAMILY_VFD_IDX])) {
@@ -527,7 +527,7 @@ h5tools_set_fapl_vfd(hid_t fapl_id, h5tools_vfd_info_t *vfd_info)
     }
     else if (!HDstrcmp(vfd_info->name, drivernames[MULTI_VFD_IDX])) {
         /* MULTI Driver */
-        if (H5Pset_fapl_multi(fapl_id, NULL, NULL, NULL, NULL, TRUE) < 0)
+        if (H5Pset_fapl_multi(fapl_id, NULL, NULL, NULL, NULL, true) < 0)
             H5TOOLS_GOTO_ERROR(FAIL, "H5Pset_fapl_multi failed");
     }
     else if (!HDstrcmp(vfd_info->name, drivernames[MPIO_VFD_IDX])) {
@@ -945,7 +945,7 @@ h5tools_fopen(const char *fname, unsigned flags, hid_t fapl_id, hbool_t use_spec
                     continue;
 
                 /* Can we open the file with this combo? */
-                if ((fid = h5tools_fopen(fname, flags, tmp_fapl_id, TRUE, drivername, drivername_size)) >=
+                if ((fid = h5tools_fopen(fname, flags, tmp_fapl_id, true, drivername, drivername_size)) >=
                     0) {
                     used_fapl_id = tmp_fapl_id;
                     H5TOOLS_GOTO_DONE(fid);
@@ -965,7 +965,7 @@ h5tools_fopen(const char *fname, unsigned flags, hid_t fapl_id, hbool_t use_spec
                 continue;
 
             /* Can we open the file with this connector? */
-            if ((fid = h5tools_fopen(fname, flags, tmp_fapl_id, TRUE, drivername, drivername_size)) >= 0) {
+            if ((fid = h5tools_fopen(fname, flags, tmp_fapl_id, true, drivername, drivername_size)) >= 0) {
                 used_fapl_id = tmp_fapl_id;
                 H5TOOLS_GOTO_DONE(fid);
             }
@@ -1027,16 +1027,16 @@ h5tools_count_ncols(const char *s)
 htri_t
 h5tools_detect_vlen(hid_t tid)
 {
-    htri_t ret = FALSE;
+    htri_t ret = false;
 
     /* recursive detect any vlen data values in type (compound, array ...) */
     ret = H5Tdetect_class(tid, H5T_VLEN);
-    if ((ret == TRUE) || (ret < 0))
+    if ((ret == true) || (ret < 0))
         goto done;
 
     /* recursive detect any vlen string in type (compound, array ...) */
     ret = h5tools_detect_vlen_str(tid);
-    if ((ret == TRUE) || (ret < 0))
+    if ((ret == true) || (ret < 0))
         goto done;
 
 done:
@@ -1057,10 +1057,10 @@ htri_t
 h5tools_detect_vlen_str(hid_t tid)
 {
     H5T_class_t tclass = -1;
-    htri_t      ret    = FALSE;
+    htri_t      ret    = false;
 
     ret = H5Tis_variable_str(tid);
-    if ((ret == TRUE) || (ret < 0))
+    if ((ret == true) || (ret < 0))
         goto done;
 
     tclass = H5Tget_class(tid);
@@ -1072,7 +1072,7 @@ h5tools_detect_vlen_str(hid_t tid)
             goto done;
         }
         ret = h5tools_detect_vlen_str(btid);
-        if ((ret == TRUE) || (ret < 0)) {
+        if ((ret == true) || (ret < 0)) {
             H5Tclose(btid);
             goto done;
         }
@@ -1092,7 +1092,7 @@ h5tools_detect_vlen_str(hid_t tid)
             hid_t mtid = H5Tget_member_type(tid, u);
 
             ret = h5tools_detect_vlen_str(mtid);
-            if ((ret == TRUE) || (ret < 0)) {
+            if ((ret == true) || (ret < 0)) {
                 H5Tclose(mtid);
                 goto done;
             }
@@ -1314,7 +1314,7 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
                        h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols, hsize_t local_elmt_counter,
                        hsize_t elmt_counter)
 {
-    hbool_t dimension_break = TRUE;
+    hbool_t dimension_break = true;
     char *  s               = NULL;
     char *  section         = NULL; /* a section of output */
     int     secnum;                 /* section sequence number */
@@ -1341,7 +1341,7 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
              * ... and the previous element also occupied more than one
              * line, then start this element at the beginning of a line.
              */
-            ctx->need_prefix = TRUE;
+            ctx->need_prefix = true;
         }
         else if ((ctx->prev_prefix_len + h5tools_count_ncols(s) + HDstrlen(OPT(info->elmt_suf2, " ")) +
                   HDstrlen(OPT(info->line_suf, ""))) <= ncols) {
@@ -1350,7 +1350,7 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
              * should end the current line and start this element on its
              * own line.
              */
-            ctx->need_prefix = TRUE;
+            ctx->need_prefix = true;
         }
         H5TOOLS_DEBUG("ctx->need_prefix=%d", ctx->need_prefix);
     }
@@ -1362,11 +1362,11 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
      */
     if (info->arr_linebreak && ctx->cur_elmt) {
         if (ctx->size_last_dim && (ctx->cur_elmt % ctx->size_last_dim) == 0)
-            ctx->need_prefix = TRUE;
+            ctx->need_prefix = true;
 
         if (elmt_counter == ctx->size_last_dim) {
-            ctx->need_prefix = TRUE;
-            dimension_break  = FALSE;
+            ctx->need_prefix = true;
+            dimension_break  = false;
         }
         H5TOOLS_DEBUG("ctx->need_prefix=%d", ctx->need_prefix);
     }
@@ -1381,7 +1381,7 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
     if (info->line_multi_new == 1 && ctx->prev_multiline &&
         (ctx->cur_column + h5tools_count_ncols(s) + HDstrlen(OPT(info->elmt_suf2, " ")) +
          HDstrlen(OPT(info->line_suf, ""))) > ncols)
-        ctx->need_prefix = TRUE;
+        ctx->need_prefix = true;
     H5TOOLS_DEBUG("ctx->need_prefix=%d", ctx->need_prefix);
 
     /*
@@ -1389,7 +1389,7 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
      * start a new line.
      */
     if (info->line_per_line > 0 && ctx->cur_elmt >= info->line_per_line)
-        ctx->need_prefix = TRUE;
+        ctx->need_prefix = true;
     H5TOOLS_DEBUG("ctx->need_prefix=%d", ctx->need_prefix);
 
     /*
@@ -1479,7 +1479,7 @@ h5tools_render_region_element(FILE *stream, const h5tool_format_t *info, h5tools
                               h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols, hsize_t *ptdata,
                               hsize_t local_elmt_counter, hsize_t elmt_counter)
 {
-    hbool_t dimension_break = TRUE;
+    hbool_t dimension_break = true;
     char *  s               = NULL;
     char *  section         = NULL; /* a section of output */
     int     secnum;                 /* section sequence number */
@@ -1502,7 +1502,7 @@ h5tools_render_region_element(FILE *stream, const h5tool_format_t *info, h5tools
              * ... and the previous element also occupied more than one
              * line, then start this element at the beginning of a line.
              */
-            ctx->need_prefix = TRUE;
+            ctx->need_prefix = true;
         }
         else if ((ctx->prev_prefix_len + h5tools_count_ncols(s) + HDstrlen(OPT(info->elmt_suf2, " ")) +
                   HDstrlen(OPT(info->line_suf, ""))) <= ncols) {
@@ -1511,7 +1511,7 @@ h5tools_render_region_element(FILE *stream, const h5tool_format_t *info, h5tools
              * should end the current line and start this element on its
              * own line.
              */
-            ctx->need_prefix = TRUE;
+            ctx->need_prefix = true;
         }
     }
 
@@ -1522,11 +1522,11 @@ h5tools_render_region_element(FILE *stream, const h5tool_format_t *info, h5tools
      */
     if (info->arr_linebreak && ctx->cur_elmt) {
         if (ctx->size_last_dim && (ctx->cur_elmt % ctx->size_last_dim) == 0)
-            ctx->need_prefix = TRUE;
+            ctx->need_prefix = true;
 
         if (elmt_counter == ctx->size_last_dim) {
-            ctx->need_prefix = TRUE;
-            dimension_break  = FALSE;
+            ctx->need_prefix = true;
+            dimension_break  = false;
         }
     }
 
@@ -1538,14 +1538,14 @@ h5tools_render_region_element(FILE *stream, const h5tool_format_t *info, h5tools
     if (info->line_multi_new == 1 && ctx->prev_multiline &&
         (ctx->cur_column + h5tools_count_ncols(s) + HDstrlen(OPT(info->elmt_suf2, " ")) +
          HDstrlen(OPT(info->line_suf, ""))) > ncols)
-        ctx->need_prefix = TRUE;
+        ctx->need_prefix = true;
 
     /*
      * If too many elements have already been printed then we need to
      * start a new line.
      */
     if (info->line_per_line > 0 && ctx->cur_elmt >= info->line_per_line)
-        ctx->need_prefix = TRUE;
+        ctx->need_prefix = true;
 
     /*
      * Each OPTIONAL_LINE_BREAK embedded in the rendered string can cause
@@ -1686,7 +1686,7 @@ render_bin_output(FILE *stream, hid_t container, hid_t tid, void *_mem, hsize_t 
     size_t         size; /* datum size */
     hsize_t        block_index;
     H5T_class_t    type_class;
-    hbool_t        past_catch = FALSE;
+    hbool_t        past_catch = false;
     int            ret_value  = 0;
 
     H5TOOLS_START_DEBUG(" ");
@@ -1927,7 +1927,7 @@ render_bin_output_region_data_blocks(hid_t region_id, FILE *stream, hid_t contai
     size_t   type_size;
     hid_t    mem_space  = H5I_INVALID_HID;
     void *   region_buf = NULL;
-    hbool_t  past_catch = FALSE;
+    hbool_t  past_catch = false;
     hsize_t  blkndx;
     hid_t    sid1      = H5I_INVALID_HID;
     int      ret_value = -1;
@@ -2023,30 +2023,30 @@ render_bin_output_region_blocks(hid_t region_space, hid_t region_id, FILE *strea
     unsigned ndims;
     hid_t    dtype      = H5I_INVALID_HID;
     hid_t    type_id    = H5I_INVALID_HID;
-    hbool_t  past_catch = FALSE;
-    hbool_t  ret_value  = TRUE;
+    hbool_t  past_catch = false;
+    hbool_t  ret_value  = true;
 
     H5TOOLS_START_DEBUG(" ");
     if ((snblocks = H5Sget_select_hyper_nblocks(region_space)) <= 0)
-        H5TOOLS_THROW(FALSE, "H5Sget_select_hyper_nblocks failed");
+        H5TOOLS_THROW(false, "H5Sget_select_hyper_nblocks failed");
     nblocks = (hsize_t)snblocks;
 
     /* Print block information */
     if ((sndims = H5Sget_simple_extent_ndims(region_space)) < 0)
-        H5TOOLS_THROW(FALSE, "H5Sget_simple_extent_ndims failed");
+        H5TOOLS_THROW(false, "H5Sget_simple_extent_ndims failed");
     ndims = (unsigned)sndims;
 
     alloc_size = nblocks * ndims * 2 * sizeof(ptdata[0]);
     if ((ptdata = (hsize_t *)HDmalloc((size_t)alloc_size)) == NULL)
-        H5TOOLS_GOTO_ERROR(FALSE, "Could not allocate buffer for ptdata");
+        H5TOOLS_GOTO_ERROR(false, "Could not allocate buffer for ptdata");
 
     if (H5Sget_select_hyper_blocklist(region_space, (hsize_t)0, nblocks, ptdata) < 0)
-        H5TOOLS_GOTO_ERROR(FALSE, "H5Rget_select_hyper_blocklist failed");
+        H5TOOLS_GOTO_ERROR(false, "H5Rget_select_hyper_blocklist failed");
 
     if ((dtype = H5Dget_type(region_id)) < 0)
-        H5TOOLS_GOTO_ERROR(FALSE, "H5Dget_type failed");
+        H5TOOLS_GOTO_ERROR(false, "H5Dget_type failed");
     if ((type_id = H5Tget_native_type(dtype, H5T_DIR_DEFAULT)) < 0)
-        H5TOOLS_GOTO_ERROR(FALSE, "H5Tget_native_type failed");
+        H5TOOLS_GOTO_ERROR(false, "H5Tget_native_type failed");
 
     render_bin_output_region_data_blocks(region_id, stream, container, ndims, type_id, nblocks, ptdata);
 
@@ -2054,12 +2054,12 @@ done:
     HDfree(ptdata);
 
     if (type_id > 0 && H5Tclose(type_id) < 0)
-        H5TOOLS_ERROR(FALSE, "H5Tclose failed");
+        H5TOOLS_ERROR(false, "H5Tclose failed");
 
     if (dtype > 0 && H5Tclose(dtype) < 0)
-        H5TOOLS_ERROR(FALSE, "H5Tclose failed");
+        H5TOOLS_ERROR(false, "H5Tclose failed");
 
-    H5_LEAVE(TRUE)
+    H5_LEAVE(true)
 
     CATCH
     H5TOOLS_ENDDEBUG(" ");
@@ -2146,33 +2146,33 @@ render_bin_output_region_points(hid_t region_space, hid_t region_id, FILE *strea
     unsigned ndims;
     hid_t    dtype      = H5I_INVALID_HID;
     hid_t    type_id    = H5I_INVALID_HID;
-    hbool_t  past_catch = FALSE;
-    hbool_t  ret_value  = TRUE;
+    hbool_t  past_catch = false;
+    hbool_t  ret_value  = true;
 
     H5TOOLS_START_DEBUG(" ");
     if ((snpoints = H5Sget_select_elem_npoints(region_space)) <= 0)
-        H5TOOLS_THROW(FALSE, "H5Sget_select_elem_npoints failed");
+        H5TOOLS_THROW(false, "H5Sget_select_elem_npoints failed");
     npoints = (hsize_t)snpoints;
 
     /* Allocate space for the dimension array */
     if ((sndims = H5Sget_simple_extent_ndims(region_space)) < 0)
-        H5TOOLS_THROW(FALSE, "H5Sget_simple_extent_ndims failed");
+        H5TOOLS_THROW(false, "H5Sget_simple_extent_ndims failed");
     ndims = (unsigned)sndims;
 
     if ((dtype = H5Dget_type(region_id)) < 0)
-        H5TOOLS_GOTO_ERROR(FALSE, "H5Dget_type failed");
+        H5TOOLS_GOTO_ERROR(false, "H5Dget_type failed");
 
     if ((type_id = H5Tget_native_type(dtype, H5T_DIR_DEFAULT)) < 0)
-        H5TOOLS_GOTO_ERROR(FALSE, "H5Tget_native_type failed");
+        H5TOOLS_GOTO_ERROR(false, "H5Tget_native_type failed");
 
     render_bin_output_region_data_points(region_space, region_id, stream, container, ndims, type_id, npoints);
 
 done:
     if (type_id > 0 && H5Tclose(type_id) < 0)
-        H5TOOLS_ERROR(FALSE, "H5Tclose failed");
+        H5TOOLS_ERROR(false, "H5Tclose failed");
 
     if (dtype > 0 && H5Tclose(dtype) < 0)
-        H5TOOLS_ERROR(FALSE, "H5Tclose failed");
+        H5TOOLS_ERROR(false, "H5Tclose failed");
 
     H5_LEAVE(ret_value)
     CATCH
@@ -2196,9 +2196,9 @@ h5tools_is_zero(const void *_mem, size_t size)
 
     while (size-- > 0)
         if (mem[size])
-            return FALSE;
+            return false;
 
-    return TRUE;
+    return true;
 }
 
 /*-------------------------------------------------------------------------
@@ -2222,7 +2222,7 @@ hbool_t
 h5tools_is_obj_same(hid_t loc_id1, const char *name1, hid_t loc_id2, const char *name2)
 {
     H5O_info2_t oinfo1, oinfo2;
-    hbool_t     ret_val = FALSE;
+    hbool_t     ret_val = false;
 
     if (name1 && HDstrcmp(name1, ".") != 0)
         H5Oget_info_by_name3(loc_id1, name1, &oinfo1, H5O_INFO_BASIC, H5P_DEFAULT);
@@ -2240,7 +2240,7 @@ h5tools_is_obj_same(hid_t loc_id1, const char *name1, hid_t loc_id2, const char 
         H5Otoken_cmp(loc_id1, &oinfo1.token, &oinfo2.token, &token_cmp_val);
 
         if (!token_cmp_val)
-            ret_val = TRUE;
+            ret_val = true;
     }
 
     return ret_val;

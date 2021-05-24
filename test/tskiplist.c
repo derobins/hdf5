@@ -1292,13 +1292,13 @@ test_tfs_free(void *_obj, void *key, void *_obj_list)
     /* Decide whether this object should be freed */
     if (HDrandom() % (long)2) {
         /* Free the object */
-        ret_value = TRUE;
+        ret_value = true;
         obj->nfrees++;
         obj_list->nobjs_rem--;
     } /* end if */
     else
         /* Do not free the object */
-        ret_value = FALSE;
+        ret_value = false;
 
     return ret_value;
 } /* end test_tfs_free() */
@@ -1732,7 +1732,7 @@ test_skiplist_remove_first_many(void)
     /* Remove objects from the skip list */
     for (u = 0; u < NUM_ELEMS; u++) {
         found_item = (int *)H5SL_remove_first(slist);
-        VERIFY(*found_item > prev_item, TRUE, "H5SL_remove_first");
+        VERIFY(*found_item > prev_item, true, "H5SL_remove_first");
         prev_item = *found_item;
     } /* end for */
 

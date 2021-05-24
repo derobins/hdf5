@@ -61,7 +61,7 @@ H5VL__native_file_create(const char *name, unsigned flags, hid_t fcpl_id, hid_t 
     /* Create the file */
     if (NULL == (new_file = H5F_open(name, flags, fcpl_id, fapl_id)))
         HGOTO_ERROR(H5E_FILE, H5E_CANTOPENFILE, NULL, "unable to create file")
-    new_file->id_exists = TRUE;
+    new_file->id_exists = true;
 
     ret_value = (void *)new_file;
 
@@ -95,7 +95,7 @@ H5VL__native_file_open(const char *name, unsigned flags, hid_t fapl_id, hid_t H5
     /* Open the file */
     if (NULL == (new_file = H5F_open(name, flags, H5P_FILE_CREATE_DEFAULT, fapl_id)))
         HGOTO_ERROR(H5E_FILE, H5E_CANTOPENFILE, NULL, "unable to open file")
-    new_file->id_exists = TRUE;
+    new_file->id_exists = true;
 
     ret_value = (void *)new_file;
 
@@ -144,7 +144,7 @@ H5VL__native_file_get(void *obj, H5VL_file_get_t get_type, hid_t H5_ATTR_UNUSED 
             f = (H5F_t *)obj;
 
             /* Retrieve the file's access property list */
-            if ((*plist_id = H5F_get_access_plist(f, TRUE)) < 0)
+            if ((*plist_id = H5F_get_access_plist(f, true)) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_CANTGET, FAIL, "can't get file access property list")
 
             if (NULL == (new_plist = (H5P_genplist_t *)H5I_object(*plist_id)))
@@ -162,7 +162,7 @@ H5VL__native_file_get(void *obj, H5VL_file_get_t get_type, hid_t H5_ATTR_UNUSED 
                 HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a property list")
 
             /* Create the property list object to return */
-            if ((*plist_id = H5P_copy_plist(plist, TRUE)) < 0)
+            if ((*plist_id = H5P_copy_plist(plist, true)) < 0)
                 HGOTO_ERROR(H5E_PLIST, H5E_CANTINIT, FAIL, "unable to copy file creation properties")
 
             break;
@@ -240,7 +240,7 @@ H5VL__native_file_get(void *obj, H5VL_file_get_t get_type, hid_t H5_ATTR_UNUSED 
 
             f = (H5F_t *)obj;
             /* Perform the query */
-            if (H5F_get_obj_count(f, types, TRUE, &obj_count) < 0)
+            if (H5F_get_obj_count(f, types, true, &obj_count) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, FAIL, "H5F_get_obj_count failed")
 
             /* Set the return value */
@@ -258,7 +258,7 @@ H5VL__native_file_get(void *obj, H5VL_file_get_t get_type, hid_t H5_ATTR_UNUSED 
 
             f = (H5F_t *)obj;
             /* Perform the query */
-            if (H5F_get_obj_ids(f, types, max_objs, oid_list, TRUE, &obj_count) < 0)
+            if (H5F_get_obj_ids(f, types, max_objs, oid_list, true, &obj_count) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, FAIL, "H5F_get_obj_ids failed")
 
             /* Set the return value */
@@ -333,7 +333,7 @@ H5VL__native_file_specific(void *obj, H5VL_file_specific_t specific_type, hid_t 
             /* Reopen the file through the VOL connector */
             if (NULL == (new_file = H5F__reopen((H5F_t *)obj)))
                 HGOTO_ERROR(H5E_FILE, H5E_CANTINIT, FAIL, "unable to reopen file")
-            new_file->id_exists = TRUE;
+            new_file->id_exists = true;
 
             *ret = (void *)new_file;
             break;
@@ -403,7 +403,7 @@ H5VL__native_file_specific(void *obj, H5VL_file_specific_t specific_type, hid_t 
             hbool_t *is_equal = HDva_arg(arguments, hbool_t *);
 
             if (!obj || !file2)
-                *is_equal = FALSE;
+                *is_equal = false;
             else
                 *is_equal = (((H5F_t *)obj)->shared == file2->shared);
             break;
@@ -839,7 +839,7 @@ H5VL__native_file_close(void *file, hid_t H5_ATTR_UNUSED dxpl_id, void H5_ATTR_U
             HGOTO_ERROR(H5E_ID, H5E_CANTGET, FAIL, "invalid ID")
 
         /* Get the number of references outstanding for this file ID */
-        if ((nref = H5I_get_ref(file_id, FALSE)) < 0)
+        if ((nref = H5I_get_ref(file_id, false)) < 0)
             HGOTO_ERROR(H5E_ID, H5E_CANTGET, FAIL, "can't get ID ref count")
         if (nref == 1)
             if (H5F__flush(f) < 0)

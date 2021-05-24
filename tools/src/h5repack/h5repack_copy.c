@@ -82,7 +82,7 @@ copy_objects(const char *fnamein, const char *fnameout, pack_opt_t *options)
      *-------------------------------------------------------------------------
      */
     if ((fidin = h5tools_fopen(fnamein, H5F_ACC_RDONLY, options->fin_fapl,
-                               (options->fin_fapl == H5P_DEFAULT) ? FALSE : TRUE, NULL, (size_t)0)) < 0)
+                               (options->fin_fapl == H5P_DEFAULT) ? false : true, NULL, (size_t)0)) < 0)
         H5TOOLS_GOTO_ERROR((-1), "h5tools_fopen failed <%s>: %s", fnamein, H5FOPENERROR);
 
     /* get user block size and file space strategy/persist/threshold */
@@ -670,7 +670,7 @@ do_copy_objects(hid_t fidin, hid_t fidout, trav_table_t *travt, pack_opt_t *opti
         for (i = 0; i < travt->nobjs; i++) {
             /* init variables per obj */
             buf           = NULL;
-            limit_maxdims = FALSE;
+            limit_maxdims = false;
 
             switch (travt->objs[i].type) {
                 case H5TRAV_TYPE_UNKNOWN:
@@ -833,7 +833,7 @@ do_copy_objects(hid_t fidin, hid_t fidout, trav_table_t *travt, pack_opt_t *opti
                             H5TOOLS_GOTO_ERROR((-1), "H5Pget_vol_id failed");
 
                         if (in_vol_id != out_vol_id)
-                            use_h5ocopy = FALSE;
+                            use_h5ocopy = false;
 
                         if (in_vol_id != default_vol_id)
                             if (H5VLclose(in_vol_id) < 0)
@@ -945,15 +945,15 @@ do_copy_objects(hid_t fidin, hid_t fidout, trav_table_t *travt, pack_opt_t *opti
                                         if (options->op_tbl->nelems > 0) {
                                             /* if current obj match specified obj */
                                             if (options_get_object(travt->objs[i].name, options->op_tbl))
-                                                limit_maxdims = TRUE;
+                                                limit_maxdims = true;
                                         }
                                         else /* no dataset is specified */
-                                            limit_maxdims = TRUE;
+                                            limit_maxdims = true;
 
                                         /* if convert to COMPACT */
                                         if (options->layout_g == H5D_COMPACT)
                                             if (size_dset > MAX_COMPACT_DSIZE)
-                                                limit_maxdims = FALSE;
+                                                limit_maxdims = false;
 
                                         /* unset unlimited max dims */
                                         if (limit_maxdims)
@@ -1005,7 +1005,7 @@ do_copy_objects(hid_t fidin, hid_t fidout, trav_table_t *travt, pack_opt_t *opti
 
                                         /* Check if we have VL data in the dataset's
                                          * datatype that must be reclaimed */
-                                        if (TRUE == H5Tdetect_class(wtype_id, H5T_VLEN))
+                                        if (true == H5Tdetect_class(wtype_id, H5T_VLEN))
                                             if (H5Treclaim(wtype_id, f_space_id, H5P_DEFAULT, buf) < 0)
                                                 H5TOOLS_GOTO_ERROR((-1), "H5Treclaim failed");
 
@@ -1039,8 +1039,8 @@ do_copy_objects(hid_t fidin, hid_t fidout, trav_table_t *travt, pack_opt_t *opti
                                             H5I_INVALID_HID; /* dataset creation property list ID */
 
                                         /* check if we have VL data in the dataset's datatype */
-                                        if (H5Tdetect_class(wtype_id, H5T_VLEN) == TRUE)
-                                            vl_data = TRUE;
+                                        if (H5Tdetect_class(wtype_id, H5T_VLEN) == true)
+                                            vl_data = true;
 
                                         /* check first if writing dataset is chunked,
                                          * if so use its chunk layout for better performance. */
@@ -1316,7 +1316,7 @@ do_copy_objects(hid_t fidin, hid_t fidout, trav_table_t *travt, pack_opt_t *opti
                             }
 
                             /* Set flag for intermediate group creation */
-                            if (H5Pset_create_intermediate_group(lcpl_id, TRUE) < 0)
+                            if (H5Pset_create_intermediate_group(lcpl_id, true) < 0)
                                 H5TOOLS_GOTO_ERROR((-1), "H5Pset_create_intermediate_group failed");
 
                             if (H5Ocopy(fidin, travt->objs[i].name, fidout, travt->objs[i].name, ocpl_id,

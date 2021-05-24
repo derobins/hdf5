@@ -395,7 +395,7 @@ H5T__bit_find(const uint8_t *buf, size_t offset, size_t size, H5T_sdir_t directi
     FUNC_ENTER_PACKAGE_NOERR
 
     /* Some functions call this with value=TRUE */
-    HDassert(TRUE == 1);
+    HDassert(true == 1);
 
     switch (direction) {
         case H5T_BIT_LSB:
@@ -532,7 +532,7 @@ H5T__bit_inc(uint8_t *buf, size_t start, size_t size)
         buf[idx] |= (uint8_t)(acc & mask);
     }
 
-    FUNC_LEAVE_NOAPI(carry ? TRUE : FALSE)
+    FUNC_LEAVE_NOAPI(carry ? true : false)
 } /* end H5T__bit_inc() */
 
 /*-------------------------------------------------------------------------
@@ -609,7 +609,7 @@ H5T__bit_dec(uint8_t *buf, size_t start, size_t size)
         }
     }
 
-    FUNC_LEAVE_NOAPI(borrow ? TRUE : FALSE)
+    FUNC_LEAVE_NOAPI(borrow ? true : false)
 } /* end H5T__bit_dec() */
 
 /*-------------------------------------------------------------------------

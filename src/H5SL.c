@@ -80,7 +80,7 @@
 #define H5SL_LOCATE_SEARCH_DEFER_REMOVE_FOUND(SLIST, X, I)                                                   \
     {                                                                                                        \
         HDassert(!X->removed);                                                                               \
-        X->removed = TRUE;                                                                                   \
+        X->removed = true;                                                                                   \
         HGOTO_DONE(X->item);                                                                                 \
     } /* end block */
 
@@ -569,7 +569,7 @@ static herr_t       H5SL__release_common(H5SL_t *slist, H5SL_operator_t op, void
 static herr_t       H5SL__close_common(H5SL_t *slist, H5SL_operator_t op, void *op_data);
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the H5SL_t struct */
 H5FL_DEFINE_STATIC(H5SL_t);
@@ -667,7 +667,7 @@ H5SL_term_package(void)
 
         /* Mark the interface as uninitialized */
         if (0 == n)
-            H5_PKG_INIT_VAR = FALSE;
+            H5_PKG_INIT_VAR = false;
     } /* end if */
 
     FUNC_LEAVE_NOAPI(n)
@@ -711,7 +711,7 @@ H5SL__new_node(void *item, const void *key, uint32_t hashval)
     ret_value->item    = item;
     ret_value->level   = 0;
     ret_value->hashval = hashval;
-    ret_value->removed = FALSE;
+    ret_value->removed = false;
     if (NULL == (ret_value->forward = (H5SL_node_t **)H5FL_FAC_MALLOC(H5SL_fac_g[0]))) {
         ret_value = H5FL_FREE(H5SL_node_t, ret_value);
         HGOTO_ERROR(H5E_SLIST, H5E_NOSPACE, NULL, "memory allocation failed")
@@ -1003,7 +1003,7 @@ H5SL_create(H5SL_type_t type, H5SL_cmp_t cmp)
     /* Set the dynamic internal fields */
     new_slist->curr_level     = -1;
     new_slist->nobjs          = 0;
-    new_slist->safe_iterating = FALSE;
+    new_slist->safe_iterating = false;
 
     /* Allocate the header node */
     if (NULL == (header = H5SL__new_node(NULL, NULL, (uint32_t)ULONG_MAX)))
@@ -2336,7 +2336,7 @@ H5SL_try_free_safe(H5SL_t *slist, H5SL_try_free_op_t op, void *op_data)
 
     /* Mark skip list as safe iterating, so nodes aren't freed out from under
      * us */
-    slist->safe_iterating = TRUE;
+    slist->safe_iterating = true;
 
     /* Iterate over skip list nodes, making the callback for each and marking
      * them as removed if requested by the callback */
@@ -2352,7 +2352,7 @@ H5SL_try_free_safe(H5SL_t *slist, H5SL_try_free_op_t op, void *op_data)
             /* Check if op indicated that the node should be removed */
             if (op_ret)
                 /* Mark the node as removed */
-                node->removed = TRUE;
+                node->removed = true;
         } /* end if */
 
         /* Advance node */
@@ -2360,7 +2360,7 @@ H5SL_try_free_safe(H5SL_t *slist, H5SL_try_free_op_t op, void *op_data)
     } /* end while */
 
     /* Reset safe_iterating */
-    slist->safe_iterating = FALSE;
+    slist->safe_iterating = false;
 
     /* Iterate over nodes, freeing ones marked as removed */
     node      = slist->header->forward[0];

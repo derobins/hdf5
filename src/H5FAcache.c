@@ -196,7 +196,7 @@ END_FUNC(STATIC) /* end H5FA__cache_hdr_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5FA__cache_hdr_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -211,7 +211,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5FA__cache_hdr_verify_chksum() */
 
@@ -579,7 +579,7 @@ END_FUNC(STATIC) /* end H5FA__cache_dblock_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5FA__cache_dblock_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -594,7 +594,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5FA__cache_dblock_verify_chksum() */
 
@@ -986,7 +986,7 @@ END_FUNC(STATIC) /* end H5FA__cache_dblk_page_get_initial_load_size() */
  *
  *-------------------------------------------------------------------------
  */
-BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
+BEGIN_FUNC(STATIC, NOERR, htri_t, true, -,
            H5FA__cache_dblk_page_verify_chksum(const void *_image, size_t len, void H5_ATTR_UNUSED *_udata))
 
     /* Local variables */
@@ -1001,7 +1001,7 @@ BEGIN_FUNC(STATIC, NOERR, htri_t, TRUE, -,
     H5F_get_checksums(image, len, &stored_chksum, &computed_chksum);
 
     if (stored_chksum != computed_chksum)
-        ret_value = FALSE;
+        ret_value = false;
 
 END_FUNC(STATIC) /* end H5FA__cache_dblk_page_verify_chksum() */
 

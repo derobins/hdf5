@@ -182,16 +182,16 @@ done:
 static inline htri_t H5_ATTR_UNUSED
 H5VM_vector_zerop_u(int n, const hsize_t *v)
 {
-    htri_t ret_value = TRUE; /* Return value */
+    htri_t ret_value = true; /* Return value */
 
     /* Use FUNC_ENTER_NOAPI_NOINIT_NOERR here to avoid performance issues */
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     if (!v)
-        HGOTO_DONE(TRUE)
+        HGOTO_DONE(true)
     while (n--)
         if (*v++)
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -219,16 +219,16 @@ done:
 static inline htri_t H5_ATTR_UNUSED
 H5VM_vector_zerop_s(int n, const hssize_t *v)
 {
-    htri_t ret_value = TRUE; /* Return value */
+    htri_t ret_value = true; /* Return value */
 
     /* Use FUNC_ENTER_NOAPI_NOINIT_NOERR here to avoid performance issues */
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     if (!v)
-        HGOTO_DONE(TRUE)
+        HGOTO_DONE(true)
     while (n--)
         if (*v++)
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -531,7 +531,7 @@ static inline hbool_t H5_ATTR_UNUSED
 H5VM_bit_get(const unsigned char *buf, size_t offset)
 {
     /* Test the appropriate bit in the buffer */
-    return (hbool_t)((buf[offset / 8] & (H5VM_bit_set_g[offset % 8])) ? TRUE : FALSE);
+    return (hbool_t)((buf[offset / 8] & (H5VM_bit_set_g[offset % 8])) ? true : false);
 } /* end H5VM_bit_get() */
 
 /*-------------------------------------------------------------------------

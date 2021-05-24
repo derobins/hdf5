@@ -235,7 +235,7 @@ h5repack_verify(const char *in_fname, const char *out_fname, pack_opt_t *options
      * the same as the input file's free-space persist status
      */
     if (options->fs_persist) {
-        if (out_persist != (hbool_t)(options->fs_persist == (-1) ? FALSE : options->fs_persist))
+        if (out_persist != (hbool_t)(options->fs_persist == (-1) ? false : options->fs_persist))
             H5TOOLS_GOTO_ERROR((-1), "free-space persist status not set as unexpected");
     }
     else {
@@ -379,10 +379,10 @@ h5repack_cmp_pl(const char *fname1, hid_t fname1_fapl, const char *fname2, hid_t
      */
     /* Open the files */
     if ((fid1 = h5tools_fopen(fname1, H5F_ACC_RDONLY, fname1_fapl,
-                              (fname1_fapl == H5P_DEFAULT) ? FALSE : TRUE, NULL, 0)) < 0)
+                              (fname1_fapl == H5P_DEFAULT) ? false : true, NULL, 0)) < 0)
         H5TOOLS_GOTO_ERROR((-1), "h5tools_fopen failed <%s>: %s", fname1, H5FOPENERROR);
     if ((fid2 = h5tools_fopen(fname2, H5F_ACC_RDONLY, fname2_fapl,
-                              (fname2_fapl == H5P_DEFAULT) ? FALSE : TRUE, NULL, 0)) < 0)
+                              (fname2_fapl == H5P_DEFAULT) ? false : true, NULL, 0)) < 0)
         H5TOOLS_GOTO_ERROR((-1), "h5tools_fopen failed <%s>: %s", fname2, H5FOPENERROR);
 
     /*-------------------------------------------------------------------------

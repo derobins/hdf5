@@ -1489,9 +1489,9 @@ h5tools_str_is_zero(const void *_mem, size_t size)
 
     while (size-- > 0)
         if (mem[size])
-            return FALSE;
+            return false;
 
-    return TRUE;
+    return true;
 }
 
 /*-------------------------------------------------------------------------

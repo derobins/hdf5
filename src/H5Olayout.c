@@ -397,7 +397,7 @@ H5O__layout_decode(H5F_t *f, H5O_t H5_ATTR_UNUSED *open_oh, unsigned H5_ATTR_UNU
                 mesg->storage.u.virt.printf_gap  = HSIZE_UNDEF;
                 mesg->storage.u.virt.source_fapl = -1;
                 mesg->storage.u.virt.source_dapl = -1;
-                mesg->storage.u.virt.init        = FALSE;
+                mesg->storage.u.virt.init        = false;
 
                 /* Decode heap block if it exists */
                 if (mesg->storage.u.virt.serial_list_hobjid.addr != HADDR_UNDEF) {
@@ -796,7 +796,7 @@ H5O__layout_copy(const void *_mesg, void *_dest)
         case H5D_CHUNKED:
             /* Reset the pointer of the chunked storage index but not the address */
             if (dest->storage.u.chunk.ops)
-                H5D_chunk_idx_reset(&dest->storage.u.chunk, FALSE);
+                H5D_chunk_idx_reset(&dest->storage.u.chunk, false);
             break;
 
         case H5D_VIRTUAL:
@@ -851,7 +851,7 @@ H5O__layout_size(const H5F_t *f, hbool_t H5_ATTR_UNUSED disable_shared, const vo
 
     /* Compute serialized size */
     /* (including possibly compact data) */
-    ret_value = H5D__layout_meta_size(f, mesg, TRUE);
+    ret_value = H5D__layout_meta_size(f, mesg, true);
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5O__layout_size() */
@@ -1041,7 +1041,7 @@ H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst,
     H5D_copy_file_ud_t *udata      = (H5D_copy_file_ud_t *)_udata; /* Dataset copying user data */
     H5O_layout_t *      layout_src = (H5O_layout_t *)mesg_src;
     H5O_layout_t *      layout_dst = NULL;
-    hbool_t             copied     = FALSE; /* Whether the data was copied */
+    hbool_t             copied     = false; /* Whether the data was copied */
     void *              ret_value  = NULL;  /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1063,7 +1063,7 @@ H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst,
                 if (H5D__compact_copy(file_src, &layout_src->storage.u.compact, file_dst,
                                       &layout_dst->storage.u.compact, udata->src_dtype, cpy_info) < 0)
                     HGOTO_ERROR(H5E_OHDR, H5E_CANTCOPY, NULL, "unable to copy chunked storage")
-                copied = TRUE;
+                copied = true;
             } /* end if */
             break;
 
@@ -1083,7 +1083,7 @@ H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst,
                 if (H5D__contig_copy(file_src, &layout_src->storage.u.contig, file_dst,
                                      &layout_dst->storage.u.contig, udata->src_dtype, cpy_info) < 0)
                     HGOTO_ERROR(H5E_OHDR, H5E_CANTCOPY, NULL, "unable to copy contiguous storage")
-                copied = TRUE;
+                copied = true;
             } /* end if */
             break;
 
@@ -1096,7 +1096,7 @@ H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst,
                                     &layout_dst->storage.u.chunk, udata->src_space_extent, udata->src_dtype,
                                     udata->common.src_pline, cpy_info) < 0)
                     HGOTO_ERROR(H5E_OHDR, H5E_CANTCOPY, NULL, "unable to copy chunked storage")
-                copied = TRUE;
+                copied = true;
             } /* end if */
             break;
 

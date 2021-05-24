@@ -253,7 +253,7 @@ H5O__efl_copy(const void *_mesg, void *_dest)
     const H5O_efl_t *mesg = (const H5O_efl_t *)_mesg;
     H5O_efl_t *      dest = (H5O_efl_t *)_dest;
     size_t           u;                      /* Local index variable */
-    hbool_t          slot_allocated = FALSE; /* Flag to indicate that dynamic allocation has begun */
+    hbool_t          slot_allocated = false; /* Flag to indicate that dynamic allocation has begun */
     void *           ret_value      = NULL;  /* Return value */
 
     FUNC_ENTER_STATIC
@@ -272,7 +272,7 @@ H5O__efl_copy(const void *_mesg, void *_dest)
     if (dest->nalloc > 0) {
         if (NULL == (dest->slot = (H5O_efl_entry_t *)H5MM_calloc(dest->nalloc * sizeof(H5O_efl_entry_t))))
             HGOTO_ERROR(H5E_OHDR, H5E_CANTALLOC, NULL, "can't allocate efl message slots")
-        slot_allocated = TRUE;
+        slot_allocated = true;
         for (u = 0; u < mesg->nused; u++) {
             dest->slot[u] = mesg->slot[u];
             if (NULL == (dest->slot[u].name = H5MM_xstrdup(mesg->slot[u].name)))

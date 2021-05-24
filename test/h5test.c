@@ -427,7 +427,7 @@ h5_test_init(void)
 char *
 h5_fixname(const char *base_name, hid_t fapl, char *fullname, size_t size)
 {
-    return (h5_fixname_real(base_name, fapl, ".h5", fullname, size, FALSE, FALSE));
+    return (h5_fixname_real(base_name, fapl, ".h5", fullname, size, false, false));
 }
 
 /*-------------------------------------------------------------------------
@@ -452,7 +452,7 @@ h5_fixname(const char *base_name, hid_t fapl, char *fullname, size_t size)
 char *
 h5_fixname_superblock(const char *base_name, hid_t fapl_id, char *fullname, size_t size)
 {
-    return (h5_fixname_real(base_name, fapl_id, ".h5", fullname, size, FALSE, TRUE));
+    return (h5_fixname_real(base_name, fapl_id, ".h5", fullname, size, false, true));
 }
 
 /*-------------------------------------------------------------------------
@@ -471,7 +471,7 @@ h5_fixname_superblock(const char *base_name, hid_t fapl_id, char *fullname, size
 char *
 h5_fixname_no_suffix(const char *base_name, hid_t fapl, char *fullname, size_t size)
 {
-    return (h5_fixname_real(base_name, fapl, NULL, fullname, size, FALSE, FALSE));
+    return (h5_fixname_real(base_name, fapl, NULL, fullname, size, false, false));
 }
 
 /*-------------------------------------------------------------------------
@@ -496,7 +496,7 @@ h5_fixname_no_suffix(const char *base_name, hid_t fapl, char *fullname, size_t s
 char *
 h5_fixname_printf(const char *base_name, hid_t fapl, char *fullname, size_t size)
 {
-    return (h5_fixname_real(base_name, fapl, ".h5", fullname, size, TRUE, FALSE));
+    return (h5_fixname_real(base_name, fapl, ".h5", fullname, size, true, false));
 }
 
 /*-------------------------------------------------------------------------
@@ -910,14 +910,14 @@ h5_get_vfd_fapl(hid_t fapl)
     }
     else if (!HDstrcmp(tok, "core")) {
         /* In-memory driver settings (backing store on, 1 MB increment) */
-        if (H5Pset_fapl_core(fapl, (size_t)H5_MB, TRUE) < 0)
+        if (H5Pset_fapl_core(fapl, (size_t)H5_MB, true) < 0)
             goto error;
     }
     else if (!HDstrcmp(tok, "core_paged")) {
         /* In-memory driver with write tracking and paging on */
-        if (H5Pset_fapl_core(fapl, (size_t)H5_MB, TRUE) < 0)
+        if (H5Pset_fapl_core(fapl, (size_t)H5_MB, true) < 0)
             goto error;
-        if (H5Pset_core_write_tracking(fapl, TRUE, (size_t)4096) < 0)
+        if (H5Pset_core_write_tracking(fapl, true, (size_t)4096) < 0)
             goto error;
     }
     else if (!HDstrcmp(tok, "split")) {
@@ -949,7 +949,7 @@ h5_get_vfd_fapl(hid_t fapl)
             memb_addr[mt] = (haddr_t)MAX(mt - 1, 0) * (HADDR_MAX / 10);
         } /* end for */
 
-        if (H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, FALSE) < 0)
+        if (H5Pset_fapl_multi(fapl, memb_map, memb_fapl, memb_name, memb_addr, false) < 0)
             goto error;
 
         for (mt = H5FD_MEM_DEFAULT; mt < H5FD_MEM_NTYPES; mt++)
@@ -2244,7 +2244,7 @@ h5_check_if_file_locking_enabled(hbool_t *is_enabled)
     int         pmode    = O_RDWR | O_CREAT | O_TRUNC;
     int         fd       = -1;
 
-    *is_enabled = TRUE;
+    *is_enabled = true;
 
     if ((fd = HDopen(filename, pmode, H5_POSIX_CREATE_MODE_RW)) < 0)
         goto error;
@@ -2260,7 +2260,7 @@ h5_check_if_file_locking_enabled(hbool_t *is_enabled)
              * error condition.
              */
             errno       = 0;
-            *is_enabled = FALSE;
+            *is_enabled = false;
         }
         else
             goto error;
@@ -2276,7 +2276,7 @@ h5_check_if_file_locking_enabled(hbool_t *is_enabled)
     return SUCCEED;
 
 error:
-    *is_enabled = FALSE;
+    *is_enabled = false;
     if (fd > -1) {
         HDclose(fd);
         HDremove(filename);

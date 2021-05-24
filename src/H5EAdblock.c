@@ -150,7 +150,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     /* Local variables */
     H5EA_dblock_t *dblock = NULL;    /* Extensible array data block */
     haddr_t        dblock_addr;      /* Extensible array data block address */
-    hbool_t        inserted = FALSE; /* Whether the header was inserted into cache */
+    hbool_t        inserted = false; /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);
@@ -181,7 +181,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     /* Cache the new extensible array data block */
     if (H5AC_insert_entry(hdr->f, H5AC_EARRAY_DBLOCK, dblock_addr, dblock, H5AC__NO_FLAGS_SET) < 0)
         H5E_THROW(H5E_CANTINSERT, "can't add extensible array data block to cache")
-    inserted = TRUE;
+    inserted = true;
 
     /* Add data block as child of 'top' proxy */
     if (hdr->top_proxy) {
@@ -198,7 +198,7 @@ BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
     hdr->stats.stored.nelmts += nelmts;
 
     /* Mark the statistics as changed */
-    *stats_changed = TRUE;
+    *stats_changed = true;
 
     /* Set address of data block to return */
     ret_value = dblock_addr;

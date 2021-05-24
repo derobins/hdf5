@@ -57,7 +57,7 @@ test_es_create(void)
         FAIL_PUTS_ERROR("should be empty event set");
 
     /* Check for errors */
-    err_occurred = FALSE;
+    err_occurred = false;
     if (H5ESget_err_status(es_id, &err_occurred) < 0)
         TEST_ERROR;
     if (err_occurred)

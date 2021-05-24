@@ -137,7 +137,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
     H5D_chunk_map_t *fm = NULL;                   /* Chunk file<->memory mapping */
     H5D_io_info_t    io_info;                     /* Dataset I/O info     */
     H5D_type_info_t  type_info;                   /* Datatype info for operation */
-    hbool_t          type_info_init      = FALSE; /* Whether the datatype info has been initialized */
+    hbool_t          type_info_init      = false; /* Whether the datatype info has been initialized */
     H5S_t *          projected_mem_space = NULL;  /* If not NULL, ptr to dataspace containing a     */
                                                   /* projection of the supplied mem_space to a new  */
                                                   /* dataspace with rank equal to that of           */
@@ -153,7 +153,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
                                                   /* end of the function to avoid a memory leak.    */
     H5D_storage_t store;                          /* union of EFL and chunk pointer in file space */
     hsize_t       nelmts;                         /* total number of elmts	*/
-    hbool_t       io_op_init = FALSE;             /* Whether the I/O op has been initialized */
+    hbool_t       io_op_init = false;             /* Whether the I/O op has been initialized */
     char          fake_char;                      /* Temporary variable for NULL buffer pointers */
     herr_t        ret_value = SUCCEED;            /* Return value	*/
 
@@ -169,9 +169,9 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
     nelmts = H5S_GET_SELECT_NPOINTS(mem_space);
 
     /* Set up datatype info for operation */
-    if (H5D__typeinfo_init(dataset, mem_type_id, FALSE, &type_info) < 0)
+    if (H5D__typeinfo_init(dataset, mem_type_id, false, &type_info) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to set up type info")
-    type_info_init = TRUE;
+    type_info_init = true;
 
 #ifdef H5_HAVE_PARALLEL
     /* Check for non-MPI-based VFD */
@@ -225,7 +225,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
      * Note that in general, this requires us to touch up the memory buffer as
      * well.
      */
-    if (TRUE == H5S_SELECT_SHAPE_SAME(mem_space, file_space) &&
+    if (true == H5S_SELECT_SHAPE_SAME(mem_space, file_space) &&
         H5S_GET_EXTENT_NDIMS(mem_space) != H5S_GET_EXTENT_NDIMS(file_space)) {
         const void *adj_buf = NULL; /* Pointer to the location in buf corresponding  */
                                     /* to the beginning of the projected mem space.  */
@@ -302,7 +302,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
     if (io_info.layout_ops.io_init &&
         (*io_info.layout_ops.io_init)(&io_info, &type_info, nelmts, file_space, mem_space, fm) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "can't initialize I/O info")
-    io_op_init = TRUE;
+    io_op_init = true;
 
 #ifdef H5_HAVE_PARALLEL
     /* Adjust I/O info for any parallel I/O */
@@ -353,7 +353,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
     H5D_chunk_map_t *fm = NULL;                   /* Chunk file<->memory mapping */
     H5D_io_info_t    io_info;                     /* Dataset I/O info     */
     H5D_type_info_t  type_info;                   /* Datatype info for operation */
-    hbool_t          type_info_init      = FALSE; /* Whether the datatype info has been initialized */
+    hbool_t          type_info_init      = false; /* Whether the datatype info has been initialized */
     H5S_t *          projected_mem_space = NULL;  /* If not NULL, ptr to dataspace containing a     */
                                                   /* projection of the supplied mem_space to a new  */
                                                   /* dataspace with rank equal to that of           */
@@ -369,7 +369,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
                                                   /* end of the function to avoid a memory leak.    */
     H5D_storage_t store;                          /* union of EFL and chunk pointer in file space */
     hsize_t       nelmts;                         /* total number of elmts	*/
-    hbool_t       io_op_init = FALSE;             /* Whether the I/O op has been initialized */
+    hbool_t       io_op_init = false;             /* Whether the I/O op has been initialized */
     char          fake_char;                      /* Temporary variable for NULL buffer pointers */
     herr_t        ret_value = SUCCEED;            /* Return value	*/
 
@@ -383,7 +383,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
         if (H5Z_can_apply(dataset->shared->dcpl_id, dataset->shared->type_id) < 0)
             HGOTO_ERROR(H5E_PLINE, H5E_CANAPPLY, FAIL, "can't apply filters")
 
-        dataset->shared->checked_filters = TRUE;
+        dataset->shared->checked_filters = true;
     } /* end if */
 
     /* Check if we are allowed to write to this file */
@@ -391,9 +391,9 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
         HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "no write intent on file")
 
     /* Set up datatype info for operation */
-    if (H5D__typeinfo_init(dataset, mem_type_id, TRUE, &type_info) < 0)
+    if (H5D__typeinfo_init(dataset, mem_type_id, true, &type_info) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to set up type info")
-    type_info_init = TRUE;
+    type_info_init = true;
 
     /* Various MPI based checks */
 #ifdef H5_HAVE_PARALLEL
@@ -463,7 +463,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
      * Note that in general, this requires us to touch up the memory buffer
      * as well.
      */
-    if (TRUE == H5S_SELECT_SHAPE_SAME(mem_space, file_space) &&
+    if (true == H5S_SELECT_SHAPE_SAME(mem_space, file_space) &&
         H5S_GET_EXTENT_NDIMS(mem_space) != H5S_GET_EXTENT_NDIMS(file_space)) {
         const void *adj_buf = NULL; /* Pointer to the location in buf corresponding  */
                                     /* to the beginning of the projected mem space.  */
@@ -501,10 +501,10 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
             HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL, "can't retrieve number of elements in file dataset")
 
         /* Always allow fill values to be written if the dataset has a VL datatype */
-        if (H5T_detect_class(dataset->shared->type, H5T_VLEN, FALSE))
-            full_overwrite = FALSE;
+        if (H5T_detect_class(dataset->shared->type, H5T_VLEN, false))
+            full_overwrite = false;
         else
-            full_overwrite = (hbool_t)((hsize_t)file_nelmts == nelmts ? TRUE : FALSE);
+            full_overwrite = (hbool_t)((hsize_t)file_nelmts == nelmts ? true : false);
 
         /* Allocate storage */
         if (H5D__alloc_storage(&io_info, H5D_ALLOC_WRITE, full_overwrite, NULL) < 0)
@@ -519,7 +519,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
     if (io_info.layout_ops.io_init &&
         (*io_info.layout_ops.io_init)(&io_info, &type_info, nelmts, file_space, mem_space, fm) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "can't initialize I/O info")
-    io_op_init = TRUE;
+    io_op_init = true;
 
 #ifdef H5_HAVE_PARALLEL
     /* Adjust I/O info for any parallel I/O */
@@ -727,7 +727,7 @@ H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, hbool_t do_write, H5D_t
         type_info->cmpd_subset = H5T_path_compound_subset(type_info->tpath);
 
         /* Check if we need a background buffer */
-        if (do_write && H5T_detect_class(dset->shared->type, H5T_VLEN, FALSE))
+        if (do_write && H5T_detect_class(dset->shared->type, H5T_VLEN, false))
             type_info->need_bkg = H5T_BKG_YES;
         else {
             H5T_bkg_t path_bkg; /* Type conversion's background info */
@@ -777,7 +777,7 @@ H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, hbool_t do_write, H5D_t
             /* Allocate temporary buffer */
             if (NULL == (type_info->tconv_buf = H5FL_BLK_CALLOC(type_conv, target_size)))
                 HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, FAIL, "memory allocation failed for type conversion")
-            type_info->tconv_buf_allocated = TRUE;
+            type_info->tconv_buf_allocated = true;
         } /* end if */
         if (type_info->need_bkg && NULL == (type_info->bkg_buf = (uint8_t *)bkgr_buf)) {
             size_t bkg_size; /* Desired background buffer size	*/
@@ -793,7 +793,7 @@ H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, hbool_t do_write, H5D_t
             if (NULL == (type_info->bkg_buf = H5FL_BLK_CALLOC(type_conv, bkg_size)))
                 HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, FAIL,
                             "memory allocation failed for background conversion")
-            type_info->bkg_buf_allocated = TRUE;
+            type_info->bkg_buf_allocated = true;
         } /* end if */
     }     /* end else */
 

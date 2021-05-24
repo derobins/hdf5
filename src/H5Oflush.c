@@ -157,7 +157,7 @@ H5O__oh_tag(const H5O_loc_t *oloc, haddr_t *tag)
     HDassert(oloc);
 
     /* Get object header for object */
-    if (NULL == (oh = H5O_protect(oloc, H5AC__READ_ONLY_FLAG, FALSE)))
+    if (NULL == (oh = H5O_protect(oloc, H5AC__READ_ONLY_FLAG, false)))
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPROTECT, FAIL, "unable to protect object's object header")
 
     /* Get object header's address (i.e. the tag value for this object) */
@@ -196,7 +196,7 @@ herr_t
 H5O_refresh_metadata(hid_t oid, H5O_loc_t oloc)
 {
     H5VL_object_t *vol_obj   = NULL;    /* VOL object associated with the ID */
-    hbool_t        objs_incr = FALSE;   /* Whether the object count in the file was incremented */
+    hbool_t        objs_incr = false;   /* Whether the object count in the file was incremented */
     herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -218,7 +218,7 @@ H5O_refresh_metadata(hid_t oid, H5O_loc_t oloc)
          *  if this object is the only thing holding the file open.
          */
         H5F_incr_nopen_objs(oloc.file);
-        objs_incr = TRUE;
+        objs_incr = true;
 
         /* Save important datatype state */
         if (H5I_get_type(oid) == H5I_DATATYPE)
@@ -243,7 +243,7 @@ H5O_refresh_metadata(hid_t oid, H5O_loc_t oloc)
             HGOTO_ERROR(H5E_OHDR, H5E_CANTLOAD, FAIL, "unable to refresh object")
 
         /* Re-open the object, re-fetching its metadata */
-        if ((H5O_refresh_metadata_reopen(oid, &obj_loc, connector, FALSE)) < 0)
+        if ((H5O_refresh_metadata_reopen(oid, &obj_loc, connector, false)) < 0)
             HGOTO_ERROR(H5E_OHDR, H5E_CANTLOAD, FAIL, "unable to refresh object")
 
         /* Restore the number of references on the VOL connector */
@@ -286,7 +286,7 @@ static herr_t
 H5O__refresh_metadata_close(hid_t oid, H5O_loc_t oloc, H5G_loc_t *obj_loc)
 {
     haddr_t tag       = 0;       /* Tag for object */
-    hbool_t corked    = FALSE;   /* Whether object's metadata is corked */
+    hbool_t corked    = false;   /* Whether object's metadata is corked */
     herr_t  ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -410,7 +410,7 @@ H5O_refresh_metadata_reopen(hid_t oid, H5G_loc_t *obj_loc, H5VL_t *vol_connector
     } /* end switch */
 
     /* Re-register ID for the object */
-    if ((H5VL_register_using_existing_id(type, object, vol_connector, TRUE, oid)) < 0)
+    if ((H5VL_register_using_existing_id(type, object, vol_connector, true, oid)) < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTREGISTER, FAIL, "unable to re-register object ID after refresh")
 
 done:

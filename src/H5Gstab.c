@@ -389,7 +389,7 @@ H5G__stab_remove_by_idx(const H5O_loc_t *grp_oloc, H5RS_str_t *grp_full_path_r, 
     H5O_stab_t  stab;                 /* Symbol table message		*/
     H5G_bt_rm_t udata;                /* Data to pass through B-tree	*/
     H5O_link_t  obj_lnk;              /* Object's link within group */
-    hbool_t     lnk_copied = FALSE;   /* Whether the link was copied */
+    hbool_t     lnk_copied = false;   /* Whether the link was copied */
     herr_t      ret_value  = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -399,7 +399,7 @@ H5G__stab_remove_by_idx(const H5O_loc_t *grp_oloc, H5RS_str_t *grp_full_path_r, 
     /* Look up name of link to remove, by index */
     if (H5G__stab_lookup_by_idx(grp_oloc, order, n, &obj_lnk) < 0)
         HGOTO_ERROR(H5E_SYM, H5E_CANTGET, FAIL, "can't get link information")
-    lnk_copied = TRUE;
+    lnk_copied = true;
 
     /* Read in symbol table message */
     if (NULL == H5O_msg_read(grp_oloc, H5O_STAB_ID, &stab))
@@ -719,7 +719,7 @@ H5G__stab_get_name_by_idx(const H5O_loc_t *oloc, H5_iter_order_t order, hsize_t 
     H5HL_t *         heap = NULL;         /* Pointer to local heap */
     H5O_stab_t       stab;                /* Info about local heap & B-tree */
     H5G_bt_it_gnbi_t udata;               /* Iteration information */
-    hbool_t          udata_valid = FALSE; /* Whether iteration information is valid */
+    hbool_t          udata_valid = false; /* Whether iteration information is valid */
     ssize_t          ret_value   = -1;    /* Return value */
 
     /* Portably clear udata struct (before FUNC_ENTER) */
@@ -756,7 +756,7 @@ H5G__stab_get_name_by_idx(const H5O_loc_t *oloc, H5_iter_order_t order, hsize_t 
     udata.common.op       = H5G__stab_get_name_by_idx_cb;
     udata.heap            = heap;
     udata.name            = NULL;
-    udata_valid           = TRUE;
+    udata_valid           = true;
 
     /* Iterate over the group members */
     if (H5B_iterate(oloc->file, H5B_SNODE, stab.btree_addr, H5G__node_by_idx, &udata) < 0)
@@ -914,7 +914,7 @@ H5G__stab_lookup_by_idx_cb(const H5G_entry_t *ent, void *_udata)
     /* Convert the entry to a link */
     if (H5G__ent_to_link(udata->lnk, udata->heap, ent, name) < 0)
         HGOTO_ERROR(H5E_SYM, H5E_CANTCONVERT, FAIL, "unable to convert symbol table entry to link")
-    udata->found = TRUE;
+    udata->found = true;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -972,7 +972,7 @@ H5G__stab_lookup_by_idx(const H5O_loc_t *grp_oloc, H5_iter_order_t order, hsize_
     udata.common.op       = H5G__stab_lookup_by_idx_cb;
     udata.heap            = heap;
     udata.lnk             = lnk;
-    udata.found           = FALSE;
+    udata.found           = false;
 
     /* Iterate over the group members */
     if (H5B_iterate(grp_oloc->file, H5B_SNODE, stab.btree_addr, H5G__node_by_idx, &udata) < 0)
@@ -1018,7 +1018,7 @@ H5G__stab_valid(H5O_loc_t *grp_oloc, H5O_stab_t *alt_stab)
 {
     H5O_stab_t stab;                /* Current symbol table */
     H5HL_t *   heap      = NULL;    /* Pointer to local heap */
-    hbool_t    changed   = FALSE;   /* Whether stab has been modified */
+    hbool_t    changed   = false;   /* Whether stab has been modified */
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE_TAG(grp_oloc->addr)
@@ -1037,7 +1037,7 @@ H5G__stab_valid(H5O_loc_t *grp_oloc, H5O_stab_t *alt_stab)
             /* The alternate symbol table's b-tree address is valid.  Adjust the
              * symbol table message in the group. */
             stab.btree_addr = alt_stab->btree_addr;
-            changed         = TRUE;
+            changed         = true;
         } /* end else */
     }     /* end if */
 
@@ -1052,7 +1052,7 @@ H5G__stab_valid(H5O_loc_t *grp_oloc, H5O_stab_t *alt_stab)
             /* The alternate symbol table's heap address is valid.  Adjust the
              * symbol table message in the group. */
             stab.heap_addr = alt_stab->heap_addr;
-            changed        = TRUE;
+            changed        = true;
         } /* end else */
     }     /* end if */
 

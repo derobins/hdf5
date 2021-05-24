@@ -35,10 +35,10 @@
 #define DEFAULT_INCREMENT 1024 * 1024
 
 static char *  fname_g            = NULL;
-static hbool_t clear_status_flags = FALSE;
-static hbool_t remove_cache_image = FALSE;
-static hbool_t print_filesize     = FALSE;
-static hbool_t increment_eoa_eof  = FALSE;
+static hbool_t clear_status_flags = false;
+static hbool_t remove_cache_image = false;
+static hbool_t print_filesize     = false;
+static hbool_t increment_eoa_eof  = false;
 static hsize_t increment          = DEFAULT_INCREMENT;
 
 /*
@@ -163,19 +163,19 @@ parse_command_line(int argc, const char **argv)
                 goto done;
 
             case 's':
-                clear_status_flags = TRUE;
+                clear_status_flags = true;
                 break;
 
             case 'm':
-                remove_cache_image = TRUE;
+                remove_cache_image = true;
                 break;
 
             case 'z':
-                print_filesize = TRUE;
+                print_filesize = true;
                 break;
 
             case 'i':
-                increment_eoa_eof = TRUE;
+                increment_eoa_eof = true;
                 if (opt_arg != NULL) {
                     if (HDatoi(opt_arg) < 0) {
                         usage(h5tools_getprogname());
@@ -341,7 +341,7 @@ main(int argc, const char *argv[])
     }
 
     /* Open the file */
-    if ((fid = h5tools_fopen(fname, flags, fapl, FALSE, NULL, (size_t)0)) < 0) {
+    if ((fid = h5tools_fopen(fname, flags, fapl, false, NULL, (size_t)0)) < 0) {
         error_msg("h5tools_fopen\n");
         h5tools_setstatus(EXIT_FAILURE);
         goto done;

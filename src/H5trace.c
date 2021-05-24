@@ -96,7 +96,7 @@ H5_trace_args_bool(H5RS_str_t *rs, hbool_t val)
 {
     /* FUNC_ENTER() should not be called */
 
-    if (TRUE == val)
+    if (true == val)
         H5RS_acat(rs, "TRUE");
     else if (!val)
         H5RS_acat(rs, "FALSE");
@@ -889,42 +889,42 @@ H5_trace_args(H5RS_str_t *rs, const char *type, va_list ap)
                         {
                             H5D_mpio_no_collective_cause_t nocol_cause_mode =
                                 (H5D_mpio_no_collective_cause_t)HDva_arg(ap, int);
-                            hbool_t flag_already_displayed = FALSE;
+                            hbool_t flag_already_displayed = false;
 
                             /* Check for all bit-flags which might be set */
                             if (nocol_cause_mode & H5D_MPIO_COLLECTIVE) {
                                 H5RS_acat(rs, "H5D_MPIO_COLLECTIVE");
-                                flag_already_displayed = TRUE;
+                                flag_already_displayed = true;
                             } /* end if */
                             if (nocol_cause_mode & H5D_MPIO_SET_INDEPENDENT) {
                                 H5RS_asprintf_cat(rs, "%sH5D_MPIO_SET_INDEPENDENT",
                                                   flag_already_displayed ? " | " : "");
-                                flag_already_displayed = TRUE;
+                                flag_already_displayed = true;
                             } /* end if */
                             if (nocol_cause_mode & H5D_MPIO_DATATYPE_CONVERSION) {
                                 H5RS_asprintf_cat(rs, "%sH5D_MPIO_DATATYPE_CONVERSION",
                                                   flag_already_displayed ? " | " : "");
-                                flag_already_displayed = TRUE;
+                                flag_already_displayed = true;
                             } /* end if */
                             if (nocol_cause_mode & H5D_MPIO_DATA_TRANSFORMS) {
                                 H5RS_asprintf_cat(rs, "%sH5D_MPIO_DATA_TRANSFORMS",
                                                   flag_already_displayed ? " | " : "");
-                                flag_already_displayed = TRUE;
+                                flag_already_displayed = true;
                             } /* end if */
                             if (nocol_cause_mode & H5D_MPIO_MPI_OPT_TYPES_ENV_VAR_DISABLED) {
                                 H5RS_asprintf_cat(rs, "%sH5D_MPIO_MPI_OPT_TYPES_ENV_VAR_DISABLED",
                                                   flag_already_displayed ? " | " : "");
-                                flag_already_displayed = TRUE;
+                                flag_already_displayed = true;
                             } /* end if */
                             if (nocol_cause_mode & H5D_MPIO_NOT_SIMPLE_OR_SCALAR_DATASPACES) {
                                 H5RS_asprintf_cat(rs, "%sH5D_MPIO_NOT_SIMPLE_OR_SCALAR_DATASPACES",
                                                   flag_already_displayed ? " | " : "");
-                                flag_already_displayed = TRUE;
+                                flag_already_displayed = true;
                             } /* end if */
                             if (nocol_cause_mode & H5D_MPIO_NOT_CONTIGUOUS_OR_CHUNKED_DATASET) {
                                 H5RS_asprintf_cat(rs, "%sH5D_MPIO_NOT_CONTIGUOUS_OR_CHUNKED_DATASET",
                                                   flag_already_displayed ? " | " : "");
-                                flag_already_displayed = TRUE;
+                                flag_already_displayed = true;
                             } /* end if */
 
                             /* Display '<none>' if there's no flags set */
@@ -3882,7 +3882,7 @@ H5_trace(const double *returning, const char *func, const char *type, ...)
     H5RS_str_t *      rs = NULL;
     hssize_t          i;
     FILE *            out                 = H5_debug_g.trace;
-    static hbool_t    is_first_invocation = TRUE;
+    static hbool_t    is_first_invocation = true;
     H5_timer_t        function_timer;
     H5_timevals_t     function_times = {0.0, 0.0, 0.0};
     static H5_timer_t running_timer;
@@ -3918,7 +3918,7 @@ H5_trace(const double *returning, const char *func, const char *type, ...)
     /* Get time for event if the trace times flag is set */
     if (is_first_invocation && H5_debug_g.ttimes) {
         /* Start the library-wide timer */
-        is_first_invocation = FALSE;
+        is_first_invocation = false;
         H5_timer_init(&running_timer);
         H5_timer_start(&running_timer);
     }

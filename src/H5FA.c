@@ -65,7 +65,7 @@ static H5FA_t *H5FA__new(H5F_t *f, haddr_t fa_addr, hbool_t from_open, void *ctx
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /* Fixed array client ID to class mapping */
 
@@ -189,7 +189,7 @@ BEGIN_FUNC(PRIV, ERR, H5FA_t *, NULL, NULL,
         H5E_THROW(H5E_CANTINIT, "can't create fixed array header")
 
     /* Allocate and initialize new fixed array wrapper */
-    if (NULL == (fa = H5FA__new(f, fa_addr, FALSE, ctx_udata)))
+    if (NULL == (fa = H5FA__new(f, fa_addr, false, ctx_udata)))
         H5E_THROW(H5E_CANTINIT, "allocation and/or initialization failed for fixed array wrapper")
 
     /* Set the return value */
@@ -228,7 +228,7 @@ BEGIN_FUNC(PRIV, ERR, H5FA_t *, NULL, NULL, H5FA_open(H5F_t *f, haddr_t fa_addr,
     HDassert(H5F_addr_defined(fa_addr));
 
     /* Allocate and initialize new fixed array wrapper */
-    if (NULL == (fa = H5FA__new(f, fa_addr, TRUE, ctx_udata)))
+    if (NULL == (fa = H5FA__new(f, fa_addr, true, ctx_udata)))
         H5E_THROW(H5E_CANTINIT, "allocation and/or initialization failed for fixed array wrapper")
 
     /* Set the return value */
@@ -318,7 +318,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5FA_set(const H5FA_t *fa, hsize_t 
     unsigned dblock_cache_flags = H5AC__NO_FLAGS_SET; /* Flags to unprotecting fixed array Data block */
     unsigned dblk_page_cache_flags =
         H5AC__NO_FLAGS_SET;    /* Flags to unprotecting FIxed Array Data block page */
-    hbool_t hdr_dirty = FALSE; /* Whether header information changed */
+    hbool_t hdr_dirty = false; /* Whether header information changed */
 
     /*
      * Check arguments.
@@ -378,7 +378,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5FA_set(const H5FA_t *fa, hsize_t 
                 H5E_THROW(H5E_CANTCREATE, "unable to create data block page")
 
             /* Mark data block page as initialized in data block */
-            H5VM_bit_set(dblock->dblk_page_init, page_idx, TRUE);
+            H5VM_bit_set(dblock->dblk_page_init, page_idx, true);
             dblock_cache_flags |= H5AC__DIRTIED_FLAG;
         } /* end if */
 
@@ -524,7 +524,7 @@ END_FUNC(PRIV) /* end H5FA_get() */
 BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5FA_close(H5FA_t *fa))
 
     /* Local variables */
-    hbool_t pending_delete = FALSE;       /* Whether the array is pending deletion */
+    hbool_t pending_delete = false;       /* Whether the array is pending deletion */
     haddr_t fa_addr        = HADDR_UNDEF; /* Address of array (for deletion) */
 
     /*
@@ -547,7 +547,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5FA_close(H5FA_t *fa))
                 /* Set local info, so array deletion can occur after decrementing the
                  *  header's ref count
                  */
-                pending_delete = TRUE;
+                pending_delete = true;
                 fa_addr        = fa->hdr->addr;
             } /* end if */
         }     /* end if */
@@ -637,7 +637,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5FA_delete(H5F_t *f, haddr_t fa_ad
 
     /* Check for files using shared array header */
     if (hdr->file_rc)
-        hdr->pending_delete = TRUE;
+        hdr->pending_delete = true;
     else {
         /* Set the shared array header's file context for this operation */
         hdr->f = f;

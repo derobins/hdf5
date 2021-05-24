@@ -210,7 +210,7 @@ H5G__common_path(const H5RS_str_t *fullpath_r, const H5RS_str_t *prefix_r)
     const char *fullpath;          /* Pointer to actual fullpath string */
     const char *prefix;            /* Pointer to actual prefix string */
     size_t      nchars1, nchars2;  /* Number of characters in components */
-    htri_t      ret_value = FALSE; /* Return value */
+    htri_t      ret_value = false; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -241,15 +241,15 @@ H5G__common_path(const H5RS_str_t *fullpath_r, const H5RS_str_t *prefix_r)
                 HDassert(prefix);
             } /* end if */
             else
-                HGOTO_DONE(FALSE)
+                HGOTO_DONE(false)
         } /* end if */
         else
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
     } /* end while */
 
     /* If we reached the end of the prefix path to check, it must be a valid prefix */
     if (*prefix == '\0')
-        ret_value = TRUE;
+        ret_value = true;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -492,7 +492,7 @@ H5G_get_name(const H5G_loc_t *loc, char *name /*out*/, size_t size, hbool_t *cac
         /* Indicate that the name is cached, if requested */
         /* (Currently only used for testing - QAK, 2010/07/26) */
         if (cached)
-            *cached = TRUE;
+            *cached = true;
     } /* end if */
     else if (!loc->path->obj_hidden) {
         /* Search for name of object */
@@ -502,7 +502,7 @@ H5G_get_name(const H5G_loc_t *loc, char *name /*out*/, size_t size, hbool_t *cac
         /* Indicate that the name is _not_ cached, if requested */
         /* (Currently only used for testing - QAK, 2010/07/26) */
         if (cached)
-            *cached = FALSE;
+            *cached = false;
     } /* end else */
 
     /* Set return value */
@@ -685,7 +685,7 @@ H5G__name_replace_cb(void *obj_ptr, hid_t obj_id, void *key)
     H5O_loc_t *        oloc;         /* Object location for object that the ID refers to */
     H5G_name_t *       obj_path;     /* Pointer to group hier. path for obj */
     H5F_t *            top_obj_file; /* Top file in object's mounted file hier. */
-    hbool_t obj_in_child = FALSE;    /* Flag to indicate that the object is in the child mount hier. */
+    hbool_t obj_in_child = false;    /* Flag to indicate that the object is in the child mount hier. */
     herr_t  ret_value    = SUCCEED;  /* Return value */
 
     FUNC_ENTER_STATIC
@@ -745,14 +745,14 @@ H5G__name_replace_cb(void *obj_ptr, hid_t obj_id, void *key)
     if (H5F_PARENT(oloc->file)) {
         /* Check if object is in child file (for mount & unmount operations) */
         if (names->dst_file && H5F_SAME_SHARED(oloc->file, names->dst_file))
-            obj_in_child = TRUE;
+            obj_in_child = true;
 
         /* Find the "top" file in the chain of mounted files */
         top_obj_file = H5F_PARENT(oloc->file);
         while (H5F_PARENT(top_obj_file) != NULL) {
             /* Check if object is in child mount hier. (for mount & unmount operations) */
             if (names->dst_file && H5F_SAME_SHARED(top_obj_file, names->dst_file))
-                obj_in_child = TRUE;
+                obj_in_child = true;
 
             top_obj_file = H5F_PARENT(top_obj_file);
         } /* end while */
@@ -762,7 +762,7 @@ H5G__name_replace_cb(void *obj_ptr, hid_t obj_id, void *key)
 
     /* Check if object is in top of child mount hier. (for mount & unmount operations) */
     if (names->dst_file && H5F_SAME_SHARED(top_obj_file, names->dst_file))
-        obj_in_child = TRUE;
+        obj_in_child = true;
 
     /* Check if the object is in same file mount hier. */
     if (!H5F_SAME_SHARED(top_obj_file, names->src_file))
@@ -949,9 +949,9 @@ H5G_name_replace(const H5O_link_t *lnk, H5G_names_op_t op, H5F_t *src_file, H5RS
 
     /* Check if the object we are manipulating has a path */
     if (src_full_path_r) {
-        hbool_t search_group    = FALSE; /* Flag to indicate that groups are to be searched */
-        hbool_t search_dataset  = FALSE; /* Flag to indicate that datasets are to be searched */
-        hbool_t search_datatype = FALSE; /* Flag to indicate that datatypes are to be searched */
+        hbool_t search_group    = false; /* Flag to indicate that groups are to be searched */
+        hbool_t search_dataset  = false; /* Flag to indicate that datasets are to be searched */
+        hbool_t search_datatype = false; /* Flag to indicate that datatypes are to be searched */
 
         /* Check for particular link to operate on */
         if (lnk) {
@@ -973,17 +973,17 @@ H5G_name_replace(const H5O_link_t *lnk, H5G_names_op_t op, H5F_t *src_file, H5RS
                     switch (obj_type) {
                         case H5O_TYPE_GROUP:
                             /* Search and replace names through group IDs */
-                            search_group = TRUE;
+                            search_group = true;
                             break;
 
                         case H5O_TYPE_DATASET:
                             /* Search and replace names through dataset IDs */
-                            search_dataset = TRUE;
+                            search_dataset = true;
                             break;
 
                         case H5O_TYPE_NAMED_DATATYPE:
                             /* Search and replace names through datatype IDs */
-                            search_datatype = TRUE;
+                            search_datatype = true;
                             break;
 
                         case H5O_TYPE_MAP:
@@ -1001,7 +1001,7 @@ H5G_name_replace(const H5O_link_t *lnk, H5G_names_op_t op, H5F_t *src_file, H5RS
 
                 case H5L_TYPE_SOFT:
                     /* Symbolic links might resolve to any object, so we need to search all IDs */
-                    search_group = search_dataset = search_datatype = TRUE;
+                    search_group = search_dataset = search_datatype = true;
                     break;
 
                 case H5L_TYPE_ERROR:
@@ -1021,7 +1021,7 @@ H5G_name_replace(const H5O_link_t *lnk, H5G_names_op_t op, H5F_t *src_file, H5RS
         }     /* end if */
         else {
             /* We pass NULL as link pointer when we need to search all IDs */
-            search_group = search_dataset = search_datatype = TRUE;
+            search_group = search_dataset = search_datatype = true;
         }
 
         /* Check if we need to operate on the objects affected */
@@ -1041,17 +1041,17 @@ H5G_name_replace(const H5O_link_t *lnk, H5G_names_op_t op, H5F_t *src_file, H5RS
 
             /* Search through group IDs */
             if (search_group)
-                if (H5I_iterate(H5I_GROUP, H5G__name_replace_cb, &names, FALSE) < 0)
+                if (H5I_iterate(H5I_GROUP, H5G__name_replace_cb, &names, false) < 0)
                     HGOTO_ERROR(H5E_SYM, H5E_BADITER, FAIL, "can't iterate over groups")
 
             /* Search through dataset IDs */
             if (search_dataset)
-                if (H5I_iterate(H5I_DATASET, H5G__name_replace_cb, &names, FALSE) < 0)
+                if (H5I_iterate(H5I_DATASET, H5G__name_replace_cb, &names, false) < 0)
                     HGOTO_ERROR(H5E_SYM, H5E_BADITER, FAIL, "can't iterate over datasets")
 
             /* Search through datatype IDs */
             if (search_datatype)
-                if (H5I_iterate(H5I_DATATYPE, H5G__name_replace_cb, &names, FALSE) < 0)
+                if (H5I_iterate(H5I_DATATYPE, H5G__name_replace_cb, &names, false) < 0)
                     HGOTO_ERROR(H5E_SYM, H5E_BADITER, FAIL, "can't iterate over datatypes")
         } /* end if */
     }     /* end if */
@@ -1081,7 +1081,7 @@ H5G__get_name_by_addr_cb(hid_t gid, const char *path, const H5L_info2_t *linfo, 
     H5G_loc_t        obj_loc;                           /* Location of object */
     H5G_name_t       obj_path;                          /* Object's group hier. path */
     H5O_loc_t        obj_oloc;                          /* Object's object location */
-    hbool_t          obj_found = FALSE;                 /* Object at 'path' found */
+    hbool_t          obj_found = false;                 /* Object at 'path' found */
     herr_t           ret_value = H5_ITER_CONT;          /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1115,7 +1115,7 @@ H5G__get_name_by_addr_cb(hid_t gid, const char *path, const H5L_info2_t *linfo, 
             /* Find the object */
             if (H5G_loc_find(&grp_loc, path, &obj_loc /*out*/) < 0)
                 HGOTO_ERROR(H5E_SYM, H5E_NOTFOUND, H5_ITER_ERROR, "object not found")
-            obj_found = TRUE;
+            obj_found = true;
 
             /* Check for object in same file (handles mounted files) */
             /* (re-verify address, in case we traversed a file mount) */
@@ -1157,7 +1157,7 @@ H5G_get_name_by_addr(H5F_t *f, const H5O_loc_t *loc, char *name, size_t size)
 {
     H5G_gnba_iter_t udata;             /* User data for iteration  */
     H5G_loc_t       root_loc;          /* Root group's location    */
-    hbool_t         found_obj = FALSE; /* If we found the object   */
+    hbool_t         found_obj = false; /* If we found the object   */
     herr_t          status;            /* Status from iteration    */
     ssize_t         ret_value = -1;    /* Return value             */
 
@@ -1174,7 +1174,7 @@ H5G_get_name_by_addr(H5F_t *f, const H5O_loc_t *loc, char *name, size_t size)
     if (root_loc.oloc->addr == loc->addr && root_loc.oloc->file == loc->file) {
         if (NULL == (udata.path = H5MM_strdup("")))
             HGOTO_ERROR(H5E_SYM, H5E_CANTALLOC, (-1), "can't duplicate path string")
-        found_obj = TRUE;
+        found_obj = true;
     } /* end if */
     else {
         /* Set up user data for iterator */
@@ -1186,7 +1186,7 @@ H5G_get_name_by_addr(H5F_t *f, const H5O_loc_t *loc, char *name, size_t size)
                                 &udata)) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_BADITER, (-1), "group traversal failed while looking for object name")
         else if (status > 0)
-            found_obj = TRUE;
+            found_obj = true;
     } /* end else */
 
     /* Check for finding the object */

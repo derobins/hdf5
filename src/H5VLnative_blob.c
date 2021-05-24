@@ -186,7 +186,7 @@ H5VL__native_blob_specific(void *obj, void *blob_id, H5VL_blob_specific_t specif
             H5F_addr_decode(f, &id, &addr);
 
             /* Check if heap address is 'nil' */
-            *isnull = (addr == 0 ? TRUE : FALSE);
+            *isnull = (addr == 0 ? true : false);
 
             break;
         }

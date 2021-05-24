@@ -39,7 +39,7 @@ typedef struct H5E_t H5E_t;
  */
 #define HCOMMON_ERROR(maj, min, ...)                                                                         \
     HERROR(maj, min, __VA_ARGS__);                                                                           \
-    err_occurred = TRUE;                                                                                     \
+    err_occurred = true;                                                                                     \
     err_occurred = err_occurred; /* Shut GCC warnings up! */
 
 /*
@@ -225,7 +225,7 @@ extern int  H5E_mpi_error_str_len;
  */
 #define CATCH                                                                                                \
 catch_except:;                                                                                               \
-    past_catch = TRUE;
+    past_catch = true;
 
 /* Library-private functions defined in H5E package */
 H5_DLL herr_t H5E_init(void);

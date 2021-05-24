@@ -51,7 +51,7 @@
 /* Define default layout information */
 #define H5D_DEF_STORAGE_COMPACT_INIT                                                                         \
     {                                                                                                        \
-        (hbool_t) FALSE, (size_t)0, NULL                                                                     \
+        (hbool_t) false, (size_t)0, NULL                                                                     \
     }
 #define H5D_DEF_STORAGE_CONTIG_INIT                                                                          \
     {                                                                                                        \
@@ -91,7 +91,7 @@
     {                                                                                                        \
         {HADDR_UNDEF, 0}, 0, NULL, 0, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                       \
                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},                      \
-            H5D_VDS_ERROR, HSIZE_UNDEF, -1, -1, FALSE                                                        \
+            H5D_VDS_ERROR, HSIZE_UNDEF, -1, -1, false                                                        \
     }
 #ifdef H5_HAVE_C99_DESIGNATED_INITIALIZER
 #define H5D_DEF_STORAGE_COMPACT                                                                              \
@@ -196,7 +196,7 @@
 #define H5D_CRT_FILL_VALUE_DEF                                                                               \
     {                                                                                                        \
         {0, NULL, H5O_NULL_ID, {{0, HADDR_UNDEF}}}, H5O_FILL_VERSION_2, NULL, 0, NULL, H5D_ALLOC_TIME_LATE,  \
-            H5D_FILL_TIME_IFSET, FALSE                                                                       \
+            H5D_FILL_TIME_IFSET, false                                                                       \
     }
 #define H5D_CRT_FILL_VALUE_SET   H5P__dcrt_fill_value_set
 #define H5D_CRT_FILL_VALUE_GET   H5P__dcrt_fill_value_get
@@ -227,7 +227,7 @@
 #define H5D_CRT_EXT_FILE_LIST_CLOSE H5P__dcrt_ext_file_list_close
 /* Definitions for dataset object header minimization */
 #define H5D_CRT_MIN_DSET_HDR_SIZE_SIZE sizeof(hbool_t)
-#define H5D_CRT_MIN_DSET_HDR_SIZE_DEF  FALSE
+#define H5D_CRT_MIN_DSET_HDR_SIZE_DEF  false
 #define H5D_CRT_MIN_DSET_HDR_SIZE_ENC  H5P__encode_hbool_t
 #define H5D_CRT_MIN_DSET_HDR_SIZE_DEC  H5P__decode_hbool_t
 
@@ -330,7 +330,7 @@ static H5O_layout_t H5D_def_layout_compact_g   = H5D_DEF_LAYOUT_COMPACT;
 static H5O_layout_t H5D_def_layout_contig_g    = H5D_DEF_LAYOUT_CONTIG;
 static H5O_layout_t H5D_def_layout_chunk_g     = H5D_DEF_LAYOUT_CHUNK;
 static H5O_layout_t H5D_def_layout_virtual_g   = H5D_DEF_LAYOUT_VIRTUAL;
-static hbool_t      H5P_dcrt_def_layout_init_g = FALSE;
+static hbool_t      H5P_dcrt_def_layout_init_g = false;
 #endif /* H5_HAVE_C99_DESIGNATED_INITIALIZER */
 
 /*-------------------------------------------------------------------------
@@ -1371,7 +1371,7 @@ H5P_fill_value_cmp(const void *_fill1, const void *_fill2, size_t H5_ATTR_UNUSED
     if (fill1->type != NULL && fill2->type == NULL)
         HGOTO_DONE(1);
     if (fill1->type != NULL)
-        if ((cmp_value = H5T_cmp(fill1->type, fill2->type, FALSE)) != 0)
+        if ((cmp_value = H5T_cmp(fill1->type, fill2->type, false)) != 0)
             HGOTO_DONE(cmp_value);
 
     /* Check the fill values in the buffers */
@@ -1961,7 +1961,7 @@ H5P__init_def_layout(void)
     H5D_def_layout_virtual_g.storage.u.virt    = def_store_virtual;
 
     /* Note that we've initialized the default values */
-    H5P_dcrt_def_layout_init_g = TRUE;
+    H5P_dcrt_def_layout_init_g = true;
 
     FUNC_LEAVE_NOAPI(SUCCEED)
 } /* end H5P__init_def_layout() */
@@ -2233,8 +2233,8 @@ H5Pset_virtual(hid_t dcpl_id, hid_t vspace_id, const char *src_file_name, const 
     H5S_t *                    src_space;                  /* Source dataset space selection */
     H5O_storage_virtual_ent_t *old_list         = NULL;    /* List pointer previously on property list */
     H5O_storage_virtual_ent_t *ent              = NULL;    /* Convenience pointer to new VDS entry */
-    hbool_t                    retrieved_layout = FALSE;   /* Whether the layout has been retrieved */
-    hbool_t                    free_list        = FALSE;   /* Whether to free the list of virtual entries */
+    hbool_t                    retrieved_layout = false;   /* Whether the layout has been retrieved */
+    hbool_t                    free_list        = false;   /* Whether to free the list of virtual entries */
     herr_t                     ret_value        = SUCCEED; /* Return value */
 
     FUNC_ENTER_API(FAIL)
@@ -2270,7 +2270,7 @@ H5Pset_virtual(hid_t dcpl_id, hid_t vspace_id, const char *src_file_name, const 
     /* Get the current layout */
     if (H5P_peek(plist, H5D_CRT_LAYOUT_NAME, &virtual_layout) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get layout")
-    retrieved_layout = TRUE;
+    retrieved_layout = true;
 
     /* If the layout was not already virtual, Start with default virtual layout.
      * Otherwise, add the mapping to the current list. */
@@ -2305,13 +2305,13 @@ H5Pset_virtual(hid_t dcpl_id, hid_t vspace_id, const char *src_file_name, const 
     /* Add virtual dataset mapping entry */
     ent = &virtual_layout.storage.u.virt.list[virtual_layout.storage.u.virt.list_nused];
     HDmemset(ent, 0, sizeof(H5O_storage_virtual_ent_t)); /* Clear before starting to set up */
-    if (NULL == (ent->source_dset.virtual_select = H5S_copy(vspace, FALSE, TRUE)))
+    if (NULL == (ent->source_dset.virtual_select = H5S_copy(vspace, false, true)))
         HGOTO_ERROR(H5E_PLIST, H5E_CANTCOPY, FAIL, "unable to copy virtual selection")
     if (NULL == (ent->source_file_name = H5MM_xstrdup(src_file_name)))
         HGOTO_ERROR(H5E_PLIST, H5E_RESOURCE, FAIL, "can't duplicate source file name")
     if (NULL == (ent->source_dset_name = H5MM_xstrdup(src_dset_name)))
         HGOTO_ERROR(H5E_PLIST, H5E_RESOURCE, FAIL, "can't duplicate source file name")
-    if (NULL == (ent->source_select = H5S_copy(src_space, FALSE, TRUE)))
+    if (NULL == (ent->source_select = H5S_copy(src_space, false, true)))
         HGOTO_ERROR(H5E_PLIST, H5E_CANTCOPY, FAIL, "unable to copy source selection")
     if (H5D_virtual_parse_source_name(ent->source_file_name, &ent->parsed_source_file_name,
                                       &ent->psfn_static_strlen, &ent->psfn_nsubs) < 0)
@@ -2360,7 +2360,7 @@ done:
         if (H5P_poke(plist, H5D_CRT_LAYOUT_NAME, &virtual_layout) < 0) {
             HDONE_ERROR(H5E_PLIST, H5E_CANTSET, FAIL, "can't set layout")
             if (old_list != virtual_layout.storage.u.virt.list)
-                free_list = TRUE;
+                free_list = true;
         } /* end if */
     }     /* end if */
 
@@ -2476,11 +2476,11 @@ H5Pget_virtual_vspace(hid_t dcpl_id, size_t idx)
     if (idx >= layout.storage.u.virt.list_nused)
         HGOTO_ERROR(H5E_ARGS, H5E_BADRANGE, FAIL, "invalid index (out of range)")
     HDassert(layout.storage.u.virt.list_nused <= layout.storage.u.virt.list_nalloc);
-    if (NULL == (space = H5S_copy(layout.storage.u.virt.list[idx].source_dset.virtual_select, FALSE, TRUE)))
+    if (NULL == (space = H5S_copy(layout.storage.u.virt.list[idx].source_dset.virtual_select, false, true)))
         HGOTO_ERROR(H5E_PLIST, H5E_CANTCOPY, FAIL, "unable to copy virtual selection")
 
     /* Register ID */
-    if ((ret_value = H5I_register(H5I_DATASPACE, space, TRUE)) < 0)
+    if ((ret_value = H5I_register(H5I_DATASPACE, space, true)) < 0)
         HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, FAIL, "unable to register dataspace")
 
 done:
@@ -2567,11 +2567,11 @@ H5Pget_virtual_srcspace(hid_t dcpl_id, size_t idx)
     } /* end if */
 
     /* Get the source space */
-    if (NULL == (space = H5S_copy(layout.storage.u.virt.list[idx].source_select, FALSE, TRUE)))
+    if (NULL == (space = H5S_copy(layout.storage.u.virt.list[idx].source_select, false, true)))
         HGOTO_ERROR(H5E_PLIST, H5E_CANTCOPY, FAIL, "unable to copy source selection")
 
     /* Register ID */
-    if ((ret_value = H5I_register(H5I_DATASPACE, space, TRUE)) < 0)
+    if ((ret_value = H5I_register(H5I_DATASPACE, space, true)) < 0)
         HGOTO_ERROR(H5E_ID, H5E_CANTREGISTER, FAIL, "unable to register dataspace")
 
 done:
@@ -3100,7 +3100,7 @@ H5Pset_shuffle(hid_t plist_id)
     H5TRACE1("e", "i", plist_id);
 
     /* Check arguments */
-    if (TRUE != H5P_isa_class(plist_id, H5P_DATASET_CREATE))
+    if (true != H5P_isa_class(plist_id, H5P_DATASET_CREATE))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a dataset creation property list")
 
     /* Get the plist structure */
@@ -3142,7 +3142,7 @@ H5Pset_nbit(hid_t plist_id)
     H5TRACE1("e", "i", plist_id);
 
     /* Check arguments */
-    if (TRUE != H5P_isa_class(plist_id, H5P_DATASET_CREATE))
+    if (true != H5P_isa_class(plist_id, H5P_DATASET_CREATE))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a dataset creation property list")
 
     /* Get the plist structure */
@@ -3201,7 +3201,7 @@ H5Pset_scaleoffset(hid_t plist_id, H5Z_SO_scale_type_t scale_type, int scale_fac
     H5TRACE3("e", "iZaIs", plist_id, scale_type, scale_factor);
 
     /* Check arguments */
-    if (TRUE != H5P_isa_class(plist_id, H5P_DATASET_CREATE))
+    if (true != H5P_isa_class(plist_id, H5P_DATASET_CREATE))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a dataset creation property list")
 
     if (scale_factor < 0)
@@ -3378,7 +3378,7 @@ H5P_get_fill_value(H5P_genplist_t *plist, const H5T_t *type, void *value /*out*/
      */
     if (NULL == (tpath = H5T_path_find(fill.type, type)))
         HGOTO_ERROR(H5E_PLIST, H5E_CANTINIT, FAIL, "unable to convert between src and dst datatypes")
-    if ((src_id = H5I_register(H5I_DATATYPE, H5T_copy(fill.type, H5T_COPY_TRANSIENT), FALSE)) < 0)
+    if ((src_id = H5I_register(H5I_DATATYPE, H5T_copy(fill.type, H5T_COPY_TRANSIENT), false)) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTINIT, FAIL, "unable to copy/register datatype")
 
     /*
@@ -3400,7 +3400,7 @@ H5P_get_fill_value(H5P_genplist_t *plist, const H5T_t *type, void *value /*out*/
     H5MM_memcpy(buf, fill.buf, H5T_get_size(fill.type));
 
     /* Do the conversion */
-    if ((dst_id = H5I_register(H5I_DATATYPE, H5T_copy(type, H5T_COPY_ALL), FALSE)) < 0)
+    if ((dst_id = H5I_register(H5I_DATATYPE, H5T_copy(type, H5T_COPY_ALL), false)) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTINIT, FAIL, "unable to copy/register datatype")
     if (H5T_convert(tpath, src_id, dst_id, (size_t)1, (size_t)0, (size_t)0, buf, bkg) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTINIT, FAIL, "datatype conversion failed")
@@ -3814,7 +3814,7 @@ done:
 herr_t
 H5Pget_dset_no_attrs_hint(hid_t dcpl_id, hbool_t *minimize /*out*/)
 {
-    hbool_t         setting   = FALSE;
+    hbool_t         setting   = false;
     H5P_genplist_t *plist     = NULL;
     herr_t          ret_value = SUCCEED;
 
@@ -3859,7 +3859,7 @@ herr_t
 H5Pset_dset_no_attrs_hint(hid_t dcpl_id, hbool_t minimize)
 {
     H5P_genplist_t *plist     = NULL;
-    hbool_t         prev_set  = FALSE;
+    hbool_t         prev_set  = false;
     herr_t          ret_value = SUCCEED;
 
     FUNC_ENTER_API(FAIL)

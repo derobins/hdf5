@@ -472,10 +472,10 @@ extern char *         strdup(const char *s);
  * HDF Boolean type.
  */
 #ifndef FALSE
-#define FALSE false
+#define false false
 #endif
 #ifndef TRUE
-#define TRUE true
+#define true true
 #endif
 
 /** From h5test.h **/

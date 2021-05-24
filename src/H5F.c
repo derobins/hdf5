@@ -244,19 +244,19 @@ H5Fget_obj_count(hid_t file_id, unsigned types)
         udata.obj_count = 0;
 
         if (types & H5F_OBJ_FILE)
-            if (H5I_iterate(H5I_FILE, H5F__get_all_count_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_FILE, H5F__get_all_count_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over file IDs failed")
         if (types & H5F_OBJ_DATASET)
-            if (H5I_iterate(H5I_DATASET, H5F__get_all_count_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_DATASET, H5F__get_all_count_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over dataset IDs failed")
         if (types & H5F_OBJ_GROUP)
-            if (H5I_iterate(H5I_GROUP, H5F__get_all_count_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_GROUP, H5F__get_all_count_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over group IDs failed")
         if (types & H5F_OBJ_DATATYPE)
-            if (H5I_iterate(H5I_DATATYPE, H5F__get_all_count_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_DATATYPE, H5F__get_all_count_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over datatype IDs failed")
         if (types & H5F_OBJ_ATTR)
-            if (H5I_iterate(H5I_ATTR, H5F__get_all_count_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_ATTR, H5F__get_all_count_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over attribute IDs failed")
 
         /* Set return value */
@@ -360,19 +360,19 @@ H5Fget_obj_ids(hid_t file_id, unsigned types, size_t max_objs, hid_t *oid_list /
         udata.obj_count = 0;
 
         if (types & H5F_OBJ_FILE)
-            if (H5I_iterate(H5I_FILE, H5F__get_all_ids_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_FILE, H5F__get_all_ids_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over file IDs failed")
         if (types & H5F_OBJ_DATASET)
-            if (H5I_iterate(H5I_DATASET, H5F__get_all_ids_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_DATASET, H5F__get_all_ids_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over dataset IDs failed")
         if (types & H5F_OBJ_GROUP)
-            if (H5I_iterate(H5I_GROUP, H5F__get_all_ids_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_GROUP, H5F__get_all_ids_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over group IDs failed")
         if (types & H5F_OBJ_DATATYPE)
-            if (H5I_iterate(H5I_DATATYPE, H5F__get_all_ids_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_DATATYPE, H5F__get_all_ids_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over datatype IDs failed")
         if (types & H5F_OBJ_ATTR)
-            if (H5I_iterate(H5I_ATTR, H5F__get_all_ids_cb, &udata, TRUE) < 0)
+            if (H5I_iterate(H5I_ATTR, H5F__get_all_ids_cb, &udata, true) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_BADITER, (-1), "iteration over attribute IDs failed")
 
         /* Set return value */
@@ -444,7 +444,7 @@ H5Fis_accessible(const char *filename, hid_t fapl_id)
     /* Check the file access property list */
     if (H5P_DEFAULT == fapl_id)
         fapl_id = H5P_FILE_ACCESS_DEFAULT;
-    else if (TRUE != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
+    else if (true != H5P_isa_class(fapl_id, H5P_FILE_ACCESS))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not file access property list")
 
     /* Check if file is accessible */
@@ -522,11 +522,11 @@ H5F__create_api_common(const char *filename, unsigned flags, hid_t fcpl_id, hid_
     /* Check file creation property list */
     if (H5P_DEFAULT == fcpl_id)
         fcpl_id = H5P_FILE_CREATE_DEFAULT;
-    else if (TRUE != H5P_isa_class(fcpl_id, H5P_FILE_CREATE))
+    else if (true != H5P_isa_class(fcpl_id, H5P_FILE_CREATE))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, H5I_INVALID_HID, "not file create property list")
 
     /* Verify access property list and set up collective metadata if appropriate */
-    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, TRUE) < 0)
+    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, true) < 0)
         HGOTO_ERROR(H5E_FILE, H5E_CANTSET, H5I_INVALID_HID, "can't set access property list info")
 
     /* Get the VOL info from the fapl */
@@ -555,7 +555,7 @@ H5F__create_api_common(const char *filename, unsigned flags, hid_t fcpl_id, hid_
         HGOTO_ERROR(H5E_FILE, H5E_CANTOPENFILE, H5I_INVALID_HID, "unable to create file")
 
     /* Get an ID for the file */
-    if ((ret_value = H5VL_register_using_vol_id(H5I_FILE, new_file, connector_prop.connector_id, TRUE)) < 0)
+    if ((ret_value = H5VL_register_using_vol_id(H5I_FILE, new_file, connector_prop.connector_id, true)) < 0)
         HGOTO_ERROR(H5E_FILE, H5E_CANTREGISTER, H5I_INVALID_HID, "unable to register file handle")
 
 done:
@@ -716,7 +716,7 @@ H5F__open_api_common(const char *filename, unsigned flags, hid_t fapl_id, void *
                     "SWMR read access on a file open for read-write access is not allowed")
 
     /* Verify access property list and set up collective metadata if appropriate */
-    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, TRUE) < 0)
+    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, true) < 0)
         HGOTO_ERROR(H5E_FILE, H5E_CANTSET, H5I_INVALID_HID, "can't set access property list info")
 
     /* Get the VOL info from the fapl */
@@ -737,7 +737,7 @@ H5F__open_api_common(const char *filename, unsigned flags, hid_t fapl_id, void *
         HGOTO_ERROR(H5E_FILE, H5E_CANTOPENFILE, H5I_INVALID_HID, "unable to open file")
 
     /* Get an ID for the file */
-    if ((ret_value = H5VL_register_using_vol_id(H5I_FILE, new_file, connector_prop.connector_id, TRUE)) < 0)
+    if ((ret_value = H5VL_register_using_vol_id(H5I_FILE, new_file, connector_prop.connector_id, true)) < 0)
         HGOTO_ERROR(H5E_FILE, H5E_CANTREGISTER, H5I_INVALID_HID, "unable to register file handle")
 
 done:
@@ -1085,7 +1085,7 @@ H5Fdelete(const char *filename, hid_t fapl_id)
         HGOTO_ERROR(H5E_ARGS, H5E_BADRANGE, FAIL, "no file name specified")
 
     /* Verify access property list and set up collective metadata if appropriate */
-    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, TRUE) < 0)
+    if (H5CX_set_apl(&fapl_id, H5P_CLS_FACC, H5I_INVALID_HID, true) < 0)
         HGOTO_ERROR(H5E_FILE, H5E_CANTSET, FAIL, "can't set access property list info")
 
     /* Get the VOL info from the fapl */
@@ -1151,7 +1151,7 @@ H5Fmount(hid_t loc_id, const char *name, hid_t child_id, hid_t plist_id)
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "child_id parameter not a file ID")
     if (H5P_DEFAULT == plist_id)
         plist_id = H5P_FILE_MOUNT_DEFAULT;
-    else if (TRUE != H5P_isa_class(plist_id, H5P_FILE_MOUNT))
+    else if (true != H5P_isa_class(plist_id, H5P_FILE_MOUNT))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "plist_id is not a file mount property list ID")
 
     /* Set up collective metadata if appropriate */
@@ -1264,7 +1264,7 @@ H5F__reopen_api_common(hid_t file_id, void **token_ptr)
         HGOTO_ERROR(H5E_FILE, H5E_CANTINIT, H5I_INVALID_HID, "unable to reopen file")
 
     /* Get an ID for the file */
-    if ((ret_value = H5VL_register(H5I_FILE, file, vol_obj->connector, TRUE)) < 0)
+    if ((ret_value = H5VL_register(H5I_FILE, file, vol_obj->connector, true)) < 0)
         HGOTO_ERROR(H5E_FILE, H5E_CANTREGISTER, H5I_INVALID_HID, "unable to register file handle")
 
 done:

@@ -490,7 +490,7 @@ H5S__none_is_valid(const H5S_t H5_ATTR_UNUSED *space)
 
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__none_is_valid() */
 
 /*--------------------------------------------------------------------------
@@ -765,7 +765,7 @@ H5S__none_is_contiguous(const H5S_t H5_ATTR_UNUSED *space)
 
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(FALSE)
+    FUNC_LEAVE_NOAPI(false)
 } /* end H5S__none_is_contiguous() */
 
 /*--------------------------------------------------------------------------
@@ -793,7 +793,7 @@ H5S__none_is_single(const H5S_t H5_ATTR_UNUSED *space)
 
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(FALSE)
+    FUNC_LEAVE_NOAPI(false)
 } /* end H5S__none_is_single() */
 
 /*--------------------------------------------------------------------------
@@ -823,7 +823,7 @@ H5S__none_is_regular(const H5S_t H5_ATTR_UNUSED *space)
     /* Check args */
     HDassert(space);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__none_is_regular() */
 
 /*--------------------------------------------------------------------------
@@ -854,7 +854,7 @@ H5S__none_shape_same(const H5S_t H5_ATTR_UNUSED *space1, const H5S_t H5_ATTR_UNU
     HDassert(space1);
     HDassert(space2);
 
-    FUNC_LEAVE_NOAPI(TRUE)
+    FUNC_LEAVE_NOAPI(true)
 } /* end H5S__none_shape_same() */
 
 /*--------------------------------------------------------------------------
@@ -888,7 +888,7 @@ H5S__none_intersect_block(const H5S_t H5_ATTR_UNUSED *space, const hsize_t H5_AT
     HDassert(start);
     HDassert(end);
 
-    FUNC_LEAVE_NOAPI(FALSE)
+    FUNC_LEAVE_NOAPI(false)
 } /* end H5S__none_intersect_block() */
 
 /*--------------------------------------------------------------------------

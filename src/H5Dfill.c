@@ -115,7 +115,7 @@ herr_t
 H5D__fill(const void *fill, const H5T_t *fill_type, void *buf, const H5T_t *buf_type, const H5S_t *space)
 {
     H5S_sel_iter_t *mem_iter      = NULL;  /* Memory selection iteration info */
-    hbool_t         mem_iter_init = FALSE; /* Whether the memory selection iterator has been initialized */
+    hbool_t         mem_iter_init = false; /* Whether the memory selection iterator has been initialized */
     H5WB_t *        elem_wb       = NULL;  /* Wrapped buffer for element data */
     uint8_t         elem_buf[H5T_ELEM_BUF_SIZE];     /* Buffer for element data */
     H5WB_t *        bkg_elem_wb = NULL;              /* Wrapped buffer for background data */
@@ -174,10 +174,10 @@ H5D__fill(const void *fill, const H5T_t *fill_type, void *buf, const H5T_t *buf_
 
         /* Construct source & destination datatype IDs, if we will need them */
         if (!H5T_path_noop(tpath)) {
-            if ((src_id = H5I_register(H5I_DATATYPE, H5T_copy(fill_type, H5T_COPY_ALL), FALSE)) < 0)
+            if ((src_id = H5I_register(H5I_DATATYPE, H5T_copy(fill_type, H5T_COPY_ALL), false)) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTREGISTER, FAIL, "unable to register types for conversion")
 
-            if ((dst_id = H5I_register(H5I_DATATYPE, H5T_copy(buf_type, H5T_COPY_ALL), FALSE)) < 0)
+            if ((dst_id = H5I_register(H5I_DATATYPE, H5T_copy(buf_type, H5T_COPY_ALL), false)) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTREGISTER, FAIL, "unable to register types for conversion")
         } /* end if */
 
@@ -185,7 +185,7 @@ H5D__fill(const void *fill, const H5T_t *fill_type, void *buf, const H5T_t *buf_
          * then do conversion on each element so that each of them has a copy
          * of the VL data.
          */
-        if (TRUE == H5T_detect_class(fill_type, H5T_VLEN, FALSE)) {
+        if (true == H5T_detect_class(fill_type, H5T_VLEN, false)) {
             hsize_t nelmts; /* Number of data elements */
 
             /* Get the number of elements in the selection */
@@ -217,7 +217,7 @@ H5D__fill(const void *fill, const H5T_t *fill_type, void *buf, const H5T_t *buf_
             if (H5S_select_iter_init(mem_iter, space, dst_type_size, 0) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL,
                             "unable to initialize memory selection information")
-            mem_iter_init = TRUE;
+            mem_iter_init = true;
 
             /* Scatter the data into memory */
             if (H5D__scatter_mem(tmp_buf, mem_iter, (size_t)nelmts, buf /*out*/) < 0)
@@ -336,7 +336,7 @@ H5D__fill_init(H5D_fill_buf_info_t *fb_info, void *caller_fill_buf, H5MM_allocat
         htri_t has_vlen_type; /* Whether the datatype has a VL component */
 
         /* Detect whether the datatype has a VL component */
-        if ((has_vlen_type = H5T_detect_class(dset_type, H5T_VLEN, FALSE)) < 0)
+        if ((has_vlen_type = H5T_detect_class(dset_type, H5T_VLEN, false)) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL, "unable to detect vlen datatypes?")
         fb_info->has_vlen_fill_type = (hbool_t)has_vlen_type;
 
@@ -345,7 +345,7 @@ H5D__fill_init(H5D_fill_buf_info_t *fb_info, void *caller_fill_buf, H5MM_allocat
             /* Create temporary datatype for conversion operation */
             if (NULL == (fb_info->mem_type = H5T_copy(dset_type, H5T_COPY_TRANSIENT)))
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTCOPY, FAIL, "unable to copy file datatype")
-            if ((fb_info->mem_tid = H5I_register(H5I_DATATYPE, fb_info->mem_type, FALSE)) < 0)
+            if ((fb_info->mem_tid = H5I_register(H5I_DATATYPE, fb_info->mem_type, false)) < 0)
                 HGOTO_ERROR(H5E_DATATYPE, H5E_CANTREGISTER, FAIL, "unable to register memory datatype")
 
             /* Retrieve sizes of memory & file datatypes */
@@ -370,7 +370,7 @@ H5D__fill_init(H5D_fill_buf_info_t *fb_info, void *caller_fill_buf, H5MM_allocat
             /* Allocate fill buffer */
             if (caller_fill_buf) {
                 fb_info->fill_buf            = caller_fill_buf;
-                fb_info->use_caller_fill_buf = TRUE;
+                fb_info->use_caller_fill_buf = true;
             } /* end if */
             else {
                 if (alloc_func)
@@ -423,7 +423,7 @@ H5D__fill_init(H5D_fill_buf_info_t *fb_info, void *caller_fill_buf, H5MM_allocat
             /* Allocate temporary buffer */
             if (caller_fill_buf) {
                 fb_info->fill_buf            = caller_fill_buf;
-                fb_info->use_caller_fill_buf = TRUE;
+                fb_info->use_caller_fill_buf = true;
             } /* end if */
             else {
                 if (alloc_func)
@@ -456,7 +456,7 @@ H5D__fill_init(H5D_fill_buf_info_t *fb_info, void *caller_fill_buf, H5MM_allocat
         /* Use (and zero) caller's buffer, if provided */
         if (caller_fill_buf) {
             fb_info->fill_buf            = caller_fill_buf;
-            fb_info->use_caller_fill_buf = TRUE;
+            fb_info->use_caller_fill_buf = true;
 
             HDmemset(fb_info->fill_buf, 0, fb_info->fill_buf_size);
         } /* end if */

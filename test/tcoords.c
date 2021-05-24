@@ -648,7 +648,7 @@ void
 test_coords(void)
 {
     hid_t   fid;
-    hbool_t is_chunk[2] = {TRUE, FALSE};
+    hbool_t is_chunk[2] = {true, false};
     int     i;
     herr_t  ret; /* Generic error return */
 

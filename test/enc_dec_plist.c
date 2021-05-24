@@ -152,12 +152,12 @@ main(void)
     H5F_libver_t low, high; /* Low and high bounds */
 
     H5AC_cache_config_t my_cache_config = {H5AC__CURR_CACHE_CONFIG_VERSION,
-                                           TRUE,
-                                           FALSE,
-                                           FALSE,
+                                           true,
+                                           false,
+                                           false,
                                            "temp",
-                                           TRUE,
-                                           FALSE,
+                                           true,
+                                           false,
                                            (2 * 2048 * 1024),
                                            0.3,
                                            (64 * 1024 * 1024),
@@ -166,7 +166,7 @@ main(void)
                                            H5C_incr__threshold,
                                            0.8,
                                            3.0,
-                                           TRUE,
+                                           true,
                                            (8 * 1024 * 1024),
                                            H5C_flash_incr__add_space,
                                            2.0,
@@ -174,15 +174,15 @@ main(void)
                                            H5C_decr__age_out_with_threshold,
                                            0.997,
                                            0.8,
-                                           TRUE,
+                                           true,
                                            (3 * 1024 * 1024),
                                            3,
-                                           FALSE,
+                                           false,
                                            0.2,
                                            (256 * 2048),
                                            H5AC__DEFAULT_METADATA_WRITE_STRATEGY};
 
-    H5AC_cache_image_config_t my_cache_image_config = {H5AC__CURR_CACHE_IMAGE_CONFIG_VERSION, TRUE, FALSE,
+    H5AC_cache_image_config_t my_cache_image_config = {H5AC__CURR_CACHE_IMAGE_CONFIG_VERSION, true, false,
                                                        -1};
 
     /* Loop through all the combinations of low/high version bounds */
@@ -212,7 +212,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(dcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(dcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default DCPL encoding/decoding failed\n")
 
             PASSED();
@@ -228,7 +228,7 @@ main(void)
             if ((H5Pset_fill_value(dcpl, H5T_NATIVE_DOUBLE, &fill)) < 0)
                 FAIL_STACK_ERROR
 
-            if ((H5Pset_dset_no_attrs_hint(dcpl, FALSE)) < 0)
+            if ((H5Pset_dset_no_attrs_hint(dcpl, false)) < 0)
                 FAIL_STACK_ERROR
 
             max_size[0] = 100;
@@ -242,7 +242,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(dcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(dcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("DCPL encoding/decoding failed\n")
 
             /* release resource */
@@ -272,7 +272,7 @@ main(void)
             if (H5Pset_virtual(dcpl, vspace, SRC_FNAME, SRC_DSET, srcspace) < 0)
                 TEST_ERROR
 
-            if (test_encode_decode(dcpl, low, high, TRUE) < 0)
+            if (test_encode_decode(dcpl, low, high, true) < 0)
                 FAIL_PUTS_ERROR("DCPL encoding/decoding failed\n")
 
             /* release resource */
@@ -285,7 +285,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(dapl, low, high, FALSE) < 0)
+            if (test_encode_decode(dapl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default DAPL encoding/decoding failed\n")
 
             PASSED();
@@ -296,7 +296,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(dapl, low, high, FALSE) < 0)
+            if (test_encode_decode(dapl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("DAPL encoding/decoding failed\n")
 
             /* release resource */
@@ -311,7 +311,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(ocpl, low, high, FALSE) < 0)
+            if (test_encode_decode(ocpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default OCPL encoding/decoding failed\n")
 
             PASSED();
@@ -328,7 +328,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(ocpl, low, high, FALSE) < 0)
+            if (test_encode_decode(ocpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("OCPL encoding/decoding failed\n")
 
             /* release resource */
@@ -343,7 +343,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(dxpl, low, high, FALSE) < 0)
+            if (test_encode_decode(dxpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default DXPL encoding/decoding failed\n")
 
             PASSED();
@@ -373,7 +373,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(dxpl, low, high, FALSE) < 0)
+            if (test_encode_decode(dxpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("DXPL encoding/decoding failed\n")
 
             /* release resource */
@@ -388,7 +388,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(gcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(gcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default GCPL encoding/decoding failed\n")
 
             PASSED();
@@ -412,7 +412,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(gcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(gcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("GCPL encoding/decoding failed\n")
 
             /* release resource */
@@ -427,18 +427,18 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(lcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(lcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default LCPL encoding/decoding failed\n")
 
             PASSED();
 
             TESTING("LCPL Encoding/Decoding");
 
-            if ((H5Pset_create_intermediate_group(lcpl, TRUE)) < 0)
+            if ((H5Pset_create_intermediate_group(lcpl, true)) < 0)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(lcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(lcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("LCPL encoding/decoding failed\n")
 
             /* release resource */
@@ -453,7 +453,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(lapl, low, high, FALSE) < 0)
+            if (test_encode_decode(lapl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default LAPL encoding/decoding failed\n")
 
             PASSED();
@@ -483,7 +483,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(lapl, low, high, FALSE) < 0)
+            if (test_encode_decode(lapl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("LAPL encoding/decoding failed\n")
 
             /* release resource */
@@ -498,7 +498,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(ocpypl, low, high, FALSE) < 0)
+            if (test_encode_decode(ocpypl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default OCPYPL encoding/decoding failed\n")
 
             PASSED();
@@ -514,7 +514,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(ocpypl, low, high, FALSE) < 0)
+            if (test_encode_decode(ocpypl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("OCPYPL encoding/decoding failed\n")
 
             /* release resource */
@@ -529,7 +529,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(fapl, low, high, FALSE) < 0)
+            if (test_encode_decode(fapl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default FAPL encoding/decoding failed\n")
 
             PASSED();
@@ -564,7 +564,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(fapl, low, high, FALSE) < 0)
+            if (test_encode_decode(fapl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("FAPL encoding/decoding failed\n")
 
             /* release resource */
@@ -580,7 +580,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(fcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(fcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default FCPL encoding/decoding failed\n")
 
             PASSED();
@@ -609,7 +609,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(fcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(fcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("FCPL encoding/decoding failed\n")
 
             /* release resource */
@@ -625,7 +625,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(strcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(strcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default STRCPL encoding/decoding failed\n")
 
             PASSED();
@@ -636,7 +636,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(strcpl, low, high, FALSE) < 0)
+            if (test_encode_decode(strcpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("STRCPL encoding/decoding failed\n")
 
             /* release resource */
@@ -652,7 +652,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding default property list */
-            if (test_encode_decode(acpl, low, high, FALSE) < 0)
+            if (test_encode_decode(acpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("Default ACPL encoding/decoding failed\n")
 
             PASSED();
@@ -663,7 +663,7 @@ main(void)
                 FAIL_STACK_ERROR
 
             /* Test encoding & decoding property list */
-            if (test_encode_decode(acpl, low, high, FALSE) < 0)
+            if (test_encode_decode(acpl, low, high, false) < 0)
                 FAIL_PUTS_ERROR("ACPL encoding/decoding failed\n")
 
             /* release resource */

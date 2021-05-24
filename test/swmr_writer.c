@@ -74,7 +74,7 @@ open_skeleton(const char *filename, hbool_t verbose, FILE *verbose_file, unsigne
     hid_t    fid;                 /* File ID for new HDF5 file */
     hid_t    fapl;                /* File access property list */
     unsigned u, v;                /* Local index variable */
-    hbool_t  use_log_vfd = FALSE; /* Use the log VFD (set this manually) */
+    hbool_t  use_log_vfd = false; /* Use the log VFD (set this manually) */
 
     HDassert(filename);
 
@@ -280,10 +280,10 @@ main(int argc, const char *argv[])
     hid_t    fid;                  /* File ID for file opened */
     long     nrecords     = 0;     /* # of records to append */
     long     flush_count  = 10000; /* # of records to write between flushing file */
-    hbool_t  verbose      = TRUE;  /* Whether to emit some informational messages */
+    hbool_t  verbose      = true;  /* Whether to emit some informational messages */
     FILE *   verbose_file = NULL;  /* File handle for verbose output */
-    hbool_t  old          = FALSE; /* Whether to use non-latest-format when opening file */
-    hbool_t  use_seed     = FALSE; /* Set to TRUE if a seed was set on the command line */
+    hbool_t  old          = false; /* Whether to use non-latest-format when opening file */
+    hbool_t  use_seed     = false; /* Set to TRUE if a seed was set on the command line */
     unsigned random_seed  = 0;     /* Random # seed */
     unsigned u;                    /* Local index variable */
     int      temp;
@@ -306,13 +306,13 @@ main(int argc, const char *argv[])
 
                     /* Be quiet */
                     case 'q':
-                        verbose = FALSE;
+                        verbose = false;
                         u++;
                         break;
 
                     /* Random # seed */
                     case 'r':
-                        use_seed    = TRUE;
+                        use_seed    = true;
                         temp        = HDatoi(argv[u + 1]);
                         random_seed = (unsigned)temp;
                         u += 2;
@@ -320,7 +320,7 @@ main(int argc, const char *argv[])
 
                     /* Use non-latest-format when opening file */
                     case 'o':
-                        old = TRUE;
+                        old = true;
                         u++;
                         break;
 

@@ -132,7 +132,7 @@ static herr_t H5PB__write_entry(H5F_shared_t *f_sh, H5PB_entry_t *page_entry);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = FALSE;
+hbool_t H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -483,12 +483,12 @@ H5PB_dest(H5F_shared_t *f_sh)
         op_data.page_buf = page_buf;
 
         /* Destroy the skip list containing all the entries in the PB */
-        op_data.actual_slist = TRUE;
+        op_data.actual_slist = true;
         if (H5SL_destroy(page_buf->slist_ptr, H5PB__dest_cb, &op_data))
             HGOTO_ERROR(H5E_PAGEBUF, H5E_CANTCLOSEOBJ, FAIL, "can't destroy page buffer skip list")
 
         /* Destroy the skip list containing the new entries */
-        op_data.actual_slist = FALSE;
+        op_data.actual_slist = false;
         if (H5SL_destroy(page_buf->mf_slist_ptr, H5PB__dest_cb, &op_data))
             HGOTO_ERROR(H5E_PAGEBUF, H5E_CANTCLOSEOBJ, FAIL, "can't destroy page buffer skip list")
 
@@ -547,7 +547,7 @@ H5PB_add_new_page(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t page_addr)
         /* Initialize page fields */
         page_entry->addr     = page_addr;
         page_entry->type     = (H5F_mem_page_t)type;
-        page_entry->is_dirty = FALSE;
+        page_entry->is_dirty = false;
 
         /* Insert entry in skip list */
         if (H5SL_insert(page_buf->mf_slist_ptr, page_entry, &(page_entry->addr)) < 0)
@@ -683,7 +683,7 @@ H5PB_read(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t addr, size_t size, void *
     haddr_t       search_addr;       /* Address of current page */
     hsize_t       num_touched_pages; /* Number of pages accessed */
     size_t        access_size = 0;
-    hbool_t       bypass_pb   = FALSE; /* Whether to bypass page buffering */
+    hbool_t       bypass_pb   = false; /* Whether to bypass page buffering */
     hsize_t       i;                   /* Local index variable */
     herr_t        ret_value = SUCCEED; /* Return value */
 
@@ -941,7 +941,7 @@ H5PB_read(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t addr, size_t size, void *
                 page_entry->page_buf_ptr = new_page_buf;
                 page_entry->addr         = search_addr;
                 page_entry->type         = (H5F_mem_page_t)type;
-                page_entry->is_dirty     = FALSE;
+                page_entry->is_dirty     = false;
 
                 /* Insert page into PB */
                 if (H5PB__insert_entry(page_buf, page_entry) < 0)
@@ -984,7 +984,7 @@ H5PB_write(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t addr, size_t size, const
     haddr_t       search_addr;       /* Address of current page */
     hsize_t       num_touched_pages; /* Number of pages accessed */
     size_t        access_size = 0;
-    hbool_t       bypass_pb   = FALSE; /* Whether to bypass page buffering */
+    hbool_t       bypass_pb   = false; /* Whether to bypass page buffering */
     hsize_t       i;                   /* Local index variable */
     herr_t        ret_value = SUCCEED; /* Return value */
 
@@ -1099,7 +1099,7 @@ H5PB_write(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t addr, size_t size, const
                                 page_buf->page_size - (size_t)offset);
 
                     /* Mark page dirty and push to top of LRU */
-                    page_entry->is_dirty = TRUE;
+                    page_entry->is_dirty = true;
                     H5PB__MOVE_TO_TOP_LRU(page_buf, page_entry)
                 } /* end if */
             }     /* end if */
@@ -1119,7 +1119,7 @@ H5PB_write(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t addr, size_t size, const
                                 (size_t)((addr + size) - last_page_addr));
 
                     /* Mark page dirty and push to top of LRU */
-                    page_entry->is_dirty = TRUE;
+                    page_entry->is_dirty = true;
                     H5PB__MOVE_TO_TOP_LRU(page_buf, page_entry)
                 } /* end if */
             }     /* end else-if */
@@ -1172,7 +1172,7 @@ H5PB_write(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t addr, size_t size, const
                             access_size);
 
                 /* Mark page dirty and push to top of LRU */
-                page_entry->is_dirty = TRUE;
+                page_entry->is_dirty = true;
                 H5PB__MOVE_TO_TOP_LRU(page_buf, page_entry)
 
                 /* Update statistics */
@@ -1292,7 +1292,7 @@ H5PB_write(H5F_shared_t *f_sh, H5FD_mem_t type, haddr_t addr, size_t size, const
                 H5MM_memcpy((uint8_t *)new_page_buf + offset, (const uint8_t *)buf + buf_offset, access_size);
 
                 /* Page is dirty now */
-                page_entry->is_dirty = TRUE;
+                page_entry->is_dirty = true;
 
                 /* Insert page into PB, evicting other pages as necessary */
                 if (H5PB__insert_entry(page_buf, page_entry) < 0)
@@ -1375,7 +1375,7 @@ static htri_t
 H5PB__make_space(H5F_shared_t *f_sh, H5PB_t *page_buf, H5FD_mem_t inserted_type)
 {
     H5PB_entry_t *page_entry;       /* Pointer to page eviction candidate */
-    htri_t        ret_value = TRUE; /* Return value */
+    htri_t        ret_value = true; /* Return value */
 
     FUNC_ENTER_STATIC
 
@@ -1391,7 +1391,7 @@ H5PB__make_space(H5F_shared_t *f_sh, H5PB_t *page_buf, H5FD_mem_t inserted_type)
            metadata, then we can't make space for raw data */
         if (0 == page_buf->raw_count && page_buf->min_meta_count == page_buf->meta_count) {
             HDassert(page_buf->meta_count * page_buf->page_size == page_buf->max_size);
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
         } /* end if */
 
         /* check the metadata threshold before evicting metadata items */
@@ -1408,7 +1408,7 @@ H5PB__make_space(H5F_shared_t *f_sh, H5PB_t *page_buf, H5FD_mem_t inserted_type)
            raw data, then we can't make space for meta data */
         if (0 == page_buf->meta_count && page_buf->min_raw_count == page_buf->raw_count) {
             HDassert(page_buf->raw_count * page_buf->page_size == page_buf->max_size);
-            HGOTO_DONE(FALSE)
+            HGOTO_DONE(false)
         } /* end if */
 
         /* check the raw data threshold before evicting raw data items */
@@ -1504,7 +1504,7 @@ H5PB__write_entry(H5F_shared_t *f_sh, H5PB_entry_t *page_entry)
             HGOTO_ERROR(H5E_PAGEBUF, H5E_WRITEERROR, FAIL, "file write failed")
     } /* end if */
 
-    page_entry->is_dirty = FALSE;
+    page_entry->is_dirty = false;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
