@@ -204,12 +204,19 @@ extern "C" {
  */
 typedef int herr_t;
 
+#include <stdbool.h>
 /**
- * Boolean type.  Successful return values are zero (false) or positive
- * (true). The typical true value is 1 but don't bet on it.  Boolean
- * functions cannot fail.  Functions that return #htri_t however return zero
- * (false), positive (true), or negative (failure). The proper way to test
- * for truth from a #htri_t function is:
+ * Deprecated Boolean type. Still used in the public API for historical
+ * reasons, but typedef'd to C99's bool.
+ */
+typedef bool hbool_t;
+
+/**
+ * Boolean + "fail" type used for returning a Boolean value when it's
+ * also necessary to indicate failure. Generally deprecated in favor of
+ * using Boolean out parameters and returning a herr_t value. #htri_t values
+ * are zero (false), positive (true), or negative (failure). The proper way
+ * to test for truth from a #htri_t function is:
  * \code
  * if ((retval = H5Tcommitted(type)) > 0) {
  *     printf("data type is committed\n");
@@ -220,20 +227,6 @@ typedef int herr_t;
  * }
  * \endcode
  */
-#ifdef H5_HAVE_STDBOOL_H
-#include <stdbool.h>
-#else /* H5_HAVE_STDBOOL_H */
-#ifndef __cplusplus
-#if defined(H5_SIZEOF_BOOL) && (H5_SIZEOF_BOOL != 0)
-#define bool _Bool
-#else
-#define bool unsigned int
-#endif
-#define true 1
-#define false 0
-#endif /* __cplusplus */
-#endif /* H5_HAVE_STDBOOL_H */
-typedef bool hbool_t;
 typedef int  htri_t;
 
 /* Define the ssize_t type if it not is defined */
