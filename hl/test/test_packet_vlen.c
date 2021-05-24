@@ -969,7 +969,7 @@ error: /* An error has occurred.  Clean up and exit. */
  *-------------------------------------------------------------------------
  */
 static herr_t
-verify_accessors(hid_t fid, const char *table_name, hbool_t uses_vlen_type)
+verify_accessors(hid_t fid, const char *table_name, bool uses_vlen_type)
 {
     hid_t   ptable   = H5I_INVALID_HID; /* Packet table identifier */
     hid_t   dset_id  = H5I_INVALID_HID; /* Dataset associated with the pt */

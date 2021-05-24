@@ -70,7 +70,7 @@ H5_DLL hid_t H5FD_core_init(void);
  * \since 1.4.0
  *
  */
-H5_DLL herr_t H5Pset_fapl_core(hid_t fapl_id, size_t increment, hbool_t backing_store);
+H5_DLL herr_t H5Pset_fapl_core(hid_t fapl_id, size_t increment, bool backing_store);
 
 /**
  * \ingroup FAPL
@@ -89,7 +89,7 @@ H5_DLL herr_t H5Pset_fapl_core(hid_t fapl_id, size_t increment, hbool_t backing_
  * \since 1.4.0
  *
  */
-H5_DLL herr_t H5Pget_fapl_core(hid_t fapl_id, size_t *increment /*out*/, hbool_t *backing_store /*out*/);
+H5_DLL herr_t H5Pget_fapl_core(hid_t fapl_id, size_t *increment /*out*/, bool *backing_store /*out*/);
 #ifdef __cplusplus
 }
 #endif

@@ -169,7 +169,7 @@ H5_DLL hid_t H5EScreate(void);
  * \since 1.13.0
  *
  */
-H5_DLL herr_t H5ESwait(hid_t es_id, uint64_t timeout, size_t *num_in_progress, hbool_t *err_occurred);
+H5_DLL herr_t H5ESwait(hid_t es_id, uint64_t timeout, size_t *num_in_progress, bool *err_occurred);
 
 /**
  * \ingroup H5ES
@@ -214,7 +214,7 @@ H5_DLL herr_t H5ESget_op_counter(hid_t es_id, uint64_t *counter);
  * \since 1.13.0
  *
  */
-H5_DLL herr_t H5ESget_err_status(hid_t es_id, hbool_t *err_occurred);
+H5_DLL herr_t H5ESget_err_status(hid_t es_id, bool *err_occurred);
 
 /**
  * \ingroup H5ES

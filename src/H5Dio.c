@@ -46,7 +46,7 @@
 /* Setup/teardown routines */
 static herr_t H5D__ioinfo_init(H5D_t *dset, const H5D_type_info_t *type_info, H5D_storage_t *store,
                                H5D_io_info_t *io_info);
-static herr_t H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, hbool_t do_write,
+static herr_t H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, bool do_write,
                                  H5D_type_info_t *type_info);
 #ifdef H5_HAVE_PARALLEL
 static herr_t H5D__ioinfo_adjust(H5D_io_info_t *io_info, const H5D_t *dset, const H5S_t *file_space,
@@ -137,7 +137,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
     H5D_chunk_map_t *fm = NULL;                   /* Chunk file<->memory mapping */
     H5D_io_info_t    io_info;                     /* Dataset I/O info     */
     H5D_type_info_t  type_info;                   /* Datatype info for operation */
-    hbool_t          type_info_init      = false; /* Whether the datatype info has been initialized */
+    bool          type_info_init      = false; /* Whether the datatype info has been initialized */
     H5S_t *          projected_mem_space = NULL;  /* If not NULL, ptr to dataspace containing a     */
                                                   /* projection of the supplied mem_space to a new  */
                                                   /* dataspace with rank equal to that of           */
@@ -153,7 +153,7 @@ H5D__read(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_t
                                                   /* end of the function to avoid a memory leak.    */
     H5D_storage_t store;                          /* union of EFL and chunk pointer in file space */
     hsize_t       nelmts;                         /* total number of elmts	*/
-    hbool_t       io_op_init = false;             /* Whether the I/O op has been initialized */
+    bool       io_op_init = false;             /* Whether the I/O op has been initialized */
     char          fake_char;                      /* Temporary variable for NULL buffer pointers */
     herr_t        ret_value = SUCCEED;            /* Return value	*/
 
@@ -353,7 +353,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
     H5D_chunk_map_t *fm = NULL;                   /* Chunk file<->memory mapping */
     H5D_io_info_t    io_info;                     /* Dataset I/O info     */
     H5D_type_info_t  type_info;                   /* Datatype info for operation */
-    hbool_t          type_info_init      = false; /* Whether the datatype info has been initialized */
+    bool          type_info_init      = false; /* Whether the datatype info has been initialized */
     H5S_t *          projected_mem_space = NULL;  /* If not NULL, ptr to dataspace containing a     */
                                                   /* projection of the supplied mem_space to a new  */
                                                   /* dataspace with rank equal to that of           */
@@ -369,7 +369,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
                                                   /* end of the function to avoid a memory leak.    */
     H5D_storage_t store;                          /* union of EFL and chunk pointer in file space */
     hsize_t       nelmts;                         /* total number of elmts	*/
-    hbool_t       io_op_init = false;             /* Whether the I/O op has been initialized */
+    bool       io_op_init = false;             /* Whether the I/O op has been initialized */
     char          fake_char;                      /* Temporary variable for NULL buffer pointers */
     herr_t        ret_value = SUCCEED;            /* Return value	*/
 
@@ -494,7 +494,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
     if (nelmts > 0 && dataset->shared->dcpl_cache.efl.nused == 0 &&
         !(*dataset->shared->layout.ops->is_space_alloc)(&dataset->shared->layout.storage)) {
         hssize_t file_nelmts;    /* Number of elements in file dataset's dataspace */
-        hbool_t  full_overwrite; /* Whether we are over-writing all the elements */
+        bool  full_overwrite; /* Whether we are over-writing all the elements */
 
         /* Get the number of elements in file dataset's dataspace */
         if ((file_nelmts = H5S_GET_EXTENT_NPOINTS(file_space)) < 0)
@@ -504,7 +504,7 @@ H5D__write(H5D_t *dataset, hid_t mem_type_id, const H5S_t *mem_space, const H5S_
         if (H5T_detect_class(dataset->shared->type, H5T_VLEN, false))
             full_overwrite = false;
         else
-            full_overwrite = (hbool_t)((hsize_t)file_nelmts == nelmts ? true : false);
+            full_overwrite = (bool)((hsize_t)file_nelmts == nelmts ? true : false);
 
         /* Allocate storage */
         if (H5D__alloc_storage(&io_info, H5D_ALLOC_WRITE, full_overwrite, NULL) < 0)
@@ -644,7 +644,7 @@ H5D__ioinfo_init(H5D_t *dset, const H5D_type_info_t *type_info, H5D_storage_t *s
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, hbool_t do_write, H5D_type_info_t *type_info)
+H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, bool do_write, H5D_type_info_t *type_info)
 {
     const H5T_t *     src_type;            /* Source datatype */
     const H5T_t *     dst_type;            /* Destination datatype */
@@ -747,11 +747,11 @@ H5D__typeinfo_init(const H5D_t *dset, hid_t mem_type_id, hbool_t do_write, H5D_t
 
         /* If the buffer is too small to hold even one element, try to make it bigger */
         if (target_size < type_info->max_type_size) {
-            hbool_t default_buffer_info; /* Whether the buffer information are the defaults */
+            bool default_buffer_info; /* Whether the buffer information are the defaults */
 
             /* Detect if we have all default settings for buffers */
             default_buffer_info =
-                (hbool_t)((H5D_TEMP_BUF_SIZE == max_temp_buf) && (NULL == tconv_buf) && (NULL == bkgr_buf));
+                (bool)((H5D_TEMP_BUF_SIZE == max_temp_buf) && (NULL == tconv_buf) && (NULL == bkgr_buf));
 
             /* Check if we are using the default buffer info */
             if (default_buffer_info)

@@ -85,7 +85,7 @@ typedef struct H5FD_stdio_t {
     haddr_t            eof;          /* end of file; current file size   */
     haddr_t            pos;          /* current file I/O position        */
     unsigned           write_access; /* Flag to indicate the file was opened with write access */
-    hbool_t            ignore_disabled_file_locks;
+    bool            ignore_disabled_file_locks;
     H5FD_stdio_file_op op; /* last operation */
 #ifndef H5_HAVE_WIN32_API
     /* On most systems the combination of device and i-node number uniquely
@@ -176,9 +176,9 @@ static herr_t  H5FD_stdio_read(H5FD_t *lf, H5FD_mem_t type, hid_t fapl_id, haddr
                                void *buf);
 static herr_t  H5FD_stdio_write(H5FD_t *lf, H5FD_mem_t type, hid_t fapl_id, haddr_t addr, size_t size,
                                 const void *buf);
-static herr_t  H5FD_stdio_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD_stdio_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD_stdio_lock(H5FD_t *_file, hbool_t rw);
+static herr_t  H5FD_stdio_flush(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD_stdio_truncate(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD_stdio_lock(H5FD_t *_file, bool rw);
 static herr_t  H5FD_stdio_unlock(H5FD_t *_file);
 static herr_t  H5FD_stdio_delete(const char *filename, hid_t fapl_id);
 
@@ -419,7 +419,7 @@ H5FD_stdio_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr
         /* The environment variable was set, so use that preferentially */
         file->ignore_disabled_file_locks = ignore_disabled_file_locks_s;
     else {
-        hbool_t unused;
+        bool unused;
 
         /* Use the value in the property list */
         if (H5Pget_file_locking(fapl_id, &unused, &file->ignore_disabled_file_locks) < 0) {
@@ -986,7 +986,7 @@ H5FD_stdio_write(H5FD_t *_file, H5FD_mem_t /*UNUSED*/ type, hid_t /*UNUSED*/ dxp
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_stdio_flush(H5FD_t *_file, hid_t /*UNUSED*/ dxpl_id, hbool_t closing)
+H5FD_stdio_flush(H5FD_t *_file, hid_t /*UNUSED*/ dxpl_id, bool closing)
 {
     H5FD_stdio_t *     file = (H5FD_stdio_t *)_file;
     static const char *func = "H5FD_stdio_flush"; /* Function Name for error reporting */
@@ -1030,7 +1030,7 @@ H5FD_stdio_flush(H5FD_t *_file, hid_t /*UNUSED*/ dxpl_id, hbool_t closing)
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_stdio_truncate(H5FD_t *_file, hid_t /*UNUSED*/ dxpl_id, hbool_t /*UNUSED*/ closing)
+H5FD_stdio_truncate(H5FD_t *_file, hid_t /*UNUSED*/ dxpl_id, bool /*UNUSED*/ closing)
 {
     H5FD_stdio_t *     file = (H5FD_stdio_t *)_file;
     static const char *func = "H5FD_stdio_truncate"; /* Function Name for error reporting */
@@ -1120,7 +1120,7 @@ H5FD_stdio_truncate(H5FD_t *_file, hid_t /*UNUSED*/ dxpl_id, hbool_t /*UNUSED*/ 
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_stdio_lock(H5FD_t *_file, hbool_t rw)
+H5FD_stdio_lock(H5FD_t *_file, bool rw)
 {
 #ifdef H5_HAVE_FLOCK
     H5FD_stdio_t *     file = (H5FD_stdio_t *)_file; /* VFD file struct                      */

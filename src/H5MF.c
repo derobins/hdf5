@@ -96,11 +96,11 @@ static herr_t H5MF__close_shrink_eoa(H5F_t *f);
 
 /* General routines */
 static herr_t  H5MF__get_free_sects(H5F_t *f, H5FS_t *fspace, H5MF_sect_iter_ud_t *sect_udata, size_t *nums);
-static hbool_t H5MF__fsm_type_is_self_referential(H5F_shared_t *f_sh, H5F_mem_page_t fsm_type);
-static hbool_t H5MF__fsm_is_self_referential(H5F_shared_t *f_sh, H5FS_t *fspace);
+static bool H5MF__fsm_type_is_self_referential(H5F_shared_t *f_sh, H5F_mem_page_t fsm_type);
+static bool H5MF__fsm_is_self_referential(H5F_shared_t *f_sh, H5FS_t *fspace);
 static herr_t  H5MF__continue_alloc_fsm(H5F_shared_t *f_sh, H5FS_t *sm_hdr_fspace, H5FS_t *sm_sinfo_fspace,
                                         H5FS_t *lg_hdr_fspace, H5FS_t *lg_sinfo_fspace,
-                                        hbool_t *continue_alloc_fsm);
+                                        bool *continue_alloc_fsm);
 
 /* Free-space type manager routines */
 static herr_t H5MF__create_fstype(H5F_t *f, H5F_mem_page_t type);
@@ -116,7 +116,7 @@ static herr_t H5MF__sects_cb(H5FS_section_info_t *_sect, void *_udata);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -144,7 +144,7 @@ H5MF_init_merge_flags(H5F_shared_t *f_sh)
 {
     H5MF_aggr_merge_t mapping_type;        /* Type of free list mapping */
     H5FD_mem_t        type;                /* Memory type for iteration */
-    hbool_t           all_same;            /* Whether all the types map to the same value */
+    bool           all_same;            /* Whether all the types map to the same value */
     herr_t            ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -176,7 +176,7 @@ H5MF_init_merge_flags(H5F_shared_t *f_sh)
         if (f_sh->fs_type_map[H5FD_MEM_DRAW] == f_sh->fs_type_map[H5FD_MEM_SUPER])
             mapping_type = H5MF_AGGR_MERGE_SEPARATE;
         else {
-            hbool_t all_metadata_same; /* Whether all metadata go in same free list */
+            bool all_metadata_same; /* Whether all metadata go in same free list */
 
             /* One or more allocation type don't map to the same free list type */
             /* Check if all the metadata allocation types map to the same type */
@@ -2084,7 +2084,7 @@ H5MF__close_shrink_eoa(H5F_t *f)
     H5AC_ring_t    needed_ring = H5AC_RING_INV; /* Ring value needed for this iteration.  */
     H5F_mem_t      type;
     H5F_mem_page_t ptype;               /* Memory type for iteration */
-    hbool_t        eoa_shrank;          /* Whether an EOA shrink occurs */
+    bool        eoa_shrank;          /* Whether an EOA shrink occurs */
     htri_t         status;              /* Status value */
     H5MF_sect_ud_t udata;               /* User data for callback */
     herr_t         ret_value = SUCCEED; /* Return value */
@@ -2388,7 +2388,7 @@ H5MF_get_free_sections(H5F_t *f, H5FD_mem_t type, size_t nsects, H5F_sect_info_t
 
     /* Iterate over memory types, retrieving the number of sections of each type */
     for (ty = start_type; ty < end_type; ty++) {
-        hbool_t fs_started = false; /* The free-space manager is opened or not */
+        bool fs_started = false; /* The free-space manager is opened or not */
         size_t  nums       = 0;     /* The number of free-space sections */
 
         /* Test to see if we need to switch rings -- do so if required */
@@ -2610,7 +2610,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5MF_settle_raw_data_fsm(H5F_t *f, hbool_t *fsm_settled)
+H5MF_settle_raw_data_fsm(H5F_t *f, bool *fsm_settled)
 {
     int            pass_count;
     hsize_t        alloc_size;
@@ -2639,8 +2639,8 @@ H5MF_settle_raw_data_fsm(H5F_t *f, hbool_t *fsm_settled)
      * the private property in f->shared->null_fsm_addr is not enabled.
      */
     if (f->shared->fs_persist && !H5F_NULL_FSM_ADDR(f)) {
-        hbool_t fsm_opened[H5F_MEM_PAGE_NTYPES];  /* State of FSM */
-        hbool_t fsm_visited[H5F_MEM_PAGE_NTYPES]; /* State of FSM */
+        bool fsm_opened[H5F_MEM_PAGE_NTYPES];  /* State of FSM */
+        bool fsm_visited[H5F_MEM_PAGE_NTYPES]; /* State of FSM */
 
         /* Sanity check */
         HDassert(f->shared->sblock);
@@ -3079,7 +3079,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5MF_settle_meta_data_fsm(H5F_t *f, hbool_t *fsm_settled)
+H5MF_settle_meta_data_fsm(H5F_t *f, bool *fsm_settled)
 {
     H5F_mem_page_t sm_fshdr_fs_type;                          /* small fs hdr fsm */
     H5F_mem_page_t sm_fssinfo_fs_type;                        /* small fs sinfo fsm */
@@ -3091,7 +3091,7 @@ H5MF_settle_meta_data_fsm(H5F_t *f, hbool_t *fsm_settled)
     H5FS_t *       lg_sinfo_fspace    = NULL;                 /* ptr to lg FSM sinfo alloc FSM */
     haddr_t        eoa_fsm_fsalloc;                           /* eoa after file space allocation */
                                                               /* for self referential FSMs */
-    hbool_t     continue_alloc_fsm = false;         /* Continue allocating addr and sect_addr for FSMs */
+    bool     continue_alloc_fsm = false;         /* Continue allocating addr and sect_addr for FSMs */
     H5AC_ring_t orig_ring          = H5AC_RING_INV; /* Original ring value */
     herr_t      ret_value          = SUCCEED;       /* Return value */
 
@@ -3328,7 +3328,7 @@ done:
  */
 static herr_t
 H5MF__continue_alloc_fsm(H5F_shared_t *f_sh, H5FS_t *sm_hdr_fspace, H5FS_t *sm_sinfo_fspace,
-                         H5FS_t *lg_hdr_fspace, H5FS_t *lg_sinfo_fspace, hbool_t *continue_alloc_fsm)
+                         H5FS_t *lg_hdr_fspace, H5FS_t *lg_sinfo_fspace, bool *continue_alloc_fsm)
 {
     FUNC_ENTER_STATIC_NOERR
 
@@ -3373,14 +3373,14 @@ H5MF__continue_alloc_fsm(H5F_shared_t *f_sh, H5FS_t *sm_hdr_fspace, H5FS_t *sm_s
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 H5MF__fsm_type_is_self_referential(H5F_shared_t *f_sh, H5F_mem_page_t fsm_type)
 {
     H5F_mem_page_t sm_fshdr_fsm;
     H5F_mem_page_t sm_fssinfo_fsm;
     H5F_mem_page_t lg_fshdr_fsm;
     H5F_mem_page_t lg_fssinfo_fsm;
-    hbool_t        result = false;
+    bool        result = false;
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -3428,12 +3428,12 @@ H5MF__fsm_type_is_self_referential(H5F_shared_t *f_sh, H5F_mem_page_t fsm_type)
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 H5MF__fsm_is_self_referential(H5F_shared_t *f_sh, H5FS_t *fspace)
 {
     H5F_mem_page_t sm_fshdr_fsm;
     H5F_mem_page_t sm_fssinfo_fsm;
-    hbool_t        result = false;
+    bool        result = false;
 
     FUNC_ENTER_STATIC_NOERR
 

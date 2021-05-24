@@ -136,7 +136,7 @@ BEGIN_FUNC(PKG, ERR, herr_t, SUCCEED, FAIL,
 
     /* Local variables */
     H5EA_dblk_page_t *dblk_page = NULL;  /* Extensible array data block page */
-    hbool_t           inserted  = false; /* Whether the header was inserted into cache */
+    bool           inserted  = false; /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);

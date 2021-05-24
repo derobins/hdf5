@@ -248,7 +248,7 @@ main(int argc, char *argv[])
     size_t         u;
     H5E_auto2_t    func           = NULL;
     void *         edata          = NULL;
-    hbool_t        api_ctx_pushed = false; /* Whether API context pushed */
+    bool        api_ctx_pushed = false; /* Whether API context pushed */
     herr_t         status         = SUCCEED;
     int            exit_value     = 0;
 

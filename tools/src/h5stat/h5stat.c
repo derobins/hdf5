@@ -102,7 +102,7 @@ typedef struct iter_t {
     hsize_t        super_ext_size;                  /* superblock extension size */
     hsize_t        ublk_size;                       /* user block size (if exists) */
     H5F_fspace_strategy_t fs_strategy;              /* File space management strategy */
-    hbool_t               fs_persist;               /* Free-space persist or not */
+    bool               fs_persist;               /* Free-space persist or not */
     hsize_t               fs_threshold;             /* Free-space section threshold */
     hsize_t               fsp_size;                 /* File space page size */
     hsize_t               free_space;               /* Amount of freespace in the file */

@@ -116,8 +116,8 @@ extern int yyerror(const char *);
 /*structure for compound type information*/
 struct cmpd_info {
     hid_t       id;             /*type ID*/
-    hbool_t     is_field;       /*flag to lexer for compound member*/
-    hbool_t     first_memb;     /*flag for first compound member*/
+    bool     is_field;       /*flag to lexer for compound member*/
+    bool     first_memb;     /*flag for first compound member*/
 };
 
 /*stack for nested compound type*/
@@ -133,7 +133,7 @@ static int csindex = -1;                /*pointer to the top of compound stack*/
 struct arr_info {
     hsize_t             dims[H5S_MAX_RANK];     /*size of each dimension, limited to 32 dimensions*/
     unsigned            ndims;                  /*number of dimensions*/
-    hbool_t             is_dim;                 /*flag to lexer for dimension*/
+    bool             is_dim;                 /*flag to lexer for dimension*/
 };
 /*stack for nested array type*/
 static struct arr_info arr_stack[STACK_SIZE];
@@ -141,12 +141,12 @@ static int asindex = -1;               /*pointer to the top of array stack*/
 
 static H5T_str_t   str_pad;                /*variable for string padding*/
 static H5T_cset_t  str_cset;               /*variable for string character set*/
-static hbool_t     is_variable = 0;        /*variable for variable-length string*/
+static bool     is_variable = 0;        /*variable for variable-length string*/
 static size_t      str_size;               /*variable for string size*/
    
 static hid_t       enum_id;                /*type ID*/
-static hbool_t     is_enum = 0;            /*flag to lexer for enum type*/
-static hbool_t     is_enum_memb = 0;       /*flag to lexer for enum member*/
+static bool     is_enum = 0;            /*flag to lexer for enum type*/
+static bool     is_enum_memb = 0;       /*flag to lexer for enum member*/
 static char*       enum_memb_symbol;       /*enum member symbol string*/
 
 

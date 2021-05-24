@@ -661,7 +661,7 @@ H5VL_pass_through_info_to_str(const void *_info, char **str)
         under_vol_str_len = strlen(under_vol_string);
 
     /* Allocate space for our info */
-    *str = (char *)H5allocate_memory(32 + under_vol_str_len, (hbool_t)0);
+    *str = (char *)H5allocate_memory(32 + under_vol_str_len, (bool)0);
     assert(*str);
 
     /* Encode our info

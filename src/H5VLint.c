@@ -91,7 +91,7 @@ static int            H5VL__get_connector_cb(void *obj, hid_t id, void *_op_data
 static herr_t         H5VL__set_def_conn(void);
 static void *         H5VL__wrap_obj(void *obj, H5I_type_t obj_type);
 static H5VL_object_t *H5VL__new_vol_obj(H5I_type_t type, void *object, H5VL_t *vol_connector,
-                                        hbool_t wrap_obj);
+                                        bool wrap_obj);
 static void *         H5VL__object(hid_t id, H5I_type_t obj_type);
 static herr_t         H5VL__free_vol_wrapper(H5VL_wrap_ctx_t *vol_wrap_ctx);
 
@@ -100,7 +100,7 @@ static herr_t         H5VL__free_vol_wrapper(H5VL_wrap_ctx_t *vol_wrap_ctx);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -541,10 +541,10 @@ done:
  *-------------------------------------------------------------------------
  */
 static H5VL_object_t *
-H5VL__new_vol_obj(H5I_type_t type, void *object, H5VL_t *vol_connector, hbool_t wrap_obj)
+H5VL__new_vol_obj(H5I_type_t type, void *object, H5VL_t *vol_connector, bool wrap_obj)
 {
     H5VL_object_t *new_vol_obj  = NULL;  /* Pointer to new VOL object                    */
-    hbool_t        conn_rc_incr = false; /* Whether the VOL connector refcount has been incremented */
+    bool        conn_rc_incr = false; /* Whether the VOL connector refcount has been incremented */
     H5VL_object_t *ret_value    = NULL;  /* Return value                                 */
 
     FUNC_ENTER_STATIC
@@ -691,7 +691,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL_register(H5I_type_t type, void *object, H5VL_t *vol_connector, hbool_t app_ref)
+H5VL_register(H5I_type_t type, void *object, H5VL_t *vol_connector, bool app_ref)
 {
     H5VL_object_t *vol_obj   = NULL;            /* VOL object wrapper for library object */
     hid_t          ret_value = H5I_INVALID_HID; /* Return value */
@@ -734,7 +734,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5VL_register_using_existing_id(H5I_type_t type, void *object, H5VL_t *vol_connector, hbool_t app_ref,
+H5VL_register_using_existing_id(H5I_type_t type, void *object, H5VL_t *vol_connector, bool app_ref,
                                 hid_t existing_id)
 {
     H5VL_object_t *new_vol_obj = NULL;    /* Pointer to new VOL object                    */
@@ -772,11 +772,11 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL_register_using_vol_id(H5I_type_t type, void *obj, hid_t connector_id, hbool_t app_ref)
+H5VL_register_using_vol_id(H5I_type_t type, void *obj, hid_t connector_id, bool app_ref)
 {
     H5VL_class_t *cls          = NULL;            /* VOL connector class */
     H5VL_t *      connector    = NULL;            /* VOL connector struct */
-    hbool_t       conn_id_incr = false;           /* Whether the VOL connector ID has been incremented */
+    bool       conn_id_incr = false;           /* Whether the VOL connector ID has been incremented */
     hid_t         ret_value    = H5I_INVALID_HID; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -871,7 +871,7 @@ H5VL_create_object_using_vol_id(H5I_type_t type, void *obj, hid_t connector_id)
 {
     H5VL_class_t * cls          = NULL;  /* VOL connector class */
     H5VL_t *       connector    = NULL;  /* VOL connector struct */
-    hbool_t        conn_id_incr = false; /* Whether the VOL connector ID has been incremented */
+    bool        conn_id_incr = false; /* Whether the VOL connector ID has been incremented */
     H5VL_object_t *ret_value    = NULL;  /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
@@ -1049,7 +1049,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5VL_object_is_native(const H5VL_object_t *obj, hbool_t *is_native)
+H5VL_object_is_native(const H5VL_object_t *obj, bool *is_native)
 {
     const H5VL_class_t *cls;                 /* VOL connector class structs for object */
     const H5VL_class_t *native_cls;          /* Native VOL connector class structs */
@@ -1095,7 +1095,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5VL_file_is_same(const H5VL_object_t *vol_obj1, const H5VL_object_t *vol_obj2, hbool_t *same_file)
+H5VL_file_is_same(const H5VL_object_t *vol_obj1, const H5VL_object_t *vol_obj2, bool *same_file)
 {
     const H5VL_class_t *cls1;                /* VOL connector class struct for first object */
     const H5VL_class_t *cls2;                /* VOL connector class struct for second object */
@@ -1158,7 +1158,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL__register_connector(const void *_cls, hbool_t app_ref, hid_t vipl_id)
+H5VL__register_connector(const void *_cls, bool app_ref, hid_t vipl_id)
 {
     const H5VL_class_t *cls       = (const H5VL_class_t *)_cls;
     H5VL_class_t *      saved     = NULL;
@@ -1215,7 +1215,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL__register_connector_by_class(const H5VL_class_t *cls, hbool_t app_ref, hid_t vipl_id)
+H5VL__register_connector_by_class(const H5VL_class_t *cls, bool app_ref, hid_t vipl_id)
 {
     H5VL_get_connector_ud_t op_data;                     /* Callback info for connector search */
     hid_t                   ret_value = H5I_INVALID_HID; /* Return value */
@@ -1287,7 +1287,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL__register_connector_by_name(const char *name, hbool_t app_ref, hid_t vipl_id)
+H5VL__register_connector_by_name(const char *name, bool app_ref, hid_t vipl_id)
 {
     H5VL_get_connector_ud_t op_data;                     /* Callback info for connector search */
     hid_t                   ret_value = H5I_INVALID_HID; /* Return value */
@@ -1347,7 +1347,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL__register_connector_by_value(H5VL_class_value_t value, hbool_t app_ref, hid_t vipl_id)
+H5VL__register_connector_by_value(H5VL_class_value_t value, bool app_ref, hid_t vipl_id)
 {
     H5VL_get_connector_ud_t op_data;                     /* Callback info for connector search */
     hid_t                   ret_value = H5I_INVALID_HID; /* Return value */
@@ -1477,7 +1477,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL__get_connector_id(hid_t obj_id, hbool_t is_api)
+H5VL__get_connector_id(hid_t obj_id, bool is_api)
 {
     H5VL_object_t *vol_obj   = NULL;
     hid_t          ret_value = H5I_INVALID_HID; /* Return value */
@@ -1511,7 +1511,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL__get_connector_id_by_name(const char *name, hbool_t is_api)
+H5VL__get_connector_id_by_name(const char *name, bool is_api)
 {
     hid_t ret_value = H5I_INVALID_HID; /* Return value */
 
@@ -1541,7 +1541,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL__get_connector_id_by_value(H5VL_class_value_t value, hbool_t is_api)
+H5VL__get_connector_id_by_value(H5VL_class_value_t value, bool is_api)
 {
     hid_t ret_value = H5I_INVALID_HID; /* Return value */
 
@@ -2393,7 +2393,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5VL_wrap_register(H5I_type_t type, void *obj, hbool_t app_ref)
+H5VL_wrap_register(H5I_type_t type, void *obj, bool app_ref)
 {
     H5VL_wrap_ctx_t *vol_wrap_ctx = NULL;         /* Object wrapping context */
     void *           new_obj;                     /* Newly wrapped object */
@@ -2449,7 +2449,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5VL_check_plugin_load(const H5VL_class_t *cls, const H5PL_key_t *key, hbool_t *success)
+H5VL_check_plugin_load(const H5VL_class_t *cls, const H5PL_key_t *key, bool *success)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -2560,7 +2560,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5VL_setup_acc_args(hid_t loc_id, const H5P_libclass_t *libclass, hbool_t is_collective, hid_t *acspl_id,
+H5VL_setup_acc_args(hid_t loc_id, const H5P_libclass_t *libclass, bool is_collective, hid_t *acspl_id,
                     H5VL_object_t **vol_obj, H5VL_loc_params_t *loc_params)
 {
     herr_t ret_value = SUCCEED; /* Return value */
@@ -2631,7 +2631,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5VL_setup_name_args(hid_t loc_id, const char *name, const H5P_libclass_t *libclass, hbool_t is_collective,
+H5VL_setup_name_args(hid_t loc_id, const char *name, const H5P_libclass_t *libclass, bool is_collective,
                      hid_t acspl_id, H5VL_object_t **vol_obj, H5VL_loc_params_t *loc_params)
 {
     herr_t ret_value = SUCCEED; /* Return value */
@@ -2677,7 +2677,7 @@ done:
  */
 herr_t
 H5VL_setup_idx_args(hid_t loc_id, const char *name, H5_index_t idx_type, H5_iter_order_t order, hsize_t n,
-                    const H5P_libclass_t *libclass, hbool_t is_collective, hid_t acspl_id,
+                    const H5P_libclass_t *libclass, bool is_collective, hid_t acspl_id,
                     H5VL_object_t **vol_obj, H5VL_loc_params_t *loc_params)
 {
     herr_t ret_value = SUCCEED; /* Return value */

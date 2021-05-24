@@ -20,11 +20,11 @@
 
 static const char *driver_name_g = NULL; /* The driver to open the file with. */
 const char *       outfname_g    = NULL;
-static hbool_t     doxml_g       = false;
-static hbool_t     useschema_g   = true;
+static bool     doxml_g       = false;
+static bool     useschema_g   = true;
 static const char *xml_dtd_uri_g = NULL;
 
-static hbool_t            use_custom_vol_g = false;
+static bool            use_custom_vol_g = false;
 static h5tools_vol_info_t vol_info_g;
 
 #ifdef H5_HAVE_ROS3_VFD

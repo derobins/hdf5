@@ -131,13 +131,13 @@ H5G_rootof(H5F_t *f)
  *-------------------------------------------------------------------------
  */
 herr_t
-H5G_mkroot(H5F_t *f, hbool_t create_root)
+H5G_mkroot(H5F_t *f, bool create_root)
 {
     H5G_loc_t        root_loc;               /* Root location information */
     H5G_obj_create_t gcrt_info;              /* Root group object creation info */
     htri_t           stab_exists  = -1;      /* Whether the symbol table exists */
-    hbool_t          sblock_dirty = false;   /* Whether superblock was dirtied */
-    hbool_t          path_init    = false;   /* Whether path was initialized */
+    bool          sblock_dirty = false;   /* Whether superblock was dirtied */
+    bool          path_init    = false;   /* Whether path was initialized */
     herr_t           ret_value    = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)

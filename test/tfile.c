@@ -2488,7 +2488,7 @@ test_file_double_dataset_open(void)
 **
 *****************************************************************/
 static void
-test_file_double_file_dataset_open(hbool_t new_format)
+test_file_double_file_dataset_open(bool new_format)
 {
     hid_t   fapl = -1;                        /* File access property list */
     hid_t   dcpl = -1;                        /* Dataset creation property list */
@@ -3219,7 +3219,7 @@ test_userblock_alignment_helper1(hid_t fcpl, hid_t fapl)
 **
 *****************************************************************/
 static int
-test_userblock_alignment_helper2(hid_t fapl, hbool_t open_rw)
+test_userblock_alignment_helper2(hid_t fapl, bool open_rw)
 {
     hid_t  fid;                              /* File ID */
     int    curr_num_errs = GetTestNumErrs(); /* Retrieve the current # of errors */
@@ -3932,7 +3932,7 @@ test_filespace_info(const char *env_h5_drvr)
     hid_t                 fapl, new_fapl;         /* File access property lists */
     hid_t                 fcpl, fcpl1, fcpl2;     /* File creation property lists */
     H5F_fspace_strategy_t strategy;               /* File space strategy */
-    hbool_t               persist;                /* Persist free-space or not */
+    bool               persist;                /* Persist free-space or not */
     hsize_t               threshold;              /* Free-space section threshold */
     unsigned              new_format;             /* New or old format */
     H5F_fspace_strategy_t fs_strategy;            /* File space strategy--iteration variable */
@@ -3940,14 +3940,14 @@ test_filespace_info(const char *env_h5_drvr)
     hsize_t               fs_threshold;           /* Free-space section threshold--iteration variable */
     hsize_t               fsp_size;               /* File space page size */
     char                  filename[FILENAME_LEN]; /* Filename to use */
-    hbool_t               contig_addr_vfd;        /* Whether VFD used has a contigous address space */
+    bool               contig_addr_vfd;        /* Whether VFD used has a contigous address space */
     herr_t                ret;                    /* Return value    */
 
     /* Output message about test being performed */
     MESSAGE(5, ("Testing file creation public routines: H5Pget/set_file_space_strategy & "
                 "H5Pget/set_file_space_page_size\n"));
 
-    contig_addr_vfd = (hbool_t)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0);
+    contig_addr_vfd = (bool)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0);
 
     fapl = h5_fileaccess();
     h5_fixname(FILESPACE_NAME[0], fapl, filename, sizeof filename);
@@ -4164,7 +4164,7 @@ test_filespace_info(const char *env_h5_drvr)
                     CHECK(fcpl, FAIL, "H5Pcreate");
 
                     /* Set file space information */
-                    ret = H5Pset_file_space_strategy(fcpl, fs_strategy, (hbool_t)fs_persist, fs_threshold);
+                    ret = H5Pset_file_space_strategy(fcpl, fs_strategy, (bool)fs_persist, fs_threshold);
                     CHECK(ret, FAIL, "H5Pset_file_space_strategy");
 
                     ret = H5Pset_file_space_page_size(fcpl, FSP_SIZE512);
@@ -4178,7 +4178,7 @@ test_filespace_info(const char *env_h5_drvr)
                     VERIFY(strategy, fs_strategy, "H5Pget_file_space_strategy");
 
                     if (fs_strategy < H5F_FSPACE_STRATEGY_AGGR) {
-                        VERIFY(persist, (hbool_t)fs_persist, "H5Pget_file_space_strategy");
+                        VERIFY(persist, (bool)fs_persist, "H5Pget_file_space_strategy");
                         VERIFY(threshold, fs_threshold, "H5Pget_file_space_strategy");
                     }
                     else {
@@ -4282,13 +4282,13 @@ test_filespace_info(const char *env_h5_drvr)
 **
 *****************************************************************/
 static int
-set_multi_split(hid_t fapl, hsize_t pagesize, hbool_t split)
+set_multi_split(hid_t fapl, hsize_t pagesize, bool split)
 {
     H5FD_mem_t memb_map[H5FD_MEM_NTYPES];
     hid_t      memb_fapl_arr[H5FD_MEM_NTYPES];
     char *     memb_name[H5FD_MEM_NTYPES];
     haddr_t    memb_addr[H5FD_MEM_NTYPES];
-    hbool_t    relax;
+    bool    relax;
     H5FD_mem_t mt;
 
     HDassert(split);
@@ -4351,7 +4351,7 @@ test_file_freespace(const char *env_h5_drvr)
     char           filename[FILENAME_LEN]; /* Filename to use */
     char           name[32];               /* Dataset name */
     unsigned       new_format;             /* To use old or new format */
-    hbool_t        split_vfd, multi_vfd;   /* Indicate multi/split driver */
+    bool        split_vfd, multi_vfd;   /* Indicate multi/split driver */
     hsize_t        expected_freespace;     /* Freespace expected */
     hsize_t        expected_fs_del;        /* Freespace expected after delete */
     herr_t         ret;                    /* Return value */
@@ -4502,7 +4502,7 @@ test_file_freespace(const char *env_h5_drvr)
 **
 *****************************************************************/
 static void
-test_sects_freespace(const char *env_h5_drvr, hbool_t new_format)
+test_sects_freespace(const char *env_h5_drvr, bool new_format)
 {
     char            filename[FILENAME_LEN]; /* Filename to use */
     hid_t           file;                   /* File ID */
@@ -4526,7 +4526,7 @@ test_sects_freespace(const char *env_h5_drvr, hbool_t new_format)
     hsize_t         dims[1];                /* Dimension sizes */
     unsigned        u;                      /* Local index variable */
     H5FD_mem_t      type;
-    hbool_t         split_vfd = false, multi_vfd = false;
+    bool         split_vfd = false, multi_vfd = false;
     herr_t          ret; /* Return value */
 
     /* Output message about test being performed */
@@ -4764,7 +4764,7 @@ test_filespace_compatible(void)
     ssize_t               nread;                        /* Number of bytes read in */
     unsigned              i, j;                         /* Local index variable */
     hssize_t              free_space;                   /* Amount of free-space in the file */
-    hbool_t               persist;                      /* Persist free-space or not */
+    bool               persist;                      /* Persist free-space or not */
     hsize_t               threshold;                    /* Free-space section threshold */
     H5F_fspace_strategy_t strategy;                     /* File space handling strategy */
     herr_t                ret;                          /* Return value */
@@ -4889,7 +4889,7 @@ test_filespace_1_10_0_compatible(void)
     hid_t                 fid = -1;  /* File id */
     hid_t                 did = -1;  /* Dataset id */
     hid_t                 fcpl;      /* File creation property list */
-    hbool_t               persist;   /* Persist free-space or not */
+    bool               persist;   /* Persist free-space or not */
     hsize_t               threshold; /* Free-space section threshold */
     H5F_fspace_strategy_t strategy;  /* File space handling strategy */
     int                   wbuf[24];  /* Buffer for dataset data */
@@ -5204,7 +5204,7 @@ test_filespace_round_compatible(void)
     hid_t                 fcpl = -1;  /* File creation property list ID */
     unsigned              j;          /* Local index variable */
     H5F_fspace_strategy_t strategy;   /* File space strategy */
-    hbool_t               persist;    /* Persist free-space or not */
+    bool               persist;    /* Persist free-space or not */
     hsize_t               threshold;  /* Free-space section threshold */
     hssize_t              free_space; /* Amount of free space in the file */
     int                   status;     /* Status from copying the existing file */
@@ -5813,7 +5813,7 @@ test_libver_bounds_super_create(hid_t fapl, hid_t fcpl, htri_t is_swmr, htri_t n
     hid_t        fid = H5I_INVALID_HID; /* File ID */
     H5F_t *      f   = NULL;            /* Internal file pointer */
     H5F_libver_t low, high;             /* Low and high bounds */
-    hbool_t      ok;                    /* The result is ok or not */
+    bool      ok;                    /* The result is ok or not */
     herr_t       ret;                   /* The return value */
 
     /* Try to create the file */
@@ -7623,7 +7623,7 @@ test_min_dset_ohdr(void)
     char       filename[FILENAME_LEN] = "";
     hid_t      file_id                = -1;
     hid_t      file2_id               = -1;
-    hbool_t    minimize;
+    bool    minimize;
     herr_t     ret;
 
     MESSAGE(5, ("Testing dataset object header minimization\n"));

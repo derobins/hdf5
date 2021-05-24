@@ -187,7 +187,7 @@ main(int argc, char *argv[])
     hid_t   fapl;            /*file access property list     */
     hid_t   file;
     hsize_t hdsize;                   /*destination logical memb size */
-    hbool_t family_to_single = false; /*change family to single file driver? */
+    bool family_to_single = false; /*change family to single file driver? */
 
     /*
      * Get the program name from argv[0]. Use only the last component.

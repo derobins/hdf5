@@ -145,8 +145,8 @@ typedef struct H5B_ins_ud_t {
 /* Local Prototypes */
 /********************/
 static H5B_ins_t H5B__insert_helper(H5F_t *f, H5B_ins_ud_t *bt_ud, const H5B_class_t *type, uint8_t *lt_key,
-                                    hbool_t *lt_key_changed, uint8_t *md_key, void *udata, uint8_t *rt_key,
-                                    hbool_t *rt_key_changed, H5B_ins_ud_t *split_bt_ud /*out*/);
+                                    bool *lt_key_changed, uint8_t *md_key, void *udata, uint8_t *rt_key,
+                                    bool *rt_key_changed, H5B_ins_ud_t *split_bt_ud /*out*/);
 static herr_t H5B__insert_child(H5B_t *bt, unsigned *bt_flags, unsigned idx, haddr_t child, H5B_ins_t anchor,
                                 const void *md_key);
 static herr_t H5B__split(H5F_t *f, H5B_ins_ud_t *bt_ud, unsigned idx, void *udata,
@@ -158,7 +158,7 @@ static H5B_t *H5B__copy(const H5B_t *old_bt);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the haddr_t sequence information */
 H5FL_SEQ_DEFINE(haddr_t);
@@ -287,7 +287,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5B_find(H5F_t *f, const H5B_class_t *type, haddr_t addr, hbool_t *found, void *udata)
+H5B_find(H5F_t *f, const H5B_class_t *type, haddr_t addr, bool *found, void *udata)
 {
     H5B_t *        bt = NULL;
     H5UC_t *       rc_shared;           /* Ref-counted shared info */
@@ -545,7 +545,7 @@ H5B_insert(H5F_t *f, const H5B_class_t *type, haddr_t addr, void *udata)
     uint8_t *md_key = (uint8_t *)_md_key;
     uint8_t *rt_key = (uint8_t *)_rt_key;
 
-    hbool_t        lt_key_changed = false, rt_key_changed = false;
+    bool        lt_key_changed = false, rt_key_changed = false;
     haddr_t        old_root_addr = HADDR_UNDEF;
     unsigned       level;
     H5B_ins_ud_t   bt_ud       = H5B_INS_UD_T_NULL; /* (Old) root node */
@@ -776,8 +776,8 @@ H5B__insert_child(H5B_t *bt, unsigned *bt_flags, unsigned idx, haddr_t child, H5
  */
 static H5B_ins_t
 H5B__insert_helper(H5F_t *f, H5B_ins_ud_t *bt_ud, const H5B_class_t *type, uint8_t *lt_key,
-                   hbool_t *lt_key_changed, uint8_t *md_key, void *udata, uint8_t *rt_key,
-                   hbool_t *rt_key_changed, H5B_ins_ud_t *split_bt_ud /*out*/)
+                   bool *lt_key_changed, uint8_t *md_key, void *udata, uint8_t *rt_key,
+                   bool *rt_key_changed, H5B_ins_ud_t *split_bt_ud /*out*/)
 {
     H5B_t *        bt;                                  /* Convenience pointer to B-tree */
     H5UC_t *       rc_shared;                           /* Ref-counted shared info */
@@ -1226,8 +1226,8 @@ H5B_iterate(H5F_t *f, const H5B_class_t *type, haddr_t addr, H5B_operator_t op, 
  */
 static H5B_ins_t
 H5B__remove_helper(H5F_t *f, haddr_t addr, const H5B_class_t *type, int level, uint8_t *lt_key /*out*/,
-                   hbool_t *lt_key_changed /*out*/, void *udata, uint8_t *rt_key /*out*/,
-                   hbool_t *rt_key_changed /*out*/)
+                   bool *lt_key_changed /*out*/, void *udata, uint8_t *rt_key /*out*/,
+                   bool *rt_key_changed /*out*/)
 {
     H5B_t *        bt = NULL, *sibling = NULL;
     unsigned       bt_flags = H5AC__NO_FLAGS_SET;
@@ -1560,8 +1560,8 @@ H5B_remove(H5F_t *f, const H5B_class_t *type, haddr_t addr, void *udata)
     uint64_t _lt_key[128], _rt_key[128];
     uint8_t *lt_key         = (uint8_t *)_lt_key; /*left key*/
     uint8_t *rt_key         = (uint8_t *)_rt_key; /*right key*/
-    hbool_t  lt_key_changed = false;              /*left key changed?*/
-    hbool_t  rt_key_changed = false;              /*right key changed?*/
+    bool  lt_key_changed = false;              /*left key changed?*/
+    bool  rt_key_changed = false;              /*right key changed?*/
     herr_t   ret_value      = SUCCEED;            /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1636,7 +1636,7 @@ H5B_delete(H5F_t *f, const H5B_class_t *type, haddr_t addr, void *udata)
 
     } /* end if */
     else {
-        hbool_t lt_key_changed, rt_key_changed; /* Whether key changed (unused here, just for callback) */
+        bool lt_key_changed, rt_key_changed; /* Whether key changed (unused here, just for callback) */
 
         /* Check for removal callback */
         if (type->remove) {

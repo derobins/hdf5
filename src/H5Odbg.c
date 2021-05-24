@@ -407,7 +407,7 @@ H5O__debug_real(H5F_t *f, H5O_t *oh, haddr_t addr, FILE *stream, int indent, int
                   "Dirty:", oh->mesg[i].dirty ? "TRUE" : "FALSE");
         HDfprintf(stream, "%*s%-*s ", indent + 3, "", MAX(0, fwidth - 3), "Message flags:");
         if (oh->mesg[i].flags) {
-            hbool_t flag_printed = false;
+            bool flag_printed = false;
 
             /* Sanity check that all flags in format are covered below */
             HDcompile_assert(H5O_MSG_FLAG_BITS ==

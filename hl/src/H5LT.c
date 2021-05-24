@@ -2141,7 +2141,7 @@ out:
  *-------------------------------------------------------------------------
  */
 static char *
-realloc_and_append(hbool_t _no_user_buf, size_t *len, char *buf, const char *str_to_add)
+realloc_and_append(bool _no_user_buf, size_t *len, char *buf, const char *str_to_add)
 {
     size_t size_str_to_add, size_str;
 
@@ -2204,7 +2204,7 @@ out:
  *-------------------------------------------------------------------------
  */
 static char *
-indentation(size_t x, char *str, hbool_t no_u_buf, size_t *s_len)
+indentation(size_t x, char *str, bool no_u_buf, size_t *s_len)
 {
     char tmp_str[TMP_LEN];
 
@@ -2237,7 +2237,7 @@ out:
  *
  *-----------------------------------------------------------------------*/
 static char *
-print_enum(hid_t type, char *str, size_t *str_len, hbool_t no_ubuf, size_t indt)
+print_enum(hid_t type, char *str, size_t *str_len, bool no_ubuf, size_t indt)
 {
     char **        name  = NULL; /*member names                   */
     unsigned char *value = NULL; /*value array                    */
@@ -2421,7 +2421,7 @@ out:
  *-------------------------------------------------------------------------
  */
 char *
-H5LT_dtype_to_text(hid_t dtype, char *dt_str, H5LT_lang_t lang, size_t *slen, hbool_t no_user_buf)
+H5LT_dtype_to_text(hid_t dtype, char *dt_str, H5LT_lang_t lang, size_t *slen, bool no_user_buf)
 {
     H5T_class_t tcls;
     char        tmp_str[TMP_LEN];
@@ -3574,7 +3574,7 @@ out:
 }
 
 htri_t
-H5LTpath_valid(hid_t loc_id, const char *path, hbool_t check_object_valid)
+H5LTpath_valid(hid_t loc_id, const char *path, bool check_object_valid)
 {
     char *     tmp_path = NULL; /* Temporary copy of the path */
     char *     curr_name;       /* Pointer to current component of path name */

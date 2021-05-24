@@ -54,7 +54,7 @@ typedef struct {
 #define DSET_NAME                "image"
 typedef struct searched_err_t {
     char    message[256];
-    hbool_t found;
+    bool found;
 } searched_err_t;
 
 /* Call back function for test_corrupted_attnamelen */
@@ -120,7 +120,7 @@ liter_cb(hid_t H5_ATTR_UNUSED group, const char *name, const H5L_info2_t H5_ATTR
 **
 ****************************************************************/
 static void
-test_iter_group(hid_t fapl, hbool_t new_format)
+test_iter_group(hid_t fapl, bool new_format)
 {
     hid_t      file;                  /* File ID */
     hid_t      dataset;               /* Dataset ID */
@@ -409,7 +409,7 @@ aiter_cb(hid_t H5_ATTR_UNUSED group, const char *name, const H5A_info_t H5_ATTR_
 **
 ****************************************************************/
 static void
-test_iter_attr(hid_t fapl, hbool_t new_format)
+test_iter_attr(hid_t fapl, bool new_format)
 {
     hid_t     file;          /* File ID */
     hid_t     dataset;       /* Common Dataset ID */

@@ -23,7 +23,7 @@
 #define SRC_DSET  "src_dset"
 
 static int
-test_encode_decode(hid_t orig_pl, H5F_libver_t low, H5F_libver_t high, hbool_t support_virtual)
+test_encode_decode(hid_t orig_pl, H5F_libver_t low, H5F_libver_t high, bool support_virtual)
 {
     hid_t  pl        = (-1); /* Decoded property list */
     hid_t  fapl      = -1;   /* File access property list */

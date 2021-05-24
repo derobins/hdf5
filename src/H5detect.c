@@ -100,7 +100,7 @@ typedef struct detected_t {
     unsigned int  precision;        /* meaningful bits                  */
     unsigned int  offset;           /* bit offset to meaningful bits    */
     int           perm[32];         /* for detection of byte order      */
-    hbool_t       is_vax;           /* for vax (float & double) only    */
+    bool       is_vax;           /* for vax (float & double) only    */
     unsigned int  sign;             /* location of sign bit             */
     unsigned int  mpos, msize, imp; /* information about mantissa       */
     unsigned int  epos, esize;      /* information about exponent       */

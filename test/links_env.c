@@ -31,7 +31,7 @@ const char *FILENAME[] = {"extlinks_env0",        /* 0: main file */
                           TMPDIR "extlinks_env1", /* 2 */
                           NULL};
 
-static int external_link_env(hid_t fapl, hbool_t new_format);
+static int external_link_env(hid_t fapl, bool new_format);
 
 /*-------------------------------------------------------------------------
  * Function:    external_link_env (moved from links.c)
@@ -54,7 +54,7 @@ static int external_link_env(hid_t fapl, hbool_t new_format);
  *-------------------------------------------------------------------------
  */
 static int
-external_link_env(hid_t fapl, hbool_t new_format)
+external_link_env(hid_t fapl, bool new_format)
 {
     hid_t       fid    = (-1); /* File ID */
     hid_t       gid    = (-1); /* Group IDs */

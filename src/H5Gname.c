@@ -469,7 +469,7 @@ H5G_name_copy(H5G_name_t *dst, const H5G_name_t *src, H5_copy_depth_t depth)
  *-------------------------------------------------------------------------
  */
 ssize_t
-H5G_get_name(const H5G_loc_t *loc, char *name /*out*/, size_t size, hbool_t *cached)
+H5G_get_name(const H5G_loc_t *loc, char *name /*out*/, size_t size, bool *cached)
 {
     ssize_t len       = 0;  /* Length of object's name */
     ssize_t ret_value = -1; /* Return value */
@@ -685,7 +685,7 @@ H5G__name_replace_cb(void *obj_ptr, hid_t obj_id, void *key)
     H5O_loc_t *        oloc;         /* Object location for object that the ID refers to */
     H5G_name_t *       obj_path;     /* Pointer to group hier. path for obj */
     H5F_t *            top_obj_file; /* Top file in object's mounted file hier. */
-    hbool_t obj_in_child = false;    /* Flag to indicate that the object is in the child mount hier. */
+    bool obj_in_child = false;    /* Flag to indicate that the object is in the child mount hier. */
     herr_t  ret_value    = SUCCEED;  /* Return value */
 
     FUNC_ENTER_STATIC
@@ -949,9 +949,9 @@ H5G_name_replace(const H5O_link_t *lnk, H5G_names_op_t op, H5F_t *src_file, H5RS
 
     /* Check if the object we are manipulating has a path */
     if (src_full_path_r) {
-        hbool_t search_group    = false; /* Flag to indicate that groups are to be searched */
-        hbool_t search_dataset  = false; /* Flag to indicate that datasets are to be searched */
-        hbool_t search_datatype = false; /* Flag to indicate that datatypes are to be searched */
+        bool search_group    = false; /* Flag to indicate that groups are to be searched */
+        bool search_dataset  = false; /* Flag to indicate that datasets are to be searched */
+        bool search_datatype = false; /* Flag to indicate that datatypes are to be searched */
 
         /* Check for particular link to operate on */
         if (lnk) {
@@ -1081,7 +1081,7 @@ H5G__get_name_by_addr_cb(hid_t gid, const char *path, const H5L_info2_t *linfo, 
     H5G_loc_t        obj_loc;                           /* Location of object */
     H5G_name_t       obj_path;                          /* Object's group hier. path */
     H5O_loc_t        obj_oloc;                          /* Object's object location */
-    hbool_t          obj_found = false;                 /* Object at 'path' found */
+    bool          obj_found = false;                 /* Object at 'path' found */
     herr_t           ret_value = H5_ITER_CONT;          /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1157,7 +1157,7 @@ H5G_get_name_by_addr(H5F_t *f, const H5O_loc_t *loc, char *name, size_t size)
 {
     H5G_gnba_iter_t udata;             /* User data for iteration  */
     H5G_loc_t       root_loc;          /* Root group's location    */
-    hbool_t         found_obj = false; /* If we found the object   */
+    bool         found_obj = false; /* If we found the object   */
     herr_t          status;            /* Status from iteration    */
     ssize_t         ret_value = -1;    /* Return value             */
 

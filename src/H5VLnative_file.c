@@ -400,7 +400,7 @@ H5VL__native_file_specific(void *obj, H5VL_file_specific_t specific_type, hid_t 
         /* Check if two files are the same */
         case H5VL_FILE_IS_EQUAL: {
             H5F_t *  file2    = (H5F_t *)HDva_arg(arguments, void *);
-            hbool_t *is_equal = HDva_arg(arguments, hbool_t *);
+            bool *is_equal = HDva_arg(arguments, bool *);
 
             if (!obj || !file2)
                 *is_equal = false;
@@ -633,8 +633,8 @@ H5VL__native_file_optional(void *obj, H5VL_file_optional_t optional_type, hid_t 
 
         /* H5Fget_mdc_logging_status */
         case H5VL_NATIVE_FILE_GET_MDC_LOGGING_STATUS: {
-            hbool_t *is_enabled           = HDva_arg(arguments, hbool_t *);
-            hbool_t *is_currently_logging = HDva_arg(arguments, hbool_t *);
+            bool *is_enabled           = HDva_arg(arguments, bool *);
+            bool *is_currently_logging = HDva_arg(arguments, bool *);
 
             /* Call mdc logging function */
             if (H5C_get_logging_status(f->shared->cache, is_enabled, is_currently_logging) < 0)
@@ -757,7 +757,7 @@ H5VL__native_file_optional(void *obj, H5VL_file_optional_t optional_type, hid_t 
 
         /* H5Fget_dset_no_attrs_hint */
         case H5VL_NATIVE_FILE_GET_MIN_DSET_OHDR_FLAG: {
-            hbool_t *minimize = HDva_arg(arguments, hbool_t *);
+            bool *minimize = HDva_arg(arguments, bool *);
             *minimize         = H5F_GET_MIN_DSET_OHDR(f);
             break;
         }
@@ -765,7 +765,7 @@ H5VL__native_file_optional(void *obj, H5VL_file_optional_t optional_type, hid_t 
         /* H5Fset_dset_no_attrs_hint */
         case H5VL_NATIVE_FILE_SET_MIN_DSET_OHDR_FLAG: {
             int minimize = HDva_arg(arguments, int);
-            if (H5F_set_min_dset_ohdr(f, (hbool_t)minimize) < 0)
+            if (H5F_set_min_dset_ohdr(f, (bool)minimize) < 0)
                 HGOTO_ERROR(H5E_FILE, H5E_CANTSET, FAIL,
                             "cannot set file's dataset object header minimization flag")
             break;

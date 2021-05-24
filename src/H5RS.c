@@ -50,7 +50,7 @@ struct H5RS_str_t {
     char *   end;     /* Pointer to terminating NUL character at the end of the string */
     size_t   len;     /* Current length of the string */
     size_t   max;     /* Size of allocated buffer */
-    hbool_t  wrapped; /* Indicates that the string to be ref-counted is not copied */
+    bool  wrapped; /* Indicates that the string to be ref-counted is not copied */
     unsigned n;       /* Reference count of number of pointers sharing string */
 };
 
@@ -70,7 +70,7 @@ static herr_t H5RS__resize_for_append(H5RS_str_t *rs, size_t len);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */

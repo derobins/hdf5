@@ -31,9 +31,9 @@ static struct long_options l_opts[] = {
 /* Command line parameter settings */
 typedef struct mkgrp_opt_t {
     char *  fname;   /* File name to operate on */
-    hbool_t latest;  /* Whether file should use latest format versions */
-    hbool_t verbose; /* Whether output should be verbose */
-    hbool_t parents; /* Whether to create intermediate groups */
+    bool latest;  /* Whether file should use latest format versions */
+    bool verbose; /* Whether output should be verbose */
+    bool parents; /* Whether to create intermediate groups */
     size_t  ngroups; /* Number of groups to create */
     char ** groups;  /* Pointer to array of group names */
     hid_t   fapl_id; /* fapl to use when opening the file */
@@ -126,7 +126,7 @@ parse_command_line(int argc, const char *argv[], mkgrp_opt_t *options)
 {
     int                opt;        /* Option from command line */
     size_t             curr_group; /* Current group name to copy */
-    hbool_t            custom_fapl = false;
+    bool            custom_fapl = false;
     h5tools_vol_info_t vol_info;
     hid_t              tmp_fapl_id = H5I_INVALID_HID;
 

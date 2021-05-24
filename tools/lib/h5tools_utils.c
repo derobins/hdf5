@@ -56,7 +56,7 @@ static void init_table(hid_t fid, table_t **tbl);
 #ifdef H5DUMP_DEBUG
 static void dump_table(hid_t fid, char *tablename, table_t *table);
 #endif /* H5DUMP_DEBUG */
-static void add_obj(table_t *table, const H5O_token_t *obj_token, const char *objname, hbool_t recorded);
+static void add_obj(table_t *table, const H5O_token_t *obj_token, const char *objname, bool recorded);
 
 /*-------------------------------------------------------------------------
  * Function: parallel_print
@@ -816,7 +816,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static void
-add_obj(table_t *table, const H5O_token_t *obj_token, const char *objname, hbool_t record)
+add_obj(table_t *table, const H5O_token_t *obj_token, const char *objname, bool record)
 {
     size_t u;
 
@@ -877,7 +877,7 @@ tmpfile(void)
  *-------------------------------------------------------------------------*/
 int
 H5tools_get_symlink_info(hid_t file_id, const char *linkpath, h5tool_link_info_t *link_info,
-                         hbool_t get_obj_type)
+                         bool get_obj_type)
 {
     htri_t      l_ret;
     H5O_info2_t trg_oinfo;

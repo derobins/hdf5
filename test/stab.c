@@ -92,7 +92,7 @@ const char *FILENAME[] = {"stab", NULL};
  *-------------------------------------------------------------------------
  */
 static int
-test_misc(hid_t fcpl, hid_t fapl, hbool_t new_format)
+test_misc(hid_t fcpl, hid_t fapl, bool new_format)
 {
     hid_t fid = (-1); /* File ID */
     hid_t g1 = (-1), g2 = (-1), g3 = (-1);
@@ -196,7 +196,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_long(hid_t fcpl, hid_t fapl, hbool_t new_format)
+test_long(hid_t fcpl, hid_t fapl, bool new_format)
 {
     hid_t  fid = (-1); /* File ID */
     hid_t  g1 = (-1), g2 = (-1);
@@ -282,7 +282,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_large(hid_t fcpl, hid_t fapl, hbool_t new_format)
+test_large(hid_t fcpl, hid_t fapl, bool new_format)
 {
     hid_t fid = (-1);             /* File ID */
     hid_t cwg = (-1), dir = (-1); /* Group IDs */
@@ -1416,7 +1416,7 @@ main(void)
     hid_t       fcpl, fcpl2;     /* File creation property list ID */
     unsigned    new_format;      /* Whether to use the new format or not */
     const char *env_h5_drvr;     /* File Driver value from environment */
-    hbool_t     contig_addr_vfd; /* Whether VFD used has a contigous address space */
+    bool     contig_addr_vfd; /* Whether VFD used has a contigous address space */
     int         nerrors = 0;
 
     /* Get the VFD to use */
@@ -1425,7 +1425,7 @@ main(void)
         env_h5_drvr = "nomatch";
 
     /* VFD that does not support contigous address space */
-    contig_addr_vfd = (hbool_t)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0);
+    contig_addr_vfd = (bool)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0);
 
     /* Reset library */
     h5_reset();

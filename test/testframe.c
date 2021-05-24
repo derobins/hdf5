@@ -222,7 +222,7 @@ TestInfo(const char *ProgName)
 void
 TestParseCmdLine(int argc, char *argv[])
 {
-    hbool_t skipped_all = false;
+    bool skipped_all = false;
     int     ret_code;
 
     while (argv++, --argc > 0) {

@@ -63,14 +63,14 @@
 /* ===================== */
 
 /* Tests */
-static unsigned test_objs_cork(hbool_t swmr, hbool_t new_format);
-static unsigned test_dset_cork(hbool_t swmr, hbool_t new_format);
+static unsigned test_objs_cork(bool swmr, bool new_format);
+static unsigned test_dset_cork(bool swmr, bool new_format);
 static unsigned verify_old_dset_cork(void);
-static unsigned verify_obj_dset_cork(hbool_t swmr);
-static unsigned verify_dset_cork(hbool_t swmr, hbool_t new_format);
-static unsigned verify_group_cork(hbool_t swmr);
-static unsigned verify_named_cork(hbool_t swmr);
-static unsigned verify_multiple_cork(hbool_t swmr);
+static unsigned verify_obj_dset_cork(bool swmr);
+static unsigned verify_dset_cork(bool swmr, bool new_format);
+static unsigned verify_group_cork(bool swmr);
+static unsigned verify_named_cork(bool swmr);
+static unsigned verify_multiple_cork(bool swmr);
 
 /*-------------------------------------------------------------------------
  * Function:    verify_old_dset_cork
@@ -292,7 +292,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static unsigned
-verify_obj_dset_cork(hbool_t swmr)
+verify_obj_dset_cork(bool swmr)
 {
     /* Variable Declarations */
     hid_t       fid  = -1;            /* File ID */
@@ -497,7 +497,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static unsigned
-verify_dset_cork(hbool_t swmr, hbool_t new_format)
+verify_dset_cork(bool swmr, bool new_format)
 {
     /* Variable Declarations */
     hid_t       fid  = -1;                            /* File ID */
@@ -755,7 +755,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static unsigned
-verify_group_cork(hbool_t swmr)
+verify_group_cork(bool swmr)
 {
     /* Variable Declarations */
     hid_t       fid  = -1;                      /* File ID */
@@ -924,7 +924,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static unsigned
-verify_named_cork(hbool_t swmr)
+verify_named_cork(bool swmr)
 {
     /* Variable Declarations */
     hid_t       fid  = -1;                      /* File ID */
@@ -1201,7 +1201,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static unsigned
-verify_multiple_cork(hbool_t swmr)
+verify_multiple_cork(bool swmr)
 {
     /* Variable Declarations */
     hid_t       fid1 = -1, fid2 = -1;   /* File ID */
@@ -1216,7 +1216,7 @@ verify_multiple_cork(hbool_t swmr)
     H5O_info2_t oinfo1, oinfo2, oinfo3; /* Object metadata information */
     hsize_t     dim[1] = {5};           /* Dimension sizes */
     unsigned    flags;                  /* File access flags */
-    hbool_t     corked;                 /* Cork status */
+    bool     corked;                 /* Cork status */
     herr_t      ret;                    /* Return value */
 
     /* Testing Macro */
@@ -1576,7 +1576,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static unsigned
-test_objs_cork(hbool_t swmr, hbool_t new_format)
+test_objs_cork(bool swmr, bool new_format)
 {
     hid_t    fid  = H5I_INVALID_HID; /* HDF5 File ID */
     hid_t    fapl = H5I_INVALID_HID; /* File access property list */
@@ -1586,7 +1586,7 @@ test_objs_cork(hbool_t swmr, hbool_t new_format)
     hid_t    sid  = H5I_INVALID_HID; /* Dataspace ID */
     hid_t    aid  = H5I_INVALID_HID; /* Attribute ID */
     hsize_t  dims[RANK];             /* Dataset dimension sizes */
-    hbool_t  corked;                 /* Cork status of an object */
+    bool  corked;                 /* Cork status of an object */
     unsigned flags;                  /* File access flags */
     herr_t   ret;                    /* Return value */
 
@@ -1878,7 +1878,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static unsigned
-test_dset_cork(hbool_t swmr, hbool_t new_format)
+test_dset_cork(bool swmr, bool new_format)
 {
     hid_t    fid;                                          /* File ID */
     hid_t    fapl;                                         /* File access property list */
@@ -1895,7 +1895,7 @@ test_dset_cork(hbool_t swmr, hbool_t new_format)
     int **   wbuf      = NULL; /* Data buffer for writes (pointers to fake 2D array) */
     int *    wbuf_data = NULL; /* Data buffer for writes (real data) */
     int *    rbuf_data = NULL; /* Data buffer for reads (real data) */
-    hbool_t  corked;           /* Cork status of an object */
+    bool  corked;           /* Cork status of an object */
     unsigned flags;            /* File access flags */
 
     /* Testing Macro */

@@ -350,12 +350,12 @@ static herr_t H5T__set_size(H5T_t *dt, size_t size);
 static herr_t H5T__close_cb(H5T_t *dt, void **request);
 static H5T_path_t *H5T__path_find_real(const H5T_t *src, const H5T_t *dst, const char *name,
                                        H5T_conv_func_t *conv);
-static hbool_t     H5T__detect_vlen_ref(const H5T_t *dt);
+static bool     H5T__detect_vlen_ref(const H5T_t *dt);
 static H5T_t *     H5T__initiate_copy(const H5T_t *old_dt);
 static H5T_t *     H5T__copy_transient(H5T_t *old_dt);
 static H5T_t *     H5T__copy_all(H5T_t *old_dt);
 static herr_t      H5T__complete_copy(H5T_t *new_dt, const H5T_t *old_dt, H5T_shared_t *reopened_fo,
-                                      hbool_t set_memory_type, H5T_copy_func_t copyfn);
+                                      bool set_memory_type, H5T_copy_func_t copyfn);
 
 /*****************************/
 /* Library Private Variables */
@@ -369,7 +369,7 @@ H5T_order_t H5T_native_order_g = H5T_ORDER_ERROR;
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*
  * Predefined data types. These are initialized at runtime in H5Tinit.c and
@@ -607,7 +607,7 @@ static const H5I_class_t H5I_DATATYPE_CLS[1] = {{
 }};
 
 /* Flag indicating "top" of interface has been initialized */
-static hbool_t H5T_top_package_initialize_s = false;
+static bool H5T_top_package_initialize_s = false;
 
 /*-------------------------------------------------------------------------
  * Function:    H5T_init
@@ -797,7 +797,7 @@ H5T__init_package(void)
     H5T_t * ref       = NULL; /* Datatype structure for opaque references */
     hsize_t dim[1]    = {1};  /* Dimension info for array datatype */
     herr_t  status;
-    hbool_t copied_dtype =
+    bool copied_dtype =
         true; /* Flag to indicate whether datatype was copied or allocated (for error cleanup) */
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -878,7 +878,7 @@ H5T__init_package(void)
     H5T_INIT_TYPE(OFFSET, H5T_NATIVE_HERR_g, COPY, native_int, SET, sizeof(herr_t))
 
     /* hbool_t */
-    H5T_INIT_TYPE(OFFSET, H5T_NATIVE_HBOOL_g, COPY, native_uint, SET, sizeof(hbool_t))
+    H5T_INIT_TYPE(OFFSET, H5T_NATIVE_HBOOL_g, COPY, native_uint, SET, sizeof(bool))
 
     /*------------------------------------------------------------
      * IEEE Types
@@ -2247,7 +2247,7 @@ done:
  *-------------------------------------------------------------------------
  */
 htri_t
-H5T_detect_class(const H5T_t *dt, H5T_class_t cls, hbool_t from_api)
+H5T_detect_class(const H5T_t *dt, H5T_class_t cls, bool from_api)
 {
     unsigned i;
     htri_t   ret_value = false; /* Return value */
@@ -3591,7 +3591,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__complete_copy(H5T_t *new_dt, const H5T_t *old_dt, H5T_shared_t *reopened_fo, hbool_t set_memory_type,
+H5T__complete_copy(H5T_t *new_dt, const H5T_t *old_dt, H5T_shared_t *reopened_fo, bool set_memory_type,
                    H5T_copy_func_t copyfn)
 {
     H5T_t *  tmp = NULL;          /* Temporary copy of compound field's datatype */
@@ -3973,7 +3973,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5T_lock(H5T_t *dt, hbool_t immutable)
+H5T_lock(H5T_t *dt, bool immutable)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -4225,7 +4225,7 @@ H5T_close(H5T_t *dt)
 
         /* Close things down if this is the last reference to the open named datatype */
         if (0 == dt->shared->fo_count) {
-            hbool_t corked; /* Whether the named datatype is corked or not */
+            bool corked; /* Whether the named datatype is corked or not */
 
             /* Uncork cache entries with object address tag for named datatype */
             if (H5AC_cork(dt->oloc.file, dt->oloc.addr, H5AC__GET_CORKED, &corked) < 0)
@@ -4508,7 +4508,7 @@ H5T_get_size(const H5T_t *dt)
  *        Thursday, January  21, 2021
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5T_get_force_conv(const H5T_t *dt)
 {
     /* Use FUNC_ENTER_NOAPI_NOINIT_NOERR here to avoid performance issues */
@@ -4538,11 +4538,11 @@ H5T_get_force_conv(const H5T_t *dt)
  *-------------------------------------------------------------------------
  */
 int
-H5T_cmp(const H5T_t *dt1, const H5T_t *dt2, hbool_t superset)
+H5T_cmp(const H5T_t *dt1, const H5T_t *dt2, bool superset)
 {
     unsigned *idx1 = NULL, *idx2 = NULL;
     size_t    base_size;
-    hbool_t   swapped;
+    bool   swapped;
     unsigned  u;
     int       tmp;
     int       ret_value = 0;
@@ -5218,7 +5218,7 @@ H5T__path_find_real(const H5T_t *src, const H5T_t *dst, const char *name, H5T_co
      */
     HDassert(path->conv.u.app_func || (src && dst));
     for (i = H5T_g.nsoft - 1; i >= 0 && !path->conv.u.app_func; --i) {
-        hbool_t path_init_error = false;
+        bool path_init_error = false;
 
         if (src->shared->type != H5T_g.soft[i].src || dst->shared->type != H5T_g.soft[i].dst)
             continue;
@@ -5374,7 +5374,7 @@ done:
  *        Thursday, May  8, 2003
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5T_path_noop(const H5T_path_t *p)
 {
     FUNC_ENTER_NOAPI_NOINIT_NOERR
@@ -6035,11 +6035,11 @@ done:
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 H5T__detect_vlen_ref(const H5T_t *dt)
 {
     unsigned u;                 /* Local index variable */
-    hbool_t  ret_value = false; /* Return value */
+    bool  ret_value = false; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 

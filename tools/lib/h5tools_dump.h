@@ -61,18 +61,18 @@ H5TOOLS_DLL void    h5tools_dump_data(FILE *stream, const h5tool_format_t *info,
                                       hid_t obj_id, int obj_data);
 H5TOOLS_DLL void    h5tools_dump_reference(FILE *stream, const h5tool_format_t *info, h5tools_context_t *ctx,
                                            hid_t container, H5R_ref_t *ref_buf, int ndims);
-H5TOOLS_DLL hbool_t h5tools_dump_region_attribute(hid_t region_id, FILE *stream, const h5tool_format_t *info,
+H5TOOLS_DLL bool h5tools_dump_region_attribute(hid_t region_id, FILE *stream, const h5tool_format_t *info,
                                                   h5tools_context_t *ctx /*in,out*/, h5tools_str_t *buffer,
                                                   hsize_t *curr_pos, size_t ncols,
                                                   hsize_t region_elmt_counter, hsize_t elmt_counter);
 
-H5TOOLS_DLL hbool_t h5tools_dump_region_data_points(hid_t region_space, hid_t region_id, FILE *stream,
+H5TOOLS_DLL bool h5tools_dump_region_data_points(hid_t region_space, hid_t region_id, FILE *stream,
                                                     const h5tool_format_t *info,
                                                     h5tools_context_t *ctx /*in,out*/, h5tools_str_t *buffer,
                                                     hsize_t *curr_pos, size_t ncols,
                                                     hsize_t region_elmt_counter, hsize_t elmt_counter);
 
-H5TOOLS_DLL hbool_t h5tools_dump_region_data_blocks(hid_t region_space, hid_t region_id, FILE *stream,
+H5TOOLS_DLL bool h5tools_dump_region_data_blocks(hid_t region_space, hid_t region_id, FILE *stream,
                                                     const h5tool_format_t *info,
                                                     h5tools_context_t *ctx /*in,out*/, h5tools_str_t *buffer,
                                                     hsize_t *curr_pos, size_t ncols,

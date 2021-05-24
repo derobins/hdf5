@@ -97,8 +97,8 @@ H5TOOLS_DLL int get_option(int argc, const char **argv, const char *opt, const s
 typedef struct obj_t {
     H5O_token_t obj_token;
     char *      objname;
-    hbool_t     displayed; /* Flag to indicate that the object has been displayed */
-    hbool_t     recorded;  /* Flag for named datatypes to indicate they were found in the group hierarchy */
+    bool     displayed; /* Flag to indicate that the object has been displayed */
+    bool     recorded;  /* Flag for named datatypes to indicate they were found in the group hierarchy */
 } obj_t;
 
 /*struct for the tables that the find_objs function uses*/
@@ -171,7 +171,7 @@ typedef struct {
 
 /* Definitions of routines */
 H5TOOLS_DLL int H5tools_get_symlink_info(hid_t file_id, const char *linkpath, h5tool_link_info_t *link_info,
-                                         hbool_t get_obj_type);
+                                         bool get_obj_type);
 H5TOOLS_DLL const char *h5tools_getprogname(void);
 H5TOOLS_DLL void        h5tools_setprogname(const char *progname);
 H5TOOLS_DLL int         h5tools_getstatus(void);

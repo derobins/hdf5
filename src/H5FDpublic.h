@@ -295,9 +295,9 @@ typedef struct H5FD_class_t {
     herr_t (*get_handle)(H5FD_t *file, hid_t fapl, void **file_handle);
     herr_t (*read)(H5FD_t *file, H5FD_mem_t type, hid_t dxpl, haddr_t addr, size_t size, void *buffer);
     herr_t (*write)(H5FD_t *file, H5FD_mem_t type, hid_t dxpl, haddr_t addr, size_t size, const void *buffer);
-    herr_t (*flush)(H5FD_t *file, hid_t dxpl_id, hbool_t closing);
-    herr_t (*truncate)(H5FD_t *file, hid_t dxpl_id, hbool_t closing);
-    herr_t (*lock)(H5FD_t *file, hbool_t rw);
+    herr_t (*flush)(H5FD_t *file, hid_t dxpl_id, bool closing);
+    herr_t (*truncate)(H5FD_t *file, hid_t dxpl_id, bool closing);
+    herr_t (*lock)(H5FD_t *file, bool rw);
     herr_t (*unlock)(H5FD_t *file);
     herr_t (*del)(const char *name, hid_t fapl);
     H5FD_mem_t fl_map[H5FD_MEM_NTYPES];
@@ -326,7 +326,7 @@ struct H5FD_t {
     /* Space allocation management fields */
     hsize_t threshold;  /* Threshold for alignment  */
     hsize_t alignment;  /* Allocation alignment     */
-    hbool_t paged_aggr; /* Paged aggregation for file space is enabled or not */
+    bool paged_aggr; /* Paged aggregation for file space is enabled or not */
 };
 
 /**
@@ -458,9 +458,9 @@ H5_DLL herr_t  H5FDread(H5FD_t *file, H5FD_mem_t type, hid_t dxpl_id, haddr_t ad
                         void *buf /*out*/);
 H5_DLL herr_t  H5FDwrite(H5FD_t *file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, size_t size,
                          const void *buf);
-H5_DLL herr_t  H5FDflush(H5FD_t *file, hid_t dxpl_id, hbool_t closing);
-H5_DLL herr_t  H5FDtruncate(H5FD_t *file, hid_t dxpl_id, hbool_t closing);
-H5_DLL herr_t  H5FDlock(H5FD_t *file, hbool_t rw);
+H5_DLL herr_t  H5FDflush(H5FD_t *file, hid_t dxpl_id, bool closing);
+H5_DLL herr_t  H5FDtruncate(H5FD_t *file, hid_t dxpl_id, bool closing);
+H5_DLL herr_t  H5FDlock(H5FD_t *file, bool rw);
 H5_DLL herr_t  H5FDunlock(H5FD_t *file);
 H5_DLL herr_t  H5FDdelete(const char *name, hid_t fapl_id);
 

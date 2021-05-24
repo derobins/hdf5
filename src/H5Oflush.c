@@ -196,7 +196,7 @@ herr_t
 H5O_refresh_metadata(hid_t oid, H5O_loc_t oloc)
 {
     H5VL_object_t *vol_obj   = NULL;    /* VOL object associated with the ID */
-    hbool_t        objs_incr = false;   /* Whether the object count in the file was incremented */
+    bool        objs_incr = false;   /* Whether the object count in the file was incremented */
     herr_t         ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -286,7 +286,7 @@ static herr_t
 H5O__refresh_metadata_close(hid_t oid, H5O_loc_t oloc, H5G_loc_t *obj_loc)
 {
     haddr_t tag       = 0;       /* Tag for object */
-    hbool_t corked    = false;   /* Whether object's metadata is corked */
+    bool corked    = false;   /* Whether object's metadata is corked */
     herr_t  ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -348,7 +348,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5O_refresh_metadata_reopen(hid_t oid, H5G_loc_t *obj_loc, H5VL_t *vol_connector, hbool_t start_swmr)
+H5O_refresh_metadata_reopen(hid_t oid, H5G_loc_t *obj_loc, H5VL_t *vol_connector, bool start_swmr)
 {
     void *     object = NULL;       /* Object for this operation */
     H5I_type_t type;                /* Type of object for the ID */

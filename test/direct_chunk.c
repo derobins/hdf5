@@ -2285,7 +2285,7 @@ main(void)
 
     /* Loop over test configurations */
     for (config = 0; config < CONFIG_END; config++) {
-        hbool_t need_comma = false;
+        bool need_comma = false;
 
         /* Check for invalid combinations */
         if ((config & CONFIG_REOPEN_FILE) && !(config & CONFIG_REOPEN_DSET))

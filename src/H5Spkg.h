@@ -236,7 +236,7 @@ typedef struct {
 
 /* Selection information methods */
 /* Method to copy a selection */
-typedef herr_t (*H5S_sel_copy_func_t)(H5S_t *dst, const H5S_t *src, hbool_t share_selection);
+typedef herr_t (*H5S_sel_copy_func_t)(H5S_t *dst, const H5S_t *src, bool share_selection);
 /* Method to release current selection */
 typedef herr_t (*H5S_sel_release_func_t)(H5S_t *space);
 /* Method to determine if current selection is valid for dataspace */
@@ -316,7 +316,7 @@ typedef struct {
 typedef struct {
     const H5S_select_class_t *type; /* Pointer to selection's class info */
 
-    hbool_t  offset_changed;       /* Indicate that the offset for the selection has been changed */
+    bool  offset_changed;       /* Indicate that the offset for the selection has been changed */
     hssize_t offset[H5S_MAX_RANK]; /* Offset within the extent */
 
     hsize_t num_elem; /* Number of elements in selection */
@@ -399,7 +399,7 @@ H5_DLLVAR const unsigned H5O_sdspace_ver_bounds[H5F_LIBVER_NBOUNDS];
 
 /* Extent functions */
 H5_DLL herr_t H5S__extent_release(H5S_extent_t *extent);
-H5_DLL herr_t H5S__extent_copy_real(H5S_extent_t *dst, const H5S_extent_t *src, hbool_t copy_max);
+H5_DLL herr_t H5S__extent_copy_real(H5S_extent_t *dst, const H5S_extent_t *src, bool copy_max);
 
 /* Operations on hyperslab selections */
 H5_DLL uint64_t H5S__hyper_get_op_gen(void);
@@ -407,7 +407,7 @@ H5_DLL void     H5S__hyper_rebuild(H5S_t *space);
 H5_DLL herr_t   H5S__modify_select(H5S_t *space1, H5S_seloper_t op, H5S_t *space2);
 H5_DLL herr_t   H5S__hyper_project_intersection(const H5S_t *src_space, const H5S_t *dst_space,
                                                 const H5S_t *src_intersect_space, H5S_t *proj_space,
-                                                hbool_t share_space);
+                                                bool share_space);
 
 /* Operations on selection iterators */
 H5_DLL herr_t H5S__sel_iter_close_cb(H5S_sel_iter_t *_sel_iter, void **request);

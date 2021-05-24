@@ -542,7 +542,7 @@ struct H5SL_node_t {
     size_t               level;      /* The level of this node */
     size_t               log_nalloc; /* log2(Number of slots allocated in forward) */
     uint32_t             hashval;    /* Hash value for key (only for strings, currently) */
-    hbool_t              removed;    /* Whether the node is "removed" (actual removal deferred) */
+    bool              removed;    /* Whether the node is "removed" (actual removal deferred) */
     struct H5SL_node_t **forward;    /* Array of forward pointers from this node */
     struct H5SL_node_t * backward;   /* Backward pointer from this node */
 };
@@ -558,7 +558,7 @@ struct H5SL_t {
     size_t       nobjs;      /* Number of active objects in skip list */
     H5SL_node_t *header;     /* Header for nodes in skip list */
     H5SL_node_t *last;       /* Pointer to last node in skip list */
-    hbool_t safe_iterating;  /* Whether a routine is "safely" iterating over the list and removals should be
+    bool safe_iterating;  /* Whether a routine is "safely" iterating over the list and removals should be
                                 deferred */
 };
 
@@ -569,7 +569,7 @@ static herr_t       H5SL__release_common(H5SL_t *slist, H5SL_operator_t op, void
 static herr_t       H5SL__close_common(H5SL_t *slist, H5SL_operator_t op, void *op_data);
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the H5SL_t struct */
 H5FL_DEFINE_STATIC(H5SL_t);

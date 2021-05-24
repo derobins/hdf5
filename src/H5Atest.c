@@ -114,7 +114,7 @@ herr_t
 H5A__get_shared_rc_test(hid_t attr_id, hsize_t *ref_count)
 {
     H5A_t * attr;                     /* Attribute object for ID */
-    hbool_t api_ctx_pushed = false;   /* Whether API context pushed */
+    bool api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t  ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

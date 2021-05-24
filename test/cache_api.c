@@ -30,12 +30,12 @@ const char *FILENAME[] = {"cache_api_test", NULL};
 
 /* private function declarations: */
 
-static hbool_t              check_fapl_mdc_api_calls(unsigned paged, hid_t fcpl_id);
-static hbool_t              check_file_mdc_api_calls(unsigned paged, hid_t fcpl_id);
-static hbool_t              mdc_api_call_smoke_check(int express_test, unsigned paged, hid_t fcpl_id);
+static bool              check_fapl_mdc_api_calls(unsigned paged, hid_t fcpl_id);
+static bool              check_file_mdc_api_calls(unsigned paged, hid_t fcpl_id);
+static bool              mdc_api_call_smoke_check(int express_test, unsigned paged, hid_t fcpl_id);
 static H5AC_cache_config_t *init_invalid_configs(void);
-static hbool_t              check_fapl_mdc_api_errs(void);
-static hbool_t              check_file_mdc_api_errs(unsigned paged, hid_t fcpl_id);
+static bool              check_fapl_mdc_api_errs(void);
+static bool              check_file_mdc_api_errs(unsigned paged, hid_t fcpl_id);
 
 /**************************************************************************/
 /**************************************************************************/
@@ -61,7 +61,7 @@ static hbool_t              check_file_mdc_api_errs(unsigned paged, hid_t fcpl_i
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 check_fapl_mdc_api_calls(unsigned paged, hid_t fcpl_id)
 {
     char                filename[512];
@@ -506,7 +506,7 @@ check_fapl_mdc_api_calls(unsigned paged, hid_t fcpl_id)
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 check_file_mdc_api_calls(unsigned paged, hid_t fcpl_id)
 {
     char                filename[512];
@@ -850,15 +850,15 @@ check_file_mdc_api_calls(unsigned paged, hid_t fcpl_id)
 #define NUM_DSETS           6
 #define NUM_RANDOM_ACCESSES 200000
 
-static hbool_t
+static bool
 mdc_api_call_smoke_check(int express_test, unsigned paged, hid_t fcpl_id)
 {
     char                filename[512];
-    hbool_t             valid_chunk;
-    hbool_t             dump_hit_rate   = false;
+    bool             valid_chunk;
+    bool             dump_hit_rate   = false;
     int64_t             min_accesses    = 1000;
     double              min_hit_rate    = 0.90;
-    hbool_t             dump_cache_size = false;
+    bool             dump_cache_size = false;
     hid_t               file_id         = -1;
     hid_t               dataspace_id    = -1;
     hid_t               filespace_ids[NUM_DSETS];
@@ -1679,7 +1679,7 @@ init_invalid_configs(void)
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 check_fapl_mdc_api_errs(void)
 {
     static char         msg[128];
@@ -1861,12 +1861,12 @@ check_fapl_mdc_api_errs(void)
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 check_file_mdc_api_errs(unsigned paged, hid_t fcpl_id)
 {
     char                filename[512];
     static char         msg[128];
-    hbool_t             show_progress = false;
+    bool             show_progress = false;
     int                 i;
     herr_t              result;
     hid_t               file_id = -1;

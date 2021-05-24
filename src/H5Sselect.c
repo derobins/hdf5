@@ -228,7 +228,7 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
-H5S_select_copy(H5S_t *dst, const H5S_t *src, hbool_t share_selection)
+H5S_select_copy(H5S_t *dst, const H5S_t *src, bool share_selection)
 {
     herr_t ret_value = FAIL; /* Return value */
 
@@ -1501,7 +1501,7 @@ H5S_select_iterate(void *buf, const H5T_t *type, const H5S_t *space, const H5S_s
                    void *op_data)
 {
     H5S_sel_iter_t *iter      = NULL;         /* Selection iteration info */
-    hbool_t         iter_init = false;        /* Selection iteration info has been initialized */
+    bool         iter_init = false;        /* Selection iteration info has been initialized */
     hsize_t *       off       = NULL;         /* Array to store sequence offsets */
     size_t *        len       = NULL;         /* Array to store sequence lengths */
     hssize_t        nelmts;                   /* Number of elements in selection */
@@ -1743,8 +1743,8 @@ H5S_select_shape_same(const H5S_t *space1, const H5S_t *space2)
 {
     H5S_sel_iter_t *iter_a      = NULL;  /* Selection a iteration info */
     H5S_sel_iter_t *iter_b      = NULL;  /* Selection b iteration info */
-    hbool_t         iter_a_init = false; /* Selection a iteration info has been initialized */
-    hbool_t         iter_b_init = false; /* Selection b iteration info has been initialized */
+    bool         iter_a_init = false; /* Selection a iteration info has been initialized */
+    bool         iter_b_init = false; /* Selection b iteration info has been initialized */
     htri_t          ret_value   = true;  /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1866,7 +1866,7 @@ H5S_select_shape_same(const H5S_t *space1, const H5S_t *space2)
             hsize_t  end_a[H5S_MAX_RANK];   /* End point of selection block in dataspace a */
             hsize_t  end_b[H5S_MAX_RANK];   /* End point of selection block in dataspace b */
             hssize_t offset[H5S_MAX_RANK];  /* Offset of selection b blocks relative to selection a blocks */
-            hbool_t  first_block = true;    /* Flag to indicate the first block */
+            bool  first_block = true;    /* Flag to indicate the first block */
 
             /* Allocate the selection iterators */
             if (NULL == (iter_a = H5FL_MALLOC(H5S_sel_iter_t)))
@@ -2455,7 +2455,7 @@ herr_t
 H5S_select_fill(const void *fill, size_t fill_size, const H5S_t *space, void *_buf)
 {
     H5S_sel_iter_t *iter      = NULL;    /* Selection iteration info */
-    hbool_t         iter_init = false;   /* Selection iteration info has been initialized */
+    bool         iter_init = false;   /* Selection iteration info has been initialized */
     hsize_t *       off       = NULL;    /* Array to store sequence offsets */
     size_t *        len       = NULL;    /* Array to store sequence lengths */
     hssize_t        nelmts;              /* Number of elements in selection */
@@ -2570,14 +2570,14 @@ to share structures inside dst_space with proj_space
 herr_t
 H5S_select_project_intersection(const H5S_t *src_space, const H5S_t *dst_space,
                                 const H5S_t *src_intersect_space, H5S_t **new_space_ptr,
-                                hbool_t share_selection)
+                                bool share_selection)
 {
     H5S_t *         new_space               = NULL;    /* New dataspace constructed */
     H5S_t *         tmp_src_intersect_space = NULL;    /* Temporary SIS converted from points->hyperslabs */
     H5S_sel_iter_t *ss_iter                 = NULL;    /* Selection iterator for src_space */
-    hbool_t         ss_iter_init            = false;   /* Whether ss_iter has been initialized */
+    bool         ss_iter_init            = false;   /* Whether ss_iter has been initialized */
     H5S_sel_iter_t *ds_iter                 = NULL;    /* Selection iterator for dst_space */
-    hbool_t         ds_iter_init            = false;   /* Whether ds_iter has been initialized */
+    bool         ds_iter_init            = false;   /* Whether ds_iter has been initialized */
     herr_t          ret_value               = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)

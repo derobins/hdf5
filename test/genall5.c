@@ -1613,7 +1613,7 @@ vrfy_os_grp_n(hid_t fid, const char *group_name, int proc_num, unsigned nlinks)
  *-------------------------------------------------------------------------
  */
 void
-ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
+ds_ctg_i(hid_t fid, const char *dset_name, bool write_data)
 {
     int *    wdata = NULL;
     unsigned u;
@@ -1708,7 +1708,7 @@ ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 void
-vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
+vrfy_ds_ctg_i(hid_t fid, const char *dset_name, bool write_data)
 {
     int *              rdata = NULL;
     unsigned           u;
@@ -1927,7 +1927,7 @@ vrfy_ds_ctg_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 void
-ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
+ds_chk_i(hid_t fid, const char *dset_name, bool write_data)
 {
     int *    wdata = NULL;
     unsigned u;
@@ -2052,7 +2052,7 @@ ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 void
-vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
+vrfy_ds_chk_i(hid_t fid, const char *dset_name, bool write_data)
 {
     int *              rdata = NULL;
     unsigned           u;
@@ -2286,7 +2286,7 @@ vrfy_ds_chk_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 void
-ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
+ds_cpt_i(hid_t fid, const char *dset_name, bool write_data)
 {
     int *    wdata = NULL;
     unsigned u;
@@ -2412,7 +2412,7 @@ ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 void
-vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
+vrfy_ds_cpt_i(hid_t fid, const char *dset_name, bool write_data)
 {
     int *              rdata = NULL;
     unsigned           u;
@@ -2626,7 +2626,7 @@ vrfy_ds_cpt_i(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 void
-ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
+ds_ctg_v(hid_t fid, const char *dset_name, bool write_data)
 {
     hid_t    dsid    = -1;
     hid_t    sid     = -1;
@@ -2773,7 +2773,7 @@ ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
  *-------------------------------------------------------------------------
  */
 void
-vrfy_ds_ctg_v(hid_t fid, const char *dset_name, hbool_t write_data)
+vrfy_ds_ctg_v(hid_t fid, const char *dset_name, bool write_data)
 {
     hid_t              dsid    = -1;
     hid_t              sid     = -1;

@@ -401,7 +401,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pset_obj_track_times(hid_t plist_id, hbool_t track_times)
+H5Pset_obj_track_times(hid_t plist_id, bool track_times)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     uint8_t         ohdr_flags;          /* Object header flags */
@@ -445,7 +445,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_obj_track_times(hid_t plist_id, hbool_t *track_times /*out*/)
+H5Pget_obj_track_times(hid_t plist_id, bool *track_times /*out*/)
 {
     herr_t ret_value = SUCCEED; /* return value */
 
@@ -466,7 +466,7 @@ H5Pget_obj_track_times(hid_t plist_id, hbool_t *track_times /*out*/)
             HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't get object header flags")
 
         /* Set track times flag to return */
-        *track_times = (hbool_t)((ohdr_flags & H5O_HDR_STORE_TIMES) ? true : false);
+        *track_times = (bool)((ohdr_flags & H5O_HDR_STORE_TIMES) ? true : false);
     } /* end if */
 
 done:

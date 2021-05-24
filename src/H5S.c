@@ -56,7 +56,7 @@ static htri_t H5S__is_simple(const H5S_t *sdim);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Format version bounds for dataspace */
 const unsigned H5O_sdspace_ver_bounds[] = {
@@ -97,7 +97,7 @@ static const H5I_class_t H5I_SPACE_SEL_ITER_CLS[1] = {{
 }};
 
 /* Flag indicating "top" of interface has been initialized */
-static hbool_t H5S_top_package_initialize_s = false;
+static bool H5S_top_package_initialize_s = false;
 
 /*-------------------------------------------------------------------------
  * Function: H5S_init
@@ -681,7 +681,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5S__extent_copy_real(H5S_extent_t *dst, const H5S_extent_t *src, hbool_t copy_max)
+H5S__extent_copy_real(H5S_extent_t *dst, const H5S_extent_t *src, bool copy_max)
 {
     unsigned u;
     herr_t   ret_value = SUCCEED; /* Return value */
@@ -756,7 +756,7 @@ done:
  *-------------------------------------------------------------------------
  */
 H5S_t *
-H5S_copy(const H5S_t *src, hbool_t share_selection, hbool_t copy_max)
+H5S_copy(const H5S_t *src, bool share_selection, bool copy_max)
 {
     H5S_t *dst       = NULL;
     H5S_t *ret_value = NULL; /* Return value */
@@ -1930,10 +1930,10 @@ done:
  *
  *-------------------------------------------------------------------------
  */
-H5_ATTR_PURE hbool_t
+H5_ATTR_PURE bool
 H5S_has_extent(const H5S_t *ds)
 {
-    hbool_t ret_value = false; /* Return value */
+    bool ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 

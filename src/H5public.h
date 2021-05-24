@@ -206,8 +206,7 @@ typedef int herr_t;
 
 #include <stdbool.h>
 /**
- * Deprecated Boolean type. Still used in the public API for historical
- * reasons, but typedef'd to C99's bool.
+ * Deprecated pre-C99 HDF5 Boolean type. No longer used in the library.
  */
 typedef bool hbool_t;
 
@@ -730,7 +729,7 @@ H5_DLL herr_t H5check_version(unsigned majnum, unsigned minnum, unsigned relnum)
  *
  * \since 1.13.0
  */
-H5_DLL herr_t H5is_library_terminating(hbool_t *is_terminating);
+H5_DLL herr_t H5is_library_terminating(bool *is_terminating);
 /**
  * \ingroup H5
  * \brief Determines whether the HDF5 library was built with the thread-safety
@@ -746,7 +745,7 @@ H5_DLL herr_t H5is_library_terminating(hbool_t *is_terminating);
  *          useful to determine, at run-time, whether the linked HDF5 library
  *          was built with the thread-safety feature enabled.
  */
-H5_DLL herr_t H5is_library_threadsafe(hbool_t *is_ts);
+H5_DLL herr_t H5is_library_threadsafe(bool *is_ts);
 /**
  * \ingroup H5
  * \brief Frees memory allocated by the HDF5 library
@@ -798,7 +797,7 @@ H5_DLL herr_t H5free_memory(void *mem);
  * \details H5allocate_memory() allocates a memory buffer of size bytes that
  *          will later be freed internally by the HDF5 library.
  *
- *          The boolean \p clear parameter specifies whether the buffer should
+ *          The Boolean \p clear parameter specifies whether the buffer should
  *          be initialized. If clear is \c TRUE, all bits in the buffer are to be
  *          set to 0 (zero); if clear is \c FALSE, the buffer will not be
  *          initialized.
@@ -839,7 +838,7 @@ H5_DLL herr_t H5free_memory(void *mem);
  * \since 1.8.15
  *
  */
-H5_DLL void *H5allocate_memory(size_t size, hbool_t clear);
+H5_DLL void *H5allocate_memory(size_t size, bool clear);
 /**
  * \ingroup H5
  * \brief Resizes and, if required, re-allocates memory that will later be

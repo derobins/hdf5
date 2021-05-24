@@ -92,7 +92,7 @@ static herr_t     H5E__append_stack(H5E_t *dst_estack, const H5E_t *src_stack);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -1341,7 +1341,7 @@ H5Epush2(hid_t err_stack, const char *file, const char *func, unsigned line, hid
     va_list ap;                   /* Varargs info */
     H5E_t * estack;               /* Pointer to error stack to modify */
     char *  tmp        = NULL;    /* Buffer to place formatted description in */
-    hbool_t va_started = false;   /* Whether the variable argument list is open */
+    bool va_started = false;   /* Whether the variable argument list is open */
     herr_t  ret_value  = SUCCEED; /* Return value */
 
     /* Don't clear the error stack! :-) */
@@ -1714,7 +1714,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Eappend_stack(hid_t dst_stack_id, hid_t src_stack_id, hbool_t close_source_stack)
+H5Eappend_stack(hid_t dst_stack_id, hid_t src_stack_id, bool close_source_stack)
 {
     H5E_t *dst_stack, *src_stack; /* Error stacks */
     herr_t ret_value = SUCCEED;   /* Return value */

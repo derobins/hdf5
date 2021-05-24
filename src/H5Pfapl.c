@@ -139,7 +139,7 @@
 /* Definition for whether to convert family to a single-file driver.
  * It's a private property only used by h5repart.
  */
-#define H5F_ACS_FAMILY_TO_SINGLE_SIZE sizeof(hbool_t)
+#define H5F_ACS_FAMILY_TO_SINGLE_SIZE sizeof(bool)
 #define H5F_ACS_FAMILY_TO_SINGLE_DEF  false
 /* Definition for data type in multi file driver */
 #define H5F_ACS_MULTI_TYPE_SIZE sizeof(H5FD_mem_t)
@@ -162,7 +162,7 @@
 /* Definition for whether to query the file descriptor from the core VFD
  * instead of the memory address.  (Private to library)
  */
-#define H5F_ACS_WANT_POSIX_FD_SIZE sizeof(hbool_t)
+#define H5F_ACS_WANT_POSIX_FD_SIZE sizeof(bool)
 #define H5F_ACS_WANT_POSIX_FD_DEF  false
 /* Definition for external file cache size */
 #define H5F_ACS_EFC_SIZE_SIZE sizeof(unsigned)
@@ -190,18 +190,18 @@
         NULL, NULL                                                                                           \
     }
 /* Definition for status_flags in the superblock */
-#define H5F_ACS_CLEAR_STATUS_FLAGS_SIZE sizeof(hbool_t)
+#define H5F_ACS_CLEAR_STATUS_FLAGS_SIZE sizeof(bool)
 #define H5F_ACS_CLEAR_STATUS_FLAGS_DEF  false
 
 /* Definition for dropping free-space to the floor when reading in the superblock */
-#define H5F_ACS_NULL_FSM_ADDR_SIZE sizeof(hbool_t)
+#define H5F_ACS_NULL_FSM_ADDR_SIZE sizeof(bool)
 #define H5F_ACS_NULL_FSM_ADDR_DEF  false
 /* Definition for skipping EOF check when reading in the superblock */
-#define H5F_ACS_SKIP_EOF_CHECK_SIZE sizeof(hbool_t)
+#define H5F_ACS_SKIP_EOF_CHECK_SIZE sizeof(bool)
 #define H5F_ACS_SKIP_EOF_CHECK_DEF  false
 
 /* Definition for 'use metadata cache logging' flag */
-#define H5F_ACS_USE_MDC_LOGGING_SIZE sizeof(hbool_t)
+#define H5F_ACS_USE_MDC_LOGGING_SIZE sizeof(bool)
 #define H5F_ACS_USE_MDC_LOGGING_DEF  false
 #define H5F_ACS_USE_MDC_LOGGING_ENC  H5P__encode_hbool_t
 #define H5F_ACS_USE_MDC_LOGGING_DEC  H5P__decode_hbool_t
@@ -215,12 +215,12 @@
 #define H5F_ACS_MDC_LOG_LOCATION_CMP   H5P__facc_mdc_log_location_cmp
 #define H5F_ACS_MDC_LOG_LOCATION_CLOSE H5P__facc_mdc_log_location_close
 /* Definition for 'start metadata cache logging on access' flag */
-#define H5F_ACS_START_MDC_LOG_ON_ACCESS_SIZE sizeof(hbool_t)
+#define H5F_ACS_START_MDC_LOG_ON_ACCESS_SIZE sizeof(bool)
 #define H5F_ACS_START_MDC_LOG_ON_ACCESS_DEF  false
 #define H5F_ACS_START_MDC_LOG_ON_ACCESS_ENC  H5P__encode_hbool_t
 #define H5F_ACS_START_MDC_LOG_ON_ACCESS_DEC  H5P__decode_hbool_t
 /* Definition for evict on close property */
-#define H5F_ACS_EVICT_ON_CLOSE_FLAG_SIZE sizeof(hbool_t)
+#define H5F_ACS_EVICT_ON_CLOSE_FLAG_SIZE sizeof(bool)
 #define H5F_ACS_EVICT_ON_CLOSE_FLAG_DEF  false
 #define H5F_ACS_EVICT_ON_CLOSE_FLAG_ENC  H5P__encode_hbool_t
 #define H5F_ACS_EVICT_ON_CLOSE_FLAG_DEC  H5P__decode_hbool_t
@@ -291,7 +291,7 @@
 /* Definition for using file locking or not. The default is set
  * via the configure step.
  */
-#define H5F_ACS_USE_FILE_LOCKING_SIZE sizeof(hbool_t)
+#define H5F_ACS_USE_FILE_LOCKING_SIZE sizeof(bool)
 #if defined H5_USE_FILE_LOCKING && H5_USE_FILE_LOCKING
 #define H5F_ACS_USE_FILE_LOCKING_DEF true
 #else
@@ -303,7 +303,7 @@
  * tell that file locking has been disabled on the file system.
  * The default is set via the configure step.
  */
-#define H5F_ACS_IGNORE_DISABLED_FILE_LOCKS_SIZE sizeof(hbool_t)
+#define H5F_ACS_IGNORE_DISABLED_FILE_LOCKS_SIZE sizeof(bool)
 #if defined H5_IGNORE_DISABLED_FILE_LOCKS && H5_IGNORE_DISABLED_FILE_LOCKS
 #define H5F_ACS_IGNORE_DISABLED_FILE_LOCKS_DEF true
 #else
@@ -453,7 +453,7 @@ static const H5F_close_degree_t H5F_def_close_degree_g = H5F_CLOSE_DEGREE_DEF; /
 static const hsize_t H5F_def_family_offset_g = H5F_ACS_FAMILY_OFFSET_DEF; /* Default offset for family VFD */
 static const hsize_t H5F_def_family_newsize_g =
     H5F_ACS_FAMILY_NEWSIZE_DEF; /* Default size of new files for family VFD */
-static const hbool_t H5F_def_family_to_single_g =
+static const bool H5F_def_family_to_single_g =
     H5F_ACS_FAMILY_TO_SINGLE_DEF; /* Default ?? for family VFD */
 static const H5FD_mem_t H5F_def_mem_type_g =
     H5F_ACS_MULTI_TYPE_DEF; /* Default file space type for multi VFD */
@@ -463,7 +463,7 @@ static const H5F_libver_t H5F_def_libver_low_bound_g =
 static const H5F_libver_t H5F_def_libver_high_bound_g =
     H5F_ACS_LIBVER_HIGH_BOUND_DEF; /* Default setting for "high" bound of format version */
 
-static const hbool_t H5F_def_want_posix_fd_g =
+static const bool H5F_def_want_posix_fd_g =
     H5F_ACS_WANT_POSIX_FD_DEF; /* Default setting for retrieving 'handle' from core VFD */
 static const unsigned H5F_def_efc_size_g = H5F_ACS_EFC_SIZE_DEF; /* Default external file cache size */
 static const H5FD_file_image_info_t H5F_def_file_image_info_g =
@@ -472,19 +472,19 @@ static const unsigned H5F_def_metadata_read_attempts_g =
     H5F_ACS_METADATA_READ_ATTEMPTS_DEF; /* Default setting for the # of metadata read attempts */
 static const H5F_object_flush_t H5F_def_object_flush_cb_g =
     H5F_ACS_OBJECT_FLUSH_CB_DEF; /* Default setting for object flush callback */
-static const hbool_t H5F_def_clear_status_flags_g =
+static const bool H5F_def_clear_status_flags_g =
     H5F_ACS_CLEAR_STATUS_FLAGS_DEF; /* Default to clear the superblock status_flags */
-static const hbool_t H5F_def_skip_eof_check_g =
+static const bool H5F_def_skip_eof_check_g =
     H5F_ACS_SKIP_EOF_CHECK_DEF; /* Default setting for skipping EOF check */
-static const hbool_t H5F_def_null_fsm_addr_g =
+static const bool H5F_def_null_fsm_addr_g =
     H5F_ACS_NULL_FSM_ADDR_DEF; /* Default setting for dropping free-space to the floor */
 
-static const hbool_t H5F_def_use_mdc_logging_g =
+static const bool H5F_def_use_mdc_logging_g =
     H5F_ACS_USE_MDC_LOGGING_DEF; /* Default metadata cache logging flag */
 static const char *  H5F_def_mdc_log_location_g = H5F_ACS_MDC_LOG_LOCATION_DEF; /* Default mdc log location */
-static const hbool_t H5F_def_start_mdc_log_on_access_g =
+static const bool H5F_def_start_mdc_log_on_access_g =
     H5F_ACS_START_MDC_LOG_ON_ACCESS_DEF; /* Default mdc log start on access flag */
-static const hbool_t H5F_def_evict_on_close_flag_g =
+static const bool H5F_def_evict_on_close_flag_g =
     H5F_ACS_EVICT_ON_CLOSE_FLAG_DEF; /* Default setting for evict on close property */
 #ifdef H5_HAVE_PARALLEL
 static const H5P_coll_md_read_flag_t H5F_def_coll_md_read_flag_g =
@@ -501,9 +501,9 @@ static const unsigned H5F_def_page_buf_min_meta_perc_g =
     H5F_ACS_PAGE_BUFFER_MIN_META_PERC_DEF; /* Default page buffer minimum metadata size */
 static const unsigned H5F_def_page_buf_min_raw_perc_g =
     H5F_ACS_PAGE_BUFFER_MIN_RAW_PERC_DEF; /* Default page buffer mininum raw data size */
-static const hbool_t H5F_def_use_file_locking_g =
+static const bool H5F_def_use_file_locking_g =
     H5F_ACS_USE_FILE_LOCKING_DEF; /* Default use file locking flag */
-static const hbool_t H5F_def_ignore_disabled_file_locks_g =
+static const bool H5F_def_ignore_disabled_file_locks_g =
     H5F_ACS_IGNORE_DISABLED_FILE_LOCKS_DEF; /* Default ignore disabled file locks flag */
 
 /*-------------------------------------------------------------------------
@@ -4218,7 +4218,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pset_mdc_log_options(hid_t plist_id, hbool_t is_enabled, const char *location, hbool_t start_on_access)
+H5Pset_mdc_log_options(hid_t plist_id, bool is_enabled, const char *location, bool start_on_access)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     char *          new_location;        /* Working location pointer */
@@ -4263,8 +4263,8 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_mdc_log_options(hid_t plist_id, hbool_t *is_enabled /*out*/, char *location /*out*/,
-                       size_t *location_size /*out*/, hbool_t *start_on_access /*out*/)
+H5Pget_mdc_log_options(hid_t plist_id, bool *is_enabled /*out*/, char *location /*out*/,
+                       size_t *location_size /*out*/, bool *start_on_access /*out*/)
 {
     H5P_genplist_t *plist;                  /* Property list pointer */
     char *          location_ptr = NULL;    /* Pointer to location string */
@@ -4526,7 +4526,7 @@ H5P__facc_mdc_log_location_close(const char H5_ATTR_UNUSED *name, size_t H5_ATTR
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pset_evict_on_close(hid_t fapl_id, hbool_t H5_ATTR_PARALLEL_UNUSED evict_on_close)
+H5Pset_evict_on_close(hid_t fapl_id, bool H5_ATTR_PARALLEL_UNUSED evict_on_close)
 {
     H5P_genplist_t *plist;               /* property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
@@ -4574,7 +4574,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_evict_on_close(hid_t fapl_id, hbool_t *evict_on_close /*out*/)
+H5Pget_evict_on_close(hid_t fapl_id, bool *evict_on_close /*out*/)
 {
     H5P_genplist_t *plist;               /* property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
@@ -4619,7 +4619,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pset_file_locking(hid_t fapl_id, hbool_t use_file_locking, hbool_t ignore_when_disabled)
+H5Pset_file_locking(hid_t fapl_id, bool use_file_locking, bool ignore_when_disabled)
 {
     H5P_genplist_t *plist;               /* property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */
@@ -4661,7 +4661,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_file_locking(hid_t fapl_id, hbool_t *use_file_locking /*out*/, hbool_t *ignore_when_disabled /*out*/)
+H5Pget_file_locking(hid_t fapl_id, bool *use_file_locking /*out*/, bool *ignore_when_disabled /*out*/)
 {
     H5P_genplist_t *plist;               /* property list pointer */
     herr_t          ret_value = SUCCEED; /* return value */

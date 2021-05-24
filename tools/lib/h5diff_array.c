@@ -97,7 +97,7 @@
  *-------------------------------------------------------------------------
  */
 
-static hbool_t not_comparable;
+static bool not_comparable;
 
 #define PER(A, B)                                                                                            \
     {                                                                                                        \
@@ -138,15 +138,15 @@ typedef struct mcomp_t {
  * local prototypes
  *-------------------------------------------------------------------------
  */
-static hbool_t all_zero(const void *_mem, size_t size);
+static bool all_zero(const void *_mem, size_t size);
 static int     ull2float(unsigned long long ull_value, float *f_value);
 static hsize_t character_compare(char *mem1, char *mem2, hsize_t elemtno, size_t u, diff_opt_t *opts);
 static hsize_t character_compare_opt(unsigned char *mem1, unsigned char *mem2, hsize_t elemtno,
                                      diff_opt_t *opts);
-static hbool_t equal_float(float value, float expected, diff_opt_t *opts);
-static hbool_t equal_double(double value, double expected, diff_opt_t *opts);
+static bool equal_float(float value, float expected, diff_opt_t *opts);
+static bool equal_double(double value, double expected, diff_opt_t *opts);
 #if H5_SIZEOF_LONG_DOUBLE != 0
-static hbool_t equal_ldouble(long double value, long double expected, diff_opt_t *opts);
+static bool equal_ldouble(long double value, long double expected, diff_opt_t *opts);
 #endif
 
 static int  print_data(diff_opt_t *opts);
@@ -470,8 +470,8 @@ diff_datum(void *_mem1, void *_mem2, hsize_t elemtno, diff_opt_t *opts, hid_t co
     unsigned       nmembs;
     unsigned       j;
     size_t         size = 0;
-    hbool_t        iszero1;
-    hbool_t        iszero2;
+    bool        iszero1;
+    bool        iszero2;
     hsize_t        nfound    = 0; /* differences found */
     diff_err_t     ret_value = opts->err_stat;
 
@@ -1299,7 +1299,7 @@ done:
  *-------------------------------------------------------------------------
  */
 
-static hbool_t
+static bool
 all_zero(const void *_mem, size_t size)
 {
     const unsigned char *mem = (const unsigned char *)_mem;
@@ -1617,7 +1617,7 @@ character_compare_opt(unsigned char *mem1, unsigned char *mem2, hsize_t elemtno,
     hsize_t       nfound = 0; /* differences found */
     unsigned char temp1_uchar;
     unsigned char temp2_uchar;
-    hbool_t       both_zero = false;
+    bool       both_zero = false;
     double        per;
 
     HDmemcpy(&temp1_uchar, mem1, sizeof(unsigned char));
@@ -1689,9 +1689,9 @@ diff_float_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     float   temp1_float;
     float   temp2_float;
     double  per;
-    hbool_t both_zero = false;
-    hbool_t isnan1    = false;
-    hbool_t isnan2    = false;
+    bool both_zero = false;
+    bool isnan1    = false;
+    bool isnan2    = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -1869,9 +1869,9 @@ diff_double_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, 
     double  temp1_double;
     double  temp2_double;
     double  per;
-    hbool_t both_zero = false;
-    hbool_t isnan1    = false;
-    hbool_t isnan2    = false;
+    bool both_zero = false;
+    bool isnan1    = false;
+    bool isnan2    = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2043,9 +2043,9 @@ diff_ldouble_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx,
     long double temp1_double;
     long double temp2_double;
     double      per;
-    hbool_t     both_zero = false;
-    hbool_t     isnan1    = false;
-    hbool_t     isnan2    = false;
+    bool     both_zero = false;
+    bool     isnan1    = false;
+    bool     isnan2    = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2217,7 +2217,7 @@ diff_schar_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     char    temp1_char;
     char    temp2_char;
     double  per;
-    hbool_t both_zero = false;
+    bool both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
     HDmemcpy(&temp1_char, mem1, sizeof(char));
@@ -2305,7 +2305,7 @@ diff_uchar_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     unsigned char temp1_uchar;
     unsigned char temp2_uchar;
     double        per;
-    hbool_t       both_zero = false;
+    bool       both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2393,7 +2393,7 @@ diff_short_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     short   temp1_short;
     short   temp2_short;
     double  per;
-    hbool_t both_zero = false;
+    bool both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2481,7 +2481,7 @@ diff_ushort_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, 
     unsigned short temp1_ushort;
     unsigned short temp2_ushort;
     double         per;
-    hbool_t        both_zero = false;
+    bool        both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2573,7 +2573,7 @@ diff_int_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, dif
     int     temp1_int;
     int     temp2_int;
     double  per;
-    hbool_t both_zero = false;
+    bool both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2661,7 +2661,7 @@ diff_uint_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, di
     unsigned int temp1_uint;
     unsigned int temp2_uint;
     double       per;
-    hbool_t      both_zero = false;
+    bool      both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2749,7 +2749,7 @@ diff_long_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, di
     long    temp1_long;
     long    temp2_long;
     double  per;
-    hbool_t both_zero = false;
+    bool both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2837,7 +2837,7 @@ diff_ulong_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     unsigned long temp1_ulong;
     unsigned long temp2_ulong;
     double        per;
-    hbool_t       both_zero = false;
+    bool       both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -2927,7 +2927,7 @@ diff_llong_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, d
     long long temp1_llong;
     long long temp2_llong;
     double    per;
-    hbool_t   both_zero = false;
+    bool   both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -3021,7 +3021,7 @@ diff_ullong_element(unsigned char *mem1, unsigned char *mem2, hsize_t elem_idx, 
     unsigned long long temp2_ullong;
     float              f1, f2;
     double             per;
-    hbool_t            both_zero = false;
+    bool            both_zero = false;
 
     H5TOOLS_START_DEBUG("delta_bool:%d - percent_bool:%d", opts->delta_bool, opts->percent_bool);
 
@@ -3156,7 +3156,7 @@ done:
  * Purpose:     use a absolute error formula to deal with floating point uncertainty
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 equal_double(double value, double expected, diff_opt_t *opts)
 {
     if (opts->do_nans) {
@@ -3164,8 +3164,8 @@ equal_double(double value, double expected, diff_opt_t *opts)
          * detect NaNs
          *-------------------------------------------------------------------------
          */
-        hbool_t isnan1 = HDisnan(value);
-        hbool_t isnan2 = HDisnan(expected);
+        bool isnan1 = HDisnan(value);
+        bool isnan2 = HDisnan(expected);
 
         /*-------------------------------------------------------------------------
          * we consider NaN == NaN to be true
@@ -3204,7 +3204,7 @@ equal_double(double value, double expected, diff_opt_t *opts)
  */
 
 #if H5_SIZEOF_LONG_DOUBLE != 0
-static hbool_t
+static bool
 equal_ldouble(long double value, long double expected, diff_opt_t *opts)
 {
     if (opts->do_nans) {
@@ -3212,8 +3212,8 @@ equal_ldouble(long double value, long double expected, diff_opt_t *opts)
          * detect NaNs
          *-------------------------------------------------------------------------
          */
-        hbool_t isnan1 = HDisnan(value);
-        hbool_t isnan2 = HDisnan(expected);
+        bool isnan1 = HDisnan(value);
+        bool isnan2 = HDisnan(expected);
 
         /*-------------------------------------------------------------------------
          * we consider NaN == NaN to be true
@@ -3252,7 +3252,7 @@ equal_ldouble(long double value, long double expected, diff_opt_t *opts)
  * Purpose:     use a absolute error formula to deal with floating point uncertainty
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 equal_float(float value, float expected, diff_opt_t *opts)
 {
     if (opts->do_nans) {
@@ -3260,8 +3260,8 @@ equal_float(float value, float expected, diff_opt_t *opts)
          * detect NaNs
          *-------------------------------------------------------------------------
          */
-        hbool_t isnan1 = HDisnan(value);
-        hbool_t isnan2 = HDisnan(expected);
+        bool isnan1 = HDisnan(value);
+        bool isnan2 = HDisnan(expected);
 
         /*-------------------------------------------------------------------------
          * we consider NaN == NaN to be true

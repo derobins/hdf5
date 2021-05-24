@@ -98,8 +98,8 @@ static int splitter_prepare_file_paths(H5FD_splitter_vfd_config_t *vfd_config, c
 static int splitter_create_single_file_at(const char *filename, hid_t fapl_id,
                                           const struct splitter_dataset_def *data);
 static int splitter_compare_expected_data(hid_t file_id, const struct splitter_dataset_def *data);
-static int run_splitter_test(const struct splitter_dataset_def *data, hbool_t ignore_wo_errors,
-                             hbool_t provide_logfile_path, const hid_t sub_fapl_ids[2]);
+static int run_splitter_test(const struct splitter_dataset_def *data, bool ignore_wo_errors,
+                             bool provide_logfile_path, const hid_t sub_fapl_ids[2]);
 static int splitter_RO_test(const struct splitter_dataset_def *data, hid_t child_fapl_id);
 static int splitter_tentative_open_test(hid_t child_fapl_id);
 static int file_exists(const char *filename, hid_t fapl_id);
@@ -246,8 +246,8 @@ test_core(void)
     void *        os_file_handle = NULL;    /* OS file handle               */
     hsize_t       file_size;                /* file size                    */
     size_t        increment;                /* core VFD increment           */
-    hbool_t       backing_store;            /* use backing store?           */
-    hbool_t       use_write_tracking;       /* write tracking flag          */
+    bool       backing_store;            /* use backing store?           */
+    bool       use_write_tracking;       /* write tracking flag          */
     size_t        write_tracking_page_size; /* write tracking page size     */
     int *         data_w = NULL;            /* data written to the dataset  */
     int *         data_r = NULL;            /* data read from the dataset   */
@@ -2396,8 +2396,8 @@ done:
  *-------------------------------------------------------------------------
  */
 static int
-run_splitter_test(const struct splitter_dataset_def *data, hbool_t ignore_wo_errors,
-                  hbool_t provide_logfile_path, const hid_t sub_fapl_ids[2])
+run_splitter_test(const struct splitter_dataset_def *data, bool ignore_wo_errors,
+                  bool provide_logfile_path, const hid_t sub_fapl_ids[2])
 {
     hid_t                       file_id     = H5I_INVALID_HID;
     hid_t                       fapl_id     = H5I_INVALID_HID;
@@ -3361,8 +3361,8 @@ test_splitter(void)
      * specified), logfile, and Write Channel error ignoring behavior.
      */
     for (i = 0; i < 4; i++) {
-        hbool_t ignore_wo_errors     = (i & 1) ? true : false;
-        hbool_t provide_logfile_path = (i & 2) ? true : false;
+        bool ignore_wo_errors     = (i & 1) ? true : false;
+        bool provide_logfile_path = (i & 2) ? true : false;
         hid_t   child_fapl_ids[2]    = {H5P_DEFAULT, H5P_DEFAULT};
 
         /* Test child driver definition/default combination */

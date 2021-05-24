@@ -2088,7 +2088,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5O_are_mdc_flushes_disabled(H5O_loc_t *oloc, hbool_t *are_disabled)
+H5O_are_mdc_flushes_disabled(H5O_loc_t *oloc, bool *are_disabled)
 {
     herr_t ret_value = SUCCEED;
 
@@ -2121,7 +2121,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Oare_mdc_flushes_disabled(hid_t object_id, hbool_t *are_disabled)
+H5Oare_mdc_flushes_disabled(hid_t object_id, bool *are_disabled)
 {
     H5VL_object_t *   vol_obj;             /* Object of loc_id */
     H5VL_loc_params_t loc_params;          /* Location parameters */

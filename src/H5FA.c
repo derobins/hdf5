@@ -58,14 +58,14 @@
 /********************/
 /* Local Prototypes */
 /********************/
-static H5FA_t *H5FA__new(H5F_t *f, haddr_t fa_addr, hbool_t from_open, void *ctx_udata);
+static H5FA_t *H5FA__new(H5F_t *f, haddr_t fa_addr, bool from_open, void *ctx_udata);
 
 /*********************/
 /* Package Variables */
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Fixed array client ID to class mapping */
 
@@ -318,7 +318,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5FA_set(const H5FA_t *fa, hsize_t 
     unsigned dblock_cache_flags = H5AC__NO_FLAGS_SET; /* Flags to unprotecting fixed array Data block */
     unsigned dblk_page_cache_flags =
         H5AC__NO_FLAGS_SET;    /* Flags to unprotecting FIxed Array Data block page */
-    hbool_t hdr_dirty = false; /* Whether header information changed */
+    bool hdr_dirty = false; /* Whether header information changed */
 
     /*
      * Check arguments.
@@ -524,7 +524,7 @@ END_FUNC(PRIV) /* end H5FA_get() */
 BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5FA_close(H5FA_t *fa))
 
     /* Local variables */
-    hbool_t pending_delete = false;       /* Whether the array is pending deletion */
+    bool pending_delete = false;       /* Whether the array is pending deletion */
     haddr_t fa_addr        = HADDR_UNDEF; /* Address of array (for deletion) */
 
     /*

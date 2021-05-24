@@ -59,7 +59,7 @@
 /********************************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /********************/
 /* Static Variables */

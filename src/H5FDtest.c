@@ -89,10 +89,10 @@
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5FD__supports_swmr_test(const char *vfd_name)
 {
-    hbool_t ret_value = false;
+    bool ret_value = false;
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 

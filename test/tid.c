@@ -603,7 +603,7 @@ typedef struct rct_obj_t {
     /* Whether we are currently freeing this object directly
      * through H5Idec_ref().
      */
-    hbool_t freeing;
+    bool freeing;
 
     /* Pointer to the master list of all objects */
     rct_obj_list_t *list;

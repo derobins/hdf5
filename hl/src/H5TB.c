@@ -21,7 +21,7 @@
  *-------------------------------------------------------------------------
  */
 
-static hbool_t H5TB_find_field(const char *field, const char *field_list);
+static bool H5TB_find_field(const char *field, const char *field_list);
 
 static herr_t H5TB_attach_attributes(const char *table_title, hid_t loc_id, const char *dset_name,
                                      hsize_t nfields, hid_t tid);
@@ -2036,7 +2036,7 @@ H5TBinsert_field(hid_t loc_id, const char *dset_name, const char *field_name, hi
     char *         member_name  = NULL;
     unsigned char *tmp_buf      = NULL;
     unsigned char *tmp_fill_buf = NULL;
-    hbool_t        inserted;
+    bool        inserted;
     herr_t         ret_val = -1;
 
     /* check the arguments */
@@ -3159,7 +3159,7 @@ out:
  *
  *-------------------------------------------------------------------------
  */
-H5_ATTR_PURE static hbool_t
+H5_ATTR_PURE static bool
 H5TB_find_field(const char *field, const char *field_list)
 {
     const char *start = field_list;

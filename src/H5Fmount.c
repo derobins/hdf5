@@ -270,7 +270,7 @@ H5F__unmount(H5G_loc_t *loc, const char *name)
     H5G_name_t mp_path;              /* Mount point group hier. path */
     H5O_loc_t  mp_oloc;              /* Mount point object location  */
     H5G_loc_t  mp_loc;               /* entry used to open mount point*/
-    hbool_t    mp_loc_setup = false; /* Whether mount point location is set up */
+    bool    mp_loc_setup = false; /* Whether mount point location is set up */
     H5G_loc_t  root_loc;             /* Group location of root of file to unmount */
     int        child_idx;            /* Index of child in parent's mtab */
     herr_t     ret_value = SUCCEED;  /*return value			*/
@@ -406,10 +406,10 @@ done:
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5F_is_mount(const H5F_t *file)
 {
-    hbool_t ret_value = false; /* Return value */
+    bool ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 

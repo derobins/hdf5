@@ -83,7 +83,7 @@ typedef struct H5FD_multi_fapl_t {
     hid_t      memb_fapl[H5FD_MEM_NTYPES]; /*member access properties      */
     char *     memb_name[H5FD_MEM_NTYPES]; /*name generators               */
     haddr_t    memb_addr[H5FD_MEM_NTYPES]; /*starting addr per member      */
-    hbool_t    relax;                      /*less stringent error checking */
+    bool    relax;                      /*less stringent error checking */
 } H5FD_multi_fapl_t;
 
 /*
@@ -138,9 +138,9 @@ static herr_t  H5FD_multi_read(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, ha
                                void *_buf /*out*/);
 static herr_t  H5FD_multi_write(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, size_t size,
                                 const void *_buf);
-static herr_t  H5FD_multi_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD_multi_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD_multi_lock(H5FD_t *_file, hbool_t rw);
+static herr_t  H5FD_multi_flush(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD_multi_truncate(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD_multi_lock(H5FD_t *_file, bool rw);
 static herr_t  H5FD_multi_unlock(H5FD_t *_file);
 static herr_t  H5FD_multi_delete(const char *filename, hid_t fapl_id);
 
@@ -396,7 +396,7 @@ H5Pset_fapl_split(hid_t fapl, const char *meta_ext, hid_t meta_plist_id, const c
  */
 herr_t
 H5Pset_fapl_multi(hid_t fapl_id, const H5FD_mem_t *memb_map, const hid_t *memb_fapl,
-                  const char *const *memb_name, const haddr_t *memb_addr, hbool_t relax)
+                  const char *const *memb_name, const haddr_t *memb_addr, bool relax)
 {
     H5FD_multi_fapl_t  fa;
     H5FD_mem_t         mt, mmt;
@@ -497,7 +497,7 @@ H5Pset_fapl_multi(hid_t fapl_id, const H5FD_mem_t *memb_map, const hid_t *memb_f
  */
 herr_t
 H5Pget_fapl_multi(hid_t fapl_id, H5FD_mem_t *memb_map /*out*/, hid_t *memb_fapl /*out*/,
-                  char **memb_name /*out*/, haddr_t *memb_addr /*out*/, hbool_t *relax)
+                  char **memb_name /*out*/, haddr_t *memb_addr /*out*/, bool *relax)
 {
     const H5FD_multi_fapl_t *fa;
     H5FD_mem_t               mt;
@@ -697,8 +697,8 @@ H5FD_multi_sb_decode(H5FD_t *_file, const char *name, const unsigned char *buf)
     H5FD_mem_t         map[H5FD_MEM_NTYPES];
     int                i;
     size_t             nseen       = 0;
-    hbool_t            map_changed = false;
-    hbool_t            in_use[H5FD_MEM_NTYPES];
+    bool            map_changed = false;
+    bool            in_use[H5FD_MEM_NTYPES];
     const char *       memb_name[H5FD_MEM_NTYPES];
     haddr_t            memb_addr[H5FD_MEM_NTYPES];
     haddr_t            memb_eoa[H5FD_MEM_NTYPES];
@@ -1695,7 +1695,7 @@ H5FD_multi_write(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, si
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_multi_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing)
+H5FD_multi_flush(H5FD_t *_file, hid_t dxpl_id, bool closing)
 {
     H5FD_multi_t *     file = (H5FD_multi_t *)_file;
     H5FD_mem_t         mt;
@@ -1768,7 +1768,7 @@ H5FD_multi_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing)
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_multi_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing)
+H5FD_multi_truncate(H5FD_t *_file, hid_t dxpl_id, bool closing)
 {
     H5FD_multi_t *     file = (H5FD_multi_t *)_file;
     H5FD_mem_t         mt;
@@ -1811,7 +1811,7 @@ H5FD_multi_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing)
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD_multi_lock(H5FD_t *_file, hbool_t rw)
+H5FD_multi_lock(H5FD_t *_file, bool rw)
 {
     H5FD_multi_t *     file    = (H5FD_multi_t *)_file;
     int                nerrors = 0;

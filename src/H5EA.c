@@ -66,17 +66,17 @@ typedef herr_t (*H5EA__unprotect_func_t)(void *thing, unsigned cache_flags);
 /* Local Prototypes */
 /********************/
 
-static herr_t  H5EA__lookup_elmt(const H5EA_t *ea, hsize_t idx, hbool_t will_extend, unsigned thing_acc,
+static herr_t  H5EA__lookup_elmt(const H5EA_t *ea, hsize_t idx, bool will_extend, unsigned thing_acc,
                                  void **thing, uint8_t **thing_elmt_buf, hsize_t *thing_elmt_idx,
                                  H5EA__unprotect_func_t *thing_unprot_func);
-static H5EA_t *H5EA__new(H5F_t *f, haddr_t ea_addr, hbool_t from_open, void *ctx_udata);
+static H5EA_t *H5EA__new(H5F_t *f, haddr_t ea_addr, bool from_open, void *ctx_udata);
 
 /*********************/
 /* Package Variables */
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Extensible array client ID to class mapping */
 
@@ -334,8 +334,8 @@ BEGIN_FUNC(STATIC, ERR, herr_t, SUCCEED, FAIL,
     H5EA_dblk_page_t *dblk_page          = NULL;               /* Pointer to data block page for EA */
     unsigned          iblock_cache_flags = H5AC__NO_FLAGS_SET; /* Flags to unprotecting index block */
     unsigned          sblock_cache_flags = H5AC__NO_FLAGS_SET; /* Flags to unprotecting super block */
-    hbool_t           stats_changed      = false;              /* Whether array statistics changed */
-    hbool_t           hdr_dirty          = false;              /* Whether the array header changed */
+    bool           stats_changed      = false;              /* Whether array statistics changed */
+    bool           hdr_dirty          = false;              /* Whether the array header changed */
 
     /*
      * Check arguments.
@@ -662,7 +662,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5EA_set(const H5EA_t *ea, hsize_t 
     uint8_t *thing_elmt_buf; /* Pointer to the element buffer for the array metadata */
     hsize_t  thing_elmt_idx; /* Index of the element in the element buffer for the array metadata */
     H5EA__unprotect_func_t thing_unprot_func; /* Function pointer for unprotecting the array metadata */
-    hbool_t                will_extend; /* Flag indicating if setting the element will extend the array */
+    bool                will_extend; /* Flag indicating if setting the element will extend the array */
     unsigned               thing_cache_flags = H5AC__NO_FLAGS_SET; /* Flags for unprotecting array metadata */
 
     /*
@@ -830,7 +830,7 @@ END_FUNC(PRIV) /* end H5EA_depend() */
 BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL, H5EA_close(H5EA_t *ea))
 
     /* Local variables */
-    hbool_t pending_delete = false;       /* Whether the array is pending deletion */
+    bool pending_delete = false;       /* Whether the array is pending deletion */
     haddr_t ea_addr        = HADDR_UNDEF; /* Address of array (for deletion) */
 
     /*

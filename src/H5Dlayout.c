@@ -160,7 +160,7 @@ done:
  *-------------------------------------------------------------------------
  */
 size_t
-H5D__layout_meta_size(const H5F_t *f, const H5O_layout_t *layout, hbool_t include_compact_data)
+H5D__layout_meta_size(const H5F_t *f, const H5O_layout_t *layout, bool include_compact_data)
 {
     size_t ret_value = 0; /* Return value */
 
@@ -351,7 +351,7 @@ H5D__layout_set_latest_indexing(H5O_layout_t *layout, const H5S_t *space, const 
             hsize_t  max_dims[H5O_LAYOUT_NDIMS]; /* Maximum dimension sizes */
             hsize_t  cur_dims[H5O_LAYOUT_NDIMS]; /* Current dimension sizes */
             unsigned unlim_count = 0;            /* Count of unlimited max. dimensions */
-            hbool_t  single      = true;         /* Fulfill single chunk indexing */
+            bool  single      = true;         /* Fulfill single chunk indexing */
             unsigned u;                          /* Local index variable */
 
             /* Query the dataspace's dimensions */
@@ -454,7 +454,7 @@ H5D__layout_oh_create(H5F_t *file, H5O_t *oh, H5D_t *dset, hid_t dapl_id)
     H5O_layout_t *    layout;                /* Dataset's layout information */
     const H5O_fill_t *fill_prop;             /* Pointer to dataset's fill value information */
     unsigned          layout_mesg_flags;     /* Flags for inserting layout message */
-    hbool_t           layout_init = false;   /* Flag to indicate that chunk information was initialized */
+    bool           layout_init = false;   /* Flag to indicate that chunk information was initialized */
     herr_t            ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE_TAG(dset->oloc.addr)
@@ -593,7 +593,7 @@ herr_t
 H5D__layout_oh_read(H5D_t *dataset, hid_t dapl_id, H5P_genplist_t *plist)
 {
     htri_t  msg_exists;              /* Whether a particular type of message exists */
-    hbool_t layout_copied = false;   /* Flag to indicate that layout message was copied */
+    bool layout_copied = false;   /* Flag to indicate that layout message was copied */
     herr_t  ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

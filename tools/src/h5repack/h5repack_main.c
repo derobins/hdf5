@@ -486,8 +486,8 @@ parse_command_line(int argc, const char **argv, pack_opt_t *options)
 {
     h5tools_vol_info_t in_vol_info;
     h5tools_vol_info_t out_vol_info;
-    hbool_t            custom_in_fapl  = false;
-    hbool_t            custom_out_fapl = false;
+    bool            custom_in_fapl  = false;
+    bool            custom_out_fapl = false;
     hid_t              tmp_fapl        = H5I_INVALID_HID;
     int                bound, opt;
     int                ret_value = 0;

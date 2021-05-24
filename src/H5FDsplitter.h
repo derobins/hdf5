@@ -81,7 +81,7 @@ typedef struct H5FD_splitter_vfd_config_t {
     hid_t        wo_fapl_id;
     char         wo_path[H5FD_SPLITTER_PATH_MAX + 1];
     char         log_file_path[H5FD_SPLITTER_PATH_MAX + 1];
-    hbool_t      ignore_wo_errs;
+    bool      ignore_wo_errs;
 } H5FD_splitter_vfd_config_t;
 
 #ifdef __cplusplus

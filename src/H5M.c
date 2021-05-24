@@ -59,7 +59,7 @@ static herr_t H5M__get_api_common(hid_t map_id, hid_t key_mem_type_id, const voi
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -78,7 +78,7 @@ static const H5I_class_t H5I_MAP_CLS[1] = {{
 }};
 
 /* Flag indicating "top" of interface has been initialized */
-static hbool_t H5M_top_package_initialize_s = false;
+static bool H5M_top_package_initialize_s = false;
 
 /*-------------------------------------------------------------------------
  * Function: H5M_init

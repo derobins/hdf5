@@ -853,7 +853,7 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 hid_t
-H5P_copy_plist(const H5P_genplist_t *old_plist, hbool_t app_ref)
+H5P_copy_plist(const H5P_genplist_t *old_plist, bool app_ref)
 {
     H5P_genclass_t *tclass;           /* Temporary class pointer */
     H5P_genplist_t *new_plist = NULL; /* New property list generated from copy */
@@ -863,7 +863,7 @@ H5P_copy_plist(const H5P_genplist_t *old_plist, hbool_t app_ref)
     H5SL_node_t *   curr_node;        /* Current node in skip list */
     H5SL_t *        seen = NULL;      /* Skip list containing properties already seen */
     size_t          nseen;            /* Number of items 'seen' */
-    hbool_t         has_parent_class; /* Flag to indicate that this property list's class has a parent */
+    bool         has_parent_class; /* Flag to indicate that this property list's class has a parent */
     hid_t           ret_value = H5I_INVALID_HID; /* return value */
 
     FUNC_ENTER_NOAPI(H5I_INVALID_HID)
@@ -972,7 +972,7 @@ H5P_copy_plist(const H5P_genplist_t *old_plist, hbool_t app_ref)
      * initialize each with default value & make property 'copy' callback.
      */
     tclass           = old_plist->pclass;
-    has_parent_class = (hbool_t)(tclass != NULL && tclass->parent != NULL && tclass->parent->nprops > 0);
+    has_parent_class = (bool)(tclass != NULL && tclass->parent != NULL && tclass->parent->nprops > 0);
     while (tclass != NULL) {
         if (tclass->nprops > 0) {
             /* Walk through the properties in the old class */
@@ -1448,7 +1448,7 @@ static herr_t
 H5P__free_prop_cb(void *item, void H5_ATTR_UNUSED *key, void *op_data)
 {
     H5P_genprop_t *tprop   = (H5P_genprop_t *)item; /* Temporary pointer to property */
-    hbool_t        make_cb = *(hbool_t *)op_data;   /* Whether to make property 'close' callback */
+    bool        make_cb = *(bool *)op_data;   /* Whether to make property 'close' callback */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -1575,7 +1575,7 @@ H5P__access_class(H5P_genclass_t *pclass, H5P_class_mod_t mod)
 
         /* Free the class properties without making callbacks */
         if (pclass->props) {
-            hbool_t make_cb = false;
+            bool make_cb = false;
 
             H5SL_destroy(pclass->props, H5P__free_prop_cb, &make_cb);
         } /* end if */
@@ -1729,7 +1729,7 @@ done:
             if (pclass->name)
                 H5MM_xfree(pclass->name);
             if (pclass->props) {
-                hbool_t make_cb = false;
+                bool make_cb = false;
 
                 H5SL_destroy(pclass->props, H5P__free_prop_cb, &make_cb);
             } /* end if */
@@ -1905,7 +1905,7 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 hid_t
-H5P_create_id(H5P_genclass_t *pclass, hbool_t app_ref)
+H5P_create_id(H5P_genclass_t *pclass, bool app_ref)
 {
     H5P_genclass_t *tclass;                      /* Temporary class pointer */
     H5P_genplist_t *plist     = NULL;            /* Property list created */
@@ -3497,7 +3497,7 @@ H5P__get_nprops_plist(const H5P_genplist_t *plist, size_t *nprops)
  REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
-H5P_get_nprops_pclass(const H5P_genclass_t *pclass, size_t *nprops, hbool_t recurse)
+H5P_get_nprops_pclass(const H5P_genclass_t *pclass, size_t *nprops, bool recurse)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -4214,7 +4214,7 @@ iteration, the function's behavior is undefined.
  REVISION LOG
 --------------------------------------------------------------------------*/
 int
-H5P__iterate_plist(const H5P_genplist_t *plist, hbool_t iter_all_prop, int *idx, H5P_iterate_int_t cb_func,
+H5P__iterate_plist(const H5P_genplist_t *plist, bool iter_all_prop, int *idx, H5P_iterate_int_t cb_func,
                    void *udata)
 {
     H5P_genclass_t *    tclass;           /* Temporary class pointer */
@@ -5081,7 +5081,7 @@ H5P_close(H5P_genplist_t *plist)
     H5P_genclass_t *tclass;              /* Temporary class pointer */
     H5SL_t *        seen = NULL;         /* Skip list to hold names of properties already seen */
     size_t          nseen;               /* Number of items 'seen' */
-    hbool_t         has_parent_class;    /* Flag to indicate that this property list's class has a parent */
+    bool         has_parent_class;    /* Flag to indicate that this property list's class has a parent */
     size_t          ndel;                /* Number of items deleted */
     H5SL_node_t *   curr_node;           /* Current node in skip list */
     H5P_genprop_t * tmp;                 /* Temporary pointer to properties */
@@ -5148,7 +5148,7 @@ H5P_close(H5P_genplist_t *plist)
      * initialize each with default value & make property 'remove' callback.
      */
     tclass           = plist->pclass;
-    has_parent_class = (hbool_t)(tclass != NULL && tclass->parent != NULL && tclass->parent->nprops > 0);
+    has_parent_class = (bool)(tclass != NULL && tclass->parent != NULL && tclass->parent->nprops > 0);
     while (tclass != NULL) {
         if (tclass->nprops > 0) {
             /* Walk through the properties in the class */

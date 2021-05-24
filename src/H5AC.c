@@ -60,7 +60,7 @@
 /* Local Prototypes */
 /********************/
 
-static herr_t H5AC__check_if_write_permitted(const H5F_t *f, hbool_t *write_permitted_ptr);
+static herr_t H5AC__check_if_write_permitted(const H5F_t *f, bool *write_permitted_ptr);
 static herr_t H5AC__ext_config_2_int_config(H5AC_cache_config_t *ext_conf_ptr,
                                             H5C_auto_size_ctl_t *int_conf_ptr);
 #if H5AC_DO_TAGGING_SANITY_CHECKS
@@ -72,7 +72,7 @@ static herr_t H5AC__verify_tag(const H5AC_class_t *type);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -229,11 +229,11 @@ H5AC_term_package(void)
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5AC_cache_image_pending(const H5F_t *f)
 {
     H5C_t * cache_ptr;
-    hbool_t ret_value = false; /* Return value */
+    bool ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -457,8 +457,8 @@ done:
 herr_t
 H5AC_dest(H5F_t *f)
 {
-    hbool_t log_enabled;  /* TRUE if logging was set up */
-    hbool_t curr_logging; /* TRUE if currently logging */
+    bool log_enabled;  /* TRUE if logging was set up */
+    bool curr_logging; /* TRUE if currently logging */
 #ifdef H5_HAVE_PARALLEL
     H5AC_aux_t *aux_ptr = NULL;
 #endif                          /* H5_HAVE_PARALLEL */
@@ -745,14 +745,14 @@ done:
 herr_t
 H5AC_get_entry_status(const H5F_t *f, haddr_t addr, unsigned *status)
 {
-    hbool_t in_cache;     /* Entry @ addr is in the cache */
-    hbool_t is_dirty;     /* Entry @ addr is in the cache and dirty */
-    hbool_t is_protected; /* Entry @ addr is in the cache and protected */
-    hbool_t is_pinned;    /* Entry @ addr is in the cache and pinned */
-    hbool_t is_corked;
-    hbool_t is_flush_dep_child;  /* Entry @ addr is in the cache and is a flush dependency child */
-    hbool_t is_flush_dep_parent; /* Entry @ addr is in the cache and is a flush dependency parent */
-    hbool_t image_is_up_to_date; /* Entry @ addr is in the cache and has an up to date image */
+    bool in_cache;     /* Entry @ addr is in the cache */
+    bool is_dirty;     /* Entry @ addr is in the cache and dirty */
+    bool is_protected; /* Entry @ addr is in the cache and protected */
+    bool is_pinned;    /* Entry @ addr is in the cache and pinned */
+    bool is_corked;
+    bool is_flush_dep_child;  /* Entry @ addr is in the cache and is a flush dependency child */
+    bool is_flush_dep_parent; /* Entry @ addr is in the cache and is a flush dependency parent */
+    bool image_is_up_to_date; /* Entry @ addr is in the cache and has an up to date image */
     herr_t  ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -873,7 +873,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5AC_load_cache_image_on_next_protect(H5F_t *f, haddr_t addr, hsize_t len, hbool_t rw)
+H5AC_load_cache_image_on_next_protect(H5F_t *f, haddr_t addr, hsize_t len, bool rw)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -1622,8 +1622,8 @@ done:
 herr_t
 H5AC_unprotect(H5F_t *f, const H5AC_class_t *type, haddr_t addr, void *thing, unsigned flags)
 {
-    hbool_t dirtied;
-    hbool_t deleted;
+    bool dirtied;
+    bool deleted;
 #ifdef H5_HAVE_PARALLEL
     H5AC_aux_t *aux_ptr = NULL;
 #endif                          /* H5_HAVE_PARALLEL */
@@ -1644,8 +1644,8 @@ H5AC_unprotect(H5F_t *f, const H5AC_class_t *type, haddr_t addr, void *thing, un
     HDassert(((H5AC_info_t *)thing)->type == type);
 
     dirtied =
-        (hbool_t)(((flags & H5AC__DIRTIED_FLAG) == H5AC__DIRTIED_FLAG) || (((H5AC_info_t *)thing)->dirtied));
-    deleted = (hbool_t)((flags & H5C__DELETED_FLAG) == H5C__DELETED_FLAG);
+        (bool)(((flags & H5AC__DIRTIED_FLAG) == H5AC__DIRTIED_FLAG) || (((H5AC_info_t *)thing)->dirtied));
+    deleted = (bool)((flags & H5C__DELETED_FLAG) == H5C__DELETED_FLAG);
 
     /* Check if the size changed out from underneath us, if we're not deleting
      *  the entry.
@@ -1707,7 +1707,7 @@ herr_t
 H5AC_get_cache_auto_resize_config(const H5AC_t *cache_ptr, H5AC_cache_config_t *config_ptr)
 {
     H5C_auto_size_ctl_t internal_config;
-    hbool_t             evictions_enabled;
+    bool             evictions_enabled;
     herr_t              ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -1825,7 +1825,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5AC_get_cache_flush_in_progress(H5AC_t *cache_ptr, hbool_t *flush_in_progress_ptr)
+H5AC_get_cache_flush_in_progress(H5AC_t *cache_ptr, bool *flush_in_progress_ptr)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -2135,12 +2135,12 @@ H5AC__check_if_write_permitted(const H5F_t
                                    H5_ATTR_UNUSED
 #endif /* H5_HAVE_PARALLEL */
                                        *f,
-                               hbool_t *write_permitted_ptr)
+                               bool *write_permitted_ptr)
 {
 #ifdef H5_HAVE_PARALLEL
     H5AC_aux_t *aux_ptr = NULL;
 #endif /* H5_HAVE_PARALLEL */
-    hbool_t write_permitted = true;
+    bool write_permitted = true;
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -2373,7 +2373,7 @@ done:
  *------------------------------------------------------------------------------
  */
 herr_t
-H5AC_evict_tagged_metadata(H5F_t *f, haddr_t metadata_tag, hbool_t match_global)
+H5AC_evict_tagged_metadata(H5F_t *f, haddr_t metadata_tag, bool match_global)
 {
     /* Variable Declarations */
     herr_t ret_value = SUCCEED;
@@ -2471,7 +2471,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5AC_cork(H5F_t *f, haddr_t obj_addr, unsigned action, hbool_t *corked)
+H5AC_cork(H5F_t *f, haddr_t obj_addr, unsigned action, bool *corked)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 

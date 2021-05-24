@@ -45,7 +45,7 @@ typedef struct H5LD_memb_t {
 #define STR_INIT_LEN 4096 /*initial length            */
 
 static char *  h5tools_escape(char *s, size_t size);
-static hbool_t h5tools_str_is_zero(const void *_mem, size_t size);
+static bool h5tools_str_is_zero(const void *_mem, size_t size);
 static void    h5tools_print_char(h5tools_str_t *str, const h5tool_format_t *info, char ch);
 void           h5tools_str_indent(h5tools_str_t *str, const h5tool_format_t *info, h5tools_context_t *ctx);
 
@@ -1482,7 +1482,7 @@ h5tools_escape(char *s /*in,out*/, size_t size)
  *              Monday, June  7, 1999
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 h5tools_str_is_zero(const void *_mem, size_t size)
 {
     const unsigned char *mem = (const unsigned char *)_mem;

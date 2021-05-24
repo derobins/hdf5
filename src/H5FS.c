@@ -62,7 +62,7 @@ static herr_t H5FS__sinfo_free_node_cb(void *item, void *key, void *op_data);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the H5FS_section_class_t sequence information */
 H5FL_SEQ_DEFINE(H5FS_section_class_t);
@@ -907,7 +907,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5FS_free(H5F_t *f, H5FS_t *fspace, hbool_t free_file_space)
+H5FS_free(H5F_t *f, H5FS_t *fspace, bool free_file_space)
 {
     haddr_t  saved_addr;          /* Previous address of item */
     unsigned cache_flags;         /* Flags for unprotecting cache entries */

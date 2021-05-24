@@ -7913,7 +7913,7 @@ test_deprec(hid_t fapl)
     int      perm[2]  = {0, 1};   /* Dimensions permutations for array datatype */
     hsize_t  rdims[2] = {0, 0};   /* Dimensions for querying array datatype */
     int      rperm[2] = {-2, -2}; /* Dimensions permutations for array datatype */
-    hbool_t  dim_mismatch;        /* Whether any dimensions didn't match */
+    bool  dim_mismatch;        /* Whether any dimensions didn't match */
     char     filename[1024];
     unsigned u;      /* Local index variable */
     herr_t   status; /* Generic routine value */

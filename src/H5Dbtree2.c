@@ -109,13 +109,13 @@ static herr_t H5D__bt2_found_cb(const void *nrecord, void *op_data);
 static herr_t H5D__bt2_remove_cb(const void *nrecord, void *_udata);
 
 /* Callback for H5B2_update() which is called in H5D__bt2_idx_insert() */
-static herr_t H5D__bt2_mod_cb(void *_record, void *_op_data, hbool_t *changed);
+static herr_t H5D__bt2_mod_cb(void *_record, void *_op_data, bool *changed);
 
 /* Chunked layout indexing callbacks for v2 B-tree indexing */
 static herr_t  H5D__bt2_idx_init(const H5D_chk_idx_info_t *idx_info, const H5S_t *space,
                                  haddr_t dset_ohdr_addr);
 static herr_t  H5D__bt2_idx_create(const H5D_chk_idx_info_t *idx_info);
-static hbool_t H5D__bt2_idx_is_space_alloc(const H5O_storage_chunk_t *storage);
+static bool H5D__bt2_idx_is_space_alloc(const H5O_storage_chunk_t *storage);
 static herr_t  H5D__bt2_idx_insert(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata,
                                    const H5D_t *dset);
 static herr_t  H5D__bt2_idx_get_addr(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata);
@@ -127,7 +127,7 @@ static herr_t  H5D__bt2_idx_copy_setup(const H5D_chk_idx_info_t *idx_info_src,
                                        const H5D_chk_idx_info_t *idx_info_dst);
 static herr_t  H5D__bt2_idx_copy_shutdown(H5O_storage_chunk_t *storage_src, H5O_storage_chunk_t *storage_dst);
 static herr_t  H5D__bt2_idx_size(const H5D_chk_idx_info_t *idx_info, hsize_t *size);
-static herr_t  H5D__bt2_idx_reset(H5O_storage_chunk_t *storage, hbool_t reset_addr);
+static herr_t  H5D__bt2_idx_reset(H5O_storage_chunk_t *storage, bool reset_addr);
 static herr_t  H5D__bt2_idx_dump(const H5O_storage_chunk_t *storage, FILE *stream);
 static herr_t  H5D__bt2_idx_dest(const H5D_chk_idx_info_t *idx_info);
 
@@ -799,7 +799,7 @@ done:
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 H5D__bt2_idx_is_space_alloc(const H5O_storage_chunk_t *storage)
 {
     FUNC_ENTER_STATIC_NOERR
@@ -807,7 +807,7 @@ H5D__bt2_idx_is_space_alloc(const H5O_storage_chunk_t *storage)
     /* Check args */
     HDassert(storage);
 
-    FUNC_LEAVE_NOAPI((hbool_t)H5F_addr_defined(storage->idx_addr))
+    FUNC_LEAVE_NOAPI((bool)H5F_addr_defined(storage->idx_addr))
 } /* end H5D__bt2_idx_is_space_alloc() */
 
 /*-------------------------------------------------------------------------
@@ -825,7 +825,7 @@ H5D__bt2_idx_is_space_alloc(const H5O_storage_chunk_t *storage)
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5D__bt2_mod_cb(void *_record, void *_op_data, hbool_t *changed)
+H5D__bt2_mod_cb(void *_record, void *_op_data, bool *changed)
 {
     H5D_bt2_ud_t *   op_data = (H5D_bt2_ud_t *)_op_data;   /* User data for v2 B-tree calls */
     H5D_chunk_rec_t *record  = (H5D_chunk_rec_t *)_record; /* Chunk record */
@@ -969,7 +969,7 @@ H5D__bt2_idx_get_addr(const H5D_chk_idx_info_t *idx_info, H5D_chunk_ud_t *udata)
     H5D_bt2_ud_t    bt2_udata;           /* User data for v2 B-tree calls */
     H5D_chunk_rec_t found_rec;           /* Record found from searching for object */
     unsigned        u;                   /* Local index variable */
-    hbool_t         found;               /* Whether chunk was found */
+    bool         found;               /* Whether chunk was found */
     herr_t          ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1435,7 +1435,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5D__bt2_idx_reset(H5O_storage_chunk_t *storage, hbool_t reset_addr)
+H5D__bt2_idx_reset(H5O_storage_chunk_t *storage, bool reset_addr)
 {
     FUNC_ENTER_STATIC_NOERR
 

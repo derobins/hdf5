@@ -70,20 +70,20 @@ struct H5Tref_dsetreg {
 /* Local Prototypes */
 /********************/
 
-static herr_t H5T__ref_mem_isnull(const H5VL_object_t *src_file, const void *src_buf, hbool_t *isnull);
+static herr_t H5T__ref_mem_isnull(const H5VL_object_t *src_file, const void *src_buf, bool *isnull);
 static herr_t H5T__ref_mem_setnull(H5VL_object_t *dst_file, void *dst_buf, void *bg_buf);
 static size_t H5T__ref_mem_getsize(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
-                                   H5VL_object_t *dst_file, hbool_t *dst_copy);
+                                   H5VL_object_t *dst_file, bool *dst_copy);
 static herr_t H5T__ref_mem_read(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
                                 H5VL_object_t *dst_file, void *dst_buf, size_t dst_size);
 static herr_t H5T__ref_mem_write(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
                                  H5R_type_t src_type, H5VL_object_t *dst_file, void *dst_buf, size_t dst_size,
                                  void *bg_buf);
 
-static herr_t H5T__ref_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, hbool_t *isnull);
+static herr_t H5T__ref_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, bool *isnull);
 static herr_t H5T__ref_disk_setnull(H5VL_object_t *dst_file, void *dst_buf, void *bg_buf);
 static size_t H5T__ref_disk_getsize(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
-                                    H5VL_object_t *dst_file, hbool_t *dst_copy);
+                                    H5VL_object_t *dst_file, bool *dst_copy);
 static herr_t H5T__ref_disk_read(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
                                  H5VL_object_t *dst_file, void *dst_buf, size_t dst_size);
 static herr_t H5T__ref_disk_write(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
@@ -91,16 +91,16 @@ static herr_t H5T__ref_disk_write(H5VL_object_t *src_file, const void *src_buf, 
                                   size_t dst_size, void *bg_buf);
 
 /* For compatibility */
-static herr_t H5T__ref_obj_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, hbool_t *isnull);
+static herr_t H5T__ref_obj_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, bool *isnull);
 static size_t H5T__ref_obj_disk_getsize(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
-                                        H5VL_object_t *dst_file, hbool_t *dst_copy);
+                                        H5VL_object_t *dst_file, bool *dst_copy);
 static herr_t H5T__ref_obj_disk_read(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
                                      H5VL_object_t *dst_file, void *dst_buf, size_t dst_size);
 
 static herr_t H5T__ref_dsetreg_disk_isnull(const H5VL_object_t *src_file, const void *src_buf,
-                                           hbool_t *isnull);
+                                           bool *isnull);
 static size_t H5T__ref_dsetreg_disk_getsize(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
-                                            H5VL_object_t *dst_file, hbool_t *dst_copy);
+                                            H5VL_object_t *dst_file, bool *dst_copy);
 static herr_t H5T__ref_dsetreg_disk_read(H5VL_object_t *src_file, const void *src_buf, size_t src_size,
                                          H5VL_object_t *dst_file, void *dst_buf, size_t dst_size);
 
@@ -236,7 +236,7 @@ H5T__ref_set_loc(H5T_t *dt, H5VL_object_t *file, H5T_loc_t loc)
 
 #ifndef NDEBUG
                 {
-                    hbool_t is_native = false; /* Whether the file is using the native VOL connector */
+                    bool is_native = false; /* Whether the file is using the native VOL connector */
 
                     /* Check if using native VOL connector */
                     if (H5VL_object_is_native(file, &is_native) < 0)
@@ -264,7 +264,7 @@ H5T__ref_set_loc(H5T_t *dt, H5VL_object_t *file, H5T_loc_t loc)
 
 #ifndef NDEBUG
                 {
-                    hbool_t is_native = false; /* Whether the file is using the native VOL connector */
+                    bool is_native = false; /* Whether the file is using the native VOL connector */
 
                     /* Check if using native VOL connector */
                     if (H5VL_object_is_native(file, &is_native) < 0)
@@ -353,7 +353,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__ref_mem_isnull(const H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf, hbool_t *isnull)
+H5T__ref_mem_isnull(const H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf, bool *isnull)
 {
     const unsigned char zeros[H5T_REF_MEM_SIZE] = {0};
     herr_t              ret_value               = SUCCEED;
@@ -403,7 +403,7 @@ H5T__ref_mem_setnull(H5VL_object_t H5_ATTR_UNUSED *dst_file, void *dst_buf, H5_A
  */
 static size_t
 H5T__ref_mem_getsize(H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf,
-                     size_t H5_ATTR_UNUSED src_size, H5VL_object_t *dst_file, hbool_t *dst_copy)
+                     size_t H5_ATTR_UNUSED src_size, H5VL_object_t *dst_file, bool *dst_copy)
 {
     H5VL_object_t *       vol_obj = NULL; /* VOL object for src ref's location */
     const H5R_ref_priv_t *src_ref = (const H5R_ref_priv_t *)src_buf;
@@ -420,7 +420,7 @@ H5T__ref_mem_getsize(H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf
     HDassert(src_size == H5T_REF_MEM_SIZE);
 
     if (NULL != dst_file) {
-        hbool_t files_equal = true; /* Whether src & dst references are in same file */
+        bool files_equal = true; /* Whether src & dst references are in same file */
 
         /* Retrieve VOL object */
         if (NULL == (vol_obj = H5VL_vol_object(src_ref->loc_id)))
@@ -440,7 +440,7 @@ H5T__ref_mem_getsize(H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf
         /* Pass the correct encoding version for the selection depending on the
          * file libver bounds, this is later retrieved in H5S hyper encode */
         if (src_ref->type == (int8_t)H5R_DATASET_REGION2) {
-            hbool_t is_native = false; /* Whether the dest. file is using the native VOL connector */
+            bool is_native = false; /* Whether the dest. file is using the native VOL connector */
 
             /* Check if using native VOL connector */
             if (H5VL_object_is_native(dst_file, &is_native) < 0)
@@ -505,7 +505,7 @@ H5T__ref_mem_read(H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf, s
 {
     H5VL_object_t *       vol_obj; /* VOL object for src ref's location */
     const H5R_ref_priv_t *src_ref     = (const H5R_ref_priv_t *)src_buf;
-    hbool_t               files_equal = true; /* Whether src & dst references are in same file */
+    bool               files_equal = true; /* Whether src & dst references are in same file */
     char                  file_name_buf_static[256] = {'\0'}; /* File name */
     char *                file_name_buf_dyn =
         NULL; /* Pointer to dynamically allocated buffer for file name, if static buffer is too small */
@@ -540,7 +540,7 @@ H5T__ref_mem_read(H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf, s
     /* Pass the correct encoding version for the selection depending on the
      * file libver bounds, this is later retrieved in H5S hyper encode */
     if (src_ref->type == (int8_t)H5R_DATASET_REGION2) {
-        hbool_t is_native = false; /* Whether the dest. file is using the native VOL connector */
+        bool is_native = false; /* Whether the dest. file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(dst_file, &is_native) < 0)
@@ -621,7 +621,7 @@ H5T__ref_mem_write(H5VL_object_t *src_file, const void *src_buf, size_t src_size
 
 #ifndef NDEBUG
     if ((src_type == H5R_OBJECT1) || (src_type == H5R_DATASET_REGION1)) {
-        hbool_t is_native = false; /* Whether the src file is using the native VOL connector */
+        bool is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)
@@ -710,7 +710,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__ref_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, hbool_t *isnull)
+H5T__ref_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, bool *isnull)
 {
     const uint8_t *p = (const uint8_t *)src_buf;
     H5R_type_t     ref_type;
@@ -801,7 +801,7 @@ done:
  */
 static size_t
 H5T__ref_disk_getsize(H5VL_object_t H5_ATTR_UNUSED *src_file, const void *src_buf, size_t src_size,
-                      H5VL_object_t H5_ATTR_UNUSED *dst_file, hbool_t *dst_copy)
+                      H5VL_object_t H5_ATTR_UNUSED *dst_file, bool *dst_copy)
 {
     const uint8_t *p = (const uint8_t *)src_buf;
     unsigned       flags;
@@ -955,7 +955,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__ref_obj_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, hbool_t *isnull)
+H5T__ref_obj_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, bool *isnull)
 {
     H5F_t *        src_f;
     const uint8_t *p = (const uint8_t *)src_buf;
@@ -972,7 +972,7 @@ H5T__ref_obj_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, hbo
 
 #ifndef NDEBUG
     {
-        hbool_t is_native = false; /* Whether the src file is using the native VOL connector */
+        bool is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)
@@ -1009,7 +1009,7 @@ done:
 static size_t
 H5T__ref_obj_disk_getsize(H5VL_object_t *src_file, const void H5_ATTR_UNUSED *src_buf,
                           size_t H5_ATTR_UNUSED src_size, H5VL_object_t H5_ATTR_UNUSED *dst_file,
-                          hbool_t H5_ATTR_UNUSED *dst_copy)
+                          bool H5_ATTR_UNUSED *dst_copy)
 {
     H5F_t *src_f;
     size_t ret_value = 0;
@@ -1022,7 +1022,7 @@ H5T__ref_obj_disk_getsize(H5VL_object_t *src_file, const void H5_ATTR_UNUSED *sr
 
 #ifndef NDEBUG
     {
-        hbool_t is_native = false; /* Whether the src file is using the native VOL connector */
+        bool is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)
@@ -1070,7 +1070,7 @@ H5T__ref_obj_disk_read(H5VL_object_t *src_file, const void *src_buf, size_t src_
 
 #ifndef NDEBUG
     {
-        hbool_t is_native = false; /* Whether the src file is using the native VOL connector */
+        bool is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)
@@ -1107,7 +1107,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__ref_dsetreg_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, hbool_t *isnull)
+H5T__ref_dsetreg_disk_isnull(const H5VL_object_t *src_file, const void *src_buf, bool *isnull)
 {
     H5F_t *        src_f;
     const uint8_t *p = (const uint8_t *)src_buf;
@@ -1124,7 +1124,7 @@ H5T__ref_dsetreg_disk_isnull(const H5VL_object_t *src_file, const void *src_buf,
 
 #ifndef NDEBUG
     {
-        hbool_t is_native = false; /* Whether the src file is using the native VOL connector */
+        bool is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)
@@ -1161,7 +1161,7 @@ done:
 static size_t
 H5T__ref_dsetreg_disk_getsize(H5VL_object_t H5_ATTR_UNUSED *src_file, const void H5_ATTR_UNUSED *src_buf,
                               size_t H5_ATTR_UNUSED src_size, H5VL_object_t H5_ATTR_UNUSED *dst_file,
-                              hbool_t H5_ATTR_UNUSED *dst_copy)
+                              bool H5_ATTR_UNUSED *dst_copy)
 {
     size_t ret_value = sizeof(struct H5Tref_dsetreg);
 
@@ -1177,7 +1177,7 @@ H5T__ref_dsetreg_disk_getsize(H5VL_object_t H5_ATTR_UNUSED *src_file, const void
 #ifndef NDEBUG
     {
         H5F_t * src_f;
-        hbool_t is_native = false; /* Whether the src file is using the native VOL connector */
+        bool is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)
@@ -1228,7 +1228,7 @@ H5T__ref_dsetreg_disk_read(H5VL_object_t *src_file, const void *src_buf, size_t 
 
 #ifndef NDEBUG
     {
-        hbool_t is_native = false; /* Whether the src file is using the native VOL connector */
+        bool is_native = false; /* Whether the src file is using the native VOL connector */
 
         /* Check if using native VOL connector */
         if (H5VL_object_is_native(src_file, &is_native) < 0)

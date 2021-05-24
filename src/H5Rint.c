@@ -142,7 +142,7 @@ static herr_t H5R__decode_string(const unsigned char *buf, size_t *nbytes, char 
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -153,7 +153,7 @@ hbool_t H5_PKG_INIT_VAR = false;
 /*******************/
 
 /* Flag indicating "top" of interface has been initialized */
-static hbool_t H5R_top_package_initialize_s = false;
+static bool H5R_top_package_initialize_s = false;
 
 /*--------------------------------------------------------------------------
 NAME
@@ -472,7 +472,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5R__set_loc_id(H5R_ref_priv_t *ref, hid_t id, hbool_t inc_ref, hbool_t app_ref)
+H5R__set_loc_id(H5R_ref_priv_t *ref, hid_t id, bool inc_ref, bool app_ref)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 

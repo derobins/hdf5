@@ -708,14 +708,14 @@ error:
  */
 H5_GCC_DIAG_OFF("format-nonliteral")
 static int
-test_get_file_image(const char *test_banner, const int file_name_num, hid_t fapl, hbool_t user)
+test_get_file_image(const char *test_banner, const int file_name_num, hid_t fapl, bool user)
 {
     char      file_name[1024] = "\0";
     void *    insertion_ptr   = NULL;
     void *    image_ptr       = NULL;
     void *    file_image_ptr  = NULL;
-    hbool_t   is_family_file  = false;
-    hbool_t   identical;
+    bool   is_family_file  = false;
+    bool   identical;
     int       data[100];
     int       i;
     int       fd = -1;

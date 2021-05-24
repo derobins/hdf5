@@ -54,8 +54,8 @@ num_digits(int num)
 void
 tts_is_threadsafe(void)
 {
-    hbool_t is_ts;
-    hbool_t should_be;
+    bool is_ts;
+    bool should_be;
 
 #ifdef H5_HAVE_THREADSAFE
     is_ts     = FALSE;

@@ -54,9 +54,9 @@
 /* Local Prototypes */
 /********************/
 
-static herr_t H5O__add_gap(H5F_t *f, H5O_t *oh, unsigned chunkno, hbool_t *chk_dirtied, size_t idx,
+static herr_t H5O__add_gap(H5F_t *f, H5O_t *oh, unsigned chunkno, bool *chk_dirtied, size_t idx,
                            uint8_t *new_gap_loc, size_t new_gap_size);
-static herr_t H5O__eliminate_gap(H5O_t *oh, hbool_t *chk_dirtied, H5O_mesg_t *mesg, uint8_t *new_gap_loc,
+static herr_t H5O__eliminate_gap(H5O_t *oh, bool *chk_dirtied, H5O_mesg_t *mesg, uint8_t *new_gap_loc,
                                  size_t new_gap_size);
 static herr_t H5O__alloc_null(H5F_t *f, H5O_t *oh, size_t null_idx, const H5O_msg_class_t *new_type,
                               void *new_native, size_t new_size);
@@ -99,10 +99,10 @@ H5FL_EXTERN(H5O_cont_t);
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5O__add_gap(H5F_t H5_ATTR_NDEBUG_UNUSED *f, H5O_t *oh, unsigned chunkno, hbool_t *chk_dirtied, size_t idx,
+H5O__add_gap(H5F_t H5_ATTR_NDEBUG_UNUSED *f, H5O_t *oh, unsigned chunkno, bool *chk_dirtied, size_t idx,
              uint8_t *new_gap_loc, size_t new_gap_size)
 {
-    hbool_t merged_with_null;    /* Whether the gap was merged with a null message */
+    bool merged_with_null;    /* Whether the gap was merged with a null message */
     size_t  u;                   /* Local index variable */
     herr_t  ret_value = SUCCEED; /* Return value */
 
@@ -224,10 +224,10 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5O__eliminate_gap(H5O_t *oh, hbool_t *chk_dirtied, H5O_mesg_t *mesg, uint8_t *gap_loc, size_t gap_size)
+H5O__eliminate_gap(H5O_t *oh, bool *chk_dirtied, H5O_mesg_t *mesg, uint8_t *gap_loc, size_t gap_size)
 {
     uint8_t *move_start, *move_end; /* Pointers to area of messages to move */
-    hbool_t  null_before_gap;       /* Flag whether the null message is before the gap or not */
+    bool  null_before_gap;       /* Flag whether the null message is before the gap or not */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -240,7 +240,7 @@ H5O__eliminate_gap(H5O_t *oh, hbool_t *chk_dirtied, H5O_mesg_t *mesg, uint8_t *g
     HDassert(gap_size);
 
     /* Check if the null message is before or after the gap produced */
-    null_before_gap = (hbool_t)(mesg->raw < gap_loc);
+    null_before_gap = (bool)(mesg->raw < gap_loc);
 
     /* Set up information about region of messages to move */
     if (null_before_gap) {
@@ -325,7 +325,7 @@ H5O__alloc_null(H5F_t *f, H5O_t *oh, size_t null_idx, const H5O_msg_class_t *new
                 size_t new_size)
 {
     H5O_chunk_proxy_t *chk_proxy   = NULL;  /* Chunk that message is in */
-    hbool_t            chk_dirtied = false; /* Flags for unprotecting chunk */
+    bool            chk_dirtied = false; /* Flags for unprotecting chunk */
     H5O_mesg_t *       alloc_msg;           /* Pointer to null message to allocate out of */
     herr_t             ret_value = SUCCEED; /* Return value */
 
@@ -493,16 +493,16 @@ static htri_t
 H5O__alloc_extend_chunk(H5F_t *f, H5O_t *oh, unsigned chunkno, size_t size, size_t *msg_idx)
 {
     H5O_chunk_proxy_t *chk_proxy   = NULL;  /* Chunk that message is in */
-    hbool_t            chk_dirtied = false; /* Flag for unprotecting chunk */
+    bool            chk_dirtied = false; /* Flag for unprotecting chunk */
     size_t             delta;               /* Change in chunk's size */
     size_t             aligned_size = H5O_ALIGN_OH(oh, size);
     uint8_t *          old_image;                 /* Old address of chunk's image in memory */
     size_t             old_size;                  /* Old size of chunk */
     htri_t             was_extended;              /* If chunk can be extended */
     size_t             extend_msg        = 0;     /* Index of null message to extend */
-    hbool_t            extended_msg      = false; /* Whether an existing message was extended */
+    bool            extended_msg      = false; /* Whether an existing message was extended */
     uint8_t            new_size_flags    = 0;     /* New chunk #0 size flags */
-    hbool_t            adjust_size_flags = false; /* Whether to adjust the chunk #0 size flags */
+    bool            adjust_size_flags = false; /* Whether to adjust the chunk #0 size flags */
     size_t             extra_prfx_size   = 0;     /* Extra bytes added to object header prefix */
     size_t             u;                         /* Local index variable */
     htri_t             ret_value = true;          /* return value */
@@ -652,7 +652,7 @@ H5O__alloc_extend_chunk(H5F_t *f, H5O_t *oh, unsigned chunkno, size_t size, size
         if (chunkno > 0 && (H5O_CONT_ID == oh->mesg[u].type->id) &&
             (((H5O_cont_t *)(oh->mesg[u].native))->chunkno == chunkno)) {
             H5O_chunk_proxy_t *chk_proxy2   = NULL;                /* Chunk that continuation message is in */
-            hbool_t            chk_dirtied2 = false;               /* Flag for unprotecting chunk */
+            bool            chk_dirtied2 = false;               /* Flag for unprotecting chunk */
             unsigned           cont_chunkno = oh->mesg[u].chunkno; /* Chunk # for continuation message */
 
             /* Protect chunk containing continuation message */
@@ -783,7 +783,7 @@ H5O__alloc_find_best_nonnull(const H5F_t *f, const H5O_t *oh, size_t *size, H5O_
 
             /* Check if message is large enough to hold continuation info */
             if (total_size >= cont_size) {
-                hbool_t better = false; /* Whether the current message is better than a previous one */
+                bool better = false; /* Whether the current message is better than a previous one */
 
                 /* Check for first message that can be moved */
                 if (found_msg->msgno < 0)
@@ -1351,10 +1351,10 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5O__release_mesg(H5F_t *f, H5O_t *oh, H5O_mesg_t *mesg, hbool_t adj_link)
+H5O__release_mesg(H5F_t *f, H5O_t *oh, H5O_mesg_t *mesg, bool adj_link)
 {
     H5O_chunk_proxy_t *chk_proxy   = NULL;    /* Chunk that message is in */
-    hbool_t            chk_dirtied = false;   /* Flag for unprotecting chunk */
+    bool            chk_dirtied = false;   /* Flag for unprotecting chunk */
     herr_t             ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1428,7 +1428,7 @@ H5O__move_cont(H5F_t *f, H5O_t *oh, unsigned cont_u)
     H5O_chunk_proxy_t *chk_proxy = NULL;    /* Chunk that continuation message is in */
     H5O_mesg_t *       cont_msg;            /* Pointer to the continuation message */
     unsigned           deleted_chunkno;     /* Chunk # to delete */
-    hbool_t            chk_dirtied = false; /* Flags for unprotecting chunk */
+    bool            chk_dirtied = false; /* Flags for unprotecting chunk */
     htri_t             ret_value   = true;  /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1597,10 +1597,10 @@ H5O__move_msgs_forward(H5F_t *f, H5O_t *oh)
     H5O_chunk_proxy_t *null_chk_proxy      = NULL;  /* Chunk that null message is in */
     H5O_chunk_proxy_t *curr_chk_proxy      = NULL;  /* Chunk that message is in */
     H5O_chunk_proxy_t *cont_targ_chk_proxy = NULL;  /* Chunk that continuation message points to */
-    hbool_t            null_chk_dirtied    = false; /* Flags for unprotecting null chunk */
-    hbool_t            curr_chk_dirtied    = false; /* Flags for unprotecting curr chunk */
-    hbool_t            packed_msg;                  /* Flag to indicate that messages were packed */
-    hbool_t            did_packing = false;         /* Whether any messages were packed */
+    bool            null_chk_dirtied    = false; /* Flags for unprotecting null chunk */
+    bool            curr_chk_dirtied    = false; /* Flags for unprotecting curr chunk */
+    bool            packed_msg;                  /* Flag to indicate that messages were packed */
+    bool            did_packing = false;         /* Whether any messages were packed */
     htri_t             ret_value   = FAIL;          /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1972,8 +1972,8 @@ done:
 static htri_t
 H5O__merge_null(H5F_t *f, H5O_t *oh)
 {
-    hbool_t merged_msg;          /* Flag to indicate that messages were merged */
-    hbool_t did_merging = false; /* Whether any messages were merged */
+    bool merged_msg;          /* Flag to indicate that messages were merged */
+    bool did_merging = false; /* Whether any messages were merged */
     htri_t  ret_value   = FAIL;  /* Return value */
 
     FUNC_ENTER_STATIC
@@ -2120,8 +2120,8 @@ done:
 static htri_t
 H5O__remove_empty_chunks(H5F_t *f, H5O_t *oh)
 {
-    hbool_t deleted_chunk;        /* Whether to a chunk was deleted */
-    hbool_t did_deleting = false; /* Whether any chunks were deleted */
+    bool deleted_chunk;        /* Whether to a chunk was deleted */
+    bool did_deleting = false; /* Whether any chunks were deleted */
     htri_t  ret_value    = FAIL;  /* Return value */
 
     FUNC_ENTER_STATIC
@@ -2308,7 +2308,7 @@ done:
 herr_t
 H5O__condense_header(H5F_t *f, H5O_t *oh)
 {
-    hbool_t rescan_header;       /* Whether to rescan header */
+    bool rescan_header;       /* Whether to rescan header */
     htri_t  result;              /* Result from packing/merging/etc */
     herr_t  ret_value = SUCCEED; /* return value */
 
@@ -2378,7 +2378,7 @@ H5O__alloc_shrink_chunk(H5F_t *f, H5O_t *oh, unsigned chunkno)
     size_t             sizeof_chksum     = H5O_SIZEOF_CHKSUM_OH(oh);       /* Size of chunk checksum */
     size_t             sizeof_msghdr     = H5O_SIZEOF_MSGHDR_OH(oh);       /* Size of message header */
     uint8_t            new_size_flags    = 0;                              /* New chunk #0 size flags */
-    hbool_t            adjust_size_flags = false; /* Whether to adjust the chunk #0 size flags */
+    bool            adjust_size_flags = false; /* Whether to adjust the chunk #0 size flags */
     size_t             less_prfx_size    = 0;     /* Bytes removed from object header prefix */
     size_t             u;                         /* Index */
     herr_t             ret_value = SUCCEED;       /* Return value */

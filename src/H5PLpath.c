@@ -64,7 +64,7 @@ static herr_t H5PL__replace_at(const char *path, unsigned int idx);
 static herr_t H5PL__expand_path_table(void);
 static herr_t H5PL__path_table_iterate_process_path(const char *plugin_path, H5PL_iterate_type_t iter_type,
                                                     H5PL_iterate_t iter_op, void *op_data);
-static herr_t H5PL__find_plugin_in_path(const H5PL_search_params_t *search_params, hbool_t *found,
+static herr_t H5PL__find_plugin_in_path(const H5PL_search_params_t *search_params, bool *found,
                                         const char *dir, const void **plugin_info);
 
 /*********************/
@@ -695,7 +695,7 @@ H5PL__path_table_iterate_process_path(const char *plugin_path, H5PL_iterate_type
     HANDLE           hFind = INVALID_HANDLE_VALUE;
     H5PL_type_t      plugin_type;
     const void *     plugin_info = NULL;
-    hbool_t          plugin_loaded;
+    bool          plugin_loaded;
     char *           path = NULL;
     char             service[2048];
     herr_t           ret_value = H5_ITER_CONT;
@@ -715,7 +715,7 @@ H5PL__path_table_iterate_process_path(const char *plugin_path, H5PL_iterate_type
     do {
         /* Ignore '.' and '..' */
         if (HDstrcmp(fdFile.cFileName, ".") != 0 && HDstrcmp(fdFile.cFileName, "..") != 0) {
-            hbool_t plugin_matches;
+            bool plugin_matches;
             size_t  len;
 
             /* Allocate & initialize the path name */
@@ -776,7 +776,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5PL__find_plugin_in_path_table(const H5PL_search_params_t *search_params, hbool_t *found,
+H5PL__find_plugin_in_path_table(const H5PL_search_params_t *search_params, bool *found,
                                 const void **plugin_info)
 {
     unsigned int u; /* iterator */
@@ -910,7 +910,7 @@ done:
 } /* end H5PL__find_plugin_in_path() */
 #else  /* H5_HAVE_WIN32_API */
 static herr_t
-H5PL__find_plugin_in_path(const H5PL_search_params_t *search_params, hbool_t *found, const char *dir,
+H5PL__find_plugin_in_path(const H5PL_search_params_t *search_params, bool *found, const char *dir,
                           const void **plugin_info)
 {
     WIN32_FIND_DATAA fdFile;

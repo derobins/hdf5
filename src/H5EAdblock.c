@@ -144,13 +144,13 @@ END_FUNC(PKG) /* end H5EA__dblock_alloc() */
  *-------------------------------------------------------------------------
  */
 BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
-           H5EA__dblock_create(H5EA_hdr_t *hdr, void *parent, hbool_t *stats_changed, hsize_t dblk_off,
+           H5EA__dblock_create(H5EA_hdr_t *hdr, void *parent, bool *stats_changed, hsize_t dblk_off,
                                size_t nelmts))
 
     /* Local variables */
     H5EA_dblock_t *dblock = NULL;    /* Extensible array data block */
     haddr_t        dblock_addr;      /* Extensible array data block address */
-    hbool_t        inserted = false; /* Whether the header was inserted into cache */
+    bool        inserted = false; /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);

@@ -86,7 +86,7 @@ herr_t
 H5B2__create_leaf(H5B2_hdr_t *hdr, void *parent, H5B2_node_ptr_t *node_ptr)
 {
     H5B2_leaf_t *leaf      = NULL;    /* Pointer to new leaf node created */
-    hbool_t      inserted  = false;   /* Whether the leaf node was inserted into cache */
+    bool      inserted  = false;   /* Whether the leaf node was inserted into cache */
     herr_t       ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -170,7 +170,7 @@ done:
  *-------------------------------------------------------------------------
  */
 H5B2_leaf_t *
-H5B2__protect_leaf(H5B2_hdr_t *hdr, void *parent, H5B2_node_ptr_t *node_ptr, hbool_t shadow, unsigned flags)
+H5B2__protect_leaf(H5B2_hdr_t *hdr, void *parent, H5B2_node_ptr_t *node_ptr, bool shadow, unsigned flags)
 {
     H5B2_leaf_cache_ud_t udata;            /* User-data for callback */
     H5B2_leaf_t *        leaf;             /* v2 B-tree leaf node */
@@ -504,7 +504,7 @@ H5B2__update_leaf(H5B2_hdr_t *hdr, H5B2_node_ptr_t *curr_node_ptr, H5B2_update_s
 
     /* Check for modifying existing record */
     if (0 == cmp) {
-        hbool_t changed = false; /* Whether the 'modify' callback changed the record */
+        bool changed = false; /* Whether the 'modify' callback changed the record */
 
         /* Make callback for current record */
         if ((op)(H5B2_LEAF_NREC(leaf, hdr, idx), op_data, &changed) < 0) {

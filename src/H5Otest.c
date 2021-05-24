@@ -89,7 +89,7 @@ H5O__is_attr_dense_test(hid_t oid)
     H5O_t *     oh = NULL;              /* Object header */
     H5O_ainfo_t ainfo;                  /* Attribute information for object */
     H5O_loc_t * loc;                    /* Pointer to object's location */
-    hbool_t     api_ctx_pushed = false; /* Whether API context pushed */
+    bool     api_ctx_pushed = false; /* Whether API context pushed */
     htri_t      ret_value      = FAIL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -161,7 +161,7 @@ H5O__is_attr_empty_test(hid_t oid)
     htri_t      ainfo_exists = false;   /* Whether the attribute info exists in the file */
     H5O_loc_t * loc;                    /* Pointer to object's location */
     hsize_t     nattrs;                 /* Number of attributes */
-    hbool_t     api_ctx_pushed = false; /* Whether API context pushed */
+    bool     api_ctx_pushed = false; /* Whether API context pushed */
     htri_t      ret_value      = FAIL;  /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -263,7 +263,7 @@ H5O__num_attrs_test(hid_t oid, hsize_t *nattrs)
     H5O_ainfo_t ainfo;                    /* Attribute information for object */
     H5O_loc_t * loc;                      /* Pointer to object's location */
     hsize_t     obj_nattrs;               /* Number of attributes */
-    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
+    bool     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -362,7 +362,7 @@ H5O__attr_dense_info_test(hid_t oid, hsize_t *name_count, hsize_t *corder_count)
     H5B2_t *    bt2_corder = NULL;        /* v2 B-tree handle for creation order index */
     H5O_ainfo_t ainfo;                    /* Attribute information for object */
     H5O_loc_t * loc;                      /* Pointer to object's location */
-    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
+    bool     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -459,7 +459,7 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
-H5O__check_msg_marked_test(hid_t oid, hbool_t flag_val)
+H5O__check_msg_marked_test(hid_t oid, bool flag_val)
 {
     H5O_t *     oh = NULL;           /* Object header */
     H5O_loc_t * loc;                 /* Pointer to object's location */
@@ -632,7 +632,7 @@ H5O__msg_get_chunkno_test(hid_t oid, unsigned msg_type, unsigned *chunk_num)
     H5O_loc_t * loc;                      /* Pointer to object's location */
     H5O_mesg_t *idx_msg;                  /* Pointer to message */
     unsigned    idx;                      /* Index of message */
-    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
+    bool     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -699,7 +699,7 @@ H5O__msg_move_to_new_chunk_test(hid_t oid, unsigned msg_type)
     H5O_loc_t * loc;                      /* Pointer to object's location */
     H5O_mesg_t *curr_msg;                 /* Pointer to current message */
     unsigned    idx;                      /* Index of message */
-    hbool_t     api_ctx_pushed = false;   /* Whether API context pushed */
+    bool     api_ctx_pushed = false;   /* Whether API context pushed */
     herr_t      ret_value      = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

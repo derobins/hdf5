@@ -43,7 +43,7 @@ int da_buffer[2][3][6][2];
 **
 *************************************************************/
 static void
-test_singleEnd_selElements(hid_t file, hbool_t is_chunked)
+test_singleEnd_selElements(hid_t file, bool is_chunked)
 {
     hid_t   sid, plid, did, msid;
     char    dset_name[NAME_LEN]; /* Dataset name */
@@ -226,7 +226,7 @@ test_singleEnd_selElements(hid_t file, hbool_t is_chunked)
 **
 *************************************************************/
 static void
-test_singleEnd_selHyperslab(hid_t file, hbool_t is_chunked)
+test_singleEnd_selHyperslab(hid_t file, bool is_chunked)
 {
     hid_t   sid, did, msid;
     char    dset_name[NAME_LEN]; /* Dataset name */
@@ -372,7 +372,7 @@ test_singleEnd_selHyperslab(hid_t file, hbool_t is_chunked)
 **
 *************************************************************/
 static void
-test_multiple_ends(hid_t file, hbool_t is_chunked)
+test_multiple_ends(hid_t file, bool is_chunked)
 {
     hid_t   sid, plid, did, msid;
     char    dset_name[NAME_LEN]; /* Dataset name */
@@ -648,7 +648,7 @@ void
 test_coords(void)
 {
     hid_t   fid;
-    hbool_t is_chunk[2] = {true, false};
+    bool is_chunk[2] = {true, false};
     int     i;
     herr_t  ret; /* Generic error return */
 

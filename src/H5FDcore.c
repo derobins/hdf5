@@ -56,10 +56,10 @@ typedef struct H5FD_core_t {
     haddr_t        eoa;              /* end of allocated region              */
     haddr_t        eof;              /* current allocated size               */
     size_t         increment;        /* multiples for mem allocation         */
-    hbool_t        backing_store;    /* write to file name on flush          */
-    hbool_t        write_tracking;   /* Whether to track writes              */
+    bool        backing_store;    /* write to file name on flush          */
+    bool        write_tracking;   /* Whether to track writes              */
     size_t         bstore_page_size; /* backing store page size              */
-    hbool_t        ignore_disabled_file_locks;
+    bool        ignore_disabled_file_locks;
     int            fd; /* backing store file descriptor        */
     /* Information for determining uniqueness of a file with a backing store */
 #ifndef H5_HAVE_WIN32_API
@@ -89,7 +89,7 @@ typedef struct H5FD_core_t {
 
     HANDLE hFile; /* Native windows file handle */
 #endif                                        /* H5_HAVE_WIN32_API */
-    hbool_t                     dirty;        /* changes not saved?       */
+    bool                     dirty;        /* changes not saved?       */
     H5FD_file_image_callbacks_t fi_callbacks; /* file image callbacks     */
     H5SL_t *                    dirty_list;   /* dirty parts of the file  */
 } H5FD_core_t;
@@ -97,8 +97,8 @@ typedef struct H5FD_core_t {
 /* Driver-specific file access properties */
 typedef struct H5FD_core_fapl_t {
     size_t  increment;      /* how much to grow memory */
-    hbool_t backing_store;  /* write to file name on flush */
-    hbool_t write_tracking; /* Whether to track writes */
+    bool backing_store;  /* write to file name on flush */
+    bool write_tracking; /* Whether to track writes */
     size_t  page_size;      /* Page size for tracked writes */
 } H5FD_core_fapl_t;
 
@@ -144,9 +144,9 @@ static herr_t  H5FD__core_read(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, ha
                                void *buf);
 static herr_t  H5FD__core_write(H5FD_t *_file, H5FD_mem_t type, hid_t fapl_id, haddr_t addr, size_t size,
                                 const void *buf);
-static herr_t  H5FD__core_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD__core_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD__core_lock(H5FD_t *_file, hbool_t rw);
+static herr_t  H5FD__core_flush(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD__core_truncate(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD__core_lock(H5FD_t *_file, bool rw);
 static herr_t  H5FD__core_unlock(H5FD_t *_file);
 static herr_t  H5FD__core_delete(const char *filename, hid_t fapl_id);
 
@@ -207,7 +207,7 @@ H5FD__core_add_dirty_region(H5FD_core_t *file, haddr_t start, haddr_t end)
     H5FD_core_region_t *item            = NULL;
     haddr_t             b_addr          = 0;
     haddr_t             a_addr          = 0;
-    hbool_t             create_new_node = true;
+    bool             create_new_node = true;
     herr_t              ret_value       = SUCCEED;
 
     FUNC_ENTER_STATIC
@@ -508,7 +508,7 @@ H5FD__core_term(void)
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pset_core_write_tracking(hid_t plist_id, hbool_t is_enabled, size_t page_size)
+H5Pset_core_write_tracking(hid_t plist_id, bool is_enabled, size_t page_size)
 {
     H5P_genplist_t *        plist;               /* Property list pointer */
     H5FD_core_fapl_t        fa;                  /* Core VFD info */
@@ -559,7 +559,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_core_write_tracking(hid_t plist_id, hbool_t *is_enabled /*out*/, size_t *page_size /*out*/)
+H5Pget_core_write_tracking(hid_t plist_id, bool *is_enabled /*out*/, size_t *page_size /*out*/)
 {
     H5P_genplist_t *        plist;               /* Property list pointer */
     const H5FD_core_fapl_t *fa;                  /* Core VFD info */
@@ -601,7 +601,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pset_fapl_core(hid_t fapl_id, size_t increment, hbool_t backing_store)
+H5Pset_fapl_core(hid_t fapl_id, size_t increment, bool backing_store)
 {
     H5P_genplist_t * plist;               /* Property list pointer */
     H5FD_core_fapl_t fa;                  /* Core VFD info */
@@ -642,7 +642,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pget_fapl_core(hid_t fapl_id, size_t *increment /*out*/, hbool_t *backing_store /*out*/)
+H5Pget_fapl_core(hid_t fapl_id, size_t *increment /*out*/, bool *backing_store /*out*/)
 {
     H5P_genplist_t *        plist;               /* Property list pointer */
     const H5FD_core_fapl_t *fa;                  /* Core VFD info */
@@ -693,7 +693,7 @@ H5FD__core_fapl_get(H5FD_t *_file)
         HGOTO_ERROR(H5E_RESOURCE, H5E_NOSPACE, NULL, "memory allocation failed")
 
     fa->increment      = file->increment;
-    fa->backing_store  = (hbool_t)(file->fd >= 0);
+    fa->backing_store  = (bool)(file->fd >= 0);
     fa->write_tracking = file->write_tracking;
     fa->page_size      = file->bstore_page_size;
 
@@ -940,7 +940,7 @@ H5FD__core_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr
     /* Set up write tracking if the backing store is on */
     file->dirty_list = NULL;
     if (fa->backing_store) {
-        hbool_t use_write_tracking = false; /* what we're actually doing */
+        bool use_write_tracking = false; /* what we're actually doing */
 
         /* default is to have write tracking OFF for create (hence the check to see
          * if the user explicitly set a page size) and ON with the default page size
@@ -1272,7 +1272,7 @@ H5FD__core_get_handle(H5FD_t *_file, hid_t fapl, void **file_handle)
          * library)  QAK - 2009/12/04
          */
         if (H5P_exist_plist(plist, H5F_ACS_WANT_POSIX_FD_NAME) > 0) {
-            hbool_t want_posix_fd; /* Setting for retrieving file descriptor from core VFD */
+            bool want_posix_fd; /* Setting for retrieving file descriptor from core VFD */
 
             /* Get property */
             if (H5P_get(plist, H5F_ACS_WANT_POSIX_FD_NAME, &want_posix_fd) < 0)
@@ -1456,7 +1456,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD__core_flush(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, hbool_t H5_ATTR_UNUSED closing)
+H5FD__core_flush(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, bool H5_ATTR_UNUSED closing)
 {
     H5FD_core_t *file      = (H5FD_core_t *)_file;
     herr_t       ret_value = SUCCEED; /* Return value */
@@ -1539,7 +1539,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD__core_truncate(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, hbool_t closing)
+H5FD__core_truncate(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, bool closing)
 {
     H5FD_core_t *file = (H5FD_core_t *)_file;
     size_t       new_eof;             /* New size of memory buffer */
@@ -1640,7 +1640,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD__core_lock(H5FD_t *_file, hbool_t rw)
+H5FD__core_lock(H5FD_t *_file, bool rw)
 {
     H5FD_core_t *file = (H5FD_core_t *)_file; /* VFD file struct          */
     int          lock_flags;                  /* file locking flags       */

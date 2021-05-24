@@ -1879,7 +1879,7 @@ verify_select_hyper_contig_dr__run_test(const uint16_t *cube_buf, size_t H5_ATTR
     uint16_t        expected_value; /* Expected value in dataset */
     unsigned        i, j, k, l, m;  /* Local index variables */
     size_t          s;              /* Local index variable */
-    hbool_t         mis_match;      /* Flag to indicate mis-match in expected value */
+    bool         mis_match;      /* Flag to indicate mis-match in expected value */
 
     HDassert(cube_buf);
     HDassert(cube_size > 0);
@@ -1937,7 +1937,7 @@ test_select_hyper_contig_dr__run_test(int test_num, const uint16_t *cube_buf, co
                                       unsigned edge_size, unsigned chunk_edge_size, unsigned small_rank,
                                       unsigned large_rank, hid_t dset_type, hid_t xfer_plist)
 {
-    hbool_t   mis_match;                        /* Flag indicating a value read in wasn't what was expected */
+    bool   mis_match;                        /* Flag indicating a value read in wasn't what was expected */
     hid_t     fapl;                             /* File access property list */
     hid_t     fid1;                             /* File ID */
     hid_t     small_cube_sid;                   /* Dataspace ID for small cube in memory & file */
@@ -2581,7 +2581,7 @@ test_select_hyper_checker_board_dr__select_checker_board(hid_t tgt_n_cube_sid, u
                                                          unsigned edge_size, unsigned checker_edge_size,
                                                          unsigned sel_rank, const hsize_t sel_start[])
 {
-    hbool_t  first_selection = true;
+    bool  first_selection = true;
     unsigned n_cube_offset;
     unsigned sel_offset;
     hsize_t  base_count;
@@ -2802,14 +2802,14 @@ test_select_hyper_checker_board_dr__select_checker_board(hid_t tgt_n_cube_sid, u
 **    a selected or an unselected checker.
 **
 ****************************************************************/
-H5_ATTR_PURE static hbool_t
+H5_ATTR_PURE static bool
 test_select_hyper_checker_board_dr__verify_data(uint16_t *buf_ptr, unsigned rank, unsigned edge_size,
                                                 unsigned checker_edge_size, uint16_t first_expected_val,
-                                                hbool_t buf_starts_in_checker)
+                                                bool buf_starts_in_checker)
 {
-    hbool_t        good_data = true;
-    hbool_t        in_checker;
-    hbool_t        start_in_checker[5];
+    bool        good_data = true;
+    bool        in_checker;
+    bool        start_in_checker[5];
     uint16_t       expected_value;
     uint16_t *     val_ptr;
     unsigned       i, j, k, l, m;     /* to track position in n-cube */
@@ -2918,7 +2918,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
                                              unsigned chunk_edge_size, unsigned small_rank,
                                              unsigned large_rank, hid_t dset_type, hid_t xfer_plist)
 {
-    hbool_t        data_ok;
+    bool        data_ok;
     hid_t          fapl;                /* File access property list */
     hid_t          fid;                 /* HDF5 File IDs        */
     hid_t          full_small_cube_sid; /* Dataspace for small cube w/all selection */
@@ -3176,7 +3176,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
 
                     data_ok = test_select_hyper_checker_board_dr__verify_data(small_cube_buf_1, small_rank,
                                                                               edge_size, checker_edge_size,
-                                                                              expected_value, (hbool_t)true);
+                                                                              expected_value, (bool)true);
                     if (!data_ok)
                         TestErrPrintf("small cube read from largecube has bad data! Line=%d\n", __LINE__);
 
@@ -3273,7 +3273,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
                     HDassert(s == start_index);
 
                     data_ok &= test_select_hyper_checker_board_dr__verify_data(
-                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (hbool_t)true);
+                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (bool)true);
 
                     ptr_1 += small_cube_size;
                     s += small_cube_size;
@@ -3383,7 +3383,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
 
                     data_ok = test_select_hyper_checker_board_dr__verify_data(small_cube_buf_1, small_rank,
                                                                               edge_size, checker_edge_size,
-                                                                              expected_value, (hbool_t)true);
+                                                                              expected_value, (bool)true);
                     if (!data_ok)
                         TestErrPrintf("small cube read from largecube has bad data! Line=%d\n", __LINE__);
 
@@ -3498,7 +3498,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
 
                     /* verify that the slice contains the expected data */
                     data_ok &= test_select_hyper_checker_board_dr__verify_data(
-                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (hbool_t)true);
+                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (bool)true);
 
                     ptr_1 += small_cube_size;
                     s += small_cube_size;
@@ -10835,7 +10835,7 @@ test_shape_same_dr__smoke_check_4(void)
 ****************************************************************/
 static void
 test_shape_same_dr__full_space_vs_slice(int test_num, int small_rank, int large_rank, int offset,
-                                        hsize_t edge_size, hbool_t dim_selected[], hbool_t expected_result)
+                                        hsize_t edge_size, bool dim_selected[], bool expected_result)
 {
     char     test_desc_0[128];
     char     test_desc_1[256];
@@ -10962,8 +10962,8 @@ test_shape_same_dr__full_space_vs_slice(int test_num, int small_rank, int large_
 static void
 test_shape_same_dr__run_full_space_vs_slice_tests(void)
 {
-    hbool_t dim_selected[5];
-    hbool_t expected_result;
+    bool dim_selected[5];
+    bool expected_result;
     int     i, j;
     int     v, w, x, y, z;
     int     test_num = 0;
@@ -11076,7 +11076,7 @@ test_shape_same_dr__run_full_space_vs_slice_tests(void)
 ****************************************************************/
 static void
 test_shape_same_dr__checkerboard(int test_num, int small_rank, int large_rank, int offset, hsize_t edge_size,
-                                 hsize_t checker_size, hbool_t dim_selected[], hbool_t expected_result)
+                                 hsize_t checker_size, bool dim_selected[], bool expected_result)
 {
     char  test_desc_0[128];
     char  test_desc_1[256];
@@ -11400,8 +11400,8 @@ test_shape_same_dr__checkerboard(int test_num, int small_rank, int large_rank, i
 static void
 test_shape_same_dr__run_checkerboard_tests(void)
 {
-    hbool_t dim_selected[5];
-    hbool_t expected_result;
+    bool dim_selected[5];
+    bool expected_result;
     int     i, j;
     int     v, w, x, y, z;
     int     test_num = 0;
@@ -11584,7 +11584,7 @@ test_shape_same_dr__run_checkerboard_tests(void)
 ****************************************************************/
 static void
 test_shape_same_dr__irregular(int test_num, int small_rank, int large_rank, int pattern_offset,
-                              int slice_offset, hbool_t dim_selected[], hbool_t expected_result)
+                              int slice_offset, bool dim_selected[], bool expected_result)
 {
     char  test_desc_0[128];
     char  test_desc_1[256];
@@ -11840,8 +11840,8 @@ test_shape_same_dr__irregular(int test_num, int small_rank, int large_rank, int 
 static void
 test_shape_same_dr__run_irregular_tests(void)
 {
-    hbool_t dim_selected[5];
-    hbool_t expected_result;
+    bool dim_selected[5];
+    bool expected_result;
     int     i, j;
     int     v, w, x, y, z;
     int     test_num = 0;

@@ -66,7 +66,7 @@ typedef struct {
     H5T_cset_t       cset;             /* Char set for new name */
     const H5G_loc_t *dst_loc;          /* Destination location for moving object */
     unsigned         dst_target_flags; /* Target flags for destination object */
-    hbool_t          copy;             /* TRUE if this is a copy operation */
+    bool          copy;             /* TRUE if this is a copy operation */
     size_t           orig_nlinks; /* The original value for the # of soft / UD links that can be traversed */
 } H5L_trav_mv_t;
 
@@ -74,7 +74,7 @@ typedef struct {
 typedef struct {
     H5F_t *     file; /* Pointer to the file */
     H5O_link_t *lnk;  /* Pointer to link information to insert */
-    hbool_t     copy; /* TRUE if this is a copy operation */
+    bool     copy; /* TRUE if this is a copy operation */
 } H5L_trav_mv2_t;
 
 /* User data for path traversal routine for checking if a link exists */
@@ -83,7 +83,7 @@ typedef struct {
     char *sep; /* Pointer to next separator in the string */
 
     /* Up */
-    hbool_t *exists; /* Whether the link exists or not */
+    bool *exists; /* Whether the link exists or not */
 } H5L_trav_le_t;
 
 /* User data for path traversal routine for getting link value */
@@ -141,7 +141,7 @@ static herr_t H5L__delete_api_common(hid_t loc_id, const char *name, hid_t lapl_
 static herr_t H5L__delete_by_idx_api_common(hid_t loc_id, const char *group_name, H5_index_t idx_type,
                                             H5_iter_order_t order, hsize_t n, hid_t lapl_id, void **token_ptr,
                                             H5VL_object_t **_vol_obj_ptr);
-static herr_t H5L__exists_api_common(hid_t loc_id, const char *name, hbool_t *exists, hid_t lapl_id,
+static herr_t H5L__exists_api_common(hid_t loc_id, const char *name, bool *exists, hid_t lapl_id,
                                      void **token_ptr, H5VL_object_t **_vol_obj_ptr);
 static herr_t H5L__iterate_api_common(hid_t group_id, H5_index_t idx_type, H5_iter_order_t order,
                                       hsize_t *idx_p, H5L_iterate2_t op, void *op_data, void **token_ptr,
@@ -152,7 +152,7 @@ static herr_t H5L__iterate_api_common(hid_t group_id, H5_index_t idx_type, H5_it
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -1280,7 +1280,7 @@ done:
  *
  *--------------------------------------------------------------------------*/
 static herr_t
-H5L__exists_api_common(hid_t loc_id, const char *name, hbool_t *exists, hid_t lapl_id, void **token_ptr,
+H5L__exists_api_common(hid_t loc_id, const char *name, bool *exists, hid_t lapl_id, void **token_ptr,
                        H5VL_object_t **_vol_obj_ptr)
 {
     H5VL_object_t * tmp_vol_obj = NULL; /* Object for loc_id */
@@ -1324,7 +1324,7 @@ done:
 htri_t
 H5Lexists(hid_t loc_id, const char *name, hid_t lapl_id)
 {
-    hbool_t exists;           /* Flag to indicate if link exists */
+    bool exists;           /* Flag to indicate if link exists */
     htri_t  ret_value = FAIL; /* Return value */
 
     FUNC_ENTER_API(FAIL)
@@ -1352,7 +1352,7 @@ done:
  *--------------------------------------------------------------------------*/
 herr_t
 H5Lexists_async(const char *app_file, const char *app_func, unsigned app_line, hid_t loc_id, const char *name,
-                hbool_t *exists, hid_t lapl_id, hid_t es_id)
+                bool *exists, hid_t lapl_id, hid_t es_id)
 {
     H5VL_object_t *vol_obj   = NULL;            /* Object for loc_id */
     void *         token     = NULL;            /* Request token for async operation        */
@@ -2382,8 +2382,8 @@ H5L__link_cb(H5G_loc_t *grp_loc /*in*/, const char *name, const H5O_link_t H5_AT
     H5G_t *        grp    = NULL;    /* H5G_t for this group, opened to pass to user callback */
     hid_t          grp_id = FAIL;    /* Id for this group (passed to user callback */
     H5G_loc_t      temp_loc;         /* For UD callback */
-    hbool_t temp_loc_init = false;   /* Temporary location for UD callback (temp_loc) has been initialized */
-    hbool_t obj_created   = false;   /* Whether an object was created (through a hard link) */
+    bool temp_loc_init = false;   /* Temporary location for UD callback (temp_loc) has been initialized */
+    bool obj_created   = false;   /* Whether an object was created (through a hard link) */
     herr_t  ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -2630,7 +2630,7 @@ H5L__create_hard(H5G_loc_t *cur_loc, const char *cur_name, const H5G_loc_t *link
     H5G_loc_t  obj_loc;              /* Location of object to link to */
     H5G_name_t path;                 /* obj_loc's path*/
     H5O_loc_t  oloc;                 /* obj_loc's oloc */
-    hbool_t    loc_valid = false;
+    bool    loc_valid = false;
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -2938,7 +2938,7 @@ H5L__get_val_by_idx_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char H5_A
 {
     H5L_trav_gvbi_t *udata = (H5L_trav_gvbi_t *)_udata; /* User data passed in */
     H5O_link_t       fnd_lnk;                           /* Link within group */
-    hbool_t          lnk_copied = false;                /* Whether the link was copied */
+    bool          lnk_copied = false;                /* Whether the link was copied */
     herr_t           ret_value  = SUCCEED;              /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3200,7 +3200,7 @@ H5L__move_dest_cb(H5G_loc_t *grp_loc /*in*/, const char *name, const H5O_link_t 
     H5G_t *         grp    = NULL; /* H5G_t for this group, opened to pass to user callback */
     hid_t           grp_id = FAIL; /* ID for this group (passed to user callback */
     H5G_loc_t       temp_loc;      /* For UD callback */
-    hbool_t         temp_loc_init = false;
+    bool         temp_loc_init = false;
     herr_t          ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3311,7 +3311,7 @@ H5L__move_cb(H5G_loc_t *grp_loc /*in*/, const char *name, const H5O_link_t *lnk,
     H5L_trav_mv_t *udata = (H5L_trav_mv_t *)_udata; /* User data passed in */
     H5L_trav_mv2_t udata_out;                       /* User data for H5L__move_dest_cb traversal */
     char *         orig_name   = NULL;              /* The name of the link in this group */
-    hbool_t        link_copied = false;             /* Has udata_out.lnk been allocated? */
+    bool        link_copied = false;             /* Has udata_out.lnk been allocated? */
     herr_t         ret_value   = SUCCEED;           /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3426,7 +3426,7 @@ done:
  */
 herr_t
 H5L__move(const H5G_loc_t *src_loc, const char *src_name, const H5G_loc_t *dst_loc, const char *dst_name,
-          hbool_t copy_flag, hid_t lcpl_id)
+          bool copy_flag, hid_t lcpl_id)
 {
     unsigned        dst_target_flags = H5G_TARGET_NORMAL;
     H5T_cset_t      char_encoding    = H5F_DEFAULT_CSET; /* Character encoding for link */
@@ -3507,7 +3507,7 @@ H5L__exists_final_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char H5_ATT
     FUNC_ENTER_STATIC_NOERR
 
     /* Check if the name in this group resolved to a valid link */
-    *udata->exists = (hbool_t)(lnk != NULL);
+    *udata->exists = (bool)(lnk != NULL);
 
     /* Indicate that this callback didn't take ownership of the group *
      * location for the object */
@@ -3591,7 +3591,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5L_exists_tolerant(const H5G_loc_t *loc, const char *name, hbool_t *exists)
+H5L_exists_tolerant(const H5G_loc_t *loc, const char *name, bool *exists)
 {
     H5L_trav_le_t  udata;               /* User data for traversal */
     H5G_traverse_t cb_func;             /* Callback function for tranversal */
@@ -3656,7 +3656,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5L__exists(const H5G_loc_t *loc, const char *name, hbool_t *exists)
+H5L__exists(const H5G_loc_t *loc, const char *name, bool *exists)
 {
     H5L_trav_le_t udata;               /* User data for traversal */
     herr_t        ret_value = SUCCEED; /* Return value */
@@ -3769,7 +3769,7 @@ H5L__get_info_by_idx_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char H5_
 {
     H5L_trav_gibi_t *udata = (H5L_trav_gibi_t *)_udata; /* User data passed in */
     H5O_link_t       fnd_lnk;                           /* Link within group */
-    hbool_t          lnk_copied = false;                /* Whether the link was copied */
+    bool          lnk_copied = false;                /* Whether the link was copied */
     herr_t           ret_value  = SUCCEED;              /* Return value */
 
     FUNC_ENTER_STATIC
@@ -3939,8 +3939,8 @@ H5L__link_copy_file(H5F_t *dst_file, const H5O_link_t *_src_lnk, const H5O_loc_t
 {
     H5O_link_t        tmp_src_lnk;                   /* Temporary copy of src link, when needed */
     const H5O_link_t *src_lnk            = _src_lnk; /* Source link */
-    hbool_t           dst_lnk_init       = false;    /* Whether the destination link is initialized */
-    hbool_t           expanded_link_open = false;    /* Whether the target location has been opened */
+    bool           dst_lnk_init       = false;    /* Whether the destination link is initialized */
+    bool           expanded_link_open = false;    /* Whether the target location has been opened */
     H5G_loc_t         tmp_src_loc;                   /* Group location holding target object */
     H5G_name_t        tmp_src_path;                  /* Path for target object */
     H5O_loc_t         tmp_src_oloc;                  /* Object location for target object */

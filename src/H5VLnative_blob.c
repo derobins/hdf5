@@ -179,7 +179,7 @@ H5VL__native_blob_specific(void *obj, void *blob_id, H5VL_blob_specific_t specif
 
         case H5VL_BLOB_ISNULL: {
             const uint8_t *id     = (const uint8_t *)blob_id; /* Pointer to the blob ID */
-            hbool_t *      isnull = HDva_arg(arguments, hbool_t *);
+            bool *      isnull = HDva_arg(arguments, bool *);
             haddr_t        addr; /* Sequence's heap address */
 
             /* Get the heap address */

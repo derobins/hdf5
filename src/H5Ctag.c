@@ -53,14 +53,14 @@
 /* Typedef for tagged entry iterator callback context - evict tagged entries */
 typedef struct {
     H5F_t * f;                           /* File pointer for evicting entry */
-    hbool_t evicted_entries_last_pass;   /* Flag to indicate that an entry
+    bool evicted_entries_last_pass;   /* Flag to indicate that an entry
                                           * was evicted when iterating over
                                           * cache
                                           */
-    hbool_t pinned_entries_need_evicted; /* Flag to indicate that a pinned
+    bool pinned_entries_need_evicted; /* Flag to indicate that a pinned
                                           * entry was attempted to be evicted
                                           */
-    hbool_t skipped_pf_dirty_entries;    /* Flag indicating that one or more
+    bool skipped_pf_dirty_entries;    /* Flag indicating that one or more
                                           * entries marked prefetched_dirty
                                           * were encountered and not
                                           * evicted.
@@ -76,7 +76,7 @@ typedef struct {
 
 /* Typedef for tagged entry iterator callback context - mark corked */
 typedef struct {
-    hbool_t cork_val; /* Corked value */
+    bool cork_val; /* Corked value */
 } H5C_tag_iter_cork_ctx_t;
 
 /********************/
@@ -149,7 +149,7 @@ H5C_ignore_tags(H5C_t *cache_ptr)
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5C_get_ignore_tags(const H5C_t *cache_ptr)
 {
     FUNC_ENTER_NOAPI_NOERR
@@ -408,7 +408,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5C__iter_tagged_entries(H5C_t *cache, haddr_t tag, hbool_t match_global, H5C_tag_iter_cb_t cb, void *cb_ctx)
+H5C__iter_tagged_entries(H5C_t *cache, haddr_t tag, bool match_global, H5C_tag_iter_cb_t cb, void *cb_ctx)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -503,7 +503,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5C_evict_tagged_entries(H5F_t *f, haddr_t tag, hbool_t match_global)
+H5C_evict_tagged_entries(H5F_t *f, haddr_t tag, bool match_global)
 {
     H5C_t *                  cache;               /* Pointer to cache structure */
     H5C_tag_iter_evict_ctx_t ctx;                 /* Context for iterator callback */

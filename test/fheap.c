@@ -396,7 +396,7 @@ add_obj(H5HF_t *fh, size_t obj_off, size_t obj_size, fheap_heap_state_t *state, 
     /* Check for tracking the heap's state */
     if (state) {
         size_t  tiny_max_len;      /* Max. length of tiny objects */
-        hbool_t tiny_len_extended; /* Do tiny objects use two bytes for the length? */
+        bool tiny_len_extended; /* Do tiny objects use two bytes for the length? */
 
         /* Check information about tiny objects */
         if (H5HF_get_tiny_info_test(fh, &tiny_max_len, &tiny_len_extended) < 0)
@@ -1961,7 +1961,7 @@ test_reopen(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tparam)
     h5_stat_size_t     file_size;                    /* File size, after deleting heap */
     size_t             id_len;                       /* Size of fractal heap IDs */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    hbool_t            page = false;                 /* Paged aggregation strategy or not */
+    bool            page = false;                 /* Paged aggregation strategy or not */
 
     /* Set the filename to use for this test (dependent on fapl) */
     h5_fixname(FILENAME[0], fapl, filename, sizeof(filename));
@@ -2117,7 +2117,7 @@ test_open_twice(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tparam)
     h5_stat_size_t     file_size;                    /* File size, after deleting heap */
     size_t             id_len;                       /* Size of fractal heap IDs */
     fheap_heap_state_t state;                        /* State of fractal heap */
-    hbool_t            page = false;                 /* Paged aggregation strategy or not */
+    bool            page = false;                 /* Paged aggregation strategy or not */
 
     /* Set the filename to use for this test (dependent on fapl) */
     h5_fixname(FILENAME[0], fapl, filename, sizeof(filename));
@@ -2468,8 +2468,8 @@ test_id_limits(hid_t fapl, H5HF_create_t *cparam, hid_t fcpl)
     unsigned      deflate_level;                /* Deflation level */
     size_t        id_len;                       /* Size of fractal heap IDs */
     size_t        tiny_max_len;                 /* Max. length of tiny objects */
-    hbool_t       tiny_len_extended;            /* Do tiny objects use two bytes for the length? */
-    hbool_t       huge_ids_direct;              /* Are 'huge' objects directly acccessed? */
+    bool       tiny_len_extended;            /* Do tiny objects use two bytes for the length? */
+    bool       huge_ids_direct;              /* Are 'huge' objects directly acccessed? */
 
     /* Set the filename to use for this test (dependent on fapl) */
     h5_fixname(FILENAME[0], fapl, filename, sizeof(filename));
@@ -13785,8 +13785,8 @@ test_filtered_huge(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tparam
     fheap_heap_state_t state;                        /* State of fractal heap */
     unsigned           deflate_level;                /* Deflation level */
     size_t             old_actual_id_len = 0;        /* Old actual ID length */
-    hbool_t            huge_ids_direct;              /* Are 'huge' objects directly acccessed? */
-    hbool_t            pline_init = false;           /* Whether the I/O pipeline has been initialized */
+    bool            huge_ids_direct;              /* Are 'huge' objects directly acccessed? */
+    bool            pline_init = false;           /* Whether the I/O pipeline has been initialized */
     /* Test description */
     const char *base_desc = "insert 'huge' object into heap with I/O filters, then remove %s";
 
@@ -15884,7 +15884,7 @@ error:
  */
 /* Custom filter used to verify that the filters are actually called and do not
  * just silently fail */
-static hbool_t test_write_filter_called;
+static bool test_write_filter_called;
 static size_t
 test_write_filter(unsigned int H5_ATTR_UNUSED flags, size_t H5_ATTR_UNUSED cd_nelmts,
                   const unsigned int H5_ATTR_UNUSED cd_values[], size_t nbytes,
@@ -15907,7 +15907,7 @@ test_write(hid_t fapl, H5HF_create_t *cparam, fheap_test_param_t *tparam)
     size_t             id_len;                       /* Size of fractal heap IDs */
     unsigned char      tiny_heap_id[HEAP_ID_LEN];    /* Heap ID for 'tiny' object */
     unsigned char      huge_heap_id[HEAP_ID_LEN];    /* Heap ID for 'huge' object */
-    hbool_t            id_changed  = false;          /* Whether the heap ID changed */
+    bool            id_changed  = false;          /* Whether the heap ID changed */
     unsigned char *    rewrite_obj = NULL;           /* Pointer to re-write buffer for objects */
     fheap_heap_ids_t   keep_ids;                     /* Structure to retain heap IDs */
     h5_stat_size_t     empty_size;                   /* Size of a file with an empty heap */
@@ -16361,8 +16361,8 @@ main(void)
     unsigned    num_pb_fs = 1; /* The number of settings to test for page buffering and file space handling */
     int         ExpressMode;   /* Express testing level */
     const char *envval;        /* Environment variable */
-    hbool_t     contig_addr_vfd;        /* Whether VFD used has a contigous address space */
-    hbool_t     api_ctx_pushed = false; /* Whether API context pushed */
+    bool     contig_addr_vfd;        /* Whether VFD used has a contigous address space */
+    bool     api_ctx_pushed = false; /* Whether API context pushed */
 
     /* Don't run this test using certain file drivers */
     envval = HDgetenv("HDF5_DRIVER");
@@ -16370,7 +16370,7 @@ main(void)
         envval = "nomatch";
 
     /* Current VFD that does not support contigous address space */
-    contig_addr_vfd = (hbool_t)(HDstrcmp(envval, "split") != 0 && HDstrcmp(envval, "multi") != 0);
+    contig_addr_vfd = (bool)(HDstrcmp(envval, "split") != 0 && HDstrcmp(envval, "multi") != 0);
 
     /* Reset library */
     h5_reset();

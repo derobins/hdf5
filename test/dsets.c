@@ -689,7 +689,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static herr_t
-test_userblock_offset(const char *env_h5_drvr, hid_t fapl, hbool_t new_format)
+test_userblock_offset(const char *env_h5_drvr, hid_t fapl, bool new_format)
 {
     char    filename[FILENAME_BUF_SIZE];
     hid_t   file = -1, fcpl = -1, dataset = -1, space = -1;
@@ -2840,7 +2840,7 @@ test_missing_filter(hid_t file)
     size_t        i, j;                                   /* Local index variables */
     herr_t        ret;                                    /* Generic return value */
     const char *  testfile       = H5_get_srcdir_filename(FILE_DEFLATE_NAME); /* Corrected test file name */
-    hbool_t       api_ctx_pushed = false;                                     /* Whether API context pushed */
+    bool       api_ctx_pushed = false;                                     /* Whether API context pushed */
 
     TESTING("dataset access with missing filter");
 
@@ -7807,7 +7807,7 @@ static H5_ATTR_CONST long
 gcd(long l0, long r0)
 {
     long    magnitude, remainder;
-    hbool_t negative = ((l0 < 0) != (r0 < 0));
+    bool negative = ((l0 < 0) != (r0 < 0));
     long    l = HDlabs(l0), r = HDlabs(r0);
 
     do {
@@ -7877,7 +7877,7 @@ make_random_offset_and_increment(long nelts, long *offsetp, long *incp)
  *-------------------------------------------------------------------------
  */
 static herr_t
-test_random_chunks_real(const char *testname, hbool_t early_alloc, hid_t fapl)
+test_random_chunks_real(const char *testname, bool early_alloc, hid_t fapl)
 {
     char          filename[FILENAME_BUF_SIZE];
     hid_t         s = -1, m = -1, d = -1, dcpl = -1, file = -1;
@@ -13515,7 +13515,7 @@ error:
 typedef struct gather_info_t {
     int *   expect_dst_buf; /* Expected destination data buffer */
     size_t  max_nelmts;     /* Maximum number of elements passed to callback */
-    hbool_t last_call;      /* Whether this should be the last time the callback is called */
+    bool last_call;      /* Whether this should be the last time the callback is called */
 } gather_info_t;
 
 static herr_t
@@ -14580,7 +14580,7 @@ test_compact_open_close_dirty(hid_t fapl)
     int     wbuf[10];                    /* Data buffer */
     char    filename[FILENAME_BUF_SIZE]; /* Filename */
     int     i;                           /* Local index variable */
-    hbool_t dirty;                       /* The dirty flag */
+    bool dirty;                       /* The dirty flag */
 
     TESTING("compact dataset repeated open/close and dirty flag");
 
@@ -14858,7 +14858,7 @@ test_object_header_minimization_dcpl(void)
     hid_t   dcpl_id                     = -1;
     hid_t   file_id                     = -1;
     char    filename[FILENAME_BUF_SIZE] = "";
-    hbool_t minimize                    = false;
+    bool minimize                    = false;
     herr_t  ret;
 
     TESTING("dcpl flags to minimize dataset object header");
@@ -15183,7 +15183,7 @@ main(void)
     double      rdcc_w0;
     int         nerrors = 0;
     const char *envval;
-    hbool_t     contig_addr_vfd; /* Whether VFD used has a contigous address space */
+    bool     contig_addr_vfd; /* Whether VFD used has a contigous address space */
     int         i;
 
     /* Don't run this test using certain file drivers */
@@ -15192,7 +15192,7 @@ main(void)
         envval = "nomatch";
 
     /* Current VFD that does not support contigous address space */
-    contig_addr_vfd = (hbool_t)(HDstrcmp(envval, "split") != 0 && HDstrcmp(envval, "multi") != 0);
+    contig_addr_vfd = (bool)(HDstrcmp(envval, "split") != 0 && HDstrcmp(envval, "multi") != 0);
 
     /* Set the random # seed */
     HDsrandom((unsigned)HDtime(NULL));

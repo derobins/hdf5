@@ -121,7 +121,7 @@ static H5E_auto2_t err_func = NULL;
 
 static herr_t h5_errors(hid_t estack, void *client_data);
 static char * h5_fixname_real(const char *base_name, hid_t fapl, const char *_suffix, char *fullname,
-                              size_t size, hbool_t nest_printf, hbool_t subst_for_superblock);
+                              size_t size, bool nest_printf, bool subst_for_superblock);
 
 /*-------------------------------------------------------------------------
  * Function:  h5_errors
@@ -523,7 +523,7 @@ h5_fixname_printf(const char *base_name, hid_t fapl, char *fullname, size_t size
  */
 static char *
 h5_fixname_real(const char *base_name, hid_t fapl, const char *_suffix, char *fullname, size_t size,
-                hbool_t nest_printf, hbool_t subst_for_superblock)
+                bool nest_printf, bool subst_for_superblock)
 {
     const char *prefix = NULL;
     const char *env    = NULL; /* HDF5_DRIVER environment variable     */
@@ -2238,7 +2238,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-h5_check_if_file_locking_enabled(hbool_t *is_enabled)
+h5_check_if_file_locking_enabled(bool *is_enabled)
 {
     const char *filename = "locking_test_file";
     int         pmode    = O_RDWR | O_CREAT | O_TRUNC;

@@ -3683,7 +3683,7 @@ test_elinks(hid_t fapl)
     hid_t   group, group2;                    /* Group IDs                    */
     char    name[NAME_BUF_SIZE];              /* Buffer for storing object's name */
     ssize_t namelen;                          /* Length of object's name */
-    hbool_t name_cached;                      /* Indicate if name is cached */
+    bool name_cached;                      /* Indicate if name is cached */
 
     /* Initialize the file names */
     h5_fixname(FILENAME[1], fapl, filename1, sizeof filename1);

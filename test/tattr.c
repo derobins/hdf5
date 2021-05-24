@@ -165,7 +165,7 @@ typedef struct {
     int             stop;      /* # of iterations to stop after */
     hsize_t         curr;      /* Current creation order value */
     size_t          max_visit; /* Size of "visited attribute" flag array */
-    hbool_t *       visited;   /* Pointer to array of "visited attribute" flags */
+    bool *       visited;   /* Pointer to array of "visited attribute" flags */
 } attr_iter_info_t;
 
 static herr_t attr_op1(hid_t loc_id, const char *name, const H5A_info_t *ainfo, void *op_data);
@@ -4222,7 +4222,7 @@ test_attr_deprec(hid_t fcpl, hid_t fapl)
 **
 ****************************************************************/
 static void
-test_attr_many(hbool_t new_format, hid_t fcpl, hid_t fapl)
+test_attr_many(bool new_format, hid_t fcpl, hid_t fapl)
 {
     hid_t    fid;                                                    /* HDF5 File ID            */
     hid_t    gid;                                                    /* Group ID            */
@@ -5631,7 +5631,7 @@ test_attr_corder_delete(hid_t fcpl, hid_t fapl)
  *-------------------------------------------------------------------------
  */
 static int
-attr_info_by_idx_check(hid_t obj_id, const char *attrname, hsize_t n, hbool_t use_index)
+attr_info_by_idx_check(hid_t obj_id, const char *attrname, hsize_t n, bool use_index)
 {
     char       tmpname[NAME_BUF_SIZE]; /* Temporary attribute name */
     H5A_info_t ainfo;                  /* Attribute info struct */
@@ -5766,7 +5766,7 @@ attr_info_by_idx_check(hid_t obj_id, const char *attrname, hsize_t n, hbool_t us
 **
 ****************************************************************/
 static void
-test_attr_info_by_idx(hbool_t new_format, hid_t fcpl, hid_t fapl)
+test_attr_info_by_idx(bool new_format, hid_t fcpl, hid_t fapl)
 {
     hid_t      fid;                     /* HDF5 File ID            */
     hid_t      dset1, dset2, dset3;     /* Dataset IDs            */
@@ -6216,7 +6216,7 @@ test_attr_get_name_invalid_buf(hid_t fcpl, hid_t fapl)
 **
 ****************************************************************/
 static void
-test_attr_delete_by_idx(hbool_t new_format, hid_t fcpl, hid_t fapl)
+test_attr_delete_by_idx(bool new_format, hid_t fcpl, hid_t fapl)
 {
     hid_t           fid;                     /* HDF5 File ID            */
     hid_t           dset1, dset2, dset3;     /* Dataset IDs            */
@@ -6899,7 +6899,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate2(obj_id, idx_type, order, &skip, attr_iterate2_cb, iter_info);
     CHECK(ret, FAIL, "H5Aiterate2");
 
@@ -6914,7 +6914,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate_by_name(fid, dsetname, idx_type, order, &skip, attr_iterate2_cb, iter_info, H5P_DEFAULT);
     CHECK(ret, FAIL, "H5Aiterate_by_name");
 
@@ -6929,7 +6929,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate_by_name(obj_id, ".", idx_type, order, &skip, attr_iterate2_cb, iter_info, H5P_DEFAULT);
     CHECK(ret, FAIL, "H5Aiterate_by_name");
 
@@ -6945,7 +6945,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop             = -1;
     iter_info->ncalled          = 0;
     iter_info->curr             = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate1(obj_id, &oskip, attr_iterate1_cb, iter_info);
     CHECK(ret, FAIL, "H5Aiterate1");
 
@@ -6961,7 +6961,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? skip : ((max_attrs - 1) - skip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate2(obj_id, idx_type, order, &skip, attr_iterate2_cb, iter_info);
     CHECK(ret, FAIL, "H5Aiterate2");
 
@@ -6992,7 +6992,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? skip : ((max_attrs - 1) - skip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate_by_name(fid, dsetname, idx_type, order, &skip, attr_iterate2_cb, iter_info, H5P_DEFAULT);
     CHECK(ret, FAIL, "H5Aiterate_by_name");
 
@@ -7023,7 +7023,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? skip : ((max_attrs - 1) - skip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate_by_name(obj_id, ".", idx_type, order, &skip, attr_iterate2_cb, iter_info, H5P_DEFAULT);
     CHECK(ret, FAIL, "H5Aiterate_by_name");
 
@@ -7055,7 +7055,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop             = -1;
     iter_info->ncalled          = 0;
     iter_info->curr             = order != H5_ITER_DEC ? (unsigned)oskip : ((max_attrs - 1) - oskip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate1(obj_id, &oskip, attr_iterate1_cb, iter_info);
     CHECK(ret, FAIL, "H5Aiterate1");
 
@@ -7087,7 +7087,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate2(obj_id, idx_type, order, &skip, attr_iterate2_cb, iter_info);
     CHECK(ret, FAIL, "H5Aiterate2");
     VERIFY(ret, CORDER_ITER_STOP, "H5Aiterate2");
@@ -7099,7 +7099,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate_by_name(fid, dsetname, idx_type, order, &skip, attr_iterate2_cb, iter_info, H5P_DEFAULT);
     CHECK(ret, FAIL, "H5Aiterate_by_name");
     VERIFY(ret, CORDER_ITER_STOP, "H5Aiterate_by_name");
@@ -7111,7 +7111,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate_by_name(obj_id, ".", idx_type, order, &skip, attr_iterate2_cb, iter_info, H5P_DEFAULT);
     CHECK(ret, FAIL, "H5Aiterate_by_name");
     VERIFY(ret, CORDER_ITER_STOP, "H5Aiterate_by_name");
@@ -7124,7 +7124,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
     iter_info->stop             = 3;
     iter_info->ncalled          = 0;
     iter_info->curr             = order != H5_ITER_DEC ? 0 : (max_attrs - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     ret = H5Aiterate1(obj_id, &oskip, attr_iterate1_cb, iter_info);
     CHECK(ret, FAIL, "H5Aiterate1");
     VERIFY(ret, CORDER_ITER_STOP, "H5Aiterate1");
@@ -7158,7 +7158,7 @@ attr_iterate_check(hid_t fid, const char *dsetname, hid_t obj_id, H5_index_t idx
 **
 ****************************************************************/
 static void
-test_attr_iterate2(hbool_t new_format, hid_t fcpl, hid_t fapl)
+test_attr_iterate2(bool new_format, hid_t fcpl, hid_t fapl)
 {
     hid_t            fid;                     /* HDF5 File ID            */
     hid_t            dset1, dset2, dset3;     /* Dataset IDs            */
@@ -7176,7 +7176,7 @@ test_attr_iterate2(hbool_t new_format, hid_t fcpl, hid_t fapl)
     H5_index_t       idx_type;                /* Type of index to operate on */
     H5_iter_order_t  order;                   /* Order within in the index */
     attr_iter_info_t iter_info;               /* Iterator info */
-    hbool_t *        visited = NULL;          /* Array of flags for visiting links */
+    bool *        visited = NULL;          /* Array of flags for visiting links */
     hsize_t          idx;                     /* Start index for iteration */
     unsigned         use_index;               /* Use index on creation order values */
     const char *     dsetname;                /* Name of dataset for attributes */
@@ -7205,7 +7205,7 @@ test_attr_iterate2(hbool_t new_format, hid_t fcpl, hid_t fapl)
 
     /* Allocate the "visited link" array */
     iter_info.max_visit = max_compact * 2;
-    visited             = (hbool_t *)HDmalloc(sizeof(hbool_t) * iter_info.max_visit);
+    visited             = (bool *)HDmalloc(sizeof(bool) * iter_info.max_visit);
     CHECK_PTR(visited, "HDmalloc");
     iter_info.visited = visited;
 
@@ -7541,7 +7541,7 @@ attr_open_by_idx_check(hid_t obj_id, H5_index_t idx_type, H5_iter_order_t order,
 **
 ****************************************************************/
 static void
-test_attr_open_by_idx(hbool_t new_format, hid_t fcpl, hid_t fapl)
+test_attr_open_by_idx(bool new_format, hid_t fcpl, hid_t fapl)
 {
     hid_t           fid;                     /* HDF5 File ID            */
     hid_t           dset1, dset2, dset3;     /* Dataset IDs            */
@@ -7903,7 +7903,7 @@ attr_open_check(hid_t fid, const char *dsetname, hid_t obj_id, unsigned max_attr
 **
 ****************************************************************/
 static void
-test_attr_open_by_name(hbool_t new_format, hid_t fcpl, hid_t fapl)
+test_attr_open_by_name(bool new_format, hid_t fcpl, hid_t fapl)
 {
     hid_t       fid;                     /* HDF5 File ID            */
     hid_t       dset1, dset2, dset3;     /* Dataset IDs            */
@@ -8163,7 +8163,7 @@ test_attr_open_by_name(hbool_t new_format, hid_t fcpl, hid_t fapl)
 **
 ****************************************************************/
 static void
-test_attr_create_by_name(hbool_t new_format, hid_t fcpl, hid_t fapl)
+test_attr_create_by_name(bool new_format, hid_t fcpl, hid_t fapl)
 {
     hid_t       fid;                     /* HDF5 File ID            */
     hid_t       dset1, dset2, dset3;     /* Dataset IDs            */

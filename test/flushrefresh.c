@@ -1229,7 +1229,7 @@ refresh_verification(const char *obj_pathname)
     H5O_native_info_t refreshed_ninfo;
     int               tries = 800, sleep_tries = 400;
     int               token_cmp;
-    hbool_t           ok = false;
+    bool           ok = false;
 
     HDremove(SIGNAL_BETWEEN_PROCESSES_2);
 

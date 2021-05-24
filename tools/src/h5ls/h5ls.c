@@ -112,7 +112,7 @@ typedef struct {
     const char *    fname;          /* Filename */
     hid_t           fid;            /* File ID */
     hid_t           gid;            /* Group ID */
-    hbool_t         symlink_target; /* Whether this is the target of an symbolic link */
+    bool         symlink_target; /* Whether this is the target of an symbolic link */
     symlink_trav_t *symlink_list;   /* List of visited symbolic links */
     size_t          base_len;       /* Length of base path name, if not root */
     size_t          name_start;     /* # of leading characters to strip off path names on output */
@@ -121,21 +121,21 @@ typedef struct {
 /* Command-line switches */
 static int     verbose_g          = 0;     /* lots of extra output */
 static int     width_g            = 80;    /* output width in characters */
-static hbool_t address_g          = false; /* print raw data addresses */
-static hbool_t data_g             = false; /* display dataset values? */
-static hbool_t label_g            = false; /* label compound values? */
-static hbool_t string_g           = false; /* print 1-byte numbers as ASCII? */
-static hbool_t fullname_g         = false; /* print full path names */
-static hbool_t recursive_g        = false; /* recursive descent listing */
-static hbool_t follow_symlink_g   = false; /* follow symbolic links */
-static hbool_t no_dangling_link_g = false; /* treat dangling link is error */
-static hbool_t follow_elink_g     = false; /* follow external links */
-static hbool_t grp_literal_g      = false; /* list group, not contents */
-static hbool_t hexdump_g          = false; /* show data as raw hexadecimal */
-static hbool_t simple_output_g    = false; /* make output more machine-readable */
-static hbool_t show_file_name_g   = false; /* show file name for full names */
-static hbool_t no_line_wrap_g     = false; /* show data content without line wrap */
-static hbool_t display_root_g     = false; /* show root group in output? */
+static bool address_g          = false; /* print raw data addresses */
+static bool data_g             = false; /* display dataset values? */
+static bool label_g            = false; /* label compound values? */
+static bool string_g           = false; /* print 1-byte numbers as ASCII? */
+static bool fullname_g         = false; /* print full path names */
+static bool recursive_g        = false; /* recursive descent listing */
+static bool follow_symlink_g   = false; /* follow symbolic links */
+static bool no_dangling_link_g = false; /* treat dangling link is error */
+static bool follow_elink_g     = false; /* follow external links */
+static bool grp_literal_g      = false; /* list group, not contents */
+static bool hexdump_g          = false; /* show data as raw hexadecimal */
+static bool simple_output_g    = false; /* make output more machine-readable */
+static bool show_file_name_g   = false; /* show file name for full names */
+static bool no_line_wrap_g     = false; /* show data content without line wrap */
+static bool display_root_g     = false; /* show root group in output? */
 
 /* Information about how to display each type of object */
 static struct dispatch_t {
@@ -154,8 +154,8 @@ static struct dispatch_t {
     }
 
 static void    print_type(h5tools_str_t *buffer, hid_t type, int ind);
-static hbool_t print_int_type(h5tools_str_t *buffer, hid_t type, int ind);
-static hbool_t print_float_type(h5tools_str_t *buffer, hid_t type, int ind);
+static bool print_int_type(h5tools_str_t *buffer, hid_t type, int ind);
+static bool print_float_type(h5tools_str_t *buffer, hid_t type, int ind);
 static herr_t  visit_obj(hid_t file, const char *oname, iter_t *iter);
 
 /*-------------------------------------------------------------------------
@@ -269,7 +269,7 @@ usage(void)
  *-------------------------------------------------------------------------
  */
 static int
-print_string(h5tools_str_t *buffer, const char *s, hbool_t escape_spaces)
+print_string(h5tools_str_t *buffer, const char *s, bool escape_spaces)
 {
     int nprint = 0;
 
@@ -388,7 +388,7 @@ print_obj_name(h5tools_str_t *buffer, const iter_t *iter, const char *oname, con
  *              Failure: FALSE, nothing printed.
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_native_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     if (!simple_output_g) {
@@ -543,7 +543,7 @@ print_native_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_ieee_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     if (H5Tequal(type, H5T_IEEE_F32BE) == true) {
@@ -660,7 +660,7 @@ print_precision(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_int_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     H5T_order_t order;          /* byte order value */
@@ -724,7 +724,7 @@ print_int_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_float_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     H5T_order_t order;          /* byte order value */
@@ -827,7 +827,7 @@ print_float_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_cmpd_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     char *   name = NULL; /* member name */
@@ -872,7 +872,7 @@ print_cmpd_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_enum_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     int   nmembs; /* number of members */
@@ -989,7 +989,7 @@ print_enum_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_string_type(h5tools_str_t *buffer, hid_t type, int H5_ATTR_UNUSED ind)
 {
     H5T_str_t   pad;
@@ -1081,7 +1081,7 @@ print_string_type(h5tools_str_t *buffer, hid_t type, int H5_ATTR_UNUSED ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_reference_type(h5tools_str_t *buffer, hid_t type, int H5_ATTR_UNUSED ind)
 {
     if (H5T_REFERENCE != H5Tget_class(type))
@@ -1112,7 +1112,7 @@ print_reference_type(h5tools_str_t *buffer, hid_t type, int H5_ATTR_UNUSED ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_opaque_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     char * tag;
@@ -1141,7 +1141,7 @@ print_opaque_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure:        FALSE
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_vlen_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     hid_t super;
@@ -1163,7 +1163,7 @@ print_vlen_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure:        FALSE
  *---------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_array_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     hid_t    super;
@@ -1204,7 +1204,7 @@ print_array_type(h5tools_str_t *buffer, hid_t type, int ind)
  *              Failure: FALSE, nothing printed
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 print_bitfield_type(h5tools_str_t *buffer, hid_t type, int ind)
 {
     H5T_order_t order;          /* byte order value */
@@ -2302,7 +2302,7 @@ list_lnk(const char *name, const H5L_info2_t *linfo, void *_iter)
             h5tools_render_element(rawoutstream, info, &ctx, &buffer, &curr_pos, (size_t)info->line_ncols,
                                    (hsize_t)0, (hsize_t)0);
             if (follow_symlink_g) {
-                hbool_t orig_grp_literal = grp_literal_g;
+                bool orig_grp_literal = grp_literal_g;
                 h5tools_str_reset(&buffer);
                 h5tools_str_append(&buffer, " ");
 
@@ -2348,7 +2348,7 @@ list_lnk(const char *name, const H5L_info2_t *linfo, void *_iter)
         case H5L_TYPE_EXTERNAL: {
             const char *filename;
             const char *path;
-            hbool_t     follow_link = follow_symlink_g || follow_elink_g;
+            bool     follow_link = follow_symlink_g || follow_elink_g;
 
             ret = H5tools_get_symlink_info(iter->fid, name, &lnk_info, follow_link);
             /* lnk_info.trg_path is malloced in H5tools_get_symlink_info()
@@ -2377,7 +2377,7 @@ list_lnk(const char *name, const H5L_info2_t *linfo, void *_iter)
             /* Recurse through the external link */
             /* keep the follow_elink_g for backward compatibility with -E */
             if (follow_link) {
-                hbool_t orig_grp_literal = grp_literal_g;
+                bool orig_grp_literal = grp_literal_g;
                 h5tools_str_reset(&buffer);
                 h5tools_str_append(&buffer, " ");
 
@@ -2490,7 +2490,7 @@ visit_obj(hid_t file, const char *oname, iter_t *iter)
         iter->name_start = iter->base_len;
 
         /* Specified name is a group. List the complete contents of the group. */
-        h5trav_visit(file, oname, (hbool_t)(display_root_g || iter->symlink_target), recursive_g, list_obj,
+        h5trav_visit(file, oname, (bool)(display_root_g || iter->symlink_target), recursive_g, list_obj,
                      list_lnk, iter, H5O_INFO_BASIC | H5O_INFO_TIME);
 
         /* Close group */
@@ -2592,10 +2592,10 @@ get_width(void)
  * Return:      Success: TRUE (1)
  *              Failure: FALSE (0)
  *-------------------------------------------------------------------------*/
-static hbool_t
+static bool
 is_valid_args(void)
 {
-    hbool_t ret = true;
+    bool ret = true;
 
     if (recursive_g && grp_literal_g) {
         HDfprintf(rawerrorstream, "Error: 'recursive' option not compatible with 'group info' option!\n\n");
@@ -2652,7 +2652,7 @@ main(int argc, const char *argv[])
     const char *       preferred_driver = NULL;
     int                err_exit         = 0;
     hid_t              fapl_id          = H5P_DEFAULT;
-    hbool_t            custom_vol_fapl  = false;
+    bool            custom_vol_fapl  = false;
     h5tools_vol_info_t vol_info;
 
 #ifdef H5_HAVE_ROS3_VFD

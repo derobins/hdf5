@@ -1211,7 +1211,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-compare_data(void *src_data, void *dst_data, hbool_t src_subset)
+compare_data(void *src_data, void *dst_data, bool src_subset)
 {
     stype1 *s_ptr;
     stype2 *d_ptr;

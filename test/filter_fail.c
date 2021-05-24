@@ -106,7 +106,7 @@ filter_fail(unsigned int flags, size_t H5_ATTR_UNUSED cd_nelmts, const unsigned 
  *-------------------------------------------------------------------------
  */
 static herr_t
-test_filter_write(char *file_name, hid_t my_fapl, hbool_t cache_enabled)
+test_filter_write(char *file_name, hid_t my_fapl, bool cache_enabled)
 {
     hid_t   file          = -1;
     hid_t   dataset       = -1;                 /* dataset ID */

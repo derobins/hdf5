@@ -1857,7 +1857,7 @@ test_misc11(void)
     H5F_info2_t           finfo;     /* global information about file */
     H5F_fspace_strategy_t strategy;  /* File space strategy */
     hsize_t               threshold; /* Free-space section threshold */
-    hbool_t               persist;   /* To persist free-space or not */
+    bool               persist;   /* To persist free-space or not */
     herr_t                ret;       /* Generic return value */
 
     /* Output message about test being performed */
@@ -2131,7 +2131,7 @@ misc13_init_data(unsigned *original_data)
         original_data[u] = u;
 }
 
-static hbool_t
+static bool
 misc13_verify_data_match(const unsigned *original_data, const unsigned *read_data)
 {
     unsigned u;
@@ -2355,7 +2355,7 @@ misc13_insert_user_block(const char *old_name, const char *new_name, const char 
 
 static void
 misc13_verify_file(const char *name, const unsigned *data, hsize_t userblock_size,
-                   hbool_t check_for_new_dataset)
+                   bool check_for_new_dataset)
 {
     hid_t   fid    = -1; /* File ID */
     hid_t   gid1   = -1; /* Group IDs */
@@ -2474,7 +2474,7 @@ test_misc13(void)
 {
     unsigned *data = NULL;           /* Data to write to dataset */
     hsize_t   userblock_size;        /* Correct size of userblock */
-    hbool_t   check_for_new_dataset; /* Whether to check for the post-userblock-creation dataset */
+    bool   check_for_new_dataset; /* Whether to check for the post-userblock-creation dataset */
 
     /* Create a data buffer for the datasets */
     data = (unsigned *)HDcalloc(MISC13_DIM1, sizeof(unsigned));
@@ -5913,7 +5913,7 @@ static void
 test_misc36_cb1(void *_ctx)
 {
     int *   ctx = (int *)_ctx; /* Set up context pointer */
-    hbool_t is_terminating;    /* Flag indicating the library is terminating */
+    bool is_terminating;    /* Flag indicating the library is terminating */
     herr_t  ret;               /* Return value */
 
     /* Check whether the library thinks it's terminating */
@@ -5934,7 +5934,7 @@ static void
 test_misc36_cb2(void *_ctx)
 {
     int *   ctx = (int *)_ctx; /* Set up context pointer */
-    hbool_t is_terminating;    /* Flag indicating the library is terminating */
+    bool is_terminating;    /* Flag indicating the library is terminating */
     herr_t  ret;               /* Return value */
 
     /* Check whether the library thinks it's terminating */
@@ -5959,7 +5959,7 @@ test_misc36_cb2(void *_ctx)
 static void
 test_misc36(void)
 {
-    hbool_t is_terminating; /* Flag indicating the library is terminating */
+    bool is_terminating; /* Flag indicating the library is terminating */
     herr_t  ret;            /* Return value */
 
     /* Output message about test being performed */

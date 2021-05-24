@@ -578,7 +578,7 @@ main(void)
 {
     int     nerrors        = 0;
     hid_t   fapl_id        = H5I_INVALID_HID;
-    hbool_t api_ctx_pushed = false; /* Whether API context pushed */
+    bool api_ctx_pushed = false; /* Whether API context pushed */
 
     h5_reset();
     if ((fapl_id = h5_fileaccess()) < 0)

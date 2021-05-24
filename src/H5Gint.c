@@ -91,7 +91,7 @@ static herr_t H5G__close_cb(H5VL_object_t *grp_vol_obj, void **request);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the H5G_t struct */
 H5FL_DEFINE(H5G_t);
@@ -117,7 +117,7 @@ static const H5I_class_t H5I_GROUP_CLS[1] = {{
 }};
 
 /* Flag indicating "top" of interface has been initialized */
-static hbool_t H5G_top_package_initialize_s = false;
+static bool H5G_top_package_initialize_s = false;
 
 /*-------------------------------------------------------------------------
  * Function: H5G_init
@@ -430,7 +430,7 @@ H5G__open_name(const H5G_loc_t *loc, const char *name)
     H5G_loc_t  grp_loc;           /* Location used to open group */
     H5G_name_t grp_path;          /* Opened object group hier. path */
     H5O_loc_t  grp_oloc;          /* Opened object object location */
-    hbool_t    loc_found = false; /* Location at 'name' found */
+    bool    loc_found = false; /* Location at 'name' found */
     H5O_type_t obj_type;          /* Type of object at location */
     H5G_t *    ret_value = NULL;  /* Return value */
 
@@ -581,7 +581,7 @@ done:
 static herr_t
 H5G__open_oid(H5G_t *grp)
 {
-    hbool_t obj_opened = false;
+    bool obj_opened = false;
     herr_t  ret_value  = SUCCEED;
 
     FUNC_ENTER_STATIC
@@ -628,8 +628,8 @@ done:
 herr_t
 H5G_close(H5G_t *grp)
 {
-    hbool_t corked;                /* Whether the group is corked or not   */
-    hbool_t file_closed = true;    /* H5O_close also closed the file?      */
+    bool corked;                /* Whether the group is corked or not   */
+    bool file_closed = true;    /* H5O_close also closed the file?      */
     herr_t  ret_value   = SUCCEED; /* Return value                         */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -837,7 +837,7 @@ H5G_mount(H5G_t *grp)
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5G_mounted(H5G_t *grp)
 {
     FUNC_ENTER_NOAPI_NOINIT_NOERR
@@ -1030,7 +1030,7 @@ H5G__visit_cb(const H5O_link_t *lnk, void *_udata)
     H5G_loc_t            obj_loc;                               /* Location of object */
     H5G_name_t           obj_path;                              /* Object's group hier. path */
     H5O_loc_t            obj_oloc;                              /* Object's object location */
-    hbool_t              obj_found = false;                     /* Object at 'name' found */
+    bool              obj_found = false;                     /* Object at 'name' found */
     size_t old_path_len = udata->curr_path_len; /* Length of path before appending this link's name */
     size_t link_name_len;                       /* Length of link's name */
     size_t len_needed;                          /* Length of path string needed */
@@ -1426,7 +1426,7 @@ H5G__get_info_by_name(const H5G_loc_t *loc, const char *name, H5G_info_t *grp_in
     H5G_loc_t  grp_loc;             /* Location used to open group */
     H5G_name_t grp_path;            /* Opened object group hier. path */
     H5O_loc_t  grp_oloc;            /* Opened object object location */
-    hbool_t    loc_found = false;   /* Location at 'name' found */
+    bool    loc_found = false;   /* Location at 'name' found */
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -1476,7 +1476,7 @@ H5G__get_info_by_idx(const H5G_loc_t *loc, const char *group_name, H5_index_t id
     H5G_loc_t  grp_loc;             /* Location used to open group */
     H5G_name_t grp_path;            /* Opened object group hier. path */
     H5O_loc_t  grp_oloc;            /* Opened object object location */
-    hbool_t    loc_found = false;   /* Location at 'name' found */
+    bool    loc_found = false;   /* Location at 'name' found */
     herr_t     ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

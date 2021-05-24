@@ -82,19 +82,19 @@ typedef enum rank4_index_t {
     RANK4_NINDICES,        /* Must be last */
 } rank4_index_t;
 
-static int do_ranks(hid_t fapl, hbool_t new_format);
+static int do_ranks(hid_t fapl, bool new_format);
 static int do_layouts(hid_t fapl);
 
-static int test_rank1(hid_t fapl, hid_t dcpl, hbool_t do_fill_value, hbool_t disable_edge_filters,
-                      hbool_t set_istore_k);
-static int test_rank2(hid_t fapl, hid_t dcpl, hbool_t do_fill_value, hbool_t disable_edge_filters,
-                      hbool_t set_istore_k);
-static int test_rank3(hid_t fapl, hid_t dcpl, hbool_t do_fill_value, hbool_t disable_edge_filters,
-                      hbool_t set_istore_k);
-static int test_random_rank4(hid_t fapl, hid_t dcpl, hbool_t do_fillvalue, hbool_t disable_edge_filters,
-                             hbool_t do_sparse, rank4_index_t index_type);
-static int test_random_rank4_vl(hid_t fapl, hid_t dcpl, hbool_t do_fillvalue, hbool_t disable_edge_filters,
-                                hbool_t do_sparse, rank4_index_t index_type);
+static int test_rank1(hid_t fapl, hid_t dcpl, bool do_fill_value, bool disable_edge_filters,
+                      bool set_istore_k);
+static int test_rank2(hid_t fapl, hid_t dcpl, bool do_fill_value, bool disable_edge_filters,
+                      bool set_istore_k);
+static int test_rank3(hid_t fapl, hid_t dcpl, bool do_fill_value, bool disable_edge_filters,
+                      bool set_istore_k);
+static int test_random_rank4(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters,
+                             bool do_sparse, rank4_index_t index_type);
+static int test_random_rank4_vl(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters,
+                                bool do_sparse, rank4_index_t index_type);
 
 static int  test_external(hid_t fapl);
 static int  test_layouts(H5D_layout_t layout, hid_t fapl);
@@ -115,13 +115,13 @@ main(void)
     unsigned    chunk_cache; /* Whether to enable chunk caching */
     int         nerrors = 0;
     const char *env_h5_drvr;     /* File Driver value from environment */
-    hbool_t     contig_addr_vfd; /* Whether VFD used has a contigous address space */
+    bool     contig_addr_vfd; /* Whether VFD used has a contigous address space */
 
     env_h5_drvr = HDgetenv("HDF5_DRIVER");
     if (env_h5_drvr == NULL)
         env_h5_drvr = "nomatch";
     /* Current VFD that does not support contigous address space */
-    contig_addr_vfd = (hbool_t)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0);
+    contig_addr_vfd = (bool)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0);
 
     /* Initialize random number seed */
     HDsrandom((unsigned)HDtime(NULL));
@@ -221,11 +221,11 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-do_ranks(hid_t fapl, hbool_t new_format)
+do_ranks(hid_t fapl, bool new_format)
 {
 
-    hbool_t       do_fillvalue         = false;
-    hbool_t       disable_edge_filters = false;
+    bool       do_fillvalue         = false;
+    bool       disable_edge_filters = false;
     rank4_index_t index_type;
     hid_t         dcpl      = -1;
     int           fillvalue = FILL_VALUE;
@@ -460,7 +460,7 @@ error:
  */
 
 static int
-test_rank1(hid_t fapl, hid_t dcpl, hbool_t do_fill_value, hbool_t disable_edge_filters, hbool_t set_istore_k)
+test_rank1(hid_t fapl, hid_t dcpl, bool do_fill_value, bool disable_edge_filters, bool set_istore_k)
 {
 
     hid_t   fid     = -1;
@@ -793,7 +793,7 @@ error:
  */
 
 static int
-test_rank2(hid_t fapl, hid_t dcpl, hbool_t do_fill_value, hbool_t disable_edge_filters, hbool_t set_istore_k)
+test_rank2(hid_t fapl, hid_t dcpl, bool do_fill_value, bool disable_edge_filters, bool set_istore_k)
 {
 
     hid_t   fid     = -1;
@@ -1287,7 +1287,7 @@ error:
  */
 
 static int
-test_rank3(hid_t fapl, hid_t dcpl, hbool_t do_fill_value, hbool_t disable_edge_filters, hbool_t set_istore_k)
+test_rank3(hid_t fapl, hid_t dcpl, bool do_fill_value, bool disable_edge_filters, bool set_istore_k)
 {
 
     hid_t   fid     = -1;
@@ -2230,8 +2230,8 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_random_rank4(hid_t fapl, hid_t dcpl, hbool_t do_fillvalue, hbool_t disable_edge_filters,
-                  hbool_t do_sparse, rank4_index_t index_type)
+test_random_rank4(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters,
+                  bool do_sparse, rank4_index_t index_type)
 {
     hid_t             file        = -1;
     hid_t             dset        = -1;
@@ -2249,8 +2249,8 @@ test_random_rank4(hid_t fapl, hid_t dcpl, hbool_t do_fillvalue, hbool_t disable_
     static int        rbuf[10][10][10][10];           /* Read buffer */
     static int        wbuf[10][10][10][10];           /* Write buffer */
     static hsize_t    dim_log[RAND4_NITER + 1][4];    /* Log of dataset dimensions */
-    hbool_t           zero_dim = false;               /* Whether a dimension is 0 */
-    hbool_t           writing  = true;                /* Whether we're writing to the dset */
+    bool           zero_dim = false;               /* Whether a dimension is 0 */
+    bool           writing  = true;                /* Whether we're writing to the dset */
     unsigned          scalar_iter;                    /* Iteration to shrink dset to 1x1x1x1 */
     volatile unsigned i, j, k, l, m;                  /* Local indices */
     char              filename[NAME_BUF_SIZE];
@@ -2426,8 +2426,8 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_random_rank4_vl(hid_t fapl, hid_t dcpl, hbool_t do_fillvalue, hbool_t disable_edge_filters,
-                     hbool_t do_sparse, rank4_index_t index_type)
+test_random_rank4_vl(hid_t fapl, hid_t dcpl, bool do_fillvalue, bool disable_edge_filters,
+                     bool do_sparse, rank4_index_t index_type)
 {
     hid_t             file        = -1;
     hid_t             dset        = -1;
@@ -2446,8 +2446,8 @@ test_random_rank4_vl(hid_t fapl, hid_t dcpl, hbool_t do_fillvalue, hbool_t disab
     static hvl_t      rbuf[10][10][10][10];           /* Read buffer */
     static hvl_t      wbuf[10][10][10][10];           /* Write buffer */
     static hsize_t    dim_log[RAND4_NITER + 1][4];    /* Log of dataset dimensions */
-    hbool_t           zero_dim = false;               /* Whether a dimension is 0 */
-    hbool_t           writing  = true;                /* Whether we're writing to the dset */
+    bool           zero_dim = false;               /* Whether a dimension is 0 */
+    bool           writing  = true;                /* Whether we're writing to the dset */
     hvl_t             fill_value;                     /* Fill value */
     unsigned          scalar_iter;                    /* Iteration to shrink dset to 1x1x1x1 */
     volatile unsigned i, j, k, l, m;                  /* Local indices */

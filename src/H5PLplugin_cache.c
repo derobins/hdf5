@@ -133,7 +133,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5PL__close_plugin_cache(hbool_t *already_closed /*out*/)
+H5PL__close_plugin_cache(bool *already_closed /*out*/)
 {
     unsigned int u; /* iterator */
     herr_t       ret_value = SUCCEED;
@@ -244,7 +244,7 @@ done:
  */
 H5_GCC_DIAG_OFF("pedantic")
 herr_t
-H5PL__find_plugin_in_cache(const H5PL_search_params_t *search_params, hbool_t *found,
+H5PL__find_plugin_in_cache(const H5PL_search_params_t *search_params, bool *found,
                            const void **plugin_info)
 {
     unsigned int u; /* iterator */

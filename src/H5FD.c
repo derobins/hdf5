@@ -62,7 +62,7 @@ static herr_t H5FD__query(const H5FD_t *f, unsigned long *flags /*out*/);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -263,7 +263,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-H5FD_register(const void *_cls, size_t size, hbool_t app_ref)
+H5FD_register(const void *_cls, size_t size, bool app_ref)
 {
     const H5FD_class_t *cls   = (const H5FD_class_t *)_cls;
     H5FD_class_t *      saved = NULL;
@@ -1446,7 +1446,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5FDflush(H5FD_t *file, hid_t dxpl_id, hbool_t closing)
+H5FDflush(H5FD_t *file, hid_t dxpl_id, bool closing)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -1485,7 +1485,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5FD_flush(H5FD_t *file, hbool_t closing)
+H5FD_flush(H5FD_t *file, bool closing)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -1513,7 +1513,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5FDtruncate(H5FD_t *file, hid_t dxpl_id, hbool_t closing)
+H5FDtruncate(H5FD_t *file, hid_t dxpl_id, bool closing)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -1551,7 +1551,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5FD_truncate(H5FD_t *file, hbool_t closing)
+H5FD_truncate(H5FD_t *file, bool closing)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -1579,7 +1579,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5FDlock(H5FD_t *file, hbool_t rw)
+H5FDlock(H5FD_t *file, bool rw)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -1610,7 +1610,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5FD_lock(H5FD_t *file, hbool_t rw)
+H5FD_lock(H5FD_t *file, bool rw)
 {
     herr_t ret_value = SUCCEED; /* Return value */
 
@@ -1839,7 +1839,7 @@ H5FD_get_base_addr(const H5FD_t *file)
  *--------------------------------------------------------------------------
  */
 herr_t
-H5FD_set_paged_aggr(H5FD_t *file, hbool_t paged)
+H5FD_set_paged_aggr(H5FD_t *file, bool paged)
 {
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 

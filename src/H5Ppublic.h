@@ -2025,7 +2025,7 @@ H5_DLL int H5Pget_nfilters(hid_t plist_id);
  * \since 1.8.0
  *
  */
-H5_DLL herr_t H5Pget_obj_track_times(hid_t plist_id, hbool_t *track_times);
+H5_DLL herr_t H5Pget_obj_track_times(hid_t plist_id, bool *track_times);
 /**
  * \ingroup OCPL
  *
@@ -2601,7 +2601,7 @@ H5_DLL herr_t H5Pset_fletcher32(hid_t plist_id);
  * \since 1.8.0
  *
  */
-H5_DLL herr_t H5Pset_obj_track_times(hid_t plist_id, hbool_t track_times);
+H5_DLL herr_t H5Pset_obj_track_times(hid_t plist_id, bool track_times);
 
 /* File creation property list (FCPL) routines */
 /**
@@ -2654,7 +2654,7 @@ H5_DLL herr_t H5Pget_file_space_page_size(hid_t plist_id, hsize_t *fsp_size);
  * \since 1.10.1
  *
  */
-H5_DLL herr_t H5Pget_file_space_strategy(hid_t plist_id, H5F_fspace_strategy_t *strategy, hbool_t *persist,
+H5_DLL herr_t H5Pget_file_space_strategy(hid_t plist_id, H5F_fspace_strategy_t *strategy, bool *persist,
                                          hsize_t *threshold);
 /**
  * \ingroup FCPL
@@ -2902,7 +2902,7 @@ H5_DLL herr_t H5Pset_file_space_page_size(hid_t plist_id, hsize_t fsp_size);
  * \since 1.10.1
  *
  */
-H5_DLL herr_t H5Pset_file_space_strategy(hid_t plist_id, H5F_fspace_strategy_t strategy, hbool_t persist,
+H5_DLL herr_t H5Pset_file_space_strategy(hid_t plist_id, H5F_fspace_strategy_t strategy, bool persist,
                                          hsize_t threshold);
 /**
  * \ingroup FCPL
@@ -3252,7 +3252,7 @@ H5_DLL herr_t H5Pget_cache(hid_t plist_id, int *mdc_nelmts, /* out */
  * \since 1.8.13
  *
  */
-H5_DLL herr_t H5Pget_core_write_tracking(hid_t fapl_id, hbool_t *is_enabled, size_t *page_size);
+H5_DLL herr_t H5Pget_core_write_tracking(hid_t fapl_id, bool *is_enabled, size_t *page_size);
 /**
  * \ingroup FAPL
  *
@@ -3458,7 +3458,7 @@ H5_DLL herr_t H5Pget_elink_file_cache_size(hid_t plist_id, unsigned *efc_size);
  * \since 1.10.1
  *
  */
-H5_DLL herr_t H5Pget_evict_on_close(hid_t fapl_id, hbool_t *evict_on_close);
+H5_DLL herr_t H5Pget_evict_on_close(hid_t fapl_id, bool *evict_on_close);
 /**
  * \ingroup FAPL
  *
@@ -3608,7 +3608,7 @@ H5_DLL herr_t H5Pget_file_image_callbacks(hid_t fapl_id, H5FD_file_image_callbac
  * \since 1.10.7
  *
  */
-H5_DLL herr_t H5Pget_file_locking(hid_t fapl_id, hbool_t *use_file_locking, hbool_t *ignore_when_disabled);
+H5_DLL herr_t H5Pget_file_locking(hid_t fapl_id, bool *use_file_locking, bool *ignore_when_disabled);
 /**
  * \ingroup FAPL
  *
@@ -3765,8 +3765,8 @@ H5_DLL herr_t H5Pget_mdc_image_config(hid_t plist_id, H5AC_cache_image_config_t 
  *
  * \since 1.10.0
  */
-H5_DLL herr_t H5Pget_mdc_log_options(hid_t plist_id, hbool_t *is_enabled, char *location,
-                                     size_t *location_size, hbool_t *start_on_access);
+H5_DLL herr_t H5Pget_mdc_log_options(hid_t plist_id, bool *is_enabled, char *location,
+                                     size_t *location_size, bool *start_on_access);
 /**
  * \ingroup FAPL
  *
@@ -4226,7 +4226,7 @@ H5_DLL herr_t H5Pset_cache(hid_t plist_id, int mdc_nelmts, size_t rdcc_nslots, s
  * \since 1.8.13
  *
  */
-H5_DLL herr_t H5Pset_core_write_tracking(hid_t fapl_id, hbool_t is_enabled, size_t page_size);
+H5_DLL herr_t H5Pset_core_write_tracking(hid_t fapl_id, bool is_enabled, size_t page_size);
 /**
  * \ingroup FAPL
  *
@@ -4357,7 +4357,7 @@ H5_DLL herr_t H5Pset_elink_file_cache_size(hid_t plist_id, unsigned efc_size);
  * \since 1.10.1
  *
  */
-H5_DLL herr_t H5Pset_evict_on_close(hid_t fapl_id, hbool_t evict_on_close);
+H5_DLL herr_t H5Pset_evict_on_close(hid_t fapl_id, bool evict_on_close);
 /**
  * \ingroup FAPL
  *
@@ -4697,7 +4697,7 @@ H5_DLL herr_t H5Pset_file_image_callbacks(hid_t fapl_id, H5FD_file_image_callbac
  * \since 1.10.7
  *
  */
-H5_DLL herr_t H5Pset_file_locking(hid_t fapl_id, hbool_t use_file_locking, hbool_t ignore_when_disabled);
+H5_DLL herr_t H5Pset_file_locking(hid_t fapl_id, bool use_file_locking, bool ignore_when_disabled);
 /**
  * \ingroup FAPL
  *
@@ -4940,8 +4940,8 @@ H5_DLL herr_t H5Pset_mdc_config(hid_t plist_id, H5AC_cache_config_t *config_ptr)
  * \since 1.10.0
  *
  */
-H5_DLL herr_t H5Pset_mdc_log_options(hid_t plist_id, hbool_t is_enabled, const char *location,
-                                     hbool_t start_on_access);
+H5_DLL herr_t H5Pset_mdc_log_options(hid_t plist_id, bool is_enabled, const char *location,
+                                     bool start_on_access);
 /**
  * \ingroup FAPL
  *
@@ -5598,7 +5598,7 @@ H5_DLL herr_t H5Pget_chunk_opts(hid_t plist_id, unsigned *opts);
  * \since 1.10.5
  *
  */
-H5_DLL herr_t H5Pget_dset_no_attrs_hint(hid_t dcpl_id, hbool_t *minimize);
+H5_DLL herr_t H5Pget_dset_no_attrs_hint(hid_t dcpl_id, bool *minimize);
 /**
  * \ingroup DCPL
  *
@@ -6090,7 +6090,7 @@ H5_DLL herr_t H5Pset_chunk_opts(hid_t plist_id, unsigned opts);
  * \since 1.10.5
  *
  */
-H5_DLL herr_t H5Pset_dset_no_attrs_hint(hid_t dcpl_id, hbool_t minimize);
+H5_DLL herr_t H5Pset_dset_no_attrs_hint(hid_t dcpl_id, bool minimize);
 /**
  * \ingroup DCPL
  *
@@ -7786,7 +7786,7 @@ H5_DLL herr_t H5Pset_hyper_vector_size(hid_t plist_id, size_t size);
  *       Why is the declaration not in the deprecated section?
  *
  */
-H5_DLL herr_t H5Pset_preserve(hid_t plist_id, hbool_t status);
+H5_DLL herr_t H5Pset_preserve(hid_t plist_id, bool status);
 
 /**
  * \ingroup DXPL

@@ -2000,7 +2000,7 @@ test_vlstr_dtype(hid_t file)
         "Now we are engaged in a great civil war,",
         "testing whether that nation or any nation so conceived and so dedicated can long endure."};
     char *   rdata[SPACE1_DIM1];                      /* Information read in */
-    hbool_t  rdata_alloc = false;                     /* Whether the read data is allocated */
+    bool  rdata_alloc = false;                     /* Whether the read data is allocated */
     hid_t    dataset     = -1;                        /* Dataset ID            */
     hid_t    sid1        = -1;                        /* Dataspace ID            */
     hid_t    tid1 = -1, dtype = -1, native_type = -1; /* Datatype ID            */

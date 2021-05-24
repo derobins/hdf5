@@ -40,8 +40,8 @@ const char *FILENAME[] = {"meta_perf_1", "meta_perf_2", "meta_perf_3", NULL};
 int     NUM_DSETS   = 16;
 int     NUM_ATTRS   = 8;
 int     BATCH_ATTRS = 2;
-hbool_t flush_dset  = false;
-hbool_t flush_attr  = false;
+bool flush_dset  = false;
+bool flush_attr  = false;
 int     nerrors     = 0; /* errors count */
 hid_t   fapl;
 

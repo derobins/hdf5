@@ -172,7 +172,7 @@ display_error_cb(hid_t estack, void H5_ATTR_UNUSED *client_data)
  *-------------------------------------------------------------------------
  */
 static int
-test(fill_t fill_style, const double splits[], hbool_t verbose, hbool_t use_rdcc)
+test(fill_t fill_style, const double splits[], bool verbose, bool use_rdcc)
 {
     hid_t       file = (-1), fapl = (-1), dcpl = (-1), xfer = (-1), mspace = (-1), fspace = (-1), dset = (-1);
     hsize_t     ch_size[1]  = {1};             /*chunk size    */
@@ -349,7 +349,7 @@ main(int argc, char *argv[])
 {
     hid_t   xfer;
     fill_t  fill_style = FILL_ALL;
-    hbool_t use_cache  = false;
+    bool use_cache  = false;
     double  splits[3];
     int     i, j, nerrors = 0;
 

@@ -509,7 +509,7 @@ H5VL__native_object_optional(void *obj, H5VL_object_optional_t optional_type, hi
         /* H5Oare_mdc_flushes_disabled */
         case H5VL_NATIVE_OBJECT_ARE_MDC_FLUSHES_DISABLED: {
             H5O_loc_t *oloc         = loc.oloc;
-            hbool_t *  are_disabled = (hbool_t *)HDva_arg(arguments, hbool_t *);
+            bool *  are_disabled = (bool *)HDva_arg(arguments, bool *);
 
             if (H5O_are_mdc_flushes_disabled(oloc, are_disabled) < 0)
                 HGOTO_ERROR(H5E_OHDR, H5E_CANTGET, FAIL, "unable to determine metadata cache cork status");

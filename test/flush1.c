@@ -42,7 +42,7 @@ const char *FILENAME[] = {"flush",          "flush-swmr",          "noflush",
 /* Number of sub-groups created in the containing group */
 #define NGROUPS 100
 
-static hid_t  create_file(const char *filename, hid_t fapl_id, hbool_t swmr);
+static hid_t  create_file(const char *filename, hid_t fapl_id, bool swmr);
 static herr_t add_dset_to_file(hid_t fid, const char *dset_name);
 
 /*-------------------------------------------------------------------------
@@ -59,7 +59,7 @@ static herr_t add_dset_to_file(hid_t fid, const char *dset_name);
  *-------------------------------------------------------------------------
  */
 static hid_t
-create_file(const char *filename, hid_t fapl_id, hbool_t swmr)
+create_file(const char *filename, hid_t fapl_id, bool swmr)
 {
     hid_t    fid     = -1;   /* file ID                          */
     hid_t    top_gid = -1;   /* containing group ID              */
@@ -190,11 +190,11 @@ int
 main(void)
 {
     char *  driver = NULL;     /* name of current VFD (from env var)       */
-    hbool_t vfd_supports_swmr; /* whether the current VFD supports SWMR    */
+    bool vfd_supports_swmr; /* whether the current VFD supports SWMR    */
     hid_t   fid     = -1;      /* file ID                                  */
     hid_t   fapl_id = -1;      /* file access proplist ID                  */
     char    filename[1024];    /* filename                                 */
-    hbool_t use_swmr;          /* whether or not to use SWMR I/O           */
+    bool use_swmr;          /* whether or not to use SWMR I/O           */
 
     h5_reset();
     if ((fapl_id = h5_fileaccess()) < 0)

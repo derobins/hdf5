@@ -280,7 +280,7 @@ main(void)
 {
     hid_t   fapl_id        = H5I_INVALID_HID;
     int     nerrors        = 0;
-    hbool_t api_ctx_pushed = false; /* Whether API context pushed */
+    bool api_ctx_pushed = false; /* Whether API context pushed */
 
     /* Testing setup */
     h5_reset();

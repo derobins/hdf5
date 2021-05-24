@@ -1155,7 +1155,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Pset_preserve(hid_t plist_id, hbool_t status)
+H5Pset_preserve(hid_t plist_id, bool status)
 {
     H5P_genplist_t *plist;               /* Property list pointer */
     H5T_bkg_t       need_bkg;            /* Value for background buffer type */

@@ -43,8 +43,8 @@ const char *FILENAME[] = {"flush",          "flush-swmr",          "noflush",
 /* Number of sub-groups created in the containing group */
 #define NGROUPS 100
 
-static hbool_t dset_ok(hid_t fid, const char *dset_name);
-static hbool_t file_ok(const char *filename, hid_t fapl_id, hbool_t check_second_dset);
+static bool dset_ok(hid_t fid, const char *dset_name);
+static bool file_ok(const char *filename, hid_t fapl_id, bool check_second_dset);
 
 /*-------------------------------------------------------------------------
  * Function:    dset_ok
@@ -58,7 +58,7 @@ static hbool_t file_ok(const char *filename, hid_t fapl_id, hbool_t check_second
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 dset_ok(hid_t fid, const char *dset_name)
 {
     hid_t   sid     = -1;   /* dataspace ID                     */
@@ -120,8 +120,8 @@ error:
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
-file_ok(const char *filename, hid_t fapl_id, hbool_t check_second_dset)
+static bool
+file_ok(const char *filename, hid_t fapl_id, bool check_second_dset)
 {
     hid_t fid     = -1;   /* file ID                          */
     hid_t top_gid = -1;   /* containing group ID              */
@@ -188,7 +188,7 @@ clear_status_flags(const char *filename, hid_t fapl_id)
 {
     hid_t   new_fapl_id = -1; /* copy of the file access plist ID */
     hid_t   fid         = -1; /* file ID                          */
-    hbool_t clear       = true;
+    bool clear       = true;
 
     /* Get a copy of fapl */
     if ((new_fapl_id = H5Pcopy(fapl_id)) < 0)
@@ -240,10 +240,10 @@ int
 main(void)
 {
     char *      driver = NULL;     /* name of current VFD (from env var)       */
-    hbool_t     vfd_supports_swmr; /* whether the current VFD supports SWMR    */
+    bool     vfd_supports_swmr; /* whether the current VFD supports SWMR    */
     hid_t       fapl_id = -1;      /* file access proplist ID                  */
     char        filename[1024];    /* filename                                 */
-    hbool_t     check_second_dset; /* whether or not to check the second dset  */
+    bool     check_second_dset; /* whether or not to check the second dset  */
     H5E_auto2_t func;              /* for shutting off error reporting         */
 
     h5_reset();

@@ -313,7 +313,7 @@ error:
  *  bytes.  For SWMR access, the read should be done all at one time.
  */
 static herr_t
-test_ohdr_swmr(hbool_t new_format)
+test_ohdr_swmr(bool new_format)
 {
     hid_t             fid          = -1;   /* File ID */
     hid_t             fapl         = -1;   /* File access property list */
@@ -1749,14 +1749,14 @@ main(void)
     hid_t          file = -1;
     H5F_t *        f    = NULL;
     const char *   env_h5_drvr;     /* File driver value from environment */
-    hbool_t        single_file_vfd; /* Whether VFD used stores data in a single file */
+    bool        single_file_vfd; /* Whether VFD used stores data in a single file */
     char           filename[1024];
     H5O_hdr_info_t hdr_info;  /* Object info */
     H5O_loc_t      oh_loc;    /* Object header locations */
     H5F_libver_t   low, high; /* File format bounds */
     time_t         time_new, ro;
     int            i;                      /* Local index variable */
-    hbool_t        api_ctx_pushed = false; /* Whether API context pushed */
+    bool        api_ctx_pushed = false; /* Whether API context pushed */
     herr_t         ret;                    /* Generic return value */
 
     /* Get the VFD to use */
@@ -1765,7 +1765,7 @@ main(void)
         env_h5_drvr = "nomatch";
 
     /* Check for VFD which stores data in multiple files */
-    single_file_vfd = (hbool_t)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0 &&
+    single_file_vfd = (bool)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0 &&
                                 HDstrcmp(env_h5_drvr, "family") != 0);
 
     /* Reset library */

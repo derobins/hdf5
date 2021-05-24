@@ -46,7 +46,7 @@
 /********************/
 
 /* Selection callbacks */
-static herr_t   H5S__none_copy(H5S_t *dst, const H5S_t *src, hbool_t share_selection);
+static herr_t   H5S__none_copy(H5S_t *dst, const H5S_t *src, bool share_selection);
 static herr_t   H5S__none_release(H5S_t *space);
 static htri_t   H5S__none_is_valid(const H5S_t *space);
 static hssize_t H5S__none_serial_size(const H5S_t *space);
@@ -450,7 +450,7 @@ H5S__none_release(H5S_t H5_ATTR_UNUSED *space)
  REVISION LOG
 --------------------------------------------------------------------------*/
 static herr_t
-H5S__none_copy(H5S_t *dst, const H5S_t H5_ATTR_UNUSED *src, hbool_t H5_ATTR_UNUSED share_selection)
+H5S__none_copy(H5S_t *dst, const H5S_t H5_ATTR_UNUSED *src, bool H5_ATTR_UNUSED share_selection)
 {
     FUNC_ENTER_STATIC_NOERR
 

@@ -475,7 +475,7 @@ typedef struct H5AC_cache_config_t {
      * in use. This field should be set to #H5AC__CURR_CACHE_CONFIG_VERSION
      * (defined in H5ACpublic.h). */
 
-    hbool_t rpt_fcn_enabled;
+    bool rpt_fcn_enabled;
     /**< Boolean flag indicating whether the adaptive cache resize report
      * function is enabled. This field should almost always be set to disabled
      * (0). Since resize algorithm activity is reported via stdout, it MUST be
@@ -483,7 +483,7 @@ typedef struct H5AC_cache_config_t {
      * The report function is not supported code, and can be expected to change
      * between versions of the library. Use it at your own risk. */
 
-    hbool_t open_trace_file;
+    bool open_trace_file;
     /**< Boolean field indicating whether the
      * \ref H5AC_cache_config_t.trace_file_name "trace_file_name"
      * field should be used to open a trace file for the cache.\n
@@ -504,7 +504,7 @@ typedef struct H5AC_cache_config_t {
      * in reproduction in the lab. If you use it absent the direction
      * of The HDF Group, you are on your own. */
 
-    hbool_t close_trace_file;
+    bool close_trace_file;
     /**< Boolean field indicating whether the current trace file
      *(if any) should be closed.\n
      * See the above comments on the \ref H5AC_cache_config_t.open_trace_file
@@ -531,8 +531,8 @@ typedef struct H5AC_cache_config_t {
      * seen in the field, so as to aid in reproduction in the lab. If you use
      * it absent the direction of The HDF Group, you are on your own. */
 
-    hbool_t evictions_enabled;
-    /**< A boolean flag indicating whether evictions from the metadata cache
+    bool evictions_enabled;
+    /**< A Boolean flag indicating whether evictions from the metadata cache
      * are enabled. This flag is initially set to enabled (1).\n
      * In rare circumstances, the raw data throughput quirements may be so high
      * that the user wishes to postpone metadata writes so as to reserve I/O
@@ -551,7 +551,7 @@ typedef struct H5AC_cache_config_t {
      * Evictions will be re-enabled when this field is set back to \c 1.
      * This should be done as soon as possible. */
 
-    hbool_t set_initial_size;
+    bool set_initial_size;
     /**< Boolean flag indicating whether the cache should be created
      * with a user specified initial size. */
 
@@ -612,7 +612,7 @@ typedef struct H5AC_cache_config_t {
      * If you set it to 1.0, you will effectively disable cache size increases.
      */
 
-    hbool_t apply_max_increment;
+    bool apply_max_increment;
     /**< Boolean flag indicating whether an upper limit should be applied to
      * the size of cache size increases. */
 
@@ -674,7 +674,7 @@ typedef struct H5AC_cache_config_t {
      * If you set it to 1.0, you will effectively
      * disable cache size decreases. 0.9 is a reasonable starting point. */
 
-    hbool_t apply_max_decrement;
+    bool apply_max_decrement;
     /**< Boolean flag indicating ether an upper limit should be applied to
      * the size of cache size decreases. */
 
@@ -688,7 +688,7 @@ typedef struct H5AC_cache_config_t {
      * cache before the cache size reduction algorithm tries to evict it. 3 is a
      * reasonable value. */
 
-    hbool_t apply_empty_reserve;
+    bool apply_empty_reserve;
     /**< Boolean flag indicating whether the ageout based decrement
      * algorithms will maintain a empty reserve when decreasing cache size. */
 
@@ -744,11 +744,11 @@ typedef struct H5AC_cache_image_config_t {
      *  to the cache must have a known version number, or an error will be
      *  flagged.
      */
-    hbool_t generate_image;
+    bool generate_image;
     /**< Boolean flag indicating whether a cache image should be created on file
      *   close.
      */
-    hbool_t save_resize_status;
+    bool save_resize_status;
     /**< Boolean flag indicating whether the cache image should include the
      *  adaptive cache resize configuration and status.  Note that this field
      *  is ignored at present.

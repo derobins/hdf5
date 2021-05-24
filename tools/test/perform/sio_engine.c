@@ -1304,7 +1304,7 @@ do_cleanupfile(iotype iot, char *filename)
                     }
                 }
                 else if (driver == H5FD_CORE) {
-                    hbool_t backing; /* Whether the core file has backing store */
+                    bool backing; /* Whether the core file has backing store */
 
                     H5Pget_fapl_core(fapl, NULL, &backing);
 

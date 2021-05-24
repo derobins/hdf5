@@ -153,7 +153,7 @@ herr_t
 H5F_cwfs_find_free_heap(H5F_t *f, size_t need, haddr_t *addr)
 {
     unsigned cwfsno;              /* Local index for iterating over collections */
-    hbool_t  found     = false;   /* Flag to indicate a heap with enough space was found */
+    bool  found     = false;   /* Flag to indicate a heap with enough space was found */
     herr_t   ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -247,7 +247,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5F_cwfs_advance_heap(H5F_t *f, H5HG_heap_t *heap, hbool_t add_heap)
+H5F_cwfs_advance_heap(H5F_t *f, H5HG_heap_t *heap, bool add_heap)
 {
     unsigned u;                   /* Local index variable */
     herr_t   ret_value = SUCCEED; /* Return value */

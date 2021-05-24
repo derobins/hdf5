@@ -200,7 +200,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5ESwait(hid_t es_id, uint64_t timeout, size_t *num_in_progress /*out*/, hbool_t *op_failed /*out*/)
+H5ESwait(hid_t es_id, uint64_t timeout, size_t *num_in_progress /*out*/, bool *op_failed /*out*/)
 {
     H5ES_t *es;                  /* Event set */
     herr_t  ret_value = SUCCEED; /* Return value */
@@ -237,7 +237,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5ESget_err_status(hid_t es_id, hbool_t *err_status /*out*/)
+H5ESget_err_status(hid_t es_id, bool *err_status /*out*/)
 {
     H5ES_t *es;                  /* Event set */
     herr_t  ret_value = SUCCEED; /* Return value */

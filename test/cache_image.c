@@ -27,36 +27,36 @@ const char *FILENAMES[] = {"cache_image_test", NULL};
 /* local utility function declarations */
 static void create_datasets(hid_t file_id, int min_dset, int max_dset);
 static void delete_datasets(hid_t file_id, int min_dset, int max_dset);
-static void open_hdf5_file(hbool_t create_file, hbool_t mdci_sbem_expected, hbool_t read_only,
-                           hbool_t set_mdci_fapl, hbool_t config_fsm, hbool_t set_eoc,
+static void open_hdf5_file(bool create_file, bool mdci_sbem_expected, bool read_only,
+                           bool set_mdci_fapl, bool config_fsm, bool set_eoc,
                            const char *hdf_file_name, unsigned cache_image_flags, hid_t *file_id_ptr,
                            H5F_t **file_ptr_ptr, H5C_t **cache_ptr_ptr);
-static void attempt_swmr_open_hdf5_file(hbool_t create_file, hbool_t set_mdci_fapl,
+static void attempt_swmr_open_hdf5_file(bool create_file, bool set_mdci_fapl,
                                         const char *hdf_file_name);
 static void verify_datasets(hid_t file_id, int min_dset, int max_dset);
 
 /* local test function declarations */
-static unsigned check_cache_image_ctl_flow_1(hbool_t single_file_vfd);
-static unsigned check_cache_image_ctl_flow_2(hbool_t single_file_vfd);
-static unsigned check_cache_image_ctl_flow_3(hbool_t single_file_vfd);
-static unsigned check_cache_image_ctl_flow_4(hbool_t single_file_vfd);
-static unsigned check_cache_image_ctl_flow_5(hbool_t single_file_vfd);
-static unsigned check_cache_image_ctl_flow_6(hbool_t single_file_vfd);
+static unsigned check_cache_image_ctl_flow_1(bool single_file_vfd);
+static unsigned check_cache_image_ctl_flow_2(bool single_file_vfd);
+static unsigned check_cache_image_ctl_flow_3(bool single_file_vfd);
+static unsigned check_cache_image_ctl_flow_4(bool single_file_vfd);
+static unsigned check_cache_image_ctl_flow_5(bool single_file_vfd);
+static unsigned check_cache_image_ctl_flow_6(bool single_file_vfd);
 
-static unsigned cache_image_smoke_check_1(hbool_t single_file_vfd);
-static unsigned cache_image_smoke_check_2(hbool_t single_file_vfd);
-static unsigned cache_image_smoke_check_3(hbool_t single_file_vfd);
-static unsigned cache_image_smoke_check_4(hbool_t single_file_vfd);
-static unsigned cache_image_smoke_check_5(hbool_t single_file_vfd);
-static unsigned cache_image_smoke_check_6(hbool_t single_file_vfd);
+static unsigned cache_image_smoke_check_1(bool single_file_vfd);
+static unsigned cache_image_smoke_check_2(bool single_file_vfd);
+static unsigned cache_image_smoke_check_3(bool single_file_vfd);
+static unsigned cache_image_smoke_check_4(bool single_file_vfd);
+static unsigned cache_image_smoke_check_5(bool single_file_vfd);
+static unsigned cache_image_smoke_check_6(bool single_file_vfd);
 
-static unsigned cache_image_api_error_check_1(hbool_t single_file_vfd);
-static unsigned cache_image_api_error_check_2(hbool_t single_file_vfd);
-static unsigned cache_image_api_error_check_3(hbool_t single_file_vfd);
-static unsigned cache_image_api_error_check_4(hbool_t single_file_vfd);
+static unsigned cache_image_api_error_check_1(bool single_file_vfd);
+static unsigned cache_image_api_error_check_2(bool single_file_vfd);
+static unsigned cache_image_api_error_check_3(bool single_file_vfd);
+static unsigned cache_image_api_error_check_4(bool single_file_vfd);
 
-static unsigned get_free_sections_test(hbool_t single_file_vfd);
-static unsigned evict_on_close_test(hbool_t single_file_vfd);
+static unsigned get_free_sections_test(bool single_file_vfd);
+static unsigned evict_on_close_test(bool single_file_vfd);
 
 /****************************************************************************/
 /***************************** Utility Functions ****************************/
@@ -93,9 +93,9 @@ create_datasets(hid_t file_id, int min_dset, int max_dset)
 {
     const char *fcn_name = "create_datasets()";
     char        dset_name[64];
-    hbool_t     show_progress = false;
-    hbool_t     valid_chunk;
-    hbool_t     verbose = false;
+    bool     show_progress = false;
+    bool     valid_chunk;
+    bool     verbose = false;
     int         cp      = 0;
     int         i, j, k, l, m;
     int         data_chunk[CHUNK_SIZE][CHUNK_SIZE];
@@ -417,7 +417,7 @@ delete_datasets(hid_t file_id, int min_dset, int max_dset)
 {
     const char *fcn_name = "delete_datasets()";
     char        dset_name[64];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     int         cp            = 0;
     int         i;
 
@@ -503,13 +503,13 @@ delete_datasets(hid_t file_id, int min_dset, int max_dset)
  */
 
 static void
-open_hdf5_file(hbool_t create_file, hbool_t mdci_sbem_expected, hbool_t read_only, hbool_t set_mdci_fapl,
-               hbool_t config_fsm, hbool_t set_eoc, const char *hdf_file_name, unsigned cache_image_flags,
+open_hdf5_file(bool create_file, bool mdci_sbem_expected, bool read_only, bool set_mdci_fapl,
+               bool config_fsm, bool set_eoc, const char *hdf_file_name, unsigned cache_image_flags,
                hid_t *file_id_ptr, H5F_t **file_ptr_ptr, H5C_t **cache_ptr_ptr)
 {
     const char *              fcn_name      = "open_hdf5_file()";
-    hbool_t                   show_progress = false;
-    hbool_t                   verbose       = false;
+    bool                   show_progress = false;
+    bool                   verbose       = false;
     int                       cp            = 0;
     hid_t                     fapl_id       = -1;
     hid_t                     fcpl_id       = -1;
@@ -868,10 +868,10 @@ open_hdf5_file(hbool_t create_file, hbool_t mdci_sbem_expected, hbool_t read_onl
  */
 
 static void
-attempt_swmr_open_hdf5_file(const hbool_t create_file, const hbool_t set_mdci_fapl, const char *hdf_file_name)
+attempt_swmr_open_hdf5_file(const bool create_file, const bool set_mdci_fapl, const char *hdf_file_name)
 {
     const char *              fcn_name      = "attempt_swmr_open_hdf5_file()";
-    hbool_t                   show_progress = false;
+    bool                   show_progress = false;
     int                       cp            = 0;
     hid_t                     fapl_id       = -1;
     hid_t                     file_id       = -1;
@@ -988,9 +988,9 @@ verify_datasets(hid_t file_id, int min_dset, int max_dset)
 {
     const char *fcn_name = "verify_datasets()";
     char        dset_name[64];
-    hbool_t     show_progress = false;
-    hbool_t     valid_chunk;
-    hbool_t     verbose = false;
+    bool     show_progress = false;
+    bool     valid_chunk;
+    bool     verbose = false;
     int         cp      = 0;
     int         i, j, k, l, m;
     int         data_chunk[CHUNK_SIZE][CHUNK_SIZE];
@@ -1268,11 +1268,11 @@ verify_datasets(hid_t file_id, int min_dset, int max_dset)
  */
 
 static unsigned
-check_cache_image_ctl_flow_1(hbool_t single_file_vfd)
+check_cache_image_ctl_flow_1(bool single_file_vfd)
 {
     const char *fcn_name = "check_cache_image_ctl_flow_1()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -1545,11 +1545,11 @@ check_cache_image_ctl_flow_1(hbool_t single_file_vfd)
  */
 
 static unsigned
-check_cache_image_ctl_flow_2(hbool_t single_file_vfd)
+check_cache_image_ctl_flow_2(bool single_file_vfd)
 {
     const char *fcn_name = "check_cache_image_ctl_flow_2()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -1809,11 +1809,11 @@ check_cache_image_ctl_flow_2(hbool_t single_file_vfd)
  */
 
 static unsigned
-check_cache_image_ctl_flow_3(hbool_t single_file_vfd)
+check_cache_image_ctl_flow_3(bool single_file_vfd)
 {
     const char *fcn_name = "check_cache_image_ctl_flow_3()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -2175,11 +2175,11 @@ check_cache_image_ctl_flow_3(hbool_t single_file_vfd)
  */
 
 static unsigned
-check_cache_image_ctl_flow_4(hbool_t single_file_vfd)
+check_cache_image_ctl_flow_4(bool single_file_vfd)
 {
     const char *fcn_name = "check_cache_image_ctl_flow_4()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -2504,11 +2504,11 @@ check_cache_image_ctl_flow_4(hbool_t single_file_vfd)
  */
 
 static unsigned
-check_cache_image_ctl_flow_5(hbool_t single_file_vfd)
+check_cache_image_ctl_flow_5(bool single_file_vfd)
 {
     const char *fcn_name = "check_cache_image_ctl_flow_5()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -2785,11 +2785,11 @@ check_cache_image_ctl_flow_5(hbool_t single_file_vfd)
  */
 
 static unsigned
-check_cache_image_ctl_flow_6(hbool_t single_file_vfd)
+check_cache_image_ctl_flow_6(bool single_file_vfd)
 {
     const char *fcn_name = "check_cache_image_ctl_flow_6()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -3071,11 +3071,11 @@ check_cache_image_ctl_flow_6(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_smoke_check_1(hbool_t single_file_vfd)
+cache_image_smoke_check_1(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_smoke_check_1()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -3482,11 +3482,11 @@ cache_image_smoke_check_1(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_smoke_check_2(hbool_t single_file_vfd)
+cache_image_smoke_check_2(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_smoke_check_2()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -3780,11 +3780,11 @@ cache_image_smoke_check_2(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_smoke_check_3(hbool_t single_file_vfd)
+cache_image_smoke_check_3(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_smoke_check_3()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -4157,11 +4157,11 @@ cache_image_smoke_check_3(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_smoke_check_4(hbool_t single_file_vfd)
+cache_image_smoke_check_4(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_smoke_check_4()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -4550,12 +4550,12 @@ cache_image_smoke_check_4(hbool_t single_file_vfd)
 #define MAX_NUM_GROUPS 64
 
 static unsigned
-cache_image_smoke_check_5(hbool_t single_file_vfd)
+cache_image_smoke_check_5(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_smoke_check_5()";
     char        filename[512];
     char        process_group_name[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     hid_t       proc_gid      = -1;
     H5F_t *     file_ptr      = NULL;
@@ -5052,11 +5052,11 @@ cache_image_smoke_check_5(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_smoke_check_6(hbool_t single_file_vfd)
+cache_image_smoke_check_6(bool single_file_vfd)
 {
     const char *   fcn_name = "cache_image_smoke_check_6()";
     char           filename[512];
-    hbool_t        show_progress = false;
+    bool        show_progress = false;
     hid_t          file_id       = -1;
     H5F_t *        file_ptr      = NULL;
     H5C_t *        cache_ptr     = NULL;
@@ -5447,11 +5447,11 @@ cache_image_smoke_check_6(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_api_error_check_1(hbool_t single_file_vfd)
+cache_image_api_error_check_1(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_api_error_check_1()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -5815,11 +5815,11 @@ cache_image_api_error_check_1(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_api_error_check_2(hbool_t single_file_vfd)
+cache_image_api_error_check_2(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_api_error_check_2()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -6216,11 +6216,11 @@ cache_image_api_error_check_2(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_api_error_check_3(hbool_t single_file_vfd)
+cache_image_api_error_check_3(bool single_file_vfd)
 {
     const char *fcn_name = "cache_image_api_error_check_3()";
     char        filename[512];
-    hbool_t     show_progress = false;
+    bool     show_progress = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -6497,11 +6497,11 @@ cache_image_api_error_check_3(hbool_t single_file_vfd)
  */
 
 static unsigned
-cache_image_api_error_check_4(hbool_t single_file_vfd)
+cache_image_api_error_check_4(bool single_file_vfd)
 {
     const char *              fcn_name = "cache_image_api_error_check_4()";
     char                      filename[512];
-    hbool_t                   show_progress = false;
+    bool                   show_progress = false;
     hid_t                     fapl_id       = -1;
     hid_t                     file_id       = -1;
     H5F_t *                   file_ptr      = NULL;
@@ -7069,11 +7069,11 @@ cache_image_api_error_check_4(hbool_t single_file_vfd)
  *-------------------------------------------------------------------------
  */
 static unsigned
-get_free_sections_test(hbool_t single_file_vfd)
+get_free_sections_test(bool single_file_vfd)
 {
     const char *   fcn_name = "get_free_sections_test()";
     char           filename[512];
-    hbool_t        show_progress = false;
+    bool        show_progress = false;
     hid_t          file_id       = -1;
     H5F_t *        file_ptr      = NULL;
     H5C_t *        cache_ptr     = NULL;
@@ -7510,13 +7510,13 @@ get_free_sections_test(hbool_t single_file_vfd)
  *-------------------------------------------------------------------------
  */
 static unsigned
-evict_on_close_test(hbool_t single_file_vfd)
+evict_on_close_test(bool single_file_vfd)
 {
 #ifndef H5_HAVE_PARALLEL
     const char *fcn_name = "evict_on_close_test()";
     char        filename[512];
-    hbool_t     show_progress = false;
-    hbool_t     verbose       = false;
+    bool     show_progress = false;
+    bool     verbose       = false;
     hid_t       file_id       = -1;
     H5F_t *     file_ptr      = NULL;
     H5C_t *     cache_ptr     = NULL;
@@ -7834,7 +7834,7 @@ int
 main(void)
 {
     const char *env_h5_drvr;     /* File driver value from environment */
-    hbool_t     single_file_vfd; /* Whether VFD used stores data in a single file */
+    bool     single_file_vfd; /* Whether VFD used stores data in a single file */
     unsigned    nerrs = 0;
     int         express_test;
 
@@ -7853,7 +7853,7 @@ main(void)
     HDprintf("=========================================\n");
 
     /* Check for VFD which stores data in multiple files */
-    single_file_vfd = (hbool_t)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0 &&
+    single_file_vfd = (bool)(HDstrcmp(env_h5_drvr, "split") != 0 && HDstrcmp(env_h5_drvr, "multi") != 0 &&
                                 HDstrcmp(env_h5_drvr, "family") != 0);
 
     nerrs += check_cache_image_ctl_flow_1(single_file_vfd);

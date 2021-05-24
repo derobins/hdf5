@@ -862,7 +862,7 @@ done:
  *-------------------------------------------------------------------------
  */
 hid_t
-h5tools_fopen(const char *fname, unsigned flags, hid_t fapl_id, hbool_t use_specific_driver, char *drivername,
+h5tools_fopen(const char *fname, unsigned flags, hid_t fapl_id, bool use_specific_driver, char *drivername,
               size_t drivername_size)
 {
     hid_t    fid          = H5I_INVALID_HID;
@@ -1309,12 +1309,12 @@ h5tools_region_simple_prefix(FILE *stream, const h5tool_format_t *info, h5tools_
  *           hsize_t elmt_count is the data element loop counter
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_context_t *ctx,
                        h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols, hsize_t local_elmt_counter,
                        hsize_t elmt_counter)
 {
-    hbool_t dimension_break = true;
+    bool dimension_break = true;
     char *  s               = NULL;
     char *  section         = NULL; /* a section of output */
     int     secnum;                 /* section sequence number */
@@ -1474,12 +1474,12 @@ h5tools_render_element(FILE *stream, const h5tool_format_t *info, h5tools_contex
  *           hsize_t elmt_count is the data element loop counter
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 h5tools_render_region_element(FILE *stream, const h5tool_format_t *info, h5tools_context_t *ctx,
                               h5tools_str_t *buffer, hsize_t *curr_pos, size_t ncols, hsize_t *ptdata,
                               hsize_t local_elmt_counter, hsize_t elmt_counter)
 {
-    hbool_t dimension_break = true;
+    bool dimension_break = true;
     char *  s               = NULL;
     char *  section         = NULL; /* a section of output */
     int     secnum;                 /* section sequence number */
@@ -1686,7 +1686,7 @@ render_bin_output(FILE *stream, hid_t container, hid_t tid, void *_mem, hsize_t 
     size_t         size; /* datum size */
     hsize_t        block_index;
     H5T_class_t    type_class;
-    hbool_t        past_catch = false;
+    bool        past_catch = false;
     int            ret_value  = 0;
 
     H5TOOLS_START_DEBUG(" ");
@@ -1927,7 +1927,7 @@ render_bin_output_region_data_blocks(hid_t region_id, FILE *stream, hid_t contai
     size_t   type_size;
     hid_t    mem_space  = H5I_INVALID_HID;
     void *   region_buf = NULL;
-    hbool_t  past_catch = false;
+    bool  past_catch = false;
     hsize_t  blkndx;
     hid_t    sid1      = H5I_INVALID_HID;
     int      ret_value = -1;
@@ -2012,7 +2012,7 @@ done:;
  *           True otherwise
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 render_bin_output_region_blocks(hid_t region_space, hid_t region_id, FILE *stream, hid_t container)
 {
     hssize_t snblocks;
@@ -2023,8 +2023,8 @@ render_bin_output_region_blocks(hid_t region_space, hid_t region_id, FILE *strea
     unsigned ndims;
     hid_t    dtype      = H5I_INVALID_HID;
     hid_t    type_id    = H5I_INVALID_HID;
-    hbool_t  past_catch = false;
-    hbool_t  ret_value  = true;
+    bool  past_catch = false;
+    bool  ret_value  = true;
 
     H5TOOLS_START_DEBUG(" ");
     if ((snblocks = H5Sget_select_hyper_nblocks(region_space)) <= 0)
@@ -2137,7 +2137,7 @@ done:
  *           True otherwise
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 render_bin_output_region_points(hid_t region_space, hid_t region_id, FILE *stream, hid_t container)
 {
     hssize_t snpoints;
@@ -2146,8 +2146,8 @@ render_bin_output_region_points(hid_t region_space, hid_t region_id, FILE *strea
     unsigned ndims;
     hid_t    dtype      = H5I_INVALID_HID;
     hid_t    type_id    = H5I_INVALID_HID;
-    hbool_t  past_catch = false;
-    hbool_t  ret_value  = true;
+    bool  past_catch = false;
+    bool  ret_value  = true;
 
     H5TOOLS_START_DEBUG(" ");
     if ((snpoints = H5Sget_select_elem_npoints(region_space)) <= 0)
@@ -2189,7 +2189,7 @@ done:
  *           FALSE otherwise
  *-------------------------------------------------------------------------
  */
-H5_ATTR_PURE hbool_t
+H5_ATTR_PURE bool
 h5tools_is_zero(const void *_mem, size_t size)
 {
     const unsigned char *mem = (const unsigned char *)_mem;
@@ -2218,11 +2218,11 @@ h5tools_is_zero(const void *_mem, size_t size)
  *           FALSE otherwise.
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 h5tools_is_obj_same(hid_t loc_id1, const char *name1, hid_t loc_id2, const char *name2)
 {
     H5O_info2_t oinfo1, oinfo2;
-    hbool_t     ret_val = false;
+    bool     ret_val = false;
 
     if (name1 && HDstrcmp(name1, ".") != 0)
         H5Oget_info_by_name3(loc_id1, name1, &oinfo1, H5O_INFO_BASIC, H5P_DEFAULT);

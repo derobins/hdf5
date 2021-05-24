@@ -156,12 +156,12 @@ END_FUNC(PKG) /* end H5EA__iblock_alloc() */
  *-------------------------------------------------------------------------
  */
 BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
-           H5EA__iblock_create(H5EA_hdr_t *hdr, hbool_t *stats_changed))
+           H5EA__iblock_create(H5EA_hdr_t *hdr, bool *stats_changed))
 
     /* Local variables */
     H5EA_iblock_t *iblock = NULL;    /* Extensible array index block */
     haddr_t        iblock_addr;      /* Extensible array index block address */
-    hbool_t        inserted = false; /* Whether the header was inserted into cache */
+    bool        inserted = false; /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);

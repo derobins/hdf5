@@ -161,8 +161,8 @@ H5_DLL herr_t H5P_init(void);
 
 /* Internal versions of API routines */
 H5_DLL herr_t H5P_close(H5P_genplist_t *plist);
-H5_DLL hid_t  H5P_create_id(H5P_genclass_t *pclass, hbool_t app_ref);
-H5_DLL hid_t  H5P_copy_plist(const H5P_genplist_t *old_plist, hbool_t app_ref);
+H5_DLL hid_t  H5P_create_id(H5P_genclass_t *pclass, bool app_ref);
+H5_DLL hid_t  H5P_copy_plist(const H5P_genplist_t *old_plist, bool app_ref);
 H5_DLL herr_t H5P_get(H5P_genplist_t *plist, const char *name, void *value);
 H5_DLL herr_t H5P_set(H5P_genplist_t *plist, const char *name, const void *value);
 H5_DLL herr_t H5P_peek(H5P_genplist_t *plist, const char *name, void *value);
@@ -178,7 +178,7 @@ H5_DLL htri_t H5P_class_isa(const H5P_genclass_t *pclass1, const H5P_genclass_t 
 H5_DLL char * H5P_get_class_name(H5P_genclass_t *pclass);
 
 /* Internal helper routines */
-H5_DLL herr_t      H5P_get_nprops_pclass(const H5P_genclass_t *pclass, size_t *nprops, hbool_t recurse);
+H5_DLL herr_t      H5P_get_nprops_pclass(const H5P_genclass_t *pclass, size_t *nprops, bool recurse);
 H5_DLL hid_t       H5P_peek_driver(H5P_genplist_t *plist);
 H5_DLL const void *H5P_peek_driver_info(H5P_genplist_t *plist);
 H5_DLL herr_t      H5P_set_driver(H5P_genplist_t *plist, hid_t new_driver_id, const void *new_driver_info);

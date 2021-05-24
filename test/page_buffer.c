@@ -308,13 +308,13 @@ error:
 static unsigned
 set_multi_split(const char *env_h5_drvr, hid_t fapl, hsize_t pagesize)
 {
-    hbool_t    split = false;
-    hbool_t    multi = false;
+    bool    split = false;
+    bool    multi = false;
     H5FD_mem_t memb_map[H5FD_MEM_NTYPES];
     hid_t      memb_fapl_arr[H5FD_MEM_NTYPES];
     char *     memb_name[H5FD_MEM_NTYPES];
     haddr_t    memb_addr[H5FD_MEM_NTYPES];
-    hbool_t    relax;
+    bool    relax;
     H5FD_mem_t mt;
 
     /* Check for split or multi driver */
@@ -2148,7 +2148,7 @@ main(void)
     hid_t       fapl           = -1;    /* File access property list for data files */
     unsigned    nerrors        = 0;     /* Cumulative error count */
     const char *env_h5_drvr    = NULL;  /* File Driver value from environment */
-    hbool_t     api_ctx_pushed = false; /* Whether API context pushed */
+    bool     api_ctx_pushed = false; /* Whether API context pushed */
 
     h5_reset();
 

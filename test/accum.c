@@ -54,7 +54,7 @@ unsigned test_read_after(H5F_t *f);
 unsigned test_free(H5F_t *f);
 unsigned test_big(H5F_t *f);
 unsigned test_random_write(H5F_t *f);
-unsigned test_swmr_write_big(hbool_t newest_format);
+unsigned test_swmr_write_big(bool newest_format);
 
 /* Helper Function Prototypes */
 void accum_printf(const H5F_t *f);
@@ -87,7 +87,7 @@ int
 main(void)
 {
     unsigned nerrors        = 0;     /* track errors */
-    hbool_t  api_ctx_pushed = false; /* Whether API context pushed */
+    bool  api_ctx_pushed = false; /* Whether API context pushed */
     hid_t    fid            = -1;
     hid_t    fapl           = -1; /* File access property list */
     char     filename[1024];
@@ -2091,7 +2091,7 @@ error:
  *-------------------------------------------------------------------------
  */
 unsigned
-test_swmr_write_big(hbool_t newest_format)
+test_swmr_write_big(bool newest_format)
 {
 
     hid_t    fid  = -1;   /* File ID */
@@ -2101,9 +2101,9 @@ test_swmr_write_big(hbool_t newest_format)
     uint8_t *wbuf2 = NULL, *rbuf = NULL; /* Buffers for reading & writing */
     uint8_t  wbuf[1024];                 /* Buffer for reading & writing */
     unsigned u;                          /* Local index variable */
-    hbool_t  process_success = false;
+    bool  process_success = false;
     char *   driver          = NULL;  /* VFD string (from env variable) */
-    hbool_t  api_ctx_pushed  = false; /* Whether API context pushed */
+    bool  api_ctx_pushed  = false; /* Whether API context pushed */
 
     if (newest_format)
         TESTING("SWMR write of large metadata: with latest format")

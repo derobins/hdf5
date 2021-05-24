@@ -170,12 +170,12 @@ END_FUNC(PKG) /* end H5FA__dblock_alloc() */
  *-------------------------------------------------------------------------
  */
 BEGIN_FUNC(PKG, ERR, haddr_t, HADDR_UNDEF, HADDR_UNDEF,
-           H5FA__dblock_create(H5FA_hdr_t *hdr, hbool_t *hdr_dirty))
+           H5FA__dblock_create(H5FA_hdr_t *hdr, bool *hdr_dirty))
 
     /* Local variables */
     H5FA_dblock_t *dblock = NULL;    /* Fixed array data block */
     haddr_t        dblock_addr;      /* Fixed array data block address */
-    hbool_t        inserted = false; /* Whether the header was inserted into cache */
+    bool        inserted = false; /* Whether the header was inserted into cache */
 
     /* Sanity check */
     HDassert(hdr);

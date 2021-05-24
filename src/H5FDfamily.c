@@ -66,7 +66,7 @@ typedef struct H5FD_family_t {
     /* Information from properties set by 'h5repart' tool */
     hsize_t mem_newsize;    /*new member size passed in as private
                              * property. It's used only by h5repart */
-    hbool_t repart_members; /* Whether to mark the superblock dirty
+    bool repart_members; /* Whether to mark the superblock dirty
                              * when it is loaded, so that the family
                              * member sizes can be re-encoded       */
 } H5FD_family_t;
@@ -97,9 +97,9 @@ static herr_t  H5FD__family_read(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, 
                                  void *_buf /*out*/);
 static herr_t  H5FD__family_write(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, size_t size,
                                   const void *_buf);
-static herr_t  H5FD__family_flush(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD__family_truncate(H5FD_t *_file, hid_t dxpl_id, hbool_t closing);
-static herr_t  H5FD__family_lock(H5FD_t *_file, hbool_t rw);
+static herr_t  H5FD__family_flush(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD__family_truncate(H5FD_t *_file, hid_t dxpl_id, bool closing);
+static herr_t  H5FD__family_lock(H5FD_t *_file, bool rw);
 static herr_t  H5FD__family_unlock(H5FD_t *_file);
 static herr_t  H5FD__family_delete(const char *filename, hid_t fapl_id);
 
@@ -1216,7 +1216,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD__family_flush(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, hbool_t closing)
+H5FD__family_flush(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, bool closing)
 {
     H5FD_family_t *file = (H5FD_family_t *)_file;
     unsigned       u, nerrors = 0;
@@ -1250,7 +1250,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD__family_truncate(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, hbool_t closing)
+H5FD__family_truncate(H5FD_t *_file, hid_t H5_ATTR_UNUSED dxpl_id, bool closing)
 {
     H5FD_family_t *file = (H5FD_family_t *)_file;
     unsigned       u, nerrors = 0;
@@ -1284,7 +1284,7 @@ done:
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5FD__family_lock(H5FD_t *_file, hbool_t rw)
+H5FD__family_lock(H5FD_t *_file, bool rw)
 {
     H5FD_family_t *file = (H5FD_family_t *)_file; /* VFD file struct */
     unsigned       u;                             /* Local index variable */

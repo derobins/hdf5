@@ -590,7 +590,7 @@ typedef struct {
     H5_timevals_t initial;        /* Current interval start time */
     H5_timevals_t final_interval; /* Last interval elapsed time */
     H5_timevals_t total;          /* Total elapsed time for all intervals */
-    hbool_t       is_running;     /* Whether timer is running */
+    bool       is_running;     /* Whether timer is running */
 } H5_timer_t;
 
 /* Returns library bandwidth as a pretty string */
@@ -1841,8 +1841,8 @@ typedef struct H5_debug_open_stream_t {
 
 typedef struct H5_debug_t {
     FILE *  trace;  /*API trace output stream  */
-    hbool_t ttop;   /*Show only top-level calls?    */
-    hbool_t ttimes; /*Show trace event times?       */
+    bool ttop;   /*Show only top-level calls?    */
+    bool ttimes; /*Show trace event times?       */
     struct {
         const char *name;   /*package name      */
         FILE *      stream; /*output stream  or NULL    */
@@ -2081,8 +2081,8 @@ extern H5_api_t H5_g;
 #define H5_API_SET_CANCEL
 
 /* extern global variables */
-extern hbool_t H5_libinit_g; /* Has the library been initialized? */
-extern hbool_t H5_libterm_g; /* Is the library being shutdown? */
+extern bool H5_libinit_g; /* Has the library been initialized? */
+extern bool H5_libterm_g; /* Is the library being shutdown? */
 
 /* Macros for accessing the global variables */
 #define H5_INIT_GLOBAL (H5_libinit_g)
@@ -2136,12 +2136,12 @@ extern hbool_t H5_MPEinit_g; /* Has the MPE Library been initialized? */
 /* Forward declaration of H5CXpush() / H5CXpop() */
 /* (Including H5CXprivate.h creates bad circular dependencies - QAK, 3/18/2018) */
 H5_DLL herr_t H5CX_push(void);
-H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
+H5_DLL herr_t H5CX_pop(bool update_dxpl_props);
 
 #ifndef NDEBUG
 #define FUNC_ENTER_CHECK_NAME(asrt)                                                                          \
     {                                                                                                        \
-        static hbool_t func_check = false;                                                                   \
+        static bool func_check = false;                                                                   \
                                                                                                              \
         if (!func_check) {                                                                                   \
             /* Check function naming status */                                                               \
@@ -2158,7 +2158,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
 #endif /* NDEBUG */
 
 #define FUNC_ENTER_COMMON(asrt)                                                                              \
-    hbool_t err_occurred = false;                                                                            \
+    bool err_occurred = false;                                                                            \
                                                                                                              \
     FUNC_ENTER_CHECK_NAME(asrt);
 
@@ -2633,7 +2633,7 @@ H5_DLL herr_t H5CX_pop(hbool_t update_dxpl_props);
 #ifdef H5_PKG_SINGLE_SOURCE
 #define H5_PKG_DECLARE_VAR(pkg) static hbool_t H5_PACKAGE_INIT_VAR(pkg);
 #else /* H5_PKG_SINGLE_SOURCE */
-#define H5_PKG_DECLARE_VAR(pkg) extern hbool_t H5_PACKAGE_INIT_VAR(pkg);
+#define H5_PKG_DECLARE_VAR(pkg) extern bool H5_PACKAGE_INIT_VAR(pkg);
 #endif /* H5_PKG_SINGLE_SOURCE */
 #define H5_PKG_DECLARE_FUNC(pkg_init, pkg) H5_GLUE3(H5_PKG_DECLARE_, pkg_init, _FUNC)(pkg)
 #ifdef H5_MY_PKG
@@ -2642,7 +2642,7 @@ H5_PKG_DECLARE_FUNC(H5_MY_PKG_INIT, H5_MY_PKG)
 #endif /* H5_MY_PKG */
 
 /* API re-entrance variable */
-extern hbool_t H5_api_entered_g; /* Has library already been entered through API? */
+extern bool H5_api_entered_g; /* Has library already been entered through API? */
 
 /* Macros for entering different scopes of routines */
 #define H5_PACKAGE_ENTER(pkg, pkg_init, init)                                                                \
@@ -2730,10 +2730,10 @@ extern hbool_t H5_api_entered_g; /* Has library already been entered through API
 /* Macros for declaring error variables */
 /* Function can detect errors and has a specific error return value */
 #define FUNC_ERR_VAR_ERR(ret_typ, err)                                                                       \
-    hbool_t past_catch = false;                                                                              \
+    bool past_catch = false;                                                                              \
     ret_typ fail_value = err;
 /* Function can detect errors but cannot return an error value (Cleanup only) */
-#define FUNC_ERR_VAR_ERRCATCH(ret_typ, err) hbool_t past_catch = false;
+#define FUNC_ERR_VAR_ERRCATCH(ret_typ, err) bool past_catch = false;
 /* Function has no need to detect or clean up from errors */
 #define FUNC_ERR_VAR_NOERR(ret_typ, err)
 

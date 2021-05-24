@@ -112,7 +112,7 @@ H5_DLL herr_t        H5FD_sb_encode(H5FD_t *file, char *name /*out*/, uint8_t *b
 H5_DLL herr_t        H5FD_sb_load(H5FD_t *file, const char *name, const uint8_t *buf);
 H5_DLL void *        H5FD_fapl_get(H5FD_t *file);
 H5_DLL herr_t        H5FD_free_driver_info(hid_t driver_id, const void *driver_info);
-H5_DLL hid_t         H5FD_register(const void *cls, size_t size, hbool_t app_ref);
+H5_DLL hid_t         H5FD_register(const void *cls, size_t size, bool app_ref);
 H5_DLL H5FD_t *H5FD_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr);
 H5_DLL herr_t  H5FD_close(H5FD_t *file);
 H5_DLL int     H5FD_cmp(const H5FD_t *f1, const H5FD_t *f2);
@@ -131,16 +131,16 @@ H5_DLL herr_t  H5FD_set_feature_flags(H5FD_t *file, unsigned long feature_flags)
 H5_DLL herr_t  H5FD_get_fs_type_map(const H5FD_t *file, H5FD_mem_t *type_map);
 H5_DLL herr_t  H5FD_read(H5FD_t *file, H5FD_mem_t type, haddr_t addr, size_t size, void *buf /*out*/);
 H5_DLL herr_t  H5FD_write(H5FD_t *file, H5FD_mem_t type, haddr_t addr, size_t size, const void *buf);
-H5_DLL herr_t  H5FD_flush(H5FD_t *file, hbool_t closing);
-H5_DLL herr_t  H5FD_truncate(H5FD_t *file, hbool_t closing);
-H5_DLL herr_t  H5FD_lock(H5FD_t *file, hbool_t rw);
+H5_DLL herr_t  H5FD_flush(H5FD_t *file, bool closing);
+H5_DLL herr_t  H5FD_truncate(H5FD_t *file, bool closing);
+H5_DLL herr_t  H5FD_lock(H5FD_t *file, bool rw);
 H5_DLL herr_t  H5FD_unlock(H5FD_t *file);
 H5_DLL herr_t  H5FD_delete(const char *name, hid_t fapl_id);
 H5_DLL herr_t  H5FD_get_fileno(const H5FD_t *file, unsigned long *filenum);
 H5_DLL herr_t  H5FD_get_vfd_handle(H5FD_t *file, hid_t fapl, void **file_handle);
 H5_DLL herr_t  H5FD_set_base_addr(H5FD_t *file, haddr_t base_addr);
 H5_DLL haddr_t H5FD_get_base_addr(const H5FD_t *file);
-H5_DLL herr_t  H5FD_set_paged_aggr(H5FD_t *file, hbool_t paged);
+H5_DLL herr_t  H5FD_set_paged_aggr(H5FD_t *file, bool paged);
 
 /* Function prototypes for MPI based VFDs*/
 #ifdef H5_HAVE_PARALLEL

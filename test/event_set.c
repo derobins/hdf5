@@ -41,7 +41,7 @@ test_es_create(void)
     size_t   count;        /* # of events in set */
     size_t   num_errs;     /* # of failed events in set */
     uint64_t num_ops;      /* # of events inserted into set */
-    hbool_t  err_occurred; /* Whether an error has occurred */
+    bool  err_occurred; /* Whether an error has occurred */
 
     TESTING("event set creation");
 

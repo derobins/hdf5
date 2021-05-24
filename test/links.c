@@ -161,7 +161,7 @@ typedef struct {
     int             stop;      /* # of iterations to stop after */
     int64_t         curr;      /* Current creation order value */
     size_t          max_visit; /* Size of "visited link" flag array */
-    hbool_t *       visited;   /* Pointer to array of "visited link" flags */
+    bool *       visited;   /* Pointer to array of "visited link" flags */
 } link_iter_info_t;
 
 /* Link visit structs */
@@ -416,7 +416,7 @@ fix_ext_filename(char *path_name, char *cwd, const char *file_name)
  *-------------------------------------------------------------------------
  */
 static int
-mklinks(hid_t fapl, hbool_t new_format)
+mklinks(hid_t fapl, bool new_format)
 {
     hid_t   file, scalar, grp, d1;
     hsize_t size[1] = {1};
@@ -485,7 +485,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-new_links(hid_t fapl, hbool_t new_format)
+new_links(hid_t fapl, bool new_format)
 {
     hid_t   file_a, file_b = (-1);
     hid_t   grp1_a = (-1), grp1_b = (-1), grp2_a = (-1), grp2_b = (-1);
@@ -611,7 +611,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-cklinks(hid_t fapl, hbool_t new_format)
+cklinks(hid_t fapl, bool new_format)
 {
     hid_t       file;
     H5O_info2_t oinfo1, oinfo2;
@@ -797,7 +797,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-ck_new_links(hid_t fapl, hbool_t new_format)
+ck_new_links(hid_t fapl, bool new_format)
 {
     hid_t       file;
     H5O_info2_t oi_dset, oi_hard1, oi_hard2;
@@ -861,7 +861,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-long_links(hid_t fapl, hbool_t new_format)
+long_links(hid_t fapl, bool new_format)
 {
     hid_t  fid     = -1;   /* File ID */
     hid_t  gid     = -1;   /* Group ID */
@@ -940,7 +940,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-toomany(hid_t fapl, hbool_t new_format)
+toomany(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;               /* File ID */
     hid_t gid = -1, gid2 = -1;    /* Group IDs */
@@ -1139,7 +1139,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_lcpl(hid_t fapl, hbool_t new_format)
+test_lcpl(hid_t fapl, bool new_format)
 {
     hid_t       file_id  = -1;
     hid_t       group_id = -1;
@@ -1352,7 +1352,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_move(hid_t fapl, hbool_t new_format)
+test_move(hid_t fapl, bool new_format)
 {
     hid_t file_a = -1, file_b = -1;
     hid_t grp_1 = -1, grp_2 = -1, grp_move = -1, moved_grp = -1;
@@ -1519,7 +1519,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_copy(hid_t fapl, hbool_t new_format)
+test_copy(hid_t fapl, bool new_format)
 {
     hid_t file_a = -1, file_b = -1;
     hid_t grp_1 = -1, grp_2 = -1, grp_move = -1, moved_grp = -1;
@@ -1694,7 +1694,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_move_preserves(hid_t fapl_id, hbool_t new_format)
+test_move_preserves(hid_t fapl_id, bool new_format)
 {
     hid_t       file_id  = -1;
     hid_t       group_id = -1;
@@ -1934,7 +1934,7 @@ error:
  */
 #ifndef H5_NO_DEPRECATED_SYMBOLS
 static int
-test_deprec(hid_t fapl, hbool_t new_format)
+test_deprec(hid_t fapl, bool new_format)
 {
     hid_t      file_id   = -1;
     hid_t      group1_id = -1;
@@ -2136,7 +2136,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-cklinks_deprec(hid_t fapl, hbool_t new_format)
+cklinks_deprec(hid_t fapl, bool new_format)
 {
     hid_t       file;
     H5O_info1_t oinfo1, oinfo2;
@@ -2311,7 +2311,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_lcpl_deprec(hid_t fapl, hbool_t new_format)
+test_lcpl_deprec(hid_t fapl, bool new_format)
 {
     hid_t       file_id  = -1;
     hid_t       group_id = -1;
@@ -2525,7 +2525,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-test_move_preserves_deprec(hid_t fapl_id, hbool_t new_format)
+test_move_preserves_deprec(hid_t fapl_id, bool new_format)
 {
     hid_t       file_id  = -1;
     hid_t       group_id = -1;
@@ -2765,7 +2765,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_root_deprec(hid_t fapl, hbool_t new_format)
+external_link_root_deprec(hid_t fapl, bool new_format)
 {
     hid_t       fid = -1;               /* File ID */
     hid_t       gid = -1, gid2 = -1;    /* Group IDs */
@@ -2984,7 +2984,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_query_deprec(hid_t fapl, hbool_t new_format)
+external_link_query_deprec(hid_t fapl, bool new_format)
 {
     hid_t       fid = -1;    /* File ID */
     hid_t       gid = -1;    /* Group IDs */
@@ -3138,7 +3138,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_closing_deprec(hid_t fapl, hbool_t new_format)
+external_link_closing_deprec(hid_t fapl, bool new_format)
 {
     hid_t   fid1 = (-1), fid2 = (-1), fid3 = (-1), fid4 = (-1);
     hid_t   gid = (-1), tid = (-1), tid2 = (-1), sid = (-1), did = (-1);
@@ -3948,7 +3948,7 @@ error:
 } /* end ud_link_reregister_deprec() */
 
 static int
-ud_callbacks_deprec(hid_t fapl, hbool_t new_format)
+ud_callbacks_deprec(hid_t fapl, bool new_format)
 {
     hid_t       fid  = -1;                       /* File ID */
     hid_t       gid  = -1;                       /* Group ID */
@@ -4125,7 +4125,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-lapl_nlinks_deprec(hid_t fapl, hbool_t new_format)
+lapl_nlinks_deprec(hid_t fapl, bool new_format)
 {
     hid_t   fid = -1;                        /* File ID */
     hid_t   gid = -1, gid2 = -1;             /* Group IDs */
@@ -4432,7 +4432,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-linkinfo_deprec(hid_t fapl, hbool_t new_format)
+linkinfo_deprec(hid_t fapl, bool new_format)
 {
     hid_t       fid = -1;           /* File ID */
     hid_t       gid = -1;           /* Group ID */
@@ -4853,8 +4853,8 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-link_info_by_idx_check_deprec(hid_t group_id, const char *linkname, hsize_t n, hbool_t hard_link,
-                              hbool_t use_index)
+link_info_by_idx_check_deprec(hid_t group_id, const char *linkname, hsize_t n, bool hard_link,
+                              bool use_index)
 {
     char        tmpname[NAME_BUF_SIZE]; /* Temporary link name */
     char        valname[NAME_BUF_SIZE]; /* Link value name */
@@ -6293,7 +6293,7 @@ link_iterate_check_deprec(hid_t group_id, H5_index_t idx_type, H5_iter_order_t o
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate1(group_id, idx_type, order, &skip, link_iterate_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6310,7 +6310,7 @@ link_iterate_check_deprec(hid_t group_id, H5_index_t idx_type, H5_iter_order_t o
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6327,7 +6327,7 @@ link_iterate_check_deprec(hid_t group_id, H5_index_t idx_type, H5_iter_order_t o
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = (int64_t)(order != H5_ITER_DEC ? skip : ((max_links - 1) - skip));
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate1(group_id, idx_type, order, &skip, link_iterate_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6362,7 +6362,7 @@ link_iterate_check_deprec(hid_t group_id, H5_index_t idx_type, H5_iter_order_t o
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? (unsigned)gskip : ((max_links - 1) - (unsigned)gskip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6397,7 +6397,7 @@ link_iterate_check_deprec(hid_t group_id, H5_index_t idx_type, H5_iter_order_t o
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Literate1(group_id, idx_type, order, &skip, link_iterate_deprec_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -6411,7 +6411,7 @@ link_iterate_check_deprec(hid_t group_id, H5_index_t idx_type, H5_iter_order_t o
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Giterate(group_id, ".", &gskip, group_iterate_deprec_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -6464,7 +6464,7 @@ link_iterate_deprec(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    hbool_t *        visited = NULL;          /* Array of flags for visiting links */
+    bool *        visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
@@ -6479,7 +6479,7 @@ link_iterate_deprec(hid_t fapl)
 
     /* Allocate the "visited link" array */
     iter_info.max_visit = max_compact * 2;
-    if (NULL == (visited = (hbool_t *)HDmalloc(sizeof(hbool_t) * iter_info.max_visit)))
+    if (NULL == (visited = (bool *)HDmalloc(sizeof(bool) * iter_info.max_visit)))
         TEST_ERROR
     iter_info.visited = visited;
 
@@ -6776,7 +6776,7 @@ link_iterate_old_check_deprec(hid_t group_id, H5_iter_order_t order, unsigned ma
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate1(group_id, H5_INDEX_NAME, order, &skip, link_iterate_old_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6793,7 +6793,7 @@ link_iterate_old_check_deprec(hid_t group_id, H5_iter_order_t order, unsigned ma
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_old_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6810,7 +6810,7 @@ link_iterate_old_check_deprec(hid_t group_id, H5_iter_order_t order, unsigned ma
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = (int64_t)(order != H5_ITER_DEC ? skip : ((max_links - 1) - skip));
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate1(group_id, H5_INDEX_NAME, order, &skip, link_iterate_old_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6845,7 +6845,7 @@ link_iterate_old_check_deprec(hid_t group_id, H5_iter_order_t order, unsigned ma
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? (unsigned)gskip : ((max_links - 1) - (unsigned)gskip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_old_deprec_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -6880,7 +6880,7 @@ link_iterate_old_check_deprec(hid_t group_id, H5_iter_order_t order, unsigned ma
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Literate1(group_id, H5_INDEX_NAME, order, &skip, link_iterate_old_deprec_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -6894,7 +6894,7 @@ link_iterate_old_check_deprec(hid_t group_id, H5_iter_order_t order, unsigned ma
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Giterate(group_id, ".", &gskip, group_iterate_old_deprec_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -6955,14 +6955,14 @@ link_iterate_old_deprec(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    hbool_t *        visited = NULL;          /* Array of flags for visiting links */
+    bool *        visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
 
     /* Allocate the "visited link" array */
     iter_info.max_visit = CORDER_NLINKS;
-    if (NULL == (visited = (hbool_t *)HDmalloc(sizeof(hbool_t) * iter_info.max_visit)))
+    if (NULL == (visited = (bool *)HDmalloc(sizeof(bool) * iter_info.max_visit)))
         TEST_ERROR
     iter_info.visited = visited;
 
@@ -7083,7 +7083,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_root(hid_t fapl, hbool_t new_format)
+external_link_root(hid_t fapl, bool new_format)
 {
     hid_t       fid = -1;               /* File ID */
     hid_t       gid = -1, gid2 = -1;    /* Group IDs */
@@ -7302,7 +7302,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_path(hid_t fapl, hbool_t new_format)
+external_link_path(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;               /* File ID */
     hid_t gid = -1, gid2 = -1;    /* Group IDs */
@@ -7424,7 +7424,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_mult(hid_t fapl, hbool_t new_format)
+external_link_mult(hid_t fapl, bool new_format)
 {
     hid_t fid = -1, fid2 = -1;    /* File IDs */
     hid_t gid = -1, gid2 = -1;    /* Group IDs */
@@ -7622,7 +7622,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_self(hid_t fapl, hbool_t new_format)
+external_link_self(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;               /* File ID */
     hid_t gid = -1, gid2 = -1;    /* Group IDs */
@@ -7818,7 +7818,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_pingpong(hid_t fapl, hbool_t new_format)
+external_link_pingpong(hid_t fapl, bool new_format)
 {
     hid_t fid = (-1);                                         /* File ID */
     hid_t gid = (-1), gid2 = (-1);                            /* Group IDs */
@@ -7970,7 +7970,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_toomany(hid_t fapl, hbool_t new_format)
+external_link_toomany(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;                                           /* File ID */
     hid_t gid = -1, gid2 = -1;                                /* Group IDs */
@@ -8119,7 +8119,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_dangling(hid_t fapl, hbool_t new_format)
+external_link_dangling(hid_t fapl, bool new_format)
 {
     hid_t fid    = -1;                                        /* File ID */
     hid_t gid    = -1;                                        /* Group IDs */
@@ -8239,7 +8239,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_prefix(hid_t fapl, hbool_t new_format)
+external_link_prefix(hid_t fapl, bool new_format)
 {
     hid_t fid     = -1; /* File ID */
     hid_t gid     = -1; /* Group IDs */
@@ -8336,7 +8336,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_abs_mainpath(hid_t fapl, hbool_t new_format)
+external_link_abs_mainpath(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -8432,7 +8432,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_rel_mainpath(hid_t fapl, hbool_t new_format)
+external_link_rel_mainpath(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -8520,7 +8520,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_cwd(hid_t fapl, hbool_t new_format)
+external_link_cwd(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -8614,7 +8614,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_abstar(hid_t fapl, hbool_t new_format)
+external_link_abstar(hid_t fapl, bool new_format)
 {
     hid_t fid = (-1); /* File ID */
     hid_t gid = (-1); /* Group IDs */
@@ -8712,7 +8712,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_abstar_cur(hid_t fapl, hbool_t new_format)
+external_link_abstar_cur(hid_t fapl, bool new_format)
 {
     hid_t fid = (-1); /* File ID */
     hid_t gid = (-1); /* Group IDs */
@@ -8809,7 +8809,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_reltar(hid_t fapl, hbool_t new_format)
+external_link_reltar(hid_t fapl, bool new_format)
 {
     hid_t fid = (-1); /* File ID */
     hid_t gid = (-1); /* Group IDs */
@@ -8892,7 +8892,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_chdir(hid_t fapl, hbool_t new_format)
+external_link_chdir(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -8998,7 +8998,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_set_elink_fapl1(hid_t fapl, hbool_t new_format)
+external_set_elink_fapl1(hid_t fapl, bool new_format)
 {
     hid_t fid  = (-1);
     hid_t fidA = (-1), fidB = (-1);
@@ -9215,7 +9215,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_set_elink_fapl2(hid_t fapl, hbool_t new_format)
+external_set_elink_fapl2(hid_t fapl, bool new_format)
 {
     hid_t          fid       = H5I_INVALID_HID;
     hid_t          gid       = H5I_INVALID_HID;
@@ -9433,7 +9433,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_set_elink_fapl3(hbool_t new_format)
+external_set_elink_fapl3(bool new_format)
 {
     hid_t core_fapl = -1, stdio_fapl = -1;
     hid_t lapl_id = -1, new_lapl_id = -1, l_fapl = -1, out_fapl;
@@ -9535,7 +9535,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_set_elink_acc_flags(const char *env_h5_drvr, hid_t fapl, hbool_t new_format)
+external_set_elink_acc_flags(const char *env_h5_drvr, hid_t fapl, bool new_format)
 {
     hid_t    file1 = -1, file2 = -1, group = -1, subgroup = -1, gapl = -1;
     char     filename1[NAME_BUF_SIZE], filename2[NAME_BUF_SIZE];
@@ -9873,7 +9873,7 @@ external_set_elink_cb_cb(const char *parent_file, const char *parent_group, cons
 
 /* Main test function */
 static int
-external_set_elink_cb(hid_t fapl, hbool_t new_format)
+external_set_elink_cb(hid_t fapl, bool new_format)
 {
     hid_t          file1 = -1, file2 = -1, group = -1, gapl = -1, fam_fapl = -1, ret_fapl = -1, base_driver;
     set_elink_cb_t op_data, *op_data_p;
@@ -10100,7 +10100,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win1(hid_t fapl, hbool_t new_format)
+external_link_win1(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -10194,7 +10194,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win2(hid_t fapl, hbool_t new_format)
+external_link_win2(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -10291,7 +10291,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win3(hid_t fapl, hbool_t new_format)
+external_link_win3(hid_t fapl, bool new_format)
 {
     hid_t fid   = -1; /* File ID */
     hid_t gid   = -1; /* Group IDs */
@@ -10385,7 +10385,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win4(hid_t fapl, hbool_t new_format)
+external_link_win4(hid_t fapl, bool new_format)
 {
     hid_t fid   = -1; /* File ID */
     hid_t gid   = -1; /* Group IDs */
@@ -10476,7 +10476,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win5(hid_t fapl, hbool_t new_format)
+external_link_win5(hid_t fapl, bool new_format)
 {
     hid_t fid   = -1; /* File ID */
     hid_t gid   = -1; /* Group IDs */
@@ -10577,7 +10577,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win6(hid_t fapl, hbool_t new_format)
+external_link_win6(hid_t fapl, bool new_format)
 {
     hid_t fid   = -1; /* File ID */
     hid_t gid   = -1; /* Group IDs */
@@ -10675,7 +10675,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win7(hid_t fapl, hbool_t new_format)
+external_link_win7(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -10771,7 +10771,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win8(hid_t fapl, hbool_t new_format)
+external_link_win8(hid_t fapl, bool new_format)
 {
     hid_t fid   = -1; /* File ID */
     hid_t gid   = -1; /* Group IDs */
@@ -10870,7 +10870,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_win9(hid_t fapl, hbool_t new_format)
+external_link_win9(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group IDs */
@@ -10963,7 +10963,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_recursive(hid_t fapl, hbool_t new_format)
+external_link_recursive(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;                 /* File ID */
     hid_t gid = -1;                 /* Group IDs */
@@ -11033,7 +11033,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_query(hid_t fapl, hbool_t new_format)
+external_link_query(hid_t fapl, bool new_format)
 {
     hid_t       fid = -1;    /* File ID */
     hid_t       gid = -1;    /* Group IDs */
@@ -11186,7 +11186,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_unlink_compact(hid_t fapl, hbool_t new_format)
+external_link_unlink_compact(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;                                           /* File ID */
     hid_t gid = -1, gid2 = -1;                                /* Group IDs */
@@ -11279,7 +11279,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_unlink_dense(hid_t fapl, hbool_t new_format)
+external_link_unlink_dense(hid_t fapl, bool new_format)
 {
     hid_t fid  = -1;                                          /* File ID */
     hid_t gcpl = -1;                                          /* Group creation property list ID */
@@ -11456,7 +11456,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_move(hid_t fapl, hbool_t new_format)
+external_link_move(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;                                           /* File ID */
     hid_t gid = -1, gid2 = -1;                                /* Group IDs */
@@ -11691,7 +11691,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_ride(hid_t fapl, hbool_t new_format)
+external_link_ride(hid_t fapl, bool new_format)
 {
     hid_t fid  = -1;                                          /* File ID */
     hid_t gcpl = -1;                                          /* Group creation property list ID */
@@ -11923,7 +11923,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_closing(hid_t fapl, hbool_t new_format)
+external_link_closing(hid_t fapl, bool new_format)
 {
     hid_t   fid1 = (-1), fid2 = (-1), fid3 = (-1), fid4 = (-1);
     hid_t   gid = (-1), tid = (-1), tid2 = (-1), sid = (-1), did = (-1);
@@ -12239,7 +12239,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_endian(hbool_t new_format)
+external_link_endian(bool new_format)
 {
     hid_t       fid = -1;                  /* File ID */
     hid_t       gid = -1, gid2 = -1;       /* Group IDs */
@@ -12324,7 +12324,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_strong(hid_t fapl, hbool_t new_format)
+external_link_strong(hid_t fapl, bool new_format)
 {
     hid_t my_fapl = (-1);           /* File access property list */
     hid_t fid1 = (-1), fid2 = (-1); /* File ID */
@@ -12429,7 +12429,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_symlink(const char *env_h5_drvr, hid_t fapl, hbool_t new_format)
+external_symlink(const char *env_h5_drvr, hid_t fapl, bool new_format)
 {
 #ifdef H5_HAVE_SYMLINK
     hid_t   file1      = H5I_INVALID_HID;
@@ -12728,7 +12728,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_copy_invalid_object(hid_t fapl, hbool_t new_format)
+external_copy_invalid_object(hid_t fapl, bool new_format)
 {
     hid_t fid      = -1; /* File ID */
     hid_t gid      = -1; /* Group ID */
@@ -12808,7 +12808,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_dont_fail_to_source(hid_t fapl, hbool_t new_format)
+external_dont_fail_to_source(hid_t fapl, bool new_format)
 {
     hid_t fid = -1; /* File ID */
     hid_t gid = -1; /* Group ID */
@@ -12877,7 +12877,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_file_cache(hid_t fapl, hbool_t new_format)
+external_file_cache(hid_t fapl, bool new_format)
 {
     hid_t    my_fapl = -1; /* Temporary FAPL */
     hid_t    fid1    = -1; /* File ID */
@@ -13235,7 +13235,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_open_twice(hid_t fapl, hbool_t new_format)
+external_open_twice(hid_t fapl, bool new_format)
 {
     hid_t fid1  = -1; /* File ID */
     hid_t fid2  = -1; /* File ID */
@@ -13453,7 +13453,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-external_link_with_committed_datatype(hid_t fapl, hbool_t new_format)
+external_link_with_committed_datatype(hid_t fapl, bool new_format)
 {
     hid_t   fid1 = -1, fid2 = -1;     /* File IDs */
     hid_t   gid1 = -1, gid2 = -1;     /* Group IDs */
@@ -14399,7 +14399,7 @@ error:
 } /* end UD_cb_query() */
 
 static int
-ud_callbacks(hid_t fapl, hbool_t new_format)
+ud_callbacks(hid_t fapl, bool new_format)
 {
     hid_t       fid  = -1;                       /* File ID */
     hid_t       gid  = -1;                       /* Group ID */
@@ -14599,7 +14599,7 @@ error:
 } /* end UD_plist_traverse() */
 
 static int
-lapl_udata(hid_t fapl, hbool_t new_format)
+lapl_udata(hid_t fapl, bool new_format)
 {
     hid_t fid = -1;            /* File ID */
     hid_t gid = -1, gid2 = -1; /* Group IDs */
@@ -14924,7 +14924,7 @@ const H5L_class_t UD_error4_class[1] = {{
 }};
 
 static int
-ud_link_errors(hid_t fapl, hbool_t new_format)
+ud_link_errors(hid_t fapl, bool new_format)
 {
     hid_t       fid = -1; /* File ID */
     hid_t       gid = -1; /* Group IDs */
@@ -15111,7 +15111,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-lapl_nlinks(hid_t fapl, hbool_t new_format)
+lapl_nlinks(hid_t fapl, bool new_format)
 {
     hid_t   fid = -1;                        /* File ID */
     hid_t   gid = -1, gid2 = -1;             /* Group IDs */
@@ -15418,7 +15418,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-linkinfo(hid_t fapl, hbool_t new_format)
+linkinfo(hid_t fapl, bool new_format)
 {
     hid_t       fid = -1;           /* File ID */
     hid_t       gid = -1;           /* Group ID */
@@ -15535,7 +15535,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-check_all_closed(hid_t fapl, hbool_t new_format, int stopat)
+check_all_closed(hid_t fapl, bool new_format, int stopat)
 {
     hid_t fid = -1;
     char  filename[NAME_BUF_SIZE];
@@ -15737,7 +15737,7 @@ visit_link_cb(hid_t H5_ATTR_UNUSED group_id, const char *name, const H5L_info2_t
  *-------------------------------------------------------------------------
  */
 static int
-link_visit(hid_t fapl, hbool_t new_format)
+link_visit(hid_t fapl, bool new_format)
 {
     lvisit_ud_t udata; /* User-data for visiting */
     hid_t       fid = -1;
@@ -15814,7 +15814,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-link_visit_by_name(hid_t fapl, hbool_t new_format)
+link_visit_by_name(hid_t fapl, bool new_format)
 {
     lvisit_ud_t udata; /* User-data for visiting */
     hid_t       fid = -1;
@@ -15928,7 +15928,7 @@ visit_obj_cb(hid_t H5_ATTR_UNUSED group_id, const char *name, const H5O_info2_t 
  *-------------------------------------------------------------------------
  */
 static int
-obj_visit(hid_t fapl, hbool_t new_format)
+obj_visit(hid_t fapl, bool new_format)
 {
     ovisit_ud_t udata; /* User-data for visiting */
     hid_t       fid = -1;
@@ -16009,7 +16009,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-obj_visit_by_name(hid_t fapl, hbool_t new_format)
+obj_visit_by_name(hid_t fapl, bool new_format)
 {
     ovisit_ud_t udata; /* User-data for visiting */
     hid_t       fid = -1;
@@ -16127,7 +16127,7 @@ visit_obj_stop_cb(hid_t H5_ATTR_UNUSED group_id, const char H5_ATTR_UNUSED *name
  *-------------------------------------------------------------------------
  */
 static int
-obj_visit_stop(hid_t fapl, hbool_t new_format)
+obj_visit_stop(hid_t fapl, bool new_format)
 {
     unsigned nvisited; /* User-data for visiting */
     hid_t    fid = -1;
@@ -16256,7 +16256,7 @@ link_filter_filter(unsigned int flags, size_t cd_nelmts, const unsigned int cd_v
 } /* end link_filter_filter */
 
 static int
-link_filters(hid_t fapl, hbool_t new_format)
+link_filters(hid_t fapl, bool new_format)
 {
     hid_t        fid = -1, fcpl = -1;
     hid_t        gid1 = -1, gid2 = -1, gcpl1 = -1, gcpl2 = -1;
@@ -16664,7 +16664,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-obj_exists(hid_t fapl, hbool_t new_format)
+obj_exists(hid_t fapl, bool new_format)
 {
     char   filename[NAME_BUF_SIZE]; /* Buffer for file name */
     hid_t  fid = -1;                /* File ID */
@@ -17878,7 +17878,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static int
-link_info_by_idx_check(hid_t group_id, const char *linkname, hsize_t n, hbool_t hard_link, hbool_t use_index)
+link_info_by_idx_check(hid_t group_id, const char *linkname, hsize_t n, bool hard_link, bool use_index)
 {
     char        tmpname[NAME_BUF_SIZE]; /* Temporary link name */
     char        valname[NAME_BUF_SIZE]; /* Link value name */
@@ -19361,7 +19361,7 @@ link_iterate_check(hid_t group_id, H5_index_t idx_type, H5_iter_order_t order, u
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate2(group_id, idx_type, order, &skip, link_iterate_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19379,7 +19379,7 @@ link_iterate_check(hid_t group_id, H5_index_t idx_type, H5_iter_order_t order, u
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19397,7 +19397,7 @@ link_iterate_check(hid_t group_id, H5_index_t idx_type, H5_iter_order_t order, u
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = (int64_t)(order != H5_ITER_DEC ? skip : ((max_links - 1) - skip));
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate2(group_id, idx_type, order, &skip, link_iterate_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19433,7 +19433,7 @@ link_iterate_check(hid_t group_id, H5_index_t idx_type, H5_iter_order_t order, u
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? (unsigned)gskip : ((max_links - 1) - (unsigned)gskip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19469,7 +19469,7 @@ link_iterate_check(hid_t group_id, H5_index_t idx_type, H5_iter_order_t order, u
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Literate2(group_id, idx_type, order, &skip, link_iterate_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -19484,7 +19484,7 @@ link_iterate_check(hid_t group_id, H5_index_t idx_type, H5_iter_order_t order, u
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Giterate(group_id, ".", &gskip, group_iterate_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -19538,7 +19538,7 @@ link_iterate(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    hbool_t *        visited = NULL;          /* Array of flags for visiting links */
+    bool *        visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
@@ -19553,7 +19553,7 @@ link_iterate(hid_t fapl)
 
     /* Allocate the "visited link" array */
     iter_info.max_visit = max_compact * 2;
-    if (NULL == (visited = (hbool_t *)HDmalloc(sizeof(hbool_t) * iter_info.max_visit)))
+    if (NULL == (visited = (bool *)HDmalloc(sizeof(bool) * iter_info.max_visit)))
         TEST_ERROR
     iter_info.visited = visited;
 
@@ -19858,7 +19858,7 @@ link_iterate_old_check(hid_t group_id, H5_iter_order_t order, unsigned max_links
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate2(group_id, H5_INDEX_NAME, order, &skip, link_iterate_old_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19876,7 +19876,7 @@ link_iterate_old_check(hid_t group_id, H5_iter_order_t order, unsigned max_links
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_old_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19894,7 +19894,7 @@ link_iterate_old_check(hid_t group_id, H5_iter_order_t order, unsigned max_links
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = (int64_t)(order != H5_ITER_DEC ? skip : ((max_links - 1) - skip));
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Literate2(group_id, H5_INDEX_NAME, order, &skip, link_iterate_old_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19930,7 +19930,7 @@ link_iterate_old_check(hid_t group_id, H5_iter_order_t order, unsigned max_links
     iter_info->stop     = -1;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? (unsigned)gskip : ((max_links - 1) - (unsigned)gskip);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if (H5Giterate(group_id, ".", &gskip, group_iterate_old_cb, iter_info) < 0)
         TEST_ERROR
 
@@ -19966,7 +19966,7 @@ link_iterate_old_check(hid_t group_id, H5_iter_order_t order, unsigned max_links
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Literate2(group_id, H5_INDEX_NAME, order, &skip, link_iterate_old_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -19981,7 +19981,7 @@ link_iterate_old_check(hid_t group_id, H5_iter_order_t order, unsigned max_links
     iter_info->stop     = 3;
     iter_info->ncalled  = 0;
     iter_info->curr     = order != H5_ITER_DEC ? 0 : (max_links - 1);
-    HDmemset(iter_info->visited, 0, sizeof(hbool_t) * iter_info->max_visit);
+    HDmemset(iter_info->visited, 0, sizeof(bool) * iter_info->max_visit);
     if ((ret = H5Giterate(group_id, ".", &gskip, group_iterate_old_cb, iter_info)) < 0)
         TEST_ERROR
     if (ret != CORDER_ITER_STOP)
@@ -20045,14 +20045,14 @@ link_iterate_old(hid_t fapl)
     char             objname[NAME_BUF_SIZE];  /* Object name */
     char             filename[NAME_BUF_SIZE]; /* File name */
     link_iter_info_t iter_info;               /* Iterator info */
-    hbool_t *        visited = NULL;          /* Array of flags for visiting links */
+    bool *        visited = NULL;          /* Array of flags for visiting links */
     hsize_t          skip;                    /* # of links to skip in group */
     unsigned         u;                       /* Local index variable */
     herr_t           ret;                     /* Generic return value */
 
     /* Allocate the "visited link" array */
     iter_info.max_visit = CORDER_NLINKS;
-    if (NULL == (visited = (hbool_t *)HDmalloc(sizeof(hbool_t) * iter_info.max_visit)))
+    if (NULL == (visited = (bool *)HDmalloc(sizeof(bool) * iter_info.max_visit)))
         TEST_ERROR
     iter_info.visited = visited;
 
@@ -22307,7 +22307,7 @@ timestamps(hid_t fapl)
     H5O_info2_t       oinfo, oinfo2;           /* Object info for groups created */
     H5O_native_info_t ninfo, ninfo2;           /* Native info for groups created */
     char              filename[NAME_BUF_SIZE]; /* File name */
-    hbool_t           track_times;             /* The object timestamp setting */
+    bool           track_times;             /* The object timestamp setting */
 
     /* Print test message */
     TESTING("timestamps on objects")

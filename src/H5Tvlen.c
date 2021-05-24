@@ -54,7 +54,7 @@
 /* Memory-based VL sequence callbacks */
 static herr_t H5T__vlen_mem_seq_getlen(H5VL_object_t *file, const void *_vl, size_t *len);
 static void * H5T__vlen_mem_seq_getptr(void *_vl);
-static herr_t H5T__vlen_mem_seq_isnull(const H5VL_object_t *file, void *_vl, hbool_t *isnull);
+static herr_t H5T__vlen_mem_seq_isnull(const H5VL_object_t *file, void *_vl, bool *isnull);
 static herr_t H5T__vlen_mem_seq_setnull(H5VL_object_t *file, void *_vl, void *_bg);
 static herr_t H5T__vlen_mem_seq_read(H5VL_object_t *file, void *_vl, void *_buf, size_t len);
 static herr_t H5T__vlen_mem_seq_write(H5VL_object_t *file, const H5T_vlen_alloc_info_t *vl_alloc_info,
@@ -63,7 +63,7 @@ static herr_t H5T__vlen_mem_seq_write(H5VL_object_t *file, const H5T_vlen_alloc_
 /* Memory-based VL string callbacks */
 static herr_t H5T__vlen_mem_str_getlen(H5VL_object_t *file, const void *_vl, size_t *len);
 static void * H5T__vlen_mem_str_getptr(void *_vl);
-static herr_t H5T__vlen_mem_str_isnull(const H5VL_object_t *file, void *_vl, hbool_t *isnull);
+static herr_t H5T__vlen_mem_str_isnull(const H5VL_object_t *file, void *_vl, bool *isnull);
 static herr_t H5T__vlen_mem_str_setnull(H5VL_object_t *file, void *_vl, void *_bg);
 static herr_t H5T__vlen_mem_str_read(H5VL_object_t *file, void *_vl, void *_buf, size_t len);
 static herr_t H5T__vlen_mem_str_write(H5VL_object_t *file, const H5T_vlen_alloc_info_t *vl_alloc_info,
@@ -71,7 +71,7 @@ static herr_t H5T__vlen_mem_str_write(H5VL_object_t *file, const H5T_vlen_alloc_
 
 /* Disk-based VL sequence (and string) callbacks */
 static herr_t H5T__vlen_disk_getlen(H5VL_object_t *file, const void *_vl, size_t *len);
-static herr_t H5T__vlen_disk_isnull(const H5VL_object_t *file, void *_vl, hbool_t *isnull);
+static herr_t H5T__vlen_disk_isnull(const H5VL_object_t *file, void *_vl, bool *isnull);
 static herr_t H5T__vlen_disk_setnull(H5VL_object_t *file, void *_vl, void *_bg);
 static herr_t H5T__vlen_disk_read(H5VL_object_t *file, void *_vl, void *_buf, size_t len);
 static herr_t H5T__vlen_disk_write(H5VL_object_t *file, const H5T_vlen_alloc_info_t *vl_alloc_info, void *_vl,
@@ -434,7 +434,7 @@ H5T__vlen_mem_seq_getptr(void *_vl)
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__vlen_mem_seq_isnull(const H5VL_object_t H5_ATTR_UNUSED *file, void *_vl, hbool_t *isnull)
+H5T__vlen_mem_seq_isnull(const H5VL_object_t H5_ATTR_UNUSED *file, void *_vl, bool *isnull)
 {
 #ifdef H5_NO_ALIGNMENT_RESTRICTIONS
     const hvl_t *vl = (const hvl_t *)_vl; /* Pointer to the user's hvl_t information */
@@ -666,7 +666,7 @@ H5T__vlen_mem_str_getptr(void *_vl)
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__vlen_mem_str_isnull(const H5VL_object_t H5_ATTR_UNUSED *file, void *_vl, hbool_t *isnull)
+H5T__vlen_mem_str_isnull(const H5VL_object_t H5_ATTR_UNUSED *file, void *_vl, bool *isnull)
 {
 #ifdef H5_NO_ALIGNMENT_RESTRICTIONS
     char *s = *(char **)_vl; /* Pointer to the user's string information */
@@ -839,7 +839,7 @@ H5T__vlen_disk_getlen(H5VL_object_t H5_ATTR_UNUSED *file, const void *_vl, size_
  *-------------------------------------------------------------------------
  */
 static herr_t
-H5T__vlen_disk_isnull(const H5VL_object_t *file, void *_vl, hbool_t *isnull)
+H5T__vlen_disk_isnull(const H5VL_object_t *file, void *_vl, bool *isnull)
 {
     uint8_t *vl        = (uint8_t *)_vl; /* Pointer to the user's hvl_t information */
     herr_t   ret_value = SUCCEED;        /* Return value */

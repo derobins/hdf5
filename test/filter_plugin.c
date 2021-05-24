@@ -144,7 +144,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static herr_t
-compare_2D_arrays(int **dset1, int **dset2, const hsize_t *sizes, /*OUT*/ hbool_t *are_same)
+compare_2D_arrays(int **dset1, int **dset2, const hsize_t *sizes, /*OUT*/ bool *are_same)
 {
     hsize_t i, j; /* index variables */
 
@@ -187,7 +187,7 @@ ensure_filter_works(hid_t fid, const char *name, hid_t dcpl_id)
     size_t  hs_r, hs_c, hs_offr, hs_offc; /* Hypserslab sizes and offsets                 */
     size_t  i, j;                         /* Local index variables                        */
     int     n = 0;                        /* Value written to point array                 */
-    hbool_t are_same;                     /* Output from dataset compare function         */
+    bool are_same;                     /* Output from dataset compare function         */
     int *** save_array = NULL;            /* (Global) array where the final data go       */
 
     /* initialize */

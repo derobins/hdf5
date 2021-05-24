@@ -390,7 +390,7 @@ done:
  */
 herr_t
 H5C_stats(H5C_t *cache_ptr, const char *cache_name,
-          hbool_t
+          bool
 #if !H5C_COLLECT_CACHE_STATS
               H5_ATTR_UNUSED
 #endif /* H5C_COLLECT_CACHE_STATS */
@@ -860,12 +860,12 @@ H5C_stats__reset(H5C_t H5_ATTR_UNUSED *cache_ptr)
  */
 #ifndef NDEBUG
 herr_t
-H5C_flush_dependency_exists(H5C_t *cache_ptr, haddr_t parent_addr, haddr_t child_addr, hbool_t *fd_exists_ptr)
+H5C_flush_dependency_exists(H5C_t *cache_ptr, haddr_t parent_addr, haddr_t child_addr, bool *fd_exists_ptr)
 {
-    hbool_t            fd_exists = false; /* whether flush dependency exists */
+    bool            fd_exists = false; /* whether flush dependency exists */
     H5C_cache_entry_t *parent_ptr;        /* Ptr to parent entry */
     H5C_cache_entry_t *child_ptr;         /* Ptr to child entry */
-    hbool_t            ret_value = false; /* Return value */
+    bool            ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -1106,7 +1106,7 @@ done:
  *-------------------------------------------------------------------------
  */
 #ifndef NDEBUG
-hbool_t
+bool
 H5C_get_serialization_in_progress(const H5C_t *cache_ptr)
 {
     FUNC_ENTER_NOAPI_NOINIT_NOERR
@@ -1137,11 +1137,11 @@ H5C_get_serialization_in_progress(const H5C_t *cache_ptr)
  *-------------------------------------------------------------------------
  */
 #ifndef NDEBUG
-hbool_t
+bool
 H5C_cache_is_clean(const H5C_t *cache_ptr, H5C_ring_t inner_ring)
 {
     H5C_ring_t ring      = H5C_RING_USER;
-    hbool_t    ret_value = true; /* Return value */
+    bool    ret_value = true; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -1190,8 +1190,8 @@ done:
  */
 #ifndef NDEBUG
 herr_t
-H5C_verify_entry_type(H5C_t *cache_ptr, haddr_t addr, const H5C_class_t *expected_type, hbool_t *in_cache_ptr,
-                      hbool_t *type_ok_ptr)
+H5C_verify_entry_type(H5C_t *cache_ptr, haddr_t addr, const H5C_class_t *expected_type, bool *in_cache_ptr,
+                      bool *type_ok_ptr)
 {
     H5C_cache_entry_t *entry_ptr = NULL;
     herr_t             ret_value = SUCCEED; /* Return value */

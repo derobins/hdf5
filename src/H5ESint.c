@@ -55,7 +55,7 @@ typedef struct H5ES_wait_ctx_t {
     H5ES_t * es;              /* Event set being operated on */
     uint64_t timeout;         /* Timeout for wait operation */
     size_t * num_in_progress; /* Count of # of operations that have not completed */
-    hbool_t *op_failed;       /* Flag to indicate an operation failed */
+    bool *op_failed;       /* Flag to indicate an operation failed */
 } H5ES_wait_ctx_t;
 
 /* Callback context for get error info (gei) operations */
@@ -84,7 +84,7 @@ static int    H5ES__close_failed_cb(H5ES_event_t *ev, void *_ctx);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /*****************************/
 /* Library Private Variables */
@@ -254,7 +254,7 @@ H5ES_insert(hid_t es_id, H5VL_t *connector, void *token, const char *caller, con
     const char *  app_func;              /* Application source function name */
     const char *  s;                     /* Pointer to internal string from ref-counted string */
     va_list       ap;                    /* Varargs for caller */
-    hbool_t       arg_started = false;   /* Whether the va_list has been started */
+    bool       arg_started = false;   /* Whether the va_list has been started */
     herr_t        ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -458,7 +458,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5ES__wait(H5ES_t *es, uint64_t timeout, size_t *num_in_progress, hbool_t *op_failed)
+H5ES__wait(H5ES_t *es, uint64_t timeout, size_t *num_in_progress, bool *op_failed)
 {
     H5ES_wait_ctx_t ctx;                 /* Iterator callback context info */
     herr_t          ret_value = SUCCEED; /* Return value */

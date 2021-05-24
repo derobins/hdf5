@@ -1500,7 +1500,7 @@ error:
  */
 static unsigned
 test_skip_elmts(hid_t fapl, H5FA_create_t *cparam, farray_test_param_t *tparam, hsize_t skip_elmts,
-                hbool_t check_rest, const char *test_str)
+                bool check_rest, const char *test_str)
 {
     hid_t          file = -1;             /* File ID */
     H5F_t *        f    = NULL;           /* Internal file object pointer */
@@ -1636,7 +1636,7 @@ main(void)
     unsigned            nerrors = 0;            /* Cumulative error count */
     time_t              curr_time;              /* Current time, for seeding random number generator */
     int                 ExpressMode;            /* Test express value */
-    hbool_t             api_ctx_pushed = false; /* Whether API context pushed */
+    bool             api_ctx_pushed = false; /* Whether API context pushed */
 
     /* Reset library */
     h5_reset();

@@ -82,7 +82,7 @@
 /********************/
 
 /* Layout operation callbacks */
-static hbool_t H5D__virtual_is_data_cached(const H5D_shared_t *shared_dset);
+static bool H5D__virtual_is_data_cached(const H5D_shared_t *shared_dset);
 static herr_t  H5D__virtual_read(H5D_io_info_t *io_info, const H5D_type_info_t *type_info, hsize_t nelmts,
                                  const H5S_t *file_space, const H5S_t *mem_space, H5D_chunk_map_t *fm);
 static herr_t  H5D__virtual_write(H5D_io_info_t *io_info, const H5D_type_info_t *type_info, hsize_t nelmts,
@@ -882,7 +882,7 @@ H5D__virtual_open_source_dset(const H5D_t *vdset, H5O_storage_virtual_ent_t *vir
                               H5O_storage_virtual_srcdset_t *source_dset)
 {
     H5F_t * src_file      = NULL;    /* Source file */
-    hbool_t src_file_open = false;   /* Whether we have opened and need to close src_file */
+    bool src_file_open = false;   /* Whether we have opened and need to close src_file */
     herr_t  ret_value     = SUCCEED; /* Return value */
 
     FUNC_ENTER_STATIC
@@ -1441,7 +1441,7 @@ H5D__virtual_set_extent_unlim(const H5D_t *dset)
     hsize_t                curr_dims[H5S_MAX_RANK];
     hsize_t                clip_size;
     int                    rank;
-    hbool_t                changed = false; /* Whether the VDS extent changed */
+    bool                changed = false; /* Whether the VDS extent changed */
     size_t                 i, j;
     herr_t                 ret_value = SUCCEED; /* Return value */
 
@@ -1812,7 +1812,7 @@ H5D__virtual_set_extent_unlim(const H5D_t *dset)
                 else {
                     /* printf mapping */
                     hsize_t first_inc_block;
-                    hbool_t partial_block;
+                    bool partial_block;
 
                     /* Get index of first incomplete block in virtual
                      * selection */
@@ -2038,7 +2038,7 @@ H5D__virtual_init_all(const H5D_t *dset)
             else {
                 /* printf mapping */
                 size_t  sub_dset_max;
-                hbool_t partial_block;
+                bool partial_block;
 
                 /* Get number of sub-source datasets in current extent */
                 sub_dset_max = (size_t)H5S_hyper_get_first_inc_block(
@@ -2296,10 +2296,10 @@ done:
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5D__virtual_is_space_alloc(const H5O_storage_t H5_ATTR_UNUSED *storage)
 {
-    hbool_t ret_value = false; /* Return value */
+    bool ret_value = false; /* Return value */
 
     FUNC_ENTER_PACKAGE_NOERR
 
@@ -2325,12 +2325,12 @@ H5D__virtual_is_space_alloc(const H5O_storage_t H5_ATTR_UNUSED *storage)
  *
  *-------------------------------------------------------------------------
  */
-static hbool_t
+static bool
 H5D__virtual_is_data_cached(const H5D_shared_t *shared_dset)
 {
     const H5O_storage_virtual_t *storage;           /* Convenience pointer */
     size_t                       i, j;              /* Local index variables */
-    hbool_t                      ret_value = false; /* Return value */
+    bool                      ret_value = false; /* Return value */
 
     FUNC_ENTER_STATIC_NOERR
 
@@ -2384,7 +2384,7 @@ H5D__virtual_pre_io(H5D_io_info_t *io_info, H5O_storage_virtual_t *storage, cons
     hsize_t  bounds_start[H5S_MAX_RANK]; /* Selection bounds start */
     hsize_t  bounds_end[H5S_MAX_RANK];   /* Selection bounds end */
     int      rank        = 0;
-    hbool_t  bounds_init = false; /* Whether bounds_start, bounds_end, and rank are valid */
+    bool  bounds_init = false; /* Whether bounds_start, bounds_end, and rank are valid */
     size_t   i, j, k;             /* Local index variables */
     herr_t   ret_value = SUCCEED; /* Return value */
 
@@ -2411,7 +2411,7 @@ H5D__virtual_pre_io(H5D_io_info_t *io_info, H5O_storage_virtual_t *storage, cons
 
         /* Check for "printf" source dataset resolution */
         if (storage->list[i].psfn_nsubs || storage->list[i].psdn_nsubs) {
-            hbool_t partial_block;
+            bool partial_block;
 
             HDassert(storage->list[i].unlim_dim_virtual >= 0);
 

@@ -46,7 +46,7 @@
 
 /* Typedef for iterator when encoding a property list */
 typedef struct {
-    hbool_t encode;       /* Whether the property list should be encoded */
+    bool encode;       /* Whether the property list should be encoded */
     size_t *enc_size_ptr; /* Pointer to size of encoded buffer */
     void ** pp;           /* Pointer to encoding buffer pointer */
 } H5P_enc_iter_ud_t;
@@ -247,7 +247,7 @@ H5P__encode_hbool_t(const void *value, void **_pp, size_t *size)
 
     if (NULL != *pp)
         /* Encode the value */
-        *(*pp)++ = (uint8_t) * (const hbool_t *)value;
+        *(*pp)++ = (uint8_t) * (const bool *)value;
 
     /* Set size needed for encoding */
     *size += 1;
@@ -373,13 +373,13 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
-H5P__encode(const H5P_genplist_t *plist, hbool_t enc_all_prop, void *buf, size_t *nalloc)
+H5P__encode(const H5P_genplist_t *plist, bool enc_all_prop, void *buf, size_t *nalloc)
 {
     H5P_enc_iter_ud_t udata;                 /* User data for property iteration callback */
     uint8_t *         p = (uint8_t *)buf;    /* Temporary pointer to encoding buffer */
     int               idx;                   /* Index of property to start at */
     size_t            encode_size = 0;       /* Size of buffer needed to encode properties */
-    hbool_t           encode      = true;    /* Whether the property list should be encoded */
+    bool           encode      = true;    /* Whether the property list should be encoded */
     herr_t            ret_value   = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -594,7 +594,7 @@ H5P__decode_uint8_t(const void **_pp, void *_value)
 herr_t
 H5P__decode_hbool_t(const void **_pp, void *_value)
 {
-    hbool_t *       value     = (hbool_t *)_value; /* Property value to return */
+    bool *       value     = (bool *)_value; /* Property value to return */
     const uint8_t **pp        = (const uint8_t **)_pp;
     herr_t          ret_value = SUCCEED; /* Return value */
 
@@ -606,7 +606,7 @@ H5P__decode_hbool_t(const void **_pp, void *_value)
     HDassert(value);
 
     /* Decode the value */
-    *value = (hbool_t) * (*pp)++;
+    *value = (bool) * (*pp)++;
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5P__decode_hbool_t() */

@@ -127,7 +127,7 @@ token_insert(H5O_info2_t *oinfo)
  *
  *-------------------------------------------------------------------------
  */
-static H5_ATTR_PURE hbool_t
+static H5_ATTR_PURE bool
 token_lookup(hid_t loc_id, H5O_info2_t *oinfo)
 {
     size_t n;
@@ -1460,7 +1460,7 @@ error:
  */
 static int
 test_copy_option(hid_t fcpl_src, hid_t fcpl_dst, hid_t src_fapl, hid_t dst_fapl, unsigned flag,
-                 hbool_t crt_intermediate_grp, const char *test_desciption)
+                 bool crt_intermediate_grp, const char *test_desciption)
 {
     hid_t    fid_src = -1, fid_dst = -1, fid_ext = -1; /* File IDs */
     hid_t    sid = -1;                                 /* Dataspace ID */

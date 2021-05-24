@@ -1548,7 +1548,7 @@ H5_DLL herr_t H5Fstop_mdc_logging(hid_t file_id);
  *
  * \since 1.10.0
  */
-H5_DLL herr_t H5Fget_mdc_logging_status(hid_t file_id, hbool_t *is_enabled, hbool_t *is_currently_logging);
+H5_DLL herr_t H5Fget_mdc_logging_status(hid_t file_id, bool *is_enabled, bool *is_currently_logging);
 /**
  * \ingroup SWMR
  *
@@ -1653,7 +1653,7 @@ H5_DLL herr_t H5Fget_mdc_image_info(hid_t file_id, haddr_t *image_addr, hsize_t 
  * \since 1.10.5
  *
  */
-H5_DLL herr_t H5Fget_dset_no_attrs_hint(hid_t file_id, hbool_t *minimize);
+H5_DLL herr_t H5Fget_dset_no_attrs_hint(hid_t file_id, bool *minimize);
 /**
  * \ingroup H5F
  *
@@ -1684,7 +1684,7 @@ H5_DLL herr_t H5Fget_dset_no_attrs_hint(hid_t file_id, hbool_t *minimize);
  * \since 1.10.5
  *
  */
-H5_DLL herr_t H5Fset_dset_no_attrs_hint(hid_t file_id, hbool_t minimize);
+H5_DLL herr_t H5Fset_dset_no_attrs_hint(hid_t file_id, bool minimize);
 H5_DLL herr_t H5Fwait(hid_t file_id);
 
 #ifdef H5_HAVE_PARALLEL
@@ -1880,7 +1880,7 @@ H5_DLL herr_t H5Fget_info1(hid_t obj_id, H5F_info1_t *file_info);
  * \todo In which version was this function deprecated?
  *
  */
-H5_DLL herr_t H5Fset_latest_format(hid_t file_id, hbool_t latest_format);
+H5_DLL herr_t H5Fset_latest_format(hid_t file_id, bool latest_format);
 /**
  * \ingroup H5F
  *

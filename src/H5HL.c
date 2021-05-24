@@ -65,7 +65,7 @@ static herr_t       H5HL__dirty(H5HL_t *heap);
 /*********************/
 
 /* Package initialization variable */
-hbool_t H5_PKG_INIT_VAR = false;
+bool H5_PKG_INIT_VAR = false;
 
 /* Declare a free list to manage the H5HL_free_t struct */
 H5FL_DEFINE(H5HL_free_t);
@@ -525,7 +525,7 @@ BEGIN_FUNC(PRIV, ERR, herr_t, SUCCEED, FAIL,
     H5HL_free_t *fl = NULL, *last_fl = NULL;
     size_t       need_size;
     size_t       offset = 0;
-    hbool_t      found;
+    bool      found;
 
     /* Check arguments */
     HDassert(f);

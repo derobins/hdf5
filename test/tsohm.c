@@ -592,7 +592,7 @@ error:
  *-------------------------------------------------------------------------
  */
 static hid_t
-size1_helper(hid_t file, const char *filename, hid_t fapl_id, hbool_t test_file_closing)
+size1_helper(hid_t file, const char *filename, hid_t fapl_id, bool test_file_closing)
 {
     dtype1_struct wdata;
     dtype1_struct rdata;
@@ -770,7 +770,7 @@ error:
  *----------------------------------------------------------------------------
  */
 static h5_stat_size_t
-getsize_testsize1(const char *filename, hid_t fcpl_id, hid_t fapl_id, hbool_t test_file_closing,
+getsize_testsize1(const char *filename, hid_t fcpl_id, hid_t fapl_id, bool test_file_closing,
                   H5O_native_info_t *ninfo)
 {
     hid_t  fid = H5I_INVALID_HID;
@@ -856,7 +856,7 @@ test_sohm_size1(void)
 
     for (use_shared = 0; use_shared < 2; use_shared++) {
         for (use_btree = 0; use_btree < 2; use_btree++) {
-            hbool_t test_open_close;
+            bool test_open_close;
 
             /* cannot use btree indexing without shared messages; skip case */
             if (use_btree && !use_shared)
@@ -3330,7 +3330,7 @@ test_sohm_extlink(void)
  *-------------------------------------------------------------------------
  */
 static int
-verify_dataset_extension(hid_t fcpl_id, hbool_t close_reopen)
+verify_dataset_extension(hid_t fcpl_id, bool close_reopen)
 {
     hid_t   file_id       = H5I_INVALID_HID;
     hid_t   orig_space_id = H5I_INVALID_HID;

@@ -46,7 +46,7 @@
 /********************/
 
 /* Selection callbacks */
-static herr_t   H5S__all_copy(H5S_t *dst, const H5S_t *src, hbool_t share_selection);
+static herr_t   H5S__all_copy(H5S_t *dst, const H5S_t *src, bool share_selection);
 static herr_t   H5S__all_release(H5S_t *space);
 static htri_t   H5S__all_is_valid(const H5S_t *space);
 static hssize_t H5S__all_serial_size(const H5S_t *space);
@@ -494,7 +494,7 @@ H5S__all_release(H5S_t *space)
  REVISION LOG
 --------------------------------------------------------------------------*/
 static herr_t
-H5S__all_copy(H5S_t *dst, const H5S_t H5_ATTR_UNUSED *src, hbool_t H5_ATTR_UNUSED share_selection)
+H5S__all_copy(H5S_t *dst, const H5S_t H5_ATTR_UNUSED *src, bool H5_ATTR_UNUSED share_selection)
 {
     FUNC_ENTER_STATIC_NOERR
 
@@ -1125,7 +1125,7 @@ done:
  REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
-H5S_select_all(H5S_t *space, hbool_t rel_prev)
+H5S_select_all(H5S_t *space, bool rel_prev)
 {
     herr_t ret_value = SUCCEED; /* return value */
 

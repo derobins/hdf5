@@ -33,15 +33,15 @@ static char *        g_list_of_fields = NULL;      /* command line input for "li
 static char *        g_dup_fields     = NULL;      /* copy of "list_of_fields" */
 static H5LD_memb_t **g_listv          = NULL;      /* vector info for "list_of_fields" */
 
-static hbool_t  g_monitor_size_only = false; /* monitor changes in dataset dimension sizes */
+static bool  g_monitor_size_only = false; /* monitor changes in dataset dimension sizes */
 static unsigned g_polling_interval  = 1;     /* polling interval to check appended data */
 
-static hbool_t  g_label         = false;  /* label compound values */
+static bool  g_label         = false;  /* label compound values */
 static int      g_display_width = 80;     /* output width in characters */
-static hbool_t  g_simple_output = false;  /* make output more machine-readable */
+static bool  g_simple_output = false;  /* make output more machine-readable */
 static unsigned g_retry = DEFAULT_RETRY;  /* # of times to try opening the file if somehow file is unstable */
-static hbool_t  g_display_hex    = false; /* display data in hexadecimal format : LATER */
-static hbool_t  g_user_interrupt = false; /* Flag to indicate that user interrupted execution */
+static bool  g_display_hex    = false; /* display data in hexadecimal format : LATER */
+static bool  g_user_interrupt = false; /* Flag to indicate that user interrupted execution */
 
 static herr_t doprint(hid_t did, const hsize_t *start, const hsize_t *block, int rank);
 static herr_t slicendump(hid_t did, hsize_t *prev_dims, hsize_t *cur_dims, hsize_t *start, hsize_t *block,
@@ -497,7 +497,7 @@ check_dataset(hid_t fid, char *dsetname)
     unsigned     u;                      /* Local index variable */
     hsize_t      cur_dims[H5S_MAX_RANK]; /* size of dataspace dimensions */
     hsize_t      max_dims[H5S_MAX_RANK]; /* maximum size of dataspace dimensions */
-    hbool_t      unlim_max_dims = false; /* whether dataset has unlimited or max. dimension setting */
+    bool      unlim_max_dims = false; /* whether dataset has unlimited or max. dimension setting */
     void *       edata;
     H5E_auto2_t  func;
     H5D_layout_t layout;

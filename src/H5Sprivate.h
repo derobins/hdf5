@@ -62,13 +62,13 @@ typedef struct {
                                   *  which there are contiguous regions in the lower
                                   *  dimensions that have been "flattened")
                                   */
-    hbool_t diminfo_valid;       /* Whether the dimension information is valid */
+    bool diminfo_valid;       /* Whether the dimension information is valid */
 
     /* "Flattened" regular hyperslab selection fields */
     H5S_hyper_dim_t diminfo[H5S_MAX_RANK];   /* "Flattened" regular selection information */
     hsize_t         size[H5S_MAX_RANK];      /* "Flattened" dataspace extent information */
     hssize_t        sel_off[H5S_MAX_RANK];   /* "Flattened" selection offset information */
-    hbool_t         flattened[H5S_MAX_RANK]; /* Whether this dimension has been flattened */
+    bool         flattened[H5S_MAX_RANK]; /* Whether this dimension has been flattened */
 
     /* Irregular hyperslab selection fields */
     hsize_t loc_off[H5S_MAX_RANK]; /* Byte offset in buffer, for each dimension's current offset */
@@ -202,12 +202,12 @@ typedef struct H5S_t H5S_t;
 
 /* Operations on dataspaces */
 H5_DLL herr_t H5S_init(void);
-H5_DLL H5S_t *     H5S_copy(const H5S_t *src, hbool_t share_selection, hbool_t copy_max);
+H5_DLL H5S_t *     H5S_copy(const H5S_t *src, bool share_selection, bool copy_max);
 H5_DLL herr_t      H5S_close(H5S_t *ds);
 H5_DLL H5S_class_t H5S_get_simple_extent_type(const H5S_t *ds);
 H5_DLL hssize_t    H5S_get_simple_extent_npoints(const H5S_t *ds);
 H5_DLL hsize_t     H5S_get_npoints_max(const H5S_t *ds);
-H5_DLL hbool_t     H5S_has_extent(const H5S_t *ds);
+H5_DLL bool     H5S_has_extent(const H5S_t *ds);
 H5_DLL int         H5S_get_simple_extent_ndims(const H5S_t *ds);
 H5_DLL int    H5S_get_simple_extent_dims(const H5S_t *ds, hsize_t dims[] /*out*/, hsize_t max_dims[] /*out*/);
 H5_DLL herr_t H5S_write(H5F_t *f, struct H5O_t *oh, unsigned update_flags, H5S_t *ds);
@@ -243,7 +243,7 @@ H5_DLL herr_t       H5S_get_select_offset(const H5S_t *space, hsize_t *offset);
 H5_DLL int          H5S_get_select_unlim_dim(const H5S_t *space);
 H5_DLL herr_t       H5S_get_select_num_elem_non_unlim(const H5S_t *space, hsize_t *num_elem_non_unlim);
 H5_DLL herr_t       H5S_select_offset(H5S_t *space, const hssize_t *offset);
-H5_DLL herr_t       H5S_select_copy(H5S_t *dst, const H5S_t *src, hbool_t share_selection);
+H5_DLL herr_t       H5S_select_copy(H5S_t *dst, const H5S_t *src, bool share_selection);
 H5_DLL htri_t       H5S_select_shape_same(const H5S_t *space1, const H5S_t *space2);
 H5_DLL htri_t       H5S_select_intersect_block(const H5S_t *space, const hsize_t *start, const hsize_t *end);
 H5_DLL herr_t       H5S_select_construct_projection(const H5S_t *base_space, H5S_t **new_space_ptr,
@@ -261,11 +261,11 @@ H5_DLL herr_t       H5S_select_project_scalar(const H5S_t *space, hsize_t *offse
 H5_DLL herr_t       H5S_select_project_simple(const H5S_t *space, H5S_t *new_space, hsize_t *offset);
 H5_DLL herr_t       H5S_select_project_intersection(const H5S_t *src_space, const H5S_t *dst_space,
                                                     const H5S_t *src_intersect_space, H5S_t **new_space_ptr,
-                                                    hbool_t share_space);
+                                                    bool share_space);
 H5_DLL herr_t       H5S_select_subtract(H5S_t *space, H5S_t *subtract_space);
 
 /* Operations on all selections */
-H5_DLL herr_t H5S_select_all(H5S_t *space, hbool_t rel_prev);
+H5_DLL herr_t H5S_select_all(H5S_t *space, bool rel_prev);
 
 /* Operations on none selections */
 H5_DLL herr_t H5S_select_none(H5S_t *space);
@@ -284,11 +284,11 @@ H5_DLL htri_t  H5S_hyper_normalize_offset(H5S_t *space, hssize_t *old_offset);
 H5_DLL herr_t  H5S_hyper_denormalize_offset(H5S_t *space, const hssize_t *old_offset);
 H5_DLL herr_t  H5S_hyper_clip_unlim(H5S_t *space, hsize_t clip_size);
 H5_DLL hsize_t H5S_hyper_get_clip_extent(const H5S_t *clip_space, const H5S_t *match_space,
-                                         hbool_t incl_trail);
+                                         bool incl_trail);
 H5_DLL hsize_t H5S_hyper_get_clip_extent_match(const H5S_t *clip_space, const H5S_t *match_space,
-                                               hsize_t match_clip_size, hbool_t incl_trail);
+                                               hsize_t match_clip_size, bool incl_trail);
 H5_DLL H5S_t * H5S_hyper_get_unlim_block(const H5S_t *space, hsize_t block_index);
-H5_DLL hsize_t H5S_hyper_get_first_inc_block(const H5S_t *space, hsize_t clip_size, hbool_t *partial);
+H5_DLL hsize_t H5S_hyper_get_first_inc_block(const H5S_t *space, hsize_t clip_size, bool *partial);
 
 /* Operations on selection iterators */
 H5_DLL herr_t  H5S_select_iter_init(H5S_sel_iter_t *iter, const H5S_t *space, size_t elmt_size,

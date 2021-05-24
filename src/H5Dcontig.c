@@ -189,7 +189,7 @@ H5D__contig_fill(const H5D_io_info_t *io_info)
         FALSE; /* Flag to indicate that the file is being accessed with an MPI-capable file driver */
 #endif         /* H5_HAVE_PARALLEL */
     H5D_fill_buf_info_t fb_info;                /* Dataset's fill buffer info */
-    hbool_t             fb_info_init = false;   /* Whether the fill value buffer has been initialized */
+    bool             fb_info_init = false;   /* Whether the fill value buffer has been initialized */
     herr_t              ret_value    = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -497,10 +497,10 @@ done:
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5D__contig_is_space_alloc(const H5O_storage_t *storage)
 {
-    hbool_t ret_value = false; /* Return value */
+    bool ret_value = false; /* Return value */
 
     FUNC_ENTER_PACKAGE_NOERR
 
@@ -508,7 +508,7 @@ H5D__contig_is_space_alloc(const H5O_storage_t *storage)
     HDassert(storage);
 
     /* Set return value */
-    ret_value = (hbool_t)H5F_addr_defined(storage->u.contig.addr);
+    ret_value = (bool)H5F_addr_defined(storage->u.contig.addr);
 
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5D__contig_is_space_alloc() */
@@ -525,7 +525,7 @@ H5D__contig_is_space_alloc(const H5O_storage_t *storage)
  *
  *-------------------------------------------------------------------------
  */
-hbool_t
+bool
 H5D__contig_is_data_cached(const H5D_shared_t *shared_dset)
 {
     FUNC_ENTER_PACKAGE_NOERR
@@ -1323,11 +1323,11 @@ H5D__contig_copy(H5F_t *f_src, const H5O_storage_contig_t *storage_src, H5F_t *f
     H5S_t *       buf_space   = NULL;                          /* Dataspace describing buffer */
     hid_t         buf_sid     = -1;                            /* ID for buffer dataspace */
     hsize_t       buf_dim[1]  = {0};                           /* Dimension for buffer */
-    hbool_t       is_vlen     = false; /* Flag to indicate that VL type conversion should occur */
-    hbool_t       fix_ref     = false; /* Flag to indicate that ref values should be fixed */
+    bool       is_vlen     = false; /* Flag to indicate that VL type conversion should occur */
+    bool       fix_ref     = false; /* Flag to indicate that ref values should be fixed */
     H5D_shared_t *shared_fo =
         (H5D_shared_t *)cpy_info->shared_fo; /* Pointer to the shared struct for dataset object */
-    hbool_t try_sieve   = false;             /* Try to get data from the sieve buffer */
+    bool try_sieve   = false;             /* Try to get data from the sieve buffer */
     haddr_t sieve_start = HADDR_UNDEF;       /* Start location of sieve buffer */
     haddr_t sieve_end   = HADDR_UNDEF;       /* End locations of sieve buffer */
     herr_t  ret_value   = SUCCEED;           /* Return value */
