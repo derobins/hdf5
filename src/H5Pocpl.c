@@ -1392,7 +1392,7 @@ H5P__ocrt_pipeline_enc(const void *value, void **_pp, size_t *size)
             /* encode filter name if it exists */
             if (NULL != pline->filter[u].name) {
                 /* encode TRUE indicating that it exits */
-                *(*pp)++ = (uint8_t)true;
+                *(*pp)++ = (uint8_t) true;
 
                 /* encode filter name */
                 H5MM_memcpy(*pp, (uint8_t *)(pline->filter[u].name), H5Z_COMMON_NAME_LEN);
@@ -1400,7 +1400,7 @@ H5P__ocrt_pipeline_enc(const void *value, void **_pp, size_t *size)
             } /* end if */
             else
                 /* encode FALSE indicating that it does not exist */
-                *(*pp)++ = (uint8_t)false;
+                *(*pp)++ = (uint8_t) false;
 
             /* encode cd_nelmts */
             enc_value = (uint64_t)pline->filter[u].cd_nelmts;

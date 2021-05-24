@@ -3176,7 +3176,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
 
                     data_ok = test_select_hyper_checker_board_dr__verify_data(small_cube_buf_1, small_rank,
                                                                               edge_size, checker_edge_size,
-                                                                              expected_value, (hbool_t)true);
+                                                                              expected_value, (hbool_t) true);
                     if (!data_ok)
                         TestErrPrintf("small cube read from largecube has bad data! Line=%d\n", __LINE__);
 
@@ -3273,7 +3273,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
                     HDassert(s == start_index);
 
                     data_ok &= test_select_hyper_checker_board_dr__verify_data(
-                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (hbool_t)true);
+                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (hbool_t) true);
 
                     ptr_1 += small_cube_size;
                     s += small_cube_size;
@@ -3383,7 +3383,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
 
                     data_ok = test_select_hyper_checker_board_dr__verify_data(small_cube_buf_1, small_rank,
                                                                               edge_size, checker_edge_size,
-                                                                              expected_value, (hbool_t)true);
+                                                                              expected_value, (hbool_t) true);
                     if (!data_ok)
                         TestErrPrintf("small cube read from largecube has bad data! Line=%d\n", __LINE__);
 
@@ -3498,7 +3498,7 @@ test_select_hyper_checker_board_dr__run_test(int test_num, const uint16_t *cube_
 
                     /* verify that the slice contains the expected data */
                     data_ok &= test_select_hyper_checker_board_dr__verify_data(
-                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (hbool_t)true);
+                        ptr_1, small_rank, edge_size, checker_edge_size, (uint16_t)0, (hbool_t) true);
 
                     ptr_1 += small_cube_size;
                     s += small_cube_size;
