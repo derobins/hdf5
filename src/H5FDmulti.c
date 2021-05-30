@@ -35,6 +35,27 @@
 #define TRUE 1
 #endif
 
+/* Macros for enabling/disabling particular GCC warnings
+ *
+ * These macros are duplicated in H5private.h. Please keep them in sync.
+ *
+ * (see the following web-sites for more info:
+ *      http://www.dbp-consulting.com/tutorials/SuppressingGCCWarnings.html
+ *      http://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html#Diagnostic-Pragmas
+ */
+/* These pragmas are only implemented usefully in gcc 4.6+ */
+#if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
+#define H5_MULTI_GCC_DIAG_JOINSTR(x, y) x y
+#define H5_MULTI_GCC_DIAG_DO_PRAGMA(x)  _Pragma(#x)
+#define H5_MULTI_GCC_DIAG_PRAGMA(x)     H5_MULTI_GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
+
+#define H5_MULTI_GCC_DIAG_OFF(x) H5_MULTI_GCC_DIAG_PRAGMA(push) H5_MULTI_GCC_DIAG_PRAGMA(ignored H5_MULTI_GCC_DIAG_JOINSTR("-W", x))
+#define H5_MULTI_GCC_DIAG_ON(x)  H5_MULTI_GCC_DIAG_PRAGMA(pop)
+#else
+#define H5_MULTI_GCC_DIAG_OFF(x)
+#define H5_MULTI_GCC_DIAG_ON(x)
+#endif
+
 /* Windows doesn't like some POSIX names and redefines them with an
  * underscore
  */
@@ -255,8 +276,6 @@ H5Pset_fapl_split(hid_t fapl, const char *meta_ext, hid_t meta_plist_id, const c
     char        raw_name[H5FD_MULT_MAX_FILE_NAME_LEN];
     haddr_t     memb_addr[H5FD_MEM_NTYPES];
 
-    /*NO TRACE*/
-
     /* Clear the error stack */
     H5Eclear2(H5E_DEFAULT);
 
@@ -279,7 +298,7 @@ H5Pset_fapl_split(hid_t fapl, const char *meta_ext, hid_t meta_plist_id, const c
     if (meta_ext) {
         if (strstr(meta_ext, "%s")) {
             /* Note: this doesn't accommodate for when the '%s' in the user's
-             *  string is at a position >sizeof(meta_name) - QK & JK - 2013/01/17
+             *  string is at a position >sizeof(meta_name)
              */
             strncpy(meta_name, meta_ext, sizeof(meta_name));
             meta_name[sizeof(meta_name) - 1] = '\0';
@@ -293,11 +312,11 @@ H5Pset_fapl_split(hid_t fapl, const char *meta_ext, hid_t meta_plist_id, const c
     }
     memb_name[H5FD_MEM_SUPER] = meta_name;
 
-    /* process raw filename */
+    /* Process raw filename */
     if (raw_ext) {
         if (strstr(raw_ext, "%s")) {
             /* Note: this doesn't accommodate for when the '%s' in the user's
-             *  string is at a position >sizeof(raw_name) - QK & JK - 2013/01/17
+             * string is at a position >sizeof(raw_name)
              */
             strncpy(raw_name, raw_ext, sizeof(raw_name));
             raw_name[sizeof(raw_name) - 1] = '\0';
@@ -408,8 +427,6 @@ H5Pset_fapl_multi(hid_t fapl_id, const H5FD_mem_t *memb_map, const hid_t *memb_f
     static const char *letters = "Xsbrglo";
     static const char *func    = "H5FDset_fapl_multi"; /* Function Name for error reporting */
 
-    /*NO TRACE*/
-
     /* Clear the error stack */
     H5Eclear2(H5E_DEFAULT);
 
@@ -502,8 +519,6 @@ H5Pget_fapl_multi(hid_t fapl_id, H5FD_mem_t *memb_map /*out*/, hid_t *memb_fapl 
     const H5FD_multi_fapl_t *fa;
     H5FD_mem_t               mt;
     static const char *      func = "H5FDget_fapl_multi"; /* Function Name for error reporting */
-
-    /*NO TRACE*/
 
     /* Clear the error stack */
     H5Eclear2(H5E_DEFAULT);
@@ -743,8 +758,7 @@ H5FD_multi_sb_decode(H5FD_t *_file, const char *name, const unsigned char *buf)
     buf += nseen * 2 * 8;
     if (H5Tconvert(H5T_STD_U64LE, H5T_NATIVE_HADDR, nseen * 2, x, NULL, H5P_DEFAULT) < 0)
         H5Epush_ret(func, H5E_ERR_CLS, H5E_DATATYPE, H5E_CANTCONVERT, "can't convert superblock info", -1);
-    ap = (haddr_t *)((void *)x); /* Extra (void *) cast to quiet "cast to create alignment" warning -
-                                    2019/07/05, QAK */
+    ap = (haddr_t *)((void *)x); /* Extra (void *) cast to quiet "cast to create alignment" warning */
     UNIQUE_MEMBERS (map, mt) {
         memb_addr[_unmapped] = *ap++;
         memb_eoa[_unmapped]  = *ap++;
@@ -1166,7 +1180,7 @@ H5FD_multi_cmp(const H5FD_t *_f1, const H5FD_t *_f2)
 static herr_t
 H5FD_multi_query(const H5FD_t *_f, unsigned long *flags /* out */)
 {
-    /* Shut compiler up */
+    /* Unused */
     (void)_f;
 
     /* Set the VFL feature flags that this driver supports */
@@ -1176,9 +1190,9 @@ H5FD_multi_query(const H5FD_t *_f, unsigned long *flags /* out */)
         *flags |= H5FD_FEAT_AGGREGATE_SMALLDATA; /* OK to aggregate "small" raw data allocations */
         *flags |= H5FD_FEAT_USE_ALLOC_SIZE;      /* OK just pass the allocation size to the alloc callback */
         *flags |= H5FD_FEAT_PAGED_AGGR;          /* OK special file space mapping for paged aggregation */
-    }                                            /* end if */
+    }
 
-    return (0);
+    return 0;
 } /* end H5FD_multi_query() */
 
 /*-------------------------------------------------------------------------
@@ -1202,7 +1216,7 @@ H5FD_multi_get_type_map(const H5FD_t *_file, H5FD_mem_t *type_map)
     /* Copy file's free space type mapping */
     memcpy(type_map, file->fa.memb_map, sizeof(file->fa.memb_map));
 
-    return (0);
+    return 0;
 } /* end H5FD_multi_get_type_map() */
 
 /*-------------------------------------------------------------------------
@@ -1341,7 +1355,7 @@ H5FD_multi_set_eoa(H5FD_t *_file, H5FD_mem_t type, haddr_t eoa)
             mmt = H5FD_MEM_SUPER;
         else
             mmt = type;
-    } /* end if */
+    }
 
     /* Handle backward compatibility in a quick and simple way.  v1.6 library
      * had EOA for the entire virtual file.  But it wasn't meaningful.  So v1.8
@@ -1496,7 +1510,7 @@ H5FD_multi_get_handle(H5FD_t *_file, hid_t fapl, void **file_handle)
     if (H5FD_MEM_DEFAULT == mmt)
         mmt = type;
 
-    return (H5FDget_vfd_handle(file->memb[mmt], fapl, file_handle));
+    return H5FDget_vfd_handle(file->memb[mmt], fapl, file_handle);
 }
 
 /*-------------------------------------------------------------------------
@@ -1626,8 +1640,8 @@ H5FD_multi_read(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, siz
         if (file->fa.memb_addr[mmt] >= start_addr) {
             start_addr = file->fa.memb_addr[mmt];
             hi         = mmt;
-        } /* end if */
-    }     /* end for */
+        }
+    }
     assert(hi > 0);
 
     /* Read from that member */
@@ -1672,8 +1686,8 @@ H5FD_multi_write(H5FD_t *_file, H5FD_mem_t type, hid_t dxpl_id, haddr_t addr, si
         if (file->fa.memb_addr[mmt] >= start_addr) {
             start_addr = file->fa.memb_addr[mmt];
             hi         = mmt;
-        } /* end if */
-    }     /* end for */
+        }
+    }
     assert(hi > 0);
 
     /* Write to that member */
@@ -1830,10 +1844,10 @@ H5FD_multi_lock(H5FD_t *_file, hbool_t rw)
                 if (H5FDlock(file->memb[mt], rw) < 0) {
                     nerrors++;
                     break;
-                } /* end if */
+                }
             }
             H5E_END_TRY;
-        } /* end if */
+        }
     }
     END_MEMBERS;
 
@@ -1848,8 +1862,8 @@ H5FD_multi_lock(H5FD_t *_file, hbool_t rw)
                     nerrors++;
             }
             H5E_END_TRY;
-        } /* end for */
-    }     /* end if */
+        }
+    }
 
     if (nerrors)
         H5Epush_ret(func, H5E_ERR_CLS, H5E_VFL, H5E_CANTLOCKFILE, "error locking member files", -1);
@@ -1952,13 +1966,6 @@ compute_next(H5FD_multi_t *file)
  *
  *-------------------------------------------------------------------------
  */
-/* Disable warning for "format not a string literal" here
- *
- *      This pragma only needs to surround the snprintf() call with
- *      tmp in the code below, but early (4.4.7, at least) gcc only
- *      allows diagnostic pragmas to be toggled outside of functions.
- */
-H5_GCC_DIAG_OFF("format-nonliteral")
 static int
 open_members(H5FD_multi_t *file)
 {
@@ -1975,7 +1982,9 @@ open_members(H5FD_multi_t *file)
             continue; /*already open*/
         assert(file->fa.memb_name[mt]);
 
+H5_MULTI_GCC_DIAG_OFF("format-nonliteral")
         nchars = snprintf(tmp, sizeof(tmp), file->fa.memb_name[mt], file->name);
+H5_MULTI_GCC_DIAG_ON("format-nonliteral")
         if (nchars < 0 || nchars >= (int)sizeof(tmp))
             H5Epush_ret(func, H5E_ERR_CLS, H5E_VFL, H5E_BADVALUE,
                         "filename is too long and would be truncated", -1);
@@ -2019,7 +2028,7 @@ H5FD_multi_delete(const char *filename, hid_t fapl_id)
 
     assert(filename);
 
-    /* Quiet compiler */
+    /* Unused */
     (void)fapl_id;
 
     /* Get the driver info */
@@ -2031,7 +2040,9 @@ H5FD_multi_delete(const char *filename, hid_t fapl_id)
         assert(fa->memb_name[mt]);
         assert(fa->memb_fapl[mt] >= 0);
 
+H5_MULTI_GCC_DIAG_OFF("format-nonliteral")
         nchars = snprintf(full_filename, sizeof(full_filename), fa->memb_name[mt], filename);
+H5_MULTI_GCC_DIAG_ON("format-nonliteral")
         if (nchars < 0 || nchars >= (int)sizeof(full_filename))
             H5Epush_ret(func, H5E_ERR_CLS, H5E_VFL, H5E_BADVALUE,
                         "filename is too long and would be truncated", -1);
@@ -2043,7 +2054,6 @@ H5FD_multi_delete(const char *filename, hid_t fapl_id)
 
     return 0;
 } /* end H5FD_multi_delete() */
-H5_GCC_DIAG_ON("format-nonliteral")
 
 #ifdef H5private_H
 /*

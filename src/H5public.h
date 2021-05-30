@@ -59,31 +59,6 @@
 #endif
 #endif
 
-/* Include the Windows API adapter header early */
-#include "H5api_adpt.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Macros for enabling/disabling particular GCC warnings */
-/* (see the following web-sites for more info:
- *      http://www.dbp-consulting.com/tutorials/SuppressingGCCWarnings.html
- *      http://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html#Diagnostic-Pragmas
- */
-/* These pragmas are only implemented usefully in gcc 4.6+ */
-#if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
-#define H5_GCC_DIAG_JOINSTR(x, y) x y
-#define H5_GCC_DIAG_DO_PRAGMA(x)  _Pragma(#x)
-#define H5_GCC_DIAG_PRAGMA(x)     H5_GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
-
-#define H5_GCC_DIAG_OFF(x) H5_GCC_DIAG_PRAGMA(push) H5_GCC_DIAG_PRAGMA(ignored H5_GCC_DIAG_JOINSTR("-W", x))
-#define H5_GCC_DIAG_ON(x)  H5_GCC_DIAG_PRAGMA(pop)
-#else
-#define H5_GCC_DIAG_OFF(x)
-#define H5_GCC_DIAG_ON(x)
-#endif
-
 /* Macro to hide a symbol from further preprocessor substitutions */
 #define H5_NO_EXPAND(x) (x)
 
@@ -286,10 +261,8 @@ typedef unsigned long long uint64_t;
  * 64-bit type.
  */
 #if H5_SIZEOF_LONG_LONG >= 8
-H5_GCC_DIAG_OFF("long-long")
 typedef unsigned long long hsize_t;
 typedef signed long long   hssize_t;
-H5_GCC_DIAG_ON("long-long")
 #define PRIdHSIZE          H5_PRINTF_LL_WIDTH "d"
 #define PRIiHSIZE          H5_PRINTF_LL_WIDTH "i"
 #define PRIoHSIZE          H5_PRINTF_LL_WIDTH "o"
@@ -452,6 +425,14 @@ typedef struct H5_alloc_stats_t {
 typedef void (*H5_atclose_func_t)(void *ctx);
 
 /* Functions in H5.c */
+
+/* API adapter for decorating exported functions (via H5_DLL, etc.) */
+#include "H5api_adpt.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * \ingroup H5
  * \brief Initializes the HDF5 library
