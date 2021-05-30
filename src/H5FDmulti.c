@@ -49,8 +49,9 @@
 #define H5_MULTI_GCC_DIAG_DO_PRAGMA(x)  _Pragma(#x)
 #define H5_MULTI_GCC_DIAG_PRAGMA(x)     H5_MULTI_GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
 
-#define H5_MULTI_GCC_DIAG_OFF(x) H5_MULTI_GCC_DIAG_PRAGMA(push) H5_MULTI_GCC_DIAG_PRAGMA(ignored H5_MULTI_GCC_DIAG_JOINSTR("-W", x))
-#define H5_MULTI_GCC_DIAG_ON(x)  H5_MULTI_GCC_DIAG_PRAGMA(pop)
+#define H5_MULTI_GCC_DIAG_OFF(x)                                                                             \
+    H5_MULTI_GCC_DIAG_PRAGMA(push) H5_MULTI_GCC_DIAG_PRAGMA(ignored H5_MULTI_GCC_DIAG_JOINSTR("-W", x))
+#define H5_MULTI_GCC_DIAG_ON(x) H5_MULTI_GCC_DIAG_PRAGMA(pop)
 #else
 #define H5_MULTI_GCC_DIAG_OFF(x)
 #define H5_MULTI_GCC_DIAG_ON(x)
@@ -1982,9 +1983,9 @@ open_members(H5FD_multi_t *file)
             continue; /*already open*/
         assert(file->fa.memb_name[mt]);
 
-H5_MULTI_GCC_DIAG_OFF("format-nonliteral")
+        H5_MULTI_GCC_DIAG_OFF("format-nonliteral")
         nchars = snprintf(tmp, sizeof(tmp), file->fa.memb_name[mt], file->name);
-H5_MULTI_GCC_DIAG_ON("format-nonliteral")
+        H5_MULTI_GCC_DIAG_ON("format-nonliteral")
         if (nchars < 0 || nchars >= (int)sizeof(tmp))
             H5Epush_ret(func, H5E_ERR_CLS, H5E_VFL, H5E_BADVALUE,
                         "filename is too long and would be truncated", -1);
@@ -2040,9 +2041,9 @@ H5FD_multi_delete(const char *filename, hid_t fapl_id)
         assert(fa->memb_name[mt]);
         assert(fa->memb_fapl[mt] >= 0);
 
-H5_MULTI_GCC_DIAG_OFF("format-nonliteral")
+        H5_MULTI_GCC_DIAG_OFF("format-nonliteral")
         nchars = snprintf(full_filename, sizeof(full_filename), fa->memb_name[mt], filename);
-H5_MULTI_GCC_DIAG_ON("format-nonliteral")
+        H5_MULTI_GCC_DIAG_ON("format-nonliteral")
         if (nchars < 0 || nchars >= (int)sizeof(full_filename))
             H5Epush_ret(func, H5E_ERR_CLS, H5E_VFL, H5E_BADVALUE,
                         "filename is too long and would be truncated", -1);
