@@ -31,17 +31,17 @@
 
 /* Information about open objects in a file */
 struct H5FO_open_obj_t {
-    haddr_t addr;      /* Address of object header for object */
-    void *  obj;       /* Pointer to the object            */
-    hbool_t deleted;   /* Flag to indicate that the object was deleted from the file */
-    UT_hash_handle hh; /* Hash table handle (must be LAST) */
+    haddr_t        addr;    /* Address of object header for object */
+    void *         obj;     /* Pointer to the object            */
+    hbool_t        deleted; /* Flag to indicate that the object was deleted from the file */
+    UT_hash_handle hh;      /* Hash table handle (must be LAST) */
 };
 
 /* Information about counted objects in a file */
 struct H5FO_obj_count_t {
-    haddr_t addr;      /* Address of object header for object */
-    hsize_t count;     /* Number of times object is opened */
-    UT_hash_handle hh; /* Hash table handle (must be LAST) */
+    haddr_t        addr;  /* Address of object header for object */
+    hsize_t        count; /* Number of times object is opened */
+    UT_hash_handle hh;    /* Hash table handle (must be LAST) */
 };
 
 /* Declare a free list to manage the H5FO_open_obj_t struct */
@@ -106,7 +106,7 @@ H5FO_create(const H5F_t *f)
 void *
 H5FO_opened(const H5F_t *f, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj = NULL;  /* Information about open object */
+    H5FO_open_obj_t *open_obj  = NULL; /* Information about open object */
     void *           ret_value = NULL; /* Return value */
 
     FUNC_ENTER_NOAPI_NOERR
@@ -199,7 +199,7 @@ done:
 herr_t
 H5FO_delete(H5F_t *f, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj = NULL;     /* Information about open object */
+    H5FO_open_obj_t *open_obj  = NULL;    /* Information about open object */
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -213,7 +213,7 @@ H5FO_delete(H5F_t *f, haddr_t addr)
     HASH_FIND(hh, f->shared->open_objs, &addr, sizeof(haddr_t), open_obj);
 
     /* Remove from container */
-    if(open_obj)
+    if (open_obj)
         HASH_DELETE(hh, f->shared->open_objs, open_obj);
     else
         HGOTO_ERROR(H5E_CACHE, H5E_CANTRELEASE, FAIL, "can't remove object from container")
@@ -253,7 +253,7 @@ done:
 herr_t
 H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted)
 {
-    H5FO_open_obj_t *open_obj = NULL;     /* Information about open object */
+    H5FO_open_obj_t *open_obj  = NULL;    /* Information about open object */
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI_NOERR
@@ -296,7 +296,7 @@ H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted)
 hbool_t
 H5FO_marked(const H5F_t *f, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj = NULL;   /* Information about open object */
+    H5FO_open_obj_t *open_obj  = NULL;  /* Information about open object */
     hbool_t          ret_value = FALSE; /* Return value */
 
     FUNC_ENTER_NOAPI_NOERR

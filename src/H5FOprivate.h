@@ -18,13 +18,13 @@
 #define H5FOprivate_H
 
 /* Private headers needed by this file */
-#include "H5private.h"   /* Generic Functions			*/
-#include "H5Fprivate.h"  /* File access				*/
+#include "H5private.h"  /* Generic Functions			*/
+#include "H5Fprivate.h" /* File access				*/
 
 /* Typedefs */
 
 /* H5FO forward declarations */
-typedef struct H5FO_open_obj_t H5FO_open_obj_t;
+typedef struct H5FO_open_obj_t  H5FO_open_obj_t;
 typedef struct H5FO_obj_count_t H5FO_obj_count_t;
 
 /* Macros */
