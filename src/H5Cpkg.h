@@ -3566,8 +3566,8 @@ if ( ( (entry_ptr) == NULL ) ||                                                \
  *
  * The fields of this structure are discussed individually below:
  *
- * tag:    Address (i.e. "tag") of the object header for all the entries
- *              corresponding to parts of that object.
+ * tag: Address (i.e. "tag") of the object header for all the entries
+ *      corresponding to parts of that object.
  *
  * head: Head of doubly-linked list of all entries belonging to the tag.
  *
@@ -3576,12 +3576,15 @@ if ( ( (entry_ptr) == NULL ) ||                                                \
  * corked: Boolean flag indicating whether entries for this object can be
  *         evicted.
  *
+ * hh: uthash hash table item handle (must be LAST)
+ *
  ****************************************************************************/
 typedef struct H5C_tag_info_t {
     haddr_t tag;                /* Tag (address) of the entries (must be first, for skiplist) */
     H5C_cache_entry_t *head;    /* Head of the list of entries for this tag */
     size_t entry_cnt;           /* Number of entries on list */
     hbool_t corked;             /* Whether this object is corked */
+    UT_hash_handle hh;          /* Hash table handle (must be LAST) */
 } H5C_tag_info_t;
 
 
@@ -3974,8 +3977,8 @@ typedef struct H5C_tag_info_t {
  *
  * The following fields are maintained to facilitate this.
  *
- * tag_list: A skip list to track entries that belong to an object.
- *                Each H5C_tag_info_t struct on the tag list corresponds to
+ * tag_list:      A hash table to track entries that belong to an object.
+ *                Each H5C_tag_info_t struct in the tag list corresponds to
  *                a particular object in the file.  Tagged entries can be
  *                flushed or evicted as a group, or corked to prevent entries
  *                from being evicted from the cache.
@@ -4863,7 +4866,7 @@ struct H5C_t {
 #endif /* H5C_DO_SANITY_CHECKS */
 
     /* Fields for maintaining list of tagged entries */
-    H5SL_t *                    tag_list;
+    H5C_tag_info_t *            tag_list;
     hbool_t                     ignore_tags;
     uint32_t                    num_objs_corked;
 
