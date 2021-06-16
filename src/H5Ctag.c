@@ -291,7 +291,7 @@ done:
 herr_t
 H5C__untag_entry(H5C_t *cache, H5C_cache_entry_t *entry)
 {
-    H5C_tag_info_t *tag_info;            /* Points to a tag info struct */
+    H5C_tag_info_t *tag_info; /* Points to a tag info struct */
 
     FUNC_ENTER_PACKAGE_NOERR
 
