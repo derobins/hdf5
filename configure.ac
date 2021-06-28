@@ -476,14 +476,8 @@ esac
 ## Data types and their sizes.
 ##
 AC_TYPE_OFF_T
-AC_CHECK_TYPE([size_t], [],
-        [AC_DEFINE_UNQUOTED([size_t], [unsigned long],
-                [Define to `unsigned long' if <sys/types.h> does not define.])])
 AC_CHECK_TYPE([ssize_t], [],
         [AC_DEFINE_UNQUOTED([ssize_t], [long],
-                [Define to `long' if <sys/types.h> does not define.])])
-AC_CHECK_TYPE([ptrdiff_t], [],
-        [AC_DEFINE_UNQUOTED([ptrdiff_t], [long],
                 [Define to `long' if <sys/types.h> does not define.])])
 AC_C_BIGENDIAN
 AC_CHECK_SIZEOF([char])
@@ -1229,13 +1223,11 @@ AC_CHECK_LIB([dl], [dlopen])
 ## ----------------------------------------------------------------------
 ## Check for system header files.
 ##
-AC_HEADER_STDC
-AC_HEADER_TIME
 
 ## Unix
 AC_CHECK_HEADERS([sys/resource.h sys/time.h unistd.h sys/ioctl.h sys/stat.h])
 AC_CHECK_HEADERS([sys/socket.h sys/types.h sys/file.h])
-AC_CHECK_HEADERS([stddef.h setjmp.h features.h])
+AC_CHECK_HEADERS([features.h])
 AC_CHECK_HEADERS([dirent.h])
 AC_CHECK_HEADERS([netdb.h netinet/in.h arpa/inet.h])
 
@@ -1351,16 +1343,6 @@ CFLAGS="$H5_CFLAGS $AM_CFLAGS $CFLAGS"
 ## Checkpoint the cache
 AC_CACHE_SAVE
 
-## Write the confdefs.h header for checking sizes
-cat >>confdefs.h <<\EOF
-#include <stdbool.h>
-#include <stdint.h>
-#ifdef HAVE_UNISTD_H
-#include <sys/types.h>
-#endif
-#include <time.h>
-EOF
-
 AC_CHECK_SIZEOF(        [int8_t])
 AC_CHECK_SIZEOF(       [uint8_t])
 AC_CHECK_SIZEOF(  [int_least8_t])
@@ -1389,12 +1371,12 @@ AC_CHECK_SIZEOF([uint_least64_t])
 AC_CHECK_SIZEOF(  [int_fast64_t])
 AC_CHECK_SIZEOF( [uint_fast64_t])
 
-AC_CHECK_SIZEOF([bool])
+AC_CHECK_SIZEOF([bool], [], [#include <stdbool.h>])
 AC_CHECK_SIZEOF([off_t])
 AC_CHECK_SIZEOF([ptrdiff_t])
 AC_CHECK_SIZEOF([size_t])
 AC_CHECK_SIZEOF([ssize_t])
-AC_CHECK_SIZEOF([time_t])
+AC_CHECK_SIZEOF([time_t], [], [#include <time.h>])
 
 ## Checkpoint the cache
 AC_CACHE_SAVE
@@ -2025,40 +2007,16 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 ## NOTE: clock_gettime may require linking to the rt or posix4 library
 ##       so we'll search for it before calling AC_CHECK_FUNCS.
 AC_SEARCH_LIBS([clock_gettime], [rt posix4])
-AC_CHECK_FUNCS([alarm clock_gettime difftime fcntl flock fork frexpf])
-AC_CHECK_FUNCS([frexpl gethostname getrusage gettimeofday])
+AC_CHECK_FUNCS([alarm clock_gettime difftime fcntl flock fork])
+AC_CHECK_FUNCS([gethostname getrusage gettimeofday])
 AC_CHECK_FUNCS([lstat rand_r random setsysinfo])
-AC_CHECK_FUNCS([signal longjmp setjmp siglongjmp sigsetjmp sigprocmask])
-AC_CHECK_FUNCS([snprintf srandom strdup symlink system])
-AC_CHECK_FUNCS([strtoll strtoull])
-AC_CHECK_FUNCS([tmpfile asprintf vasprintf vsnprintf waitpid])
+AC_CHECK_FUNCS([siglongjmp sigsetjmp sigprocmask])
+AC_CHECK_FUNCS([srandom strdup symlink])
+AC_CHECK_FUNCS([tmpfile asprintf vasprintf waitpid])
 
 ## ----------------------------------------------------------------------
 ## Check compiler characteristics
 ##
-AC_C_CONST
-
-AC_MSG_CHECKING([if the compiler understands  __inline__])
-AC_COMPILE_IFELSE(
-    [AC_LANG_SOURCE([[static __inline__ void f(void){return;};]])],
-    [AC_DEFINE([HAVE___INLINE__], [1], [Define if the compiler understands __inline__]) AC_MSG_RESULT([yes])],
-    [AC_MSG_RESULT([no])]
-)
-
-AC_MSG_CHECKING([if the compiler understands __inline])
-AC_COMPILE_IFELSE(
-    [AC_LANG_SOURCE([[static __inline void f(void){return;};]])],
-    [AC_DEFINE([HAVE___INLINE], [1], [Define if the compiler understands __inline]) AC_MSG_RESULT([yes])],
-    [AC_MSG_RESULT([no])]
-)
-
-AC_MSG_CHECKING([if the compiler understands inline])
-AC_COMPILE_IFELSE(
-    [AC_LANG_SOURCE([[static inline void f(void){return;};]])],
-    [AC_DEFINE([HAVE_INLINE], [1], [Define if the compiler understands inline]) AC_MSG_RESULT([yes])],
-    [AC_MSG_RESULT([no])]
-)
-
 AC_MSG_CHECKING([for __attribute__ extension])
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]],[[int __attribute__((unused)) x]])],
                [AC_DEFINE([HAVE_ATTRIBUTE], [1],
