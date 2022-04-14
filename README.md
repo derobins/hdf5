@@ -8,3 +8,5 @@
     * Sets the `canonical` push URL to nonsense to avoid creating branches there
     * Fetches `canonical` and checks out the `develop` branch
 * When starting a feature branch, I branch off of the development/feature branches in `HDFGroup/hdf5`
+* I try to prefix features and fixes with something useful, like "10" for merges to `hdf5_1_10`
+* Anything unprefixed was probably spun off of `develop`
