@@ -10,6 +10,8 @@
 * When starting a feature branch, I branch off of the development/feature branches in `HDFGroup/hdf5`
 * I try to prefix features and fixes with something useful, like "10" for merges to `hdf5_1_10`
 * Anything unprefixed was probably spun off of `develop`
+* Add a BRANCH.md file to anything likely to be long-lived
+* Delete branches after the changes have been pushed as far as they are needed
 
 ## Why do I do this?
 
