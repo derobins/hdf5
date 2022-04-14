@@ -14,7 +14,7 @@
 ## Why do I do this?
 
 * Syncing personal copies of `HDFGroup/hdf5` is a waste of time
-    * Also, doing this wrong can generate ridiculous log entries showing every merge commit made in your personal copy
+    * Also, doing this poorly can generate ridiculous log entries showing every merge commit made in your personal copy
 * No wading through canonical HDF5 stuff to find my personal branches
 * Easily spin branches off of `HDFGroup/hdf5` and move code around
 * No name clash - `git checkout develop` resolves to `canonical/develop`
