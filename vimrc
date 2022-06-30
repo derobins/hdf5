@@ -1,0 +1,55 @@
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
+" DER edits below this line...
+
+" Use filetype detection and file-based automatic indenting.
+filetype plugin indent on
+
+" Use actual tab chars in Makefiles.
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+    autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab 
+endif
+
+" 80 characters line (uncomment second line to color ALL columns past 80)
+set colorcolumn=81
+"execute "set colorcolumn=" . join(range(81,335), ',')
+highlight ColorColumn ctermbg=Black ctermfg=DarkRed
+
+" Use my HDF Group settings in other files
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+let curr_tab_style = "HDFG"
+
+" Switch between HDF Group and Linux kernel settings
+function! TabToggle()
+    if &expandtab
+        " Set Linux kernel settings
+        set tabstop=8
+        set shiftwidth=8
+        set softtabstop=8
+        set noexpandtab
+        let curr_tab_style = "KNL"
+    else
+        " Set THG settings
+        set tabstop=4
+        set shiftwidth=4
+        set softtabstop=4
+        set expandtab
+        let curr_tab_style = "HDFG"
+    endif
+endfunction
+nmap <F9> mz:execute TabToggle()<CR>'z
+
+" Turn search highlight on
+set hlsearch
+
+" end DER edits
+"
+" Source global config after this...
