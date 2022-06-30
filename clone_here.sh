@@ -4,3 +4,4 @@ git remote add canonical https://derobins@github.com/HDFGroup/hdf5.git
 git remote set-url canonical --push "DO NOT PUSH TO CANONICAL"
 git fetch canonical
 git checkout canonical/develop
+git config user.email "derobins@hdfgroup.org"
