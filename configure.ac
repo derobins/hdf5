@@ -1608,8 +1608,6 @@ case "X-$withval" in
     ;;
 esac
 
-
-
 ## ----------------------------------------------------------------------
 ## Make the external filters list available to *.in files
 ## At this point it's unset (no external filters by default) but it
@@ -3459,6 +3457,30 @@ fi
 
 ## Read-only HDFS files are not built if not required.
 AM_CONDITIONAL([HDFS_VFD_CONDITIONAL], [test "X$HAVE_LIBHDFS" = "Xyes"])
+
+## ----------------------------------------------------------------------
+## Are we building the JSON VOL connector? This is built by default
+## unless we can't find the Jansson JSON parser.
+##
+## TODO: Add --with-jansson configure option
+AC_SUBST([JSON_VOL])
+JSON_VOL=yes
+
+
+## Check for Jansson library and headers in the default location
+AC_CHECK_LIB([jansson], [jansson_version_str],,[unset JSON_VOL])
+AC_CHECK_HEADERS([jansson.h],,[unset JSON_VOL])
+
+AC_MSG_CHECKING([if we can build the JSON VOL connector (requires Jansson)])
+if test "$JSON_VOL" = "yes"; then
+  AC_DEFINE([HAVE_JSON_VOL], [1], [Define if we should build the JSON VOL connector])
+  AC_MSG_RESULT([yes])
+else
+  AC_MSG_RESULT([no])
+fi
+
+## Don't compile JSON VOL files if not required.
+AM_CONDITIONAL([JSON_VOL_CONDITIONAL], [test "$HAVE_JSON_VOL" = "yes"])
 
 ## Checkpoint the cache
 AC_CACHE_SAVE
