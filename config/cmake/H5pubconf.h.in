@@ -183,6 +183,12 @@
 /* Define to 1 if you have the `ioctl' function. */
 #cmakedefine H5_HAVE_IOCTL @H5_HAVE_IOCTL@
 
+/* Define to 1 if you have the <jansson.h> header file. */
+#cmakedefine H5_HAVE_JANSSON_H @H5_HAVE_JANSSON_H@
+
+/* Define if we should build the JSON VOL connector */
+#cmakedefine H5_HAVE_JSON_VOL @H5_HAVE_JSON_VOL@
+
 /* Define to 1 if you have the `crypto' library (-lcrypto). */
 #cmakedefine H5_HAVE_LIBCRYPTO @H5_HAVE_LIBCRYPTO@
 
@@ -197,6 +203,9 @@
 
 /* Proceed to build with libhdfs */
 #cmakedefine H5_HAVE_LIBHDFS @H5_HAVE_LIBHDFS@
+
+/* Define to 1 if you have the `jansson' library (-ljansson). */
+#cmakedefine H5_HAVE_LIBJANSSON @H5_HAVE_LIBJANSSON@
 
 /* Define to 1 if you have the `jvm' library (-ljvm). */
 #cmakedefine H5_HAVE_LIBJVM @H5_HAVE_LIBJVM@

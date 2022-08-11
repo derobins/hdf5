@@ -208,6 +208,27 @@ if (HDF5_ENABLE_MIRROR_VFD)
 endif()
 
 #-----------------------------------------------------------------------------
+#  Check if the JSON VOL connector can be built
+#-----------------------------------------------------------------------------
+option (HDF5_ENABLE_JSON_VOL "Build the JSON VOL connector" ON)
+if (HDF5_ENABLE_JSON_VOL)
+  find_path(JANSSON_INCLUDE_DIR jansson.h)
+  find_library(JANSSON_LIBRARIES NAMES libjansson.a)
+
+  if (JANSSON_INCLUDE_DIR AND JANSSON_LIBRARIES)
+
+    set(JANSSON_FOUND TRUE)
+
+    set (${HDF_PREFIX}_HAVE_JSON_VOL 1)
+    set (${HDF_PREFIX}_HAVE_LIBJANSSON 1)
+    set (${HDF_PREFIX}_HAVE_JANSSON_H 1)
+
+    list (APPEND LINK_LIBS ${JANSSON_LIBRARIES})
+    INCLUDE_DIRECTORIES (${JANSSON_INCLUDE_DIR})
+  endif ()
+endif ()
+
+#-----------------------------------------------------------------------------
 # Check if C has __float128 extension
 #-----------------------------------------------------------------------------
 
