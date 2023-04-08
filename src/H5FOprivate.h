@@ -26,6 +26,7 @@
 /* The open object cache */
 typedef H5SL_t H5FO_t;
 
+/* API calls that manipulate the H5FO objects in H5F_shared_t */
 H5_DLL herr_t  H5FO_create(const H5F_t *f);
 H5_DLL void   *H5FO_opened(const H5F_t *f, haddr_t addr);
 H5_DLL herr_t  H5FO_insert(const H5F_t *f, haddr_t addr, void *obj, hbool_t delete_flag);
@@ -33,6 +34,8 @@ H5_DLL herr_t  H5FO_delete(H5F_t *f, haddr_t addr);
 H5_DLL herr_t  H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted);
 H5_DLL hbool_t H5FO_marked(const H5F_t *f, haddr_t addr);
 H5_DLL herr_t  H5FO_dest(const H5F_t *f);
+
+/* API calls that manipulate the H5FO object counts in H5F_t */
 H5_DLL herr_t  H5FO_top_create(H5F_t *f);
 H5_DLL herr_t  H5FO_top_incr(const H5F_t *f, haddr_t addr);
 H5_DLL herr_t  H5FO_top_decr(const H5F_t *f, haddr_t addr);
