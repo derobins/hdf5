@@ -1319,7 +1319,7 @@ done:
     if (!ret_value && f) {
         HDassert(NULL == f->vol_obj);
 
-        if (f->shared) {
+        if (!shared) {
             /* Attempt to clean up some of the shared file structures */
             if (f->shared->efc)
                 if (H5F__efc_destroy(f->shared->efc) < 0)
@@ -1335,7 +1335,7 @@ done:
         }
 
         if (f->obj_counts)
-            if (H5FO_dest(f->obj_counts) < 0)
+            if (H5FO_top_dest(f->obj_counts) < 0)
                 HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, NULL, "can't destroy open file counts")
 
         f = H5FL_FREE(H5F_t, f);
