@@ -1298,7 +1298,7 @@ H5F__new(H5F_shared_t *shared, unsigned flags, hid_t fcpl_id, hid_t fapl_id, H5F
             HGOTO_ERROR(H5E_FILE, H5E_CANTINIT, NULL, "unable to create metadata cache")
 
         /* Create the file's "open object" information */
-        if (H5FO_create(f) < 0)
+        if (NULL == (f->shared->open_objs = H5FO_create()))
             HGOTO_ERROR(H5E_FILE, H5E_CANTINIT, NULL, "unable to create open object data structure")
 
         /* Add new "shared" struct to list of open files */
@@ -1309,7 +1309,7 @@ H5F__new(H5F_shared_t *shared, unsigned flags, hid_t fcpl_id, hid_t fapl_id, H5F
     f->shared->nrefs++;
 
     /* Create the file's "top open object" information */
-    if (H5FO_top_create(f) < 0)
+    if (NULL == (f->obj_counts = H5FO_top_create()))
         HGOTO_ERROR(H5E_FILE, H5E_CANTINIT, NULL, "unable to create open object data structure")
 
     /* Set return value */
@@ -1539,7 +1539,7 @@ H5F__dest(H5F_t *f, hbool_t flush)
         if (H5F__accum_reset(f->shared, TRUE) < 0)
             /* Push error, but keep going*/
             HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, FAIL, "problems closing file")
-        if (H5FO_dest(f) < 0)
+        if (H5FO_dest(H5F_OPEN_OBJECTS(f)) < 0)
             /* Push error, but keep going*/
             HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, FAIL, "problems closing file")
         f->shared->cwfs = (struct H5HG_heap_t **)H5MM_xfree(f->shared->cwfs);
@@ -1612,8 +1612,9 @@ H5F__dest(H5F_t *f, hbool_t flush)
             HDONE_ERROR(H5E_FILE, H5E_CANTDEC, FAIL, "unable to free VOL object")
         f->vol_obj = NULL;
     }
-    if (H5FO_top_dest(f) < 0)
+    if (H5FO_top_dest(f->obj_counts) < 0)
         HDONE_ERROR(H5E_FILE, H5E_CANTINIT, FAIL, "problems closing file")
+    f->obj_counts = NULL;
     f->shared = NULL;
 
     if (ret_value >= 0)

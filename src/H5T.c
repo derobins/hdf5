@@ -3816,7 +3816,7 @@ H5T_copy_reopen(H5T_t *old_dt)
     if (old_dt->sh_loc.type == H5O_SHARE_TYPE_COMMITTED) {
         /* Check if the object is already open */
         if (NULL ==
-            (reopened_fo = (H5T_shared_t *)H5FO_opened(old_dt->sh_loc.file, old_dt->sh_loc.u.loc.oh_addr))) {
+            (reopened_fo = (H5T_shared_t *)H5FO_opened(H5F_OPEN_OBJECTS(old_dt->sh_loc.file), old_dt->sh_loc.u.loc.oh_addr))) {
             /* Clear any errors from H5FO_opened() */
             H5E_clear_stack(NULL);
 
@@ -3825,12 +3825,12 @@ H5T_copy_reopen(H5T_t *old_dt)
                 HGOTO_ERROR(H5E_DATATYPE, H5E_CANTOPENOBJ, NULL, "unable to reopen named data type")
 
             /* Insert opened named datatype into opened object list for the file */
-            if (H5FO_insert(old_dt->sh_loc.file, old_dt->sh_loc.u.loc.oh_addr, new_dt->shared, FALSE) < 0)
+            if (H5FO_insert(H5F_OPEN_OBJECTS(old_dt->sh_loc.file), old_dt->sh_loc.u.loc.oh_addr, new_dt->shared, FALSE) < 0)
                 HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINSERT, NULL,
                             "can't insert datatype into list of open objects")
 
             /* Increment object count for the object in the top file */
-            if (H5FO_top_incr(old_dt->sh_loc.file, old_dt->sh_loc.u.loc.oh_addr) < 0)
+            if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(old_dt->sh_loc.file), old_dt->sh_loc.u.loc.oh_addr) < 0)
                 HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, NULL, "can't increment object count")
 
             new_dt->shared->fo_count = 1;
@@ -3847,14 +3847,14 @@ H5T_copy_reopen(H5T_t *old_dt)
             reopened_fo->fo_count++;
 
             /* Check if the object has been opened through the top file yet */
-            if (H5FO_top_count(old_dt->sh_loc.file, old_dt->sh_loc.u.loc.oh_addr) == 0) {
+            if (H5FO_top_count(H5F_OPEN_OBJ_COUNTS(old_dt->sh_loc.file), old_dt->sh_loc.u.loc.oh_addr) == 0) {
                 /* Open the object through this top file */
                 if (H5O_open(&old_dt->oloc) < 0)
                     HGOTO_ERROR(H5E_DATATYPE, H5E_CANTOPENOBJ, NULL, "unable to open object header")
             } /* end if */
 
             /* Increment object count for the object in the top file */
-            if (H5FO_top_incr(old_dt->sh_loc.file, old_dt->sh_loc.u.loc.oh_addr) < 0)
+            if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(old_dt->sh_loc.file), old_dt->sh_loc.u.loc.oh_addr) < 0)
                 HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, NULL, "can't increment object count")
         } /* end else */
 
@@ -4150,7 +4150,7 @@ H5T_close(H5T_t *dt)
          */
 
         /* Decrement the ref. count for this object in the top file */
-        if (H5FO_top_decr(dt->sh_loc.file, dt->sh_loc.u.loc.oh_addr) < 0)
+        if (H5FO_top_decr(H5F_OPEN_OBJ_COUNTS(dt->sh_loc.file), dt->sh_loc.u.loc.oh_addr) < 0)
             HGOTO_ERROR(H5E_DATATYPE, H5E_CANTRELEASE, FAIL, "can't decrement count for object")
 
         /* Close things down if this is the last reference to the open named datatype */
@@ -4165,7 +4165,7 @@ H5T_close(H5T_t *dt)
                     HGOTO_ERROR(H5E_DATATYPE, H5E_CANTUNCORK, FAIL, "unable to uncork an object")
 
             /* Remove the datatype from the list of opened objects in the file */
-            if (H5FO_delete(dt->sh_loc.file, dt->sh_loc.u.loc.oh_addr) < 0)
+            if (H5FO_delete(H5F_OPEN_OBJECTS(dt->sh_loc.file), dt->sh_loc.file, dt->sh_loc.u.loc.oh_addr) < 0)
                 HGOTO_ERROR(H5E_DATATYPE, H5E_CANTRELEASE, FAIL,
                             "can't remove datatype from list of open objects")
             if (H5O_close(&dt->oloc, NULL) < 0)
@@ -4176,7 +4176,7 @@ H5T_close(H5T_t *dt)
         } /* end if */
         else {
             /* Check reference count for this object in the top file */
-            if (H5FO_top_count(dt->sh_loc.file, dt->sh_loc.u.loc.oh_addr) == 0) {
+            if (H5FO_top_count(H5F_OPEN_OBJ_COUNTS(dt->sh_loc.file), dt->sh_loc.u.loc.oh_addr) == 0) {
                 /* Close object location for named datatype */
                 if (H5O_close(&dt->oloc, NULL) < 0)
                     HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINIT, FAIL, "unable to close")

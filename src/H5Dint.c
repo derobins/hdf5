@@ -1320,9 +1320,9 @@ H5D__create(H5F_t *file, hid_t type_id, const H5S_t *space, hid_t dcpl_id, hid_t
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, NULL, "unable to initialize VDS prefix")
 
     /* Add the dataset to the list of opened objects in the file */
-    if (H5FO_top_incr(new_dset->oloc.file, new_dset->oloc.addr) < 0)
+    if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(new_dset->oloc.file), new_dset->oloc.addr) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINC, NULL, "can't incr object ref. count")
-    if (H5FO_insert(new_dset->oloc.file, new_dset->oloc.addr, new_dset->shared, TRUE) < 0)
+    if (H5FO_insert(H5F_OPEN_OBJECTS(new_dset->oloc.file), new_dset->oloc.addr, new_dset->shared, TRUE) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINSERT, NULL, "can't insert dataset into list of open objects")
     new_dset->shared->fo_count = 1;
 
@@ -1490,7 +1490,7 @@ H5D_open(const H5G_loc_t *loc, hid_t dapl_id)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, NULL, "unable to initialize VDS prefix")
 
     /* Check if dataset was already open */
-    if (NULL == (shared_fo = (H5D_shared_t *)H5FO_opened(dataset->oloc.file, dataset->oloc.addr))) {
+    if (NULL == (shared_fo = (H5D_shared_t *)H5FO_opened(H5F_OPEN_OBJECTS(dataset->oloc.file), dataset->oloc.addr))) {
         /* Clear any errors from H5FO_opened() */
         H5E_clear_stack(NULL);
 
@@ -1499,11 +1499,11 @@ H5D_open(const H5G_loc_t *loc, hid_t dapl_id)
             HGOTO_ERROR(H5E_DATASET, H5E_NOTFOUND, NULL, "not found")
 
         /* Add the dataset to the list of opened objects in the file */
-        if (H5FO_insert(dataset->oloc.file, dataset->oloc.addr, dataset->shared, FALSE) < 0)
+        if (H5FO_insert(H5F_OPEN_OBJECTS(dataset->oloc.file), dataset->oloc.addr, dataset->shared, FALSE) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_CANTINSERT, NULL, "can't insert dataset into list of open objects")
 
         /* Increment object count for the object in the top file */
-        if (H5FO_top_incr(dataset->oloc.file, dataset->oloc.addr) < 0)
+        if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(dataset->oloc.file), dataset->oloc.addr) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_CANTINC, NULL, "can't increment object count")
 
         /* We're the first dataset to use the shared info */
@@ -1544,14 +1544,14 @@ H5D_open(const H5G_loc_t *loc, hid_t dapl_id)
         }
 
         /* Check if the object has been opened through the top file yet */
-        if (H5FO_top_count(dataset->oloc.file, dataset->oloc.addr) == 0) {
+        if (H5FO_top_count(H5F_OPEN_OBJ_COUNTS(dataset->oloc.file), dataset->oloc.addr) == 0) {
             /* Open the object through this top file */
             if (H5O_open(&(dataset->oloc)) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTOPENOBJ, NULL, "unable to open object header")
         } /* end if */
 
         /* Increment object count for the object in the top file */
-        if (H5FO_top_incr(dataset->oloc.file, dataset->oloc.addr) < 0)
+        if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(dataset->oloc.file), dataset->oloc.addr) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_CANTINC, NULL, "can't increment object count")
     } /* end else */
 
@@ -1971,9 +1971,9 @@ H5D_close(H5D_t *dataset)
             (H5I_dec_ref(dataset->shared->dcpl_id) < 0) || (H5I_dec_ref(dataset->shared->dapl_id) < 0);
 
         /* Remove the dataset from the list of opened objects in the file */
-        if (H5FO_top_decr(dataset->oloc.file, dataset->oloc.addr) < 0)
+        if (H5FO_top_decr(H5F_OPEN_OBJ_COUNTS(dataset->oloc.file), dataset->oloc.addr) < 0)
             HDONE_ERROR(H5E_DATASET, H5E_CANTRELEASE, FAIL, "can't decrement count for object")
-        if (H5FO_delete(dataset->oloc.file, dataset->oloc.addr) < 0)
+        if (H5FO_delete(H5F_OPEN_OBJECTS(dataset->oloc.file), dataset->oloc.file, dataset->oloc.addr) < 0)
             HDONE_ERROR(H5E_DATASET, H5E_CANTRELEASE, FAIL, "can't remove dataset from list of open objects")
 
         /* Close the dataset object */
@@ -2001,11 +2001,11 @@ H5D_close(H5D_t *dataset)
     } /* end if */
     else {
         /* Decrement the ref. count for this object in the top file */
-        if (H5FO_top_decr(dataset->oloc.file, dataset->oloc.addr) < 0)
+        if (H5FO_top_decr(H5F_OPEN_OBJ_COUNTS(dataset->oloc.file), dataset->oloc.addr) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_CANTRELEASE, FAIL, "can't decrement count for object")
 
         /* Check reference count for this object in the top file */
-        if (H5FO_top_count(dataset->oloc.file, dataset->oloc.addr) == 0) {
+        if (H5FO_top_count(H5F_OPEN_OBJ_COUNTS(dataset->oloc.file), dataset->oloc.addr) == 0) {
             if (H5O_close(&(dataset->oloc), NULL) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to close")
         } /* end if */

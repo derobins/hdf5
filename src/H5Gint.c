@@ -323,9 +323,9 @@ H5G__create(H5F_t *file, H5G_obj_create_t *gcrt_info)
     oloc_init = 1; /* Indicate that the object location information is valid */
 
     /* Add group to list of open objects in file */
-    if (H5FO_top_incr(grp->oloc.file, grp->oloc.addr) < 0)
+    if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) < 0)
         HGOTO_ERROR(H5E_SYM, H5E_CANTINC, NULL, "can't incr object ref. count")
-    if (H5FO_insert(grp->oloc.file, grp->oloc.addr, grp->shared, TRUE) < 0)
+    if (H5FO_insert(H5F_OPEN_OBJECTS(grp->oloc.file), grp->oloc.addr, grp->shared, TRUE) < 0)
         HGOTO_ERROR(H5E_SYM, H5E_CANTINSERT, NULL, "can't insert group into list of open objects")
 
     /* Set the count of times the object is opened */
@@ -455,7 +455,7 @@ H5G_open(const H5G_loc_t *loc)
         HGOTO_ERROR(H5E_SYM, H5E_CANTCOPY, NULL, "can't copy path")
 
     /* Check if group was already open */
-    if ((shared_fo = (H5G_shared_t *)H5FO_opened(grp->oloc.file, grp->oloc.addr)) == NULL) {
+    if ((shared_fo = (H5G_shared_t *)H5FO_opened(H5F_OPEN_OBJECTS(grp->oloc.file), grp->oloc.addr)) == NULL) {
 
         /* Clear any errors from H5FO_opened() */
         H5E_clear_stack(NULL);
@@ -465,13 +465,13 @@ H5G_open(const H5G_loc_t *loc)
             HGOTO_ERROR(H5E_SYM, H5E_NOTFOUND, NULL, "not found")
 
         /* Add group to list of open objects in file */
-        if (H5FO_insert(grp->oloc.file, grp->oloc.addr, grp->shared, FALSE) < 0) {
+        if (H5FO_insert(H5F_OPEN_OBJECTS(grp->oloc.file), grp->oloc.addr, grp->shared, FALSE) < 0) {
             grp->shared = H5FL_FREE(H5G_shared_t, grp->shared);
             HGOTO_ERROR(H5E_SYM, H5E_CANTINSERT, NULL, "can't insert group into list of open objects")
         } /* end if */
 
         /* Increment object count for the object in the top file */
-        if (H5FO_top_incr(grp->oloc.file, grp->oloc.addr) < 0)
+        if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_CANTINC, NULL, "can't increment object count")
 
         /* Set open object count */
@@ -485,14 +485,14 @@ H5G_open(const H5G_loc_t *loc)
         shared_fo->fo_count++;
 
         /* Check if the object has been opened through the top file yet */
-        if (H5FO_top_count(grp->oloc.file, grp->oloc.addr) == 0) {
+        if (H5FO_top_count(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) == 0) {
             /* Open the object through this top file */
             if (H5O_open(&(grp->oloc)) < 0)
                 HGOTO_ERROR(H5E_SYM, H5E_CANTOPENOBJ, NULL, "unable to open object header")
         } /* end if */
 
         /* Increment object count for the object in the top file */
-        if (H5FO_top_incr(grp->oloc.file, grp->oloc.addr) < 0)
+        if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_CANTINC, NULL, "can't increment object count")
     } /* end else */
 
@@ -597,9 +597,9 @@ H5G_close(H5G_t *grp)
                 HGOTO_ERROR(H5E_SYM, H5E_CANTUNCORK, FAIL, "unable to uncork an object")
 
         /* Remove the group from the list of opened objects in the file */
-        if (H5FO_top_decr(grp->oloc.file, grp->oloc.addr) < 0)
+        if (H5FO_top_decr(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_CANTRELEASE, FAIL, "can't decrement count for object")
-        if (H5FO_delete(grp->oloc.file, grp->oloc.addr) < 0)
+        if (H5FO_delete(H5F_OPEN_OBJECTS(grp->oloc.file), grp->oloc.file, grp->oloc.addr) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_CANTRELEASE, FAIL, "can't remove group from list of open objects")
         if (H5O_close(&(grp->oloc), &file_closed) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_CANTINIT, FAIL, "unable to close")
@@ -617,11 +617,11 @@ H5G_close(H5G_t *grp)
     }
     else {
         /* Decrement the ref. count for this object in the top file */
-        if (H5FO_top_decr(grp->oloc.file, grp->oloc.addr) < 0)
+        if (H5FO_top_decr(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_CANTRELEASE, FAIL, "can't decrement count for object")
 
         /* Check reference count for this object in the top file */
-        if (H5FO_top_count(grp->oloc.file, grp->oloc.addr) == 0) {
+        if (H5FO_top_count(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) == 0) {
             if (H5O_close(&(grp->oloc), NULL) < 0)
                 HGOTO_ERROR(H5E_SYM, H5E_CANTINIT, FAIL, "unable to close")
         } /* end if */

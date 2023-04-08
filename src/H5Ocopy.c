@@ -234,7 +234,7 @@ H5O__copy_header_real(const H5O_loc_t *oloc_src, H5O_loc_t *oloc_dst /*out*/, H5
         HGOTO_ERROR(H5E_OHDR, H5E_CANTINIT, FAIL, "unable to determine object type")
 
     /* Set the pointer to the shared struct for the object if opened in the file */
-    cpy_info->shared_fo = H5FO_opened(oloc_src->file, oloc_src->addr);
+    cpy_info->shared_fo = H5FO_opened(H5F_OPEN_OBJECTS(oloc_src->file), oloc_src->addr);
 
     /* Get source object header */
     if (NULL == (oh_src = H5O_protect(oloc_src, H5AC__READ_ONLY_FLAG, FALSE)))

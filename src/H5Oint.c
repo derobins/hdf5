@@ -870,9 +870,9 @@ H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *deleted)
             /* Check if the object should be deleted */
             if (oh->nlink == 0) {
                 /* Check if the object is still open by the user */
-                if (H5FO_opened(f, addr) != NULL) {
+                if (H5FO_opened(H5F_OPEN_OBJECTS(f), addr) != NULL) {
                     /* Flag the object to be deleted when it's closed */
-                    if (H5FO_mark(f, addr, TRUE) < 0)
+                    if (H5FO_mark(H5F_OPEN_OBJECTS(f), addr, TRUE) < 0)
                         HGOTO_ERROR(H5E_OHDR, H5E_CANTDELETE, (-1), "can't mark object for deletion")
                 } /* end if */
                 else {
@@ -885,9 +885,9 @@ H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *deleted)
             /* A new object, or one that will be deleted */
             if (0 == oh->nlink) {
                 /* Check if the object is currently open, but marked for deletion */
-                if (H5FO_marked(f, addr)) {
+                if (H5FO_marked(H5F_OPEN_OBJECTS(f), addr)) {
                     /* Remove "delete me" flag on the object */
-                    if (H5FO_mark(f, addr, FALSE) < 0)
+                    if (H5FO_mark(H5F_OPEN_OBJECTS(f), addr, FALSE) < 0)
                         HGOTO_ERROR(H5E_OHDR, H5E_CANTDELETE, (-1), "can't mark object for deletion")
                 } /* end if */
             }     /* end if */

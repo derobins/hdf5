@@ -32,19 +32,19 @@ typedef H5SL_t H5FO_objects_t;
 typedef H5SL_t H5FO_counts_t;
 
 /* API calls that manipulate the H5FO objects in H5F_shared_t */
-H5_DLL herr_t  H5FO_create(const struct H5F_t *f);
-H5_DLL void   *H5FO_opened(const struct H5F_t *f, haddr_t addr);
-H5_DLL herr_t  H5FO_insert(const struct H5F_t *f, haddr_t addr, void *obj, hbool_t delete_flag);
-H5_DLL herr_t  H5FO_delete(struct H5F_t *f, haddr_t addr);
-H5_DLL herr_t  H5FO_mark(const struct H5F_t *f, haddr_t addr, hbool_t deleted);
-H5_DLL hbool_t H5FO_marked(const struct H5F_t *f, haddr_t addr);
-H5_DLL herr_t  H5FO_dest(const struct H5F_t *f);
+H5_DLL H5FO_objects_t *H5FO_create(void);
+H5_DLL void   *H5FO_opened(H5FO_objects_t *objects, haddr_t addr);
+H5_DLL herr_t  H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, hbool_t delete_flag);
+H5_DLL herr_t  H5FO_delete(H5FO_objects_t *objects, struct H5F_t *f, haddr_t addr);
+H5_DLL herr_t  H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t deleted);
+H5_DLL hbool_t H5FO_marked(H5FO_objects_t *objects, haddr_t addr);
+H5_DLL herr_t  H5FO_dest(H5FO_objects_t *objects);
 
 /* API calls that manipulate the H5FO object counts in H5F_t */
-H5_DLL herr_t  H5FO_top_create(struct H5F_t *f);
-H5_DLL herr_t  H5FO_top_incr(const struct H5F_t *f, haddr_t addr);
-H5_DLL herr_t  H5FO_top_decr(const struct H5F_t *f, haddr_t addr);
-H5_DLL hsize_t H5FO_top_count(const struct H5F_t *f, haddr_t addr);
-H5_DLL herr_t  H5FO_top_dest(struct H5F_t *f);
+H5_DLL H5FO_counts_t *H5FO_top_create(void);
+H5_DLL herr_t  H5FO_top_incr(H5FO_counts_t *counts, haddr_t addr);
+H5_DLL herr_t  H5FO_top_decr(H5FO_counts_t *counts, haddr_t addr);
+H5_DLL hsize_t H5FO_top_count(H5FO_counts_t *counts, haddr_t addr);
+H5_DLL herr_t  H5FO_top_dest(H5FO_counts_t *counts);
 
 #endif /* H5FOprivate_H */
