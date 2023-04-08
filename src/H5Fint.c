@@ -1319,7 +1319,7 @@ done:
     if (!ret_value && f) {
         HDassert(NULL == f->vol_obj);
 
-        if (!shared) {
+        if (f->shared) {
             /* Attempt to clean up some of the shared file structures */
             if (f->shared->efc)
                 if (H5F__efc_destroy(f->shared->efc) < 0)
@@ -1327,9 +1327,16 @@ done:
             if (f->shared->fcpl_id > 0)
                 if (H5I_dec_ref(f->shared->fcpl_id) < 0)
                     HDONE_ERROR(H5E_FILE, H5E_CANTDEC, NULL, "can't close property list")
+            if (f->shared->open_objs)
+                if (H5FO_dest(f->shared->open_objs) < 0)
+                    HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, NULL, "can't destroy open file objects")
 
             f->shared = H5FL_FREE(H5F_shared_t, f->shared);
         }
+
+        if (f->obj_counts)
+            if (H5FO_dest(f->obj_counts) < 0)
+                HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, NULL, "can't destroy open file counts")
 
         f = H5FL_FREE(H5F_t, f);
     }
