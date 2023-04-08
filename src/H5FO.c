@@ -10,28 +10,18 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/*
- * Open object info algorithms.
- *
- * These are used to track the objects currently open in a file, for various
- * internal mechanisms which need to be aware of such things.
- *
- */
+#define H5F_FRIEND /* Suppress error about including H5Fpkg.h */
 
-#define H5F_FRIEND /*suppress error about including H5Fpkg	  */
-
-#include "H5Eprivate.h"  /* Error handling		  	*/
-#include "H5Fpkg.h"      /* File access                          */
-#include "H5FLprivate.h" /* Free lists                           */
-#include "H5FOprivate.h" /* File objects                         */
-#include "H5Oprivate.h"  /* Object headers		  	*/
-
-/* Private typedefs */
+#include "H5Eprivate.h"  /* Error handling                          */
+#include "H5Fpkg.h"      /* File access                             */
+#include "H5FLprivate.h" /* Free lists                              */
+#include "H5FOprivate.h" /* File objects                            */
+#include "H5Oprivate.h"  /* Object headers                          */
 
 /* Information about open objects in a file */
 typedef struct H5FO_open_obj_t {
     haddr_t addr;    /* Address of object header for object */
-    void   *obj;     /* Pointer to the object            */
+    void   *obj;     /* Pointer to the object */
     hbool_t deleted; /* Flag to indicate that the object was deleted from the file */
 } H5FO_open_obj_t;
 
@@ -41,10 +31,7 @@ typedef struct H5FO_obj_count_t {
     hsize_t count; /* Number of times object is opened */
 } H5FO_obj_count_t;
 
-/* Declare a free list to manage the H5FO_open_obj_t struct */
 H5FL_DEFINE_STATIC(H5FO_open_obj_t);
-
-/* Declare a free list to manage the H5FO_obj_count_t struct */
 H5FL_DEFINE_STATIC(H5FO_obj_count_t);
 
 /*--------------------------------------------------------------------------
@@ -60,19 +47,14 @@ H5FL_DEFINE_STATIC(H5FO_obj_count_t);
     Returns non-negative on success, negative on failure
  DESCRIPTION
     Create a new open object info set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_create(const H5F_t *f)
 {
-    herr_t ret_value = SUCCEED; /* Return value */
+    herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->shared);
 
@@ -82,7 +64,7 @@ H5FO_create(const H5F_t *f)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_create() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -99,20 +81,15 @@ done:
  DESCRIPTION
     Check is an object at an address (the address of the object's object header)
     is already open in the file and return the ID for that object if it is open.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 void *
 H5FO_opened(const H5F_t *f, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj;  /* Information about open object */
-    void            *ret_value; /* Return value */
+    H5FO_open_obj_t *open_obj; /* Information about open object */
+    void            *ret_value;
 
     FUNC_ENTER_NOAPI_NOERR
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->shared);
     HDassert(f->shared->open_objs);
@@ -122,12 +99,12 @@ H5FO_opened(const H5F_t *f, haddr_t addr)
     if (NULL != (open_obj = (H5FO_open_obj_t *)H5SL_search(f->shared->open_objs, &addr))) {
         ret_value = open_obj->obj;
         HDassert(ret_value != NULL);
-    } /* end if */
+    }
     else
         ret_value = NULL;
 
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_opened() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -145,20 +122,15 @@ H5FO_opened(const H5F_t *f, haddr_t addr)
     Returns a non-negative on success, negative on failure
  DESCRIPTION
     Insert an object/ID pair into the opened object info set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_insert(const H5F_t *f, haddr_t addr, void *obj, hbool_t delete_flag)
 {
-    H5FO_open_obj_t *open_obj;            /* Information about open object */
-    herr_t           ret_value = SUCCEED; /* Return value */
+    H5FO_open_obj_t *open_obj; /* Information about open object */
+    herr_t           ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->shared);
     HDassert(f->shared->open_objs);
@@ -180,7 +152,7 @@ H5FO_insert(const H5F_t *f, haddr_t addr, void *obj, hbool_t delete_flag)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_insert() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -196,20 +168,15 @@ done:
     Returns a non-negative on success, negative on failure
  DESCRIPTION
     Remove an object/ID pair from the opened object info.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_delete(H5F_t *f, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj;            /* Information about open object */
-    herr_t           ret_value = SUCCEED; /* Return value */
+    H5FO_open_obj_t *open_obj; /* Information about open object */
+    herr_t           ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->shared);
     HDassert(f->shared->open_objs);
@@ -223,14 +190,14 @@ H5FO_delete(H5F_t *f, haddr_t addr)
     if (open_obj->deleted) {
         if (H5O_delete(f, addr) < 0)
             HGOTO_ERROR(H5E_OHDR, H5E_CANTDELETE, FAIL, "can't delete object from file")
-    } /* end if */
+    }
 
     /* Release the object information */
     open_obj = H5FL_FREE(H5FO_open_obj_t, open_obj);
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_delete() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -246,20 +213,15 @@ done:
     Returns a non-negative ID for the object on success, negative on failure
  DESCRIPTION
     Mark an opened object for deletion from the file when it is closed.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted)
 {
-    H5FO_open_obj_t *open_obj;            /* Information about open object */
-    herr_t           ret_value = SUCCEED; /* Return value */
+    H5FO_open_obj_t *open_obj; /* Information about open object */
+    herr_t           ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI_NOERR
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->shared);
     HDassert(f->shared->open_objs);
@@ -272,7 +234,7 @@ H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted)
         ret_value = FAIL;
 
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_mark() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -289,20 +251,15 @@ H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted)
  DESCRIPTION
     Checks if the object is currently in the "opened objects" tree and
     whether its marks for deletion from the file when it is closed.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 hbool_t
 H5FO_marked(const H5F_t *f, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj;          /* Information about open object */
-    hbool_t          ret_value = FALSE; /* Return value */
+    H5FO_open_obj_t *open_obj; /* Information about open object */
+    hbool_t          ret_value = FALSE;
 
     FUNC_ENTER_NOAPI_NOERR
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->shared);
     HDassert(f->shared->open_objs);
@@ -313,7 +270,7 @@ H5FO_marked(const H5F_t *f, haddr_t addr)
         ret_value = open_obj->deleted;
 
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_marked() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -328,19 +285,14 @@ H5FO_marked(const H5F_t *f, haddr_t addr)
     Returns a non-negative on success, negative on failure
  DESCRIPTION
     Destroy an existing open object info set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_dest(const H5F_t *f)
 {
-    herr_t ret_value = SUCCEED; /* Return value */
+    herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->shared);
     HDassert(f->shared->open_objs);
@@ -357,7 +309,7 @@ H5FO_dest(const H5F_t *f)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_dest() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -372,19 +324,14 @@ done:
     Returns non-negative on success, negative on failure
  DESCRIPTION
     Create a new open object count set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_top_create(H5F_t *f)
 {
-    herr_t ret_value = SUCCEED; /* Return value */
+    herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
 
     /* Create container used to store open object info */
@@ -393,7 +340,7 @@ H5FO_top_create(H5F_t *f)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_top_create() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -409,20 +356,15 @@ done:
     Returns a non-negative on success, negative on failure
  DESCRIPTION
     Increment the reference count for an object in the opened object count set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_top_incr(const H5F_t *f, haddr_t addr)
 {
-    H5FO_obj_count_t *obj_count;           /* Ref. count for object */
-    herr_t            ret_value = SUCCEED; /* Return value */
+    H5FO_obj_count_t *obj_count; /* Ref. count for object */
+    herr_t            ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->obj_count);
     HDassert(H5F_addr_defined(addr));
@@ -430,7 +372,7 @@ H5FO_top_incr(const H5F_t *f, haddr_t addr)
     /* Get the object node from the container */
     if (NULL != (obj_count = (H5FO_obj_count_t *)H5SL_search(f->obj_count, &addr))) {
         (obj_count->count)++;
-    } /* end if */
+    }
     else {
         /* Allocate new opened object information structure */
         if (NULL == (obj_count = H5FL_MALLOC(H5FO_obj_count_t)))
@@ -443,11 +385,11 @@ H5FO_top_incr(const H5F_t *f, haddr_t addr)
         /* Insert into container */
         if (H5SL_insert(f->obj_count, &obj_count->addr, obj_count) < 0)
             HGOTO_ERROR(H5E_CACHE, H5E_CANTINSERT, FAIL, "can't insert object into container")
-    } /* end if */
+    }
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_top_incr() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -463,20 +405,15 @@ done:
     Returns a non-negative on success, negative on failure
  DESCRIPTION
     Decrement the reference count for an object in the opened object count set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_top_decr(const H5F_t *f, haddr_t addr)
 {
-    H5FO_obj_count_t *obj_count;           /* Ref. count for object */
-    herr_t            ret_value = SUCCEED; /* Return value */
+    H5FO_obj_count_t *obj_count; /* Ref. count for object */
+    herr_t            ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->obj_count);
     HDassert(H5F_addr_defined(addr));
@@ -493,14 +430,14 @@ H5FO_top_decr(const H5F_t *f, haddr_t addr)
 
             /* Release the object information */
             obj_count = H5FL_FREE(H5FO_obj_count_t, obj_count);
-        } /* end if */
-    }     /* end if */
+        }
+    }
     else
         HGOTO_ERROR(H5E_CACHE, H5E_NOTFOUND, FAIL, "can't decrement ref. count")
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_top_decr() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -516,20 +453,15 @@ done:
     Returns a non-negative on success, negative on failure
  DESCRIPTION
     Retrieves the reference count for an object in the opened object count set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 hsize_t
 H5FO_top_count(const H5F_t *f, haddr_t addr)
 {
     H5FO_obj_count_t *obj_count; /* Ref. count for object */
-    hsize_t           ret_value; /* Return value */
+    hsize_t           ret_value;
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->obj_count);
     HDassert(H5F_addr_defined(addr));
@@ -541,7 +473,7 @@ H5FO_top_count(const H5F_t *f, haddr_t addr)
         ret_value = 0;
 
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_top_count() */
+}
 
 /*--------------------------------------------------------------------------
  NAME
@@ -556,19 +488,14 @@ H5FO_top_count(const H5F_t *f, haddr_t addr)
     Returns a non-negative on success, negative on failure
  DESCRIPTION
     Destroy an existing open object info set.
- GLOBAL VARIABLES
- COMMENTS, BUGS, ASSUMPTIONS
- EXAMPLES
- REVISION LOG
 --------------------------------------------------------------------------*/
 herr_t
 H5FO_top_dest(H5F_t *f)
 {
-    herr_t ret_value = SUCCEED; /* Return value */
+    herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    /* Sanity check */
     HDassert(f);
     HDassert(f->obj_count);
 
@@ -584,4 +511,4 @@ H5FO_top_dest(H5F_t *f)
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
-} /* end H5FO_top_dest() */
+}

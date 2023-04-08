@@ -10,29 +10,22 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/*
- * This file contains library private information about the H5FO module
- */
 #ifndef H5FOprivate_H
 #define H5FOprivate_H
 
-#ifdef LATER
-#include "H5FOpublic.h"
-#endif /* LATER */
+/* Open object information
+ *
+ * Tracks the objects currently open in a file, for various internal mechanisms
+ * which need to be aware of such things.
+ */
 
-/* Private headers needed by this file */
-#include "H5private.h"   /* Generic Functions			*/
-#include "H5Fprivate.h"  /* File access				*/
-#include "H5SLprivate.h" /* Skip lists				*/
+#include "H5private.h"   /* Generic Functions                       */
+#include "H5Fprivate.h"  /* File access                             */
+#include "H5SLprivate.h" /* Skip lists                              */
 
-/* Typedefs */
+/* The open object cache */
+typedef H5SL_t H5FO_t;
 
-/* Typedef for open object cache */
-typedef H5SL_t H5FO_t; /* Currently, all open objects are stored in skip list */
-
-/* Macros */
-
-/* Private routines */
 H5_DLL herr_t  H5FO_create(const H5F_t *f);
 H5_DLL void   *H5FO_opened(const H5F_t *f, haddr_t addr);
 H5_DLL herr_t  H5FO_insert(const H5F_t *f, haddr_t addr, void *obj, hbool_t delete_flag);
