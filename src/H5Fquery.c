@@ -34,6 +34,7 @@
 #include "H5Eprivate.h"  /* Error handling                           */
 #include "H5Fpkg.h"      /* File access                              */
 #include "H5FDprivate.h" /* File drivers                             */
+#include "H5FOprivate.h" /* File objects                             */
 
 /****************/
 /* Local Macros */
@@ -1372,3 +1373,40 @@ H5F_get_file_locking(const H5F_t *f)
 
     FUNC_LEAVE_NOAPI(f->shared->use_file_locking)
 } /* end H5F_get_file_locking */
+
+/*-------------------------------------------------------------------------
+ * Function: H5F_get_open_obj_counts
+ *
+ * Purpose:  Get the open object counts for the file
+ *
+ * Return:   Open object counter pointer for file, can't fail
+ *-------------------------------------------------------------------------
+ */
+H5FO_counts_t *
+H5F_get_open_obj_counts(H5F_t *f)
+{
+    FUNC_ENTER_NOAPI_NOINIT_NOERR
+
+    HDassert(f);
+
+    FUNC_LEAVE_NOAPI(f->obj_counts)
+}
+
+/*-------------------------------------------------------------------------
+ * Function: H5F_get_open_objects
+ *
+ * Purpose:  Get the open objects for the file
+ *
+ * Return:   Open objects pointer for file, can't fail
+ *-------------------------------------------------------------------------
+ */
+H5FO_objects_t *
+H5F_get_open_objects(H5F_t *f)
+{
+    FUNC_ENTER_NOAPI_NOINIT_NOERR
+
+    HDassert(f);
+    HDassert(f->shared);
+
+    FUNC_LEAVE_NOAPI(f->shared->open_objs)
+}

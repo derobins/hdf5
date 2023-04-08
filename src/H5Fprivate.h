@@ -24,6 +24,7 @@ typedef struct H5F_t H5F_t;
 #include "H5Fpublic.h"
 
 /* Private headers needed by this file */
+#include "H5FOprivate.h" /* File objects                 */
 #include "H5MMprivate.h" /* Memory management            */
 #include "H5FDprivate.h" /* File drivers                 */
 #ifdef H5_HAVE_PARALLEL
@@ -317,6 +318,7 @@ typedef struct H5F_t H5F_t;
 
 /* If the module using this macro is allowed access to the private variables, access them directly */
 #ifdef H5F_MODULE
+
 #define H5F_LOW_BOUND(F)                 ((F)->shared->low_bound)
 #define H5F_HIGH_BOUND(F)                ((F)->shared->high_bound)
 #define H5F_SHARED_INTENT(F_SH)          ((F_SH)->flags)
@@ -379,7 +381,11 @@ typedef struct H5F_t H5F_t;
 #define H5F_VOL_CLS(F)                 ((F)->shared->vol_cls)
 #define H5F_VOL_OBJ(F)                 ((F)->vol_obj)
 #define H5F_USE_FILE_LOCKING(F)        ((F)->shared->use_file_locking)
+#define H5F_OPEN_OBJ_COUNTS(F)         ((F)->obj_counts)
+#define H5F_OPEN_OBJECTS(F)            ((F)->shared->open_objs)
+
 #else /* H5F_MODULE */
+
 #define H5F_LOW_BOUND(F)                 (H5F_get_low_bound(F))
 #define H5F_HIGH_BOUND(F)                (H5F_get_high_bound(F))
 #define H5F_SHARED_INTENT(F_SH)          (H5F_shared_get_intent(F_SH))
@@ -442,6 +448,8 @@ typedef struct H5F_t H5F_t;
 #define H5F_VOL_CLS(F)                 (H5F_get_vol_cls(F))
 #define H5F_VOL_OBJ(F)                 (H5F_get_vol_obj(F))
 #define H5F_USE_FILE_LOCKING(F)        (H5F_get_use_file_locking(F))
+#define H5F_OPEN_OBJ_COUNTS(F)         (H5F_get_open_obj_counts(F))
+#define H5F_OPEN_OBJECTS(F)            (H5F_get_open_objects(F))
 #endif /* H5F_MODULE */
 
 /* Macros to encode/decode offset/length's for storing in the file */
@@ -860,6 +868,8 @@ H5_DLL herr_t  H5F_set_min_dset_ohdr(H5F_t *f, hbool_t minimize);
 H5_DLL const H5VL_class_t *H5F_get_vol_cls(const H5F_t *f);
 H5_DLL H5VL_object_t      *H5F_get_vol_obj(const H5F_t *f);
 H5_DLL hbool_t             H5F_get_file_locking(const H5F_t *f);
+H5_DLL H5FO_counts_t      *H5F_get_open_obj_counts(H5F_t *f);
+H5_DLL H5FO_objects_t     *H5F_get_open_objects(H5F_t *f);
 
 /* Functions than retrieve values set/cached from the superblock/FCPL */
 H5_DLL haddr_t            H5F_get_base_addr(const H5F_t *f);

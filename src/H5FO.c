@@ -49,7 +49,7 @@ H5FL_DEFINE_STATIC(H5FO_obj_count_t);
     Create a new open object info set.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_create(const H5F_t *f)
+H5FO_create(const struct H5F_t *f)
 {
     herr_t ret_value = SUCCEED;
 
@@ -83,7 +83,7 @@ done:
     is already open in the file and return the ID for that object if it is open.
 --------------------------------------------------------------------------*/
 void *
-H5FO_opened(const H5F_t *f, haddr_t addr)
+H5FO_opened(const struct H5F_t *f, haddr_t addr)
 {
     H5FO_open_obj_t *open_obj; /* Information about open object */
     void            *ret_value;
@@ -124,7 +124,7 @@ H5FO_opened(const H5F_t *f, haddr_t addr)
     Insert an object/ID pair into the opened object info set.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_insert(const H5F_t *f, haddr_t addr, void *obj, hbool_t delete_flag)
+H5FO_insert(const struct H5F_t *f, haddr_t addr, void *obj, hbool_t delete_flag)
 {
     H5FO_open_obj_t *open_obj; /* Information about open object */
     herr_t           ret_value = SUCCEED;
@@ -170,7 +170,7 @@ done:
     Remove an object/ID pair from the opened object info.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_delete(H5F_t *f, haddr_t addr)
+H5FO_delete(struct H5F_t *f, haddr_t addr)
 {
     H5FO_open_obj_t *open_obj; /* Information about open object */
     herr_t           ret_value = SUCCEED;
@@ -215,7 +215,7 @@ done:
     Mark an opened object for deletion from the file when it is closed.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted)
+H5FO_mark(const struct H5F_t *f, haddr_t addr, hbool_t deleted)
 {
     H5FO_open_obj_t *open_obj; /* Information about open object */
     herr_t           ret_value = SUCCEED;
@@ -253,7 +253,7 @@ H5FO_mark(const H5F_t *f, haddr_t addr, hbool_t deleted)
     whether its marks for deletion from the file when it is closed.
 --------------------------------------------------------------------------*/
 hbool_t
-H5FO_marked(const H5F_t *f, haddr_t addr)
+H5FO_marked(const struct H5F_t *f, haddr_t addr)
 {
     H5FO_open_obj_t *open_obj; /* Information about open object */
     hbool_t          ret_value = FALSE;
@@ -287,7 +287,7 @@ H5FO_marked(const H5F_t *f, haddr_t addr)
     Destroy an existing open object info set.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_dest(const H5F_t *f)
+H5FO_dest(const struct H5F_t *f)
 {
     herr_t ret_value = SUCCEED;
 
@@ -326,7 +326,7 @@ done:
     Create a new open object count set.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_top_create(H5F_t *f)
+H5FO_top_create(struct H5F_t *f)
 {
     herr_t ret_value = SUCCEED;
 
@@ -335,7 +335,7 @@ H5FO_top_create(H5F_t *f)
     HDassert(f);
 
     /* Create container used to store open object info */
-    if ((f->obj_count = H5SL_create(H5SL_TYPE_HADDR, NULL)) == NULL)
+    if ((f->obj_counts = H5SL_create(H5SL_TYPE_HADDR, NULL)) == NULL)
         HGOTO_ERROR(H5E_FILE, H5E_CANTINIT, FAIL, "unable to create open object container")
 
 done:
@@ -358,7 +358,7 @@ done:
     Increment the reference count for an object in the opened object count set.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_top_incr(const H5F_t *f, haddr_t addr)
+H5FO_top_incr(const struct H5F_t *f, haddr_t addr)
 {
     H5FO_obj_count_t *obj_count; /* Ref. count for object */
     herr_t            ret_value = SUCCEED;
@@ -366,11 +366,11 @@ H5FO_top_incr(const H5F_t *f, haddr_t addr)
     FUNC_ENTER_NOAPI(FAIL)
 
     HDassert(f);
-    HDassert(f->obj_count);
+    HDassert(f->obj_counts);
     HDassert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
-    if (NULL != (obj_count = (H5FO_obj_count_t *)H5SL_search(f->obj_count, &addr))) {
+    if (NULL != (obj_count = (H5FO_obj_count_t *)H5SL_search(f->obj_counts, &addr))) {
         (obj_count->count)++;
     }
     else {
@@ -383,7 +383,7 @@ H5FO_top_incr(const H5F_t *f, haddr_t addr)
         obj_count->count = 1;
 
         /* Insert into container */
-        if (H5SL_insert(f->obj_count, &obj_count->addr, obj_count) < 0)
+        if (H5SL_insert(f->obj_counts, &obj_count->addr, obj_count) < 0)
             HGOTO_ERROR(H5E_CACHE, H5E_CANTINSERT, FAIL, "can't insert object into container")
     }
 
@@ -407,7 +407,7 @@ done:
     Decrement the reference count for an object in the opened object count set.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_top_decr(const H5F_t *f, haddr_t addr)
+H5FO_top_decr(const struct H5F_t *f, haddr_t addr)
 {
     H5FO_obj_count_t *obj_count; /* Ref. count for object */
     herr_t            ret_value = SUCCEED;
@@ -415,17 +415,17 @@ H5FO_top_decr(const H5F_t *f, haddr_t addr)
     FUNC_ENTER_NOAPI(FAIL)
 
     HDassert(f);
-    HDassert(f->obj_count);
+    HDassert(f->obj_counts);
     HDassert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
-    if (NULL != (obj_count = (H5FO_obj_count_t *)H5SL_search(f->obj_count, &addr))) {
+    if (NULL != (obj_count = (H5FO_obj_count_t *)H5SL_search(f->obj_counts, &addr))) {
         /* Decrement the reference count for the object */
         (obj_count->count)--;
 
         if (obj_count->count == 0) {
             /* Remove from container */
-            if (NULL == (obj_count = (H5FO_obj_count_t *)H5SL_remove(f->obj_count, &addr)))
+            if (NULL == (obj_count = (H5FO_obj_count_t *)H5SL_remove(f->obj_counts, &addr)))
                 HGOTO_ERROR(H5E_CACHE, H5E_CANTRELEASE, FAIL, "can't remove object from container")
 
             /* Release the object information */
@@ -455,7 +455,7 @@ done:
     Retrieves the reference count for an object in the opened object count set.
 --------------------------------------------------------------------------*/
 hsize_t
-H5FO_top_count(const H5F_t *f, haddr_t addr)
+H5FO_top_count(const struct H5F_t *f, haddr_t addr)
 {
     H5FO_obj_count_t *obj_count; /* Ref. count for object */
     hsize_t           ret_value;
@@ -463,11 +463,11 @@ H5FO_top_count(const H5F_t *f, haddr_t addr)
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     HDassert(f);
-    HDassert(f->obj_count);
+    HDassert(f->obj_counts);
     HDassert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
-    if (NULL != (obj_count = (H5FO_obj_count_t *)H5SL_search(f->obj_count, &addr)))
+    if (NULL != (obj_count = (H5FO_obj_count_t *)H5SL_search(f->obj_counts, &addr)))
         ret_value = obj_count->count;
     else
         ret_value = 0;
@@ -490,24 +490,24 @@ H5FO_top_count(const H5F_t *f, haddr_t addr)
     Destroy an existing open object info set.
 --------------------------------------------------------------------------*/
 herr_t
-H5FO_top_dest(H5F_t *f)
+H5FO_top_dest(struct H5F_t *f)
 {
     herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
     HDassert(f);
-    HDassert(f->obj_count);
+    HDassert(f->obj_counts);
 
     /* Check if the object count set is empty */
-    if (H5SL_count(f->obj_count) != 0)
+    if (H5SL_count(f->obj_counts) != 0)
         HGOTO_ERROR(H5E_CACHE, H5E_CANTRELEASE, FAIL, "objects still in open object info set")
 
     /* Release the open object count set container */
-    if (H5SL_close(f->obj_count) < 0)
+    if (H5SL_close(f->obj_counts) < 0)
         HGOTO_ERROR(H5E_CACHE, H5E_CANTCLOSEOBJ, FAIL, "can't close open object info set")
 
-    f->obj_count = NULL;
+    f->obj_counts = NULL;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)

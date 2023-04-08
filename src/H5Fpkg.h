@@ -376,7 +376,7 @@ struct H5F_t {
     H5F_shared_t  *shared;      /* The shared file info                                         */
     H5VL_object_t *vol_obj;     /* VOL object                                                   */
     unsigned       nopen_objs;  /* Number of open object headers                                */
-    H5FO_counts_t *obj_count;   /* # of time each object is opened through top file structure   */
+    H5FO_counts_t *obj_counts;  /* # of time each object is opened through top file structure   */
     hbool_t        id_exists;   /* Whether an ID for this struct exists                         */
     hbool_t        closing;     /* File is in the process of being closed                       */
     struct H5F_t  *parent;      /* Parent file that this file is mounted to                     */
