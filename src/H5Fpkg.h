@@ -302,7 +302,7 @@ struct H5F_shared_t {
     unsigned             ncwfs;             /* Num entries on cwfs list		*/
     struct H5HG_heap_t **cwfs;              /* Global heap cache			*/
     struct H5G_t        *root_grp;          /* Open root group			*/
-    H5FO_t              *open_objs;         /* Open objects in file                 */
+    H5FO_objects_t      *open_objs;         /* Open objects in file */
     H5UC_t              *grp_btree_shared;  /* Ref-counted group B-tree node info   */
     hbool_t              use_file_locking;  /* Whether or not to use file locking */
     hbool_t              closing;           /* File is in the process of being closed */
@@ -376,7 +376,7 @@ struct H5F_t {
     H5F_shared_t  *shared;      /* The shared file info                                         */
     H5VL_object_t *vol_obj;     /* VOL object                                                   */
     unsigned       nopen_objs;  /* Number of open object headers                                */
-    H5FO_t        *obj_count;   /* # of time each object is opened through top file structure   */
+    H5FO_counts_t *obj_count;   /* # of time each object is opened through top file structure   */
     hbool_t        id_exists;   /* Whether an ID for this struct exists                         */
     hbool_t        closing;     /* File is in the process of being closed                       */
     struct H5F_t  *parent;      /* Parent file that this file is mounted to                     */

@@ -23,8 +23,11 @@
 #include "H5Fprivate.h"  /* File access                             */
 #include "H5SLprivate.h" /* Skip lists                              */
 
-/* The open object cache */
-typedef H5SL_t H5FO_t;
+/* The open objects */
+typedef H5SL_t H5FO_objects_t;
+
+/* The open object counts */
+typedef H5SL_t H5FO_counts_t;
 
 /* API calls that manipulate the H5FO objects in H5F_shared_t */
 H5_DLL herr_t  H5FO_create(const H5F_t *f);
