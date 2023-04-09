@@ -16,29 +16,31 @@
 #include "H5FOprivate.h" /* File objects                            */
 #include "H5Oprivate.h"  /* Object headers                          */
 
-/* Information about open objects in a file */
+/** \cond INTERNAL */
+
+/** Information about open objects in a file */
 typedef struct H5FO_open_obj_t {
-    haddr_t addr;      /* Address of object header for object */
-    void   *obj;       /* Pointer to the object */
-    hbool_t deleted;   /* Flag to indicate that the object was deleted from the file */
-    UT_hash_handle hh; /* Hash table handle (must be LAST) */
+    haddr_t addr;      /** Address of object header for object */
+    void   *obj;       /** Pointer to the object */
+    hbool_t deleted;   /** Flag to indicate that the object was deleted from the file */
+    UT_hash_handle hh; /** Hash table handle (must be LAST) */
 } H5FO_open_obj_t;
 
-/* Information about counted objects in a file */
+/** Information about counted objects in a file */
 typedef struct H5FO_obj_count_t {
-    haddr_t addr;      /* Address of object header for object */
-    hsize_t count;     /* Number of times object is opened */
-    UT_hash_handle hh; /* Hash table handle (must be LAST) */
+    haddr_t addr;      /** Address of object header for object */
+    hsize_t count;     /** Number of times object is opened */
+    UT_hash_handle hh; /** Hash table handle (must be LAST) */
 } H5FO_obj_count_t;
 
-/* The open objects */
+/** The open objects */
 struct H5FO_objects {
-    H5FO_open_obj_t *hash_table; /* Hash table pointer open objects */
+    H5FO_open_obj_t *hash_table; /** Hash table pointer open objects */
 };
 
-/* The open object counts */
+/** The open object counts */
 struct H5FO_counts {
-    H5FO_obj_count_t *hash_table; /* Hash table pointer for open object counts */
+    H5FO_obj_count_t *hash_table; /** Hash table pointer for open object counts */
 };
 
 H5FL_DEFINE_STATIC(H5FO_open_obj_t);
@@ -46,20 +48,11 @@ H5FL_DEFINE_STATIC(H5FO_obj_count_t);
 H5FL_DEFINE_STATIC(H5FO_objects_t);
 H5FL_DEFINE_STATIC(H5FO_counts_t);
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_create
- PURPOSE
-    Create an open object info set
- USAGE
-    herr_t H5FO_create(f)
-        H5F_t *f;       IN/OUT: File to create opened object info set for
-
- RETURNS
-    Returns non-negative on success, negative on failure
- DESCRIPTION
-    Create a new open object info set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Creates a new open object collection
+ *
+ * \return A pointer to a valid collection on success, NULL on failure
+ */
 H5FO_objects_t *
 H5FO_create(void)
 {
@@ -74,26 +67,22 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_opened
- PURPOSE
-    Checks if an object at an address is already open in the file.
- USAGE
-    void * H5FO_opened(f,addr)
-        const H5F_t *f;         IN: File to check opened object info set
-        haddr_t addr;           IN: Address of object to check
-
- RETURNS
-    Returns a pointer to the object on success, NULL on failure
- DESCRIPTION
-    Check is an object at an address (the address of the object's object header)
-    is already open in the file and return the ID for that object if it is open.
---------------------------------------------------------------------------*/
+/**
+ * \brief Return a previously opened object (if any) at a given address
+ *
+ * \param[in] objects The collection of open file objects
+ * \param[in] addr Object's address in the file
+ *
+ * \return A pointer to a valid object on success, NULL on failure or if
+ *          not found
+ *
+ * \note The library ignores errors from this function and treats them like
+ *       the "not found" case
+ */
 void *
 H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj = NULL; /* Information about open object */
+    H5FO_open_obj_t *open_obj = NULL;
     void            *ret_value;
 
     FUNC_ENTER_NOAPI_NOERR
@@ -101,7 +90,7 @@ H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
     HDassert(objects);
     HDassert(H5F_addr_defined(addr));
 
-    /* Get the object node from the container */
+    /* Get the object from the collection */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
 
     if (NULL != open_obj) {
@@ -114,27 +103,20 @@ H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_insert
- PURPOSE
-    Insert a newly opened object/pointer pair into the opened object info set
- USAGE
-    herr_t H5FO_insert(f,addr,obj)
-        H5F_t *f;               IN/OUT: File's opened object info set
-        haddr_t addr;           IN: Address of object to insert
-        void *obj;              IN: Pointer to object to insert
-        hbool_t delete_flag;    IN: Whether to 'mark' this object for deletion
-
- RETURNS
-    Returns a non-negative on success, negative on failure
- DESCRIPTION
-    Insert an object/ID pair into the opened object info set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Insert an open object into the collection
+ *
+ * \param[in] objects The collection of open file objects
+ * \param[in] addr Object's address in the file
+ * \param[in] obj The object to insert
+ * \param[in] delete_flag Whether to immediately mark this object for deletion
+ *
+ * \return \herr_t
+ */
 herr_t
 H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, hbool_t delete_flag)
 {
-    H5FO_open_obj_t *open_obj; /* Information about open object */
+    H5FO_open_obj_t *open_obj;
     herr_t           ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -143,7 +125,7 @@ H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, hbool_t delete_fla
     HDassert(H5F_addr_defined(addr));
     HDassert(obj);
 
-    /* Allocate new opened object information structure */
+    /* Allocate new open object information structure */
     if ((open_obj = H5FL_MALLOC(H5FO_open_obj_t)) == NULL)
         HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, FAIL, "memory allocation failed")
 
@@ -152,32 +134,30 @@ H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, hbool_t delete_fla
     open_obj->obj     = obj;
     open_obj->deleted = delete_flag;
 
-    /* Insert into container */
+    /* Insert into collection */
     HASH_ADD(hh, objects->hash_table, addr, sizeof(haddr_t), open_obj);
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_delete
- PURPOSE
-    Remove an opened object/ID pair from the opened object info set
- USAGE
-    herr_t H5FO_delete(f,addr)
-        H5F_t *f;               IN/OUT: File's opened object info set
-        haddr_t addr;           IN: Address of object to remove
-
- RETURNS
-    Returns a non-negative on success, negative on failure
- DESCRIPTION
-    Remove an object/ID pair from the opened object info.
---------------------------------------------------------------------------*/
+/**
+ * \brief Remove an open object from the collection
+ *
+ * \param[in] objects The collection of open file objects
+ * \param[in] f The file in which the object has been opened
+ * \param[in] addr Object's address in the file
+ *
+ * \note The H5F_t parameter is only needed in order to call
+ *       H5O_delete() on the object. This could be refactored out
+ *       if that responsibility were transferred to the caller.
+ *
+ * \return \herr_t
+ */
 herr_t
 H5FO_delete(H5FO_objects_t *objects, struct H5F_t *f, haddr_t addr)
 {
-    H5FO_open_obj_t *open_obj  = NULL; /* Information about open object */
+    H5FO_open_obj_t *open_obj  = NULL;
     herr_t           ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
@@ -189,7 +169,7 @@ H5FO_delete(H5FO_objects_t *objects, struct H5F_t *f, haddr_t addr)
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
     HASH_DELETE(hh, objects->hash_table, open_obj);
 
-    /* Check if the object was deleted from the file */
+    /* Delete the object if it was marked for deletion */
     if (open_obj->deleted) {
         if (H5O_delete(f, addr) < 0)
             HGOTO_ERROR(H5E_FILE, H5E_CANTDELETE, FAIL, "can't delete object from file")
@@ -202,21 +182,15 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_mark
- PURPOSE
-    Mark an object to be deleted when it is closed
- USAGE
-    herr_t H5FO_mark(f,addr)
-        const H5F_t *f;         IN: File opened object is in
-        haddr_t addr;           IN: Address of object to delete
-
- RETURNS
-    Returns a non-negative ID for the object on success, negative on failure
- DESCRIPTION
-    Mark an opened object for deletion from the file when it is closed.
---------------------------------------------------------------------------*/
+/**
+ * \brief Mark an object for deletion when it is closed
+ *
+ * \param[in] objects The collection of open file objects
+ * \param[in] addr Object's address in the file
+ * \param[in] deleted Whether to mark (or unmark) the object for deletion
+ *
+ * \return \herr_t
+ */
 herr_t
 H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t deleted)
 {
@@ -239,22 +213,17 @@ H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t deleted)
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_marked
- PURPOSE
-    Check if an object is marked to be deleted when it is closed
- USAGE
-    hbool_t H5FO_marked(f,addr)
-        const H5F_t *f;         IN: File opened object is in
-        haddr_t addr;           IN: Address of object to delete
-
- RETURNS
-    Returns a TRUE/FALSE on success
- DESCRIPTION
-    Checks if the object is currently in the "opened objects" tree and
-    whether its marks for deletion from the file when it is closed.
---------------------------------------------------------------------------*/
+/**
+ * \brief Determine if an object has been marked 'delete on close'
+ *
+ * \param[in] objects The collection of open file objects
+ * \param[in] addr Object's address in the file
+ *
+ * \return \hbool_t
+ *
+ * \details Also implicitly checks that the object is in the list of
+ *          objects. Not being in the list is not considered an error.
+ */
 hbool_t
 H5FO_marked(H5FO_objects_t *objects, haddr_t addr)
 {
@@ -275,20 +244,13 @@ H5FO_marked(H5FO_objects_t *objects, haddr_t addr)
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_dest
- PURPOSE
-    Destroy an open object info set
- USAGE
-    herr_t H5FO_dest(f)
-        H5F_t *f;               IN/OUT: File's opened object info set
-
- RETURNS
-    Returns a non-negative on success, negative on failure
- DESCRIPTION
-    Destroy an existing open object info set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Destroy an open object info collection
+ *
+ * \param[in] objects The collection of open file objects (CANNOT BE NULL)
+ *
+ * \return \herr_t
+ */
 herr_t
 H5FO_dest(H5FO_objects_t *objects)
 {
@@ -310,20 +272,11 @@ H5FO_dest(H5FO_objects_t *objects)
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_top_create
- PURPOSE
-    Create the "top" open object count set
- USAGE
-    herr_t H5FO_create(f)
-        H5F_t *f;       IN/OUT: File to create opened object count set for
-
- RETURNS
-    Returns non-negative on success, negative on failure
- DESCRIPTION
-    Create a new open object count set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Creates a new open object counts collection
+ *
+ * \return A pointer to a valid collection on success, NULL on failure
+ */
 H5FO_counts_t *
 H5FO_top_create(void)
 {
@@ -338,21 +291,18 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_top_incr
- PURPOSE
-    Increment the "top" reference count for an object in a file
- USAGE
-    herr_t H5FO_top_incr(f, addr)
-        H5F_t *f;               IN/OUT: File's opened object info set
-        haddr_t addr;           IN: Address of object to increment
-
- RETURNS
-    Returns a non-negative on success, negative on failure
- DESCRIPTION
-    Increment the reference count for an object in the opened object count set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Increment the reference count on the top-level file pointer for
+ *        an object in a file
+ *
+ * \param[in] counts The collection of open file object counts
+ * \param[in] addr Object's address in the file
+ *
+ * \note There is no insert API call. If the object at addr has not yet been
+ *       added to the collection, this call will add it.
+ *
+ * \return \herr_t
+ */
 herr_t
 H5FO_top_incr(H5FO_counts_t *counts, haddr_t addr)
 {
@@ -387,21 +337,18 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_top_decr
- PURPOSE
-    Decrement the "top" reference count for an object in a file
- USAGE
-    herr_t H5FO_top_decr(f, addr)
-        H5F_t *f;               IN/OUT: File's opened object info set
-        haddr_t addr;           IN: Address of object to decrement
-
- RETURNS
-    Returns a non-negative on success, negative on failure
- DESCRIPTION
-    Decrement the reference count for an object in the opened object count set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Decrement the reference count on the top-level file pointer for
+ *        an object in a file
+ *
+ * \param[in] counts The collection of open file object counts
+ * \param[in] addr Object's address in the file
+ *
+ * \note When the reference count drops to zero, the object's counts will
+ *       be removed from the collection.
+ *
+ * \return \herr_t
+ */
 herr_t
 H5FO_top_decr(H5FO_counts_t *counts, haddr_t addr)
 {
@@ -435,21 +382,14 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_top_count
- PURPOSE
-    Return the "top" reference count for an object in a file
- USAGE
-    hsize_t H5FO_top_incr(f, addr)
-        H5F_t *f;               IN/OUT: File's opened object info set
-        haddr_t addr;           IN: Address of object to increment
-
- RETURNS
-    Returns a non-negative on success, negative on failure
- DESCRIPTION
-    Retrieves the reference count for an object in the opened object count set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Get the reference count on the top-level file pointer
+ *
+ * \param[in] counts The collection of open file object counts
+ * \param[in] addr Object's address in the file
+ *
+ * \return The refernce count for the object at address addr
+ */
 hsize_t
 H5FO_top_count(H5FO_counts_t *counts, haddr_t addr)
 {
@@ -472,20 +412,13 @@ H5FO_top_count(H5FO_counts_t *counts, haddr_t addr)
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
-/*--------------------------------------------------------------------------
- NAME
-    H5FO_top_dest
- PURPOSE
-    Destroy an open object info set
- USAGE
-    herr_t H5FO_top_dest(f)
-        H5F_t *f;               IN/OUT: File's opened object info set
-
- RETURNS
-    Returns a non-negative on success, negative on failure
- DESCRIPTION
-    Destroy an existing open object info set.
---------------------------------------------------------------------------*/
+/**
+ * \brief Destroy a collection of open file object counts
+ *
+ * \param[in] counts The collection of open file object counts
+ *
+ * \return \herr_t
+ */
 herr_t
 H5FO_top_dest(H5FO_counts_t *counts)
 {
@@ -506,3 +439,5 @@ H5FO_top_dest(H5FO_counts_t *counts)
 
     FUNC_LEAVE_NOAPI(ret_value)
 }
+
+/** \endcond */

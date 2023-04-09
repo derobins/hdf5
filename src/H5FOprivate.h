@@ -13,6 +13,8 @@
 #ifndef H5FOprivate_H
 #define H5FOprivate_H
 
+/** \cond INTERNAL */
+
 /* Open object information
  *
  * Tracks the objects currently open in a file, for various internal mechanisms
@@ -24,10 +26,10 @@
 /* Forward declarations */
 struct H5F_t;
 
-/* The open objects */
+/** The open objects */
 typedef struct H5FO_objects H5FO_objects_t;
 
-/* The open object counts */
+/** The open object counts */
 typedef struct H5FO_counts H5FO_counts_t;
 
 /* API calls that manipulate the H5FO objects in H5F_shared_t */
@@ -45,5 +47,7 @@ H5_DLL herr_t  H5FO_top_incr(H5FO_counts_t *counts, haddr_t addr);
 H5_DLL herr_t  H5FO_top_decr(H5FO_counts_t *counts, haddr_t addr);
 H5_DLL hsize_t H5FO_top_count(H5FO_counts_t *counts, haddr_t addr);
 H5_DLL herr_t  H5FO_top_dest(H5FO_counts_t *counts);
+
+/** \endcond */
 
 #endif /* H5FOprivate_H */
