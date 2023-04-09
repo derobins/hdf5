@@ -841,7 +841,7 @@ done:
  *-------------------------------------------------------------------------
  */
 int
-H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *deleted)
+H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *delete_flag)
 {
     haddr_t addr      = H5O_OH_GET_ADDR(oh); /* Object header address */
     int     ret_value = -1;                  /* Return value */
@@ -851,7 +851,7 @@ H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *deleted)
     /* check args */
     HDassert(f);
     HDassert(oh);
-    HDassert(deleted);
+    HDassert(delete_flag);
 
     /* Check for adjusting link count */
     if (adjust) {
@@ -877,7 +877,7 @@ H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *deleted)
                 } /* end if */
                 else {
                     /* Mark the object header for deletion */
-                    *deleted = TRUE;
+                    *delete_flag = TRUE;
                 } /* end else */
             }     /* end if */
         }         /* end if */
@@ -958,9 +958,9 @@ done:
 int
 H5O_link(const H5O_loc_t *loc, int adjust)
 {
-    H5O_t  *oh        = NULL;
-    hbool_t deleted   = FALSE; /* Whether the object was deleted */
-    int     ret_value = -1;    /* Return value */
+    H5O_t  *oh          = NULL;
+    hbool_t delete_flag = FALSE; /* Whether the object should be deleted */
+    int     ret_value   = -1;    /* Return value */
 
     FUNC_ENTER_NOAPI_TAG(loc->addr, FAIL)
 
@@ -974,13 +974,13 @@ H5O_link(const H5O_loc_t *loc, int adjust)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTPIN, FAIL, "unable to pin object header")
 
     /* Call the "real" link routine */
-    if ((ret_value = H5O__link_oh(loc->file, adjust, oh, &deleted)) < 0)
+    if ((ret_value = H5O__link_oh(loc->file, adjust, oh, &delete_flag)) < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_LINKCOUNT, FAIL, "unable to adjust object link count")
 
 done:
     if (oh && H5O_unpin(oh) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTUNPIN, FAIL, "unable to unpin object header")
-    if (ret_value >= 0 && deleted && H5O_delete(loc->file, loc->addr) < 0)
+    if (ret_value >= 0 && delete_flag && H5O_delete(loc->file, loc->addr) < 0)
         HDONE_ERROR(H5E_OHDR, H5E_CANTDELETE, FAIL, "can't delete object from file")
 
     FUNC_LEAVE_NOAPI_TAG(ret_value)

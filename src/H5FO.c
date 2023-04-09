@@ -20,10 +20,10 @@
 
 /** Information about open objects in a file */
 typedef struct H5FO_open_obj_t {
-    haddr_t addr;      /** Address of object header for object */
-    void   *obj;       /** Pointer to the object */
-    hbool_t deleted;   /** Flag to indicate that the object was deleted from the file */
-    UT_hash_handle hh; /** Hash table handle (must be LAST) */
+    haddr_t addr;        /** Address of object header for object */
+    void   *obj;         /** Pointer to the object */
+    hbool_t delete_flag; /** Flag to indicate that the object was deleted from the file */
+    UT_hash_handle hh;   /** Hash table handle (must be LAST) */
 } H5FO_open_obj_t;
 
 /** Information about counted objects in a file */
@@ -130,9 +130,9 @@ H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, hbool_t delete_fla
         HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, FAIL, "memory allocation failed")
 
     /* Assign information */
-    open_obj->addr    = addr;
-    open_obj->obj     = obj;
-    open_obj->deleted = delete_flag;
+    open_obj->addr        = addr;
+    open_obj->obj         = obj;
+    open_obj->delete_flag = delete_flag;
 
     /* Insert into collection */
     HASH_ADD(hh, objects->hash_table, addr, sizeof(haddr_t), open_obj);
@@ -170,7 +170,7 @@ H5FO_delete(H5FO_objects_t *objects, struct H5F_t *f, haddr_t addr)
     HASH_DELETE(hh, objects->hash_table, open_obj);
 
     /* Delete the object if it was marked for deletion */
-    if (open_obj->deleted) {
+    if (open_obj->delete_flag) {
         if (H5O_delete(f, addr) < 0)
             HGOTO_ERROR(H5E_FILE, H5E_CANTDELETE, FAIL, "can't delete object from file")
     }
@@ -187,12 +187,12 @@ done:
  *
  * \param[in] objects The collection of open file objects
  * \param[in] addr Object's address in the file
- * \param[in] deleted Whether to mark (or unmark) the object for deletion
+ * \param[in] delete_flag Whether to mark (or unmark) the object for deletion
  *
  * \return \herr_t
  */
 herr_t
-H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t deleted)
+H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t delete_flag)
 {
     H5FO_open_obj_t *open_obj  = NULL; /* Information about open object */
     herr_t           ret_value = SUCCEED;
@@ -206,7 +206,7 @@ H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t deleted)
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
 
     if (NULL != open_obj)
-        open_obj->deleted = deleted;
+        open_obj->delete_flag = delete_flag;
     else
         ret_value = FAIL;
 
@@ -239,7 +239,7 @@ H5FO_marked(H5FO_objects_t *objects, haddr_t addr)
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
 
     if (NULL != open_obj)
-        ret_value = open_obj->deleted;
+        ret_value = open_obj->delete_flag;
 
     FUNC_LEAVE_NOAPI(ret_value)
 }
