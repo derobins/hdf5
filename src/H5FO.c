@@ -85,7 +85,7 @@ H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
     H5FO_open_obj_t *open_obj = NULL;
     void            *ret_value;
 
-    FUNC_ENTER_NOAPI_NOERR
+    FUNC_ENTER_NOAPI(NULL)
 
     HDassert(objects);
     HDassert(H5F_addr_defined(addr));
@@ -95,11 +95,13 @@ H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
 
     if (NULL != open_obj) {
         ret_value = open_obj->obj;
-        HDassert(ret_value != NULL);
+        if (NULL == ret_value)
+            HGOTO_ERROR(H5E_FILE, H5E_CANTGET, NULL, "no object stored in the hash table entry")
     }
     else
         ret_value = NULL;
 
+done:
     FUNC_LEAVE_NOAPI(ret_value)
 }
 
