@@ -11,12 +11,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:	Quincey Koziol
- *		Saturday, September 12, 2015
- *
- * Purpose:	This file contains declarations which define macros for the
- *		H5T package.  Including this header means that the source file
- *		is part of the H5T package.
+ * Purpose: This file contains declarations which define macros for the
+ *          H5T package.  Including this header means that the source file
+ *          is part of the H5T package.
  */
 #ifndef H5Tmodule_H
 #define H5Tmodule_H
@@ -391,7 +388,7 @@
  *       </td>
  *       <td span='3'>
  * This is an architecture that contains semi-standard datatypes like signed
- * two’s complement integers, unsigned integers, and bitfields in various
+ * two's complement integers, unsigned integers, and bitfields in various
  * byte orders.
  *       </td>
  *     </tr>
@@ -411,11 +408,9 @@
  * NATIVE
  *       </td>
  *       <td span='3'>
- * This architecture contains C-like datatypes for the machine on which
- * the library was compiled. The types were actually defined by running
- * the H5detect program when the library was compiled. In order to be
- * portable, applications should almost always use this architecture
- * to describe things in memory.
+ * This architecture contains C-like datatypes for the machine for which
+ * the library was compiled. In order to be portable, applications should
+ * almost always use this architecture to describe things in memory.
  *       </td>
  *     </tr>
  *     <tr>
@@ -432,7 +427,7 @@
  * INTEL
  *       </td>
  *       <td span='3'>
- * All Intel and compatible CPU’s.
+ * All Intel and compatible CPUs.
  * These are little-endian systems with IEEE floating-point.
  *       </td>
  *     </tr>
@@ -441,7 +436,7 @@
  * MIPS
  *       </td>
  *       <td span='3'>
- * All MIPS CPU’s commonly used in SGI systems. These are big-endian
+ * All MIPS CPUs commonly used in SGI systems. These are big-endian
  * systems with IEEE floating-point.
  *       </td>
  *     </tr>
@@ -450,7 +445,7 @@
  * ALPHA
  *       </td>
  *       <td span='3'>
- * All DEC Alpha CPU’s, little-endian systems with IEEE floating-point.
+ * All DEC Alpha CPUs, little-endian systems with IEEE floating-point.
  *       </td>
  *     </tr>
  *   </table>
@@ -574,7 +569,7 @@
  * #H5T_STD_I32LE
  *       </td>
  *       <td span='3'>
- * Four-byte, little-endian, signed two’s complement integer
+ * Four-byte, little-endian, signed two's complement integer
  *       </td>
  *     </tr>
  *     <tr>
@@ -768,7 +763,7 @@
  * #H5T_NATIVE_HBOOL
  *       </td>
  *       <td span='3'>
- * hbool_t
+ * bool
  *       </td>
  *     </tr>
  *     <tr>
@@ -1179,7 +1174,7 @@
  * \ref H5T_sign_t \ref H5Tget_sign (\ref hid_t type)
  *       </td>
  *       <td>
- * (INTEGER)Integer data can be signed two’s complement (#H5T_SGN_2) or unsigned (#H5T_SGN_NONE).
+ * (INTEGER)Integer data can be signed two's complement (#H5T_SGN_2) or unsigned (#H5T_SGN_NONE).
  *       </td>
  *     </tr>
  *     <tr>
@@ -1217,7 +1212,7 @@
  * mantissa after the radix point are stored. </li>
  * <li>#H5T_NORM_IMPLIED: the mantissa is shifted left \(if non-zero) until the first
  * bit after the radix point is set and the exponent is adjusted accordingly. The first
- * bit after the radix point is not stored since it’s always set. </li>
+ * bit after the radix point is not stored since it's always set. </li>
  * <li>#H5T_NORM_NONE: the fractional part of the mantissa is stored without normalizing it.</li></ul>
  *       </td>
  *     </tr>
@@ -1570,7 +1565,7 @@
  *  \ref herr_t  \ref H5Tset_sign (\ref hid_t type, \ref H5T_sign_t sign)
  *       </td>
  *       <td>
- * (INTEGER)Integer data can be signed two’s complement (#H5T_SGN_2) or unsigned (#H5T_SGN_NONE).
+ * (INTEGER)Integer data can be signed two's complement (#H5T_SGN_2) or unsigned (#H5T_SGN_NONE).
  *       </td>
  *     </tr>
  *     <tr>
@@ -1914,7 +1909,7 @@ filled according to the value of this property. The padding can be:
  * Usually a C struct or Fortran derived type will be defined to hold a data point in memory, and the
  * offsets of the members in memory will be the offsets of the struct members from the beginning
  * of an instance of the struct. The HDF5 C library provides a macro #HOFFSET (s,m)to calculate
- * the member’s offset. The HDF5 Fortran applications have to calculate offsets by using sizes of
+ * the member's offset. The HDF5 Fortran applications have to calculate offsets by using sizes of
  * members datatypes and by taking in consideration the order of members in the Fortran derived type.
  * \code
  * HOFFSET(s,m)
@@ -2383,7 +2378,7 @@ filled according to the value of this property. The padding can be:
  *
  * Reading datasets with compound datatypes may be a challenge. For general applications there is
  * no way to know a priori the corresponding C structure. Also, C structures cannot be allocated on
- * the fly during discovery of the dataset’s datatype. For general C, C++, Fortran and Java
+ * the fly during discovery of the dataset's datatype. For general C, C++, Fortran and Java
  * application the following steps will be required to read and to interpret data from the dataset with
  * compound datatype:
  * \li 1. Get the identifier of the compound datatype in the file with the #H5Dget_type call
@@ -2497,7 +2492,7 @@ filled according to the value of this property. The padding can be:
  *
  * The example below shows how to read float and double members of a compound datatype into a
  * structure that has those fields in a different order. Please notice that #H5Tinsert calls can be used
- * in an order different from the order of the structure’s members.
+ * in an order different from the order of the structure's members.
  *
  * <em>Read float and double members of a compound datatype</em>
  * \code
@@ -3897,36 +3892,47 @@ filled according to the value of this property. The padding can be:
  * \details CPU-specific datatypes
  * \defgroup PDTALPHA DEC Alpha
  * \ingroup PDTCPU
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_dec_datatypes_table
+ * </div>
  * \defgroup PDTX86 AMD & INTEL
  * \ingroup PDTCPU
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_intel_datatypes_table
+ * </div>
  * \defgroup PDTMIPS SGI MIPS
  * \ingroup PDTCPU
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_mips_datatypes_table
+ * </div>
  *
  * \defgroup PDTIEEE IEEE
  * \ingroup PDT
  * \details The IEEE floating point types in big- and little-endian byte orders.
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_ieee_datatypes_table
+ * </div>
  *
  * \defgroup PDTSTD Standard Datatypes
  * \ingroup PDT
  * \details These are "standard" types. For instance, signed (2's complement)
  *          and unsigned integers of various sizes in big- and little-endian
  *          byte orders.
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_std_datatypes_table
+ * </div>
  *
  * \defgroup PDTUNIX UNIX-specific Datatypes
  * \ingroup PDT
  * \details Types which are particular to Unix.
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_unix_datatypes_table
+ * </div>
  *
  * \defgroup PDTNAT Native Datatypes
  * \ingroup PDT
- * \details These are the datatypes detected during library \Emph{compilation}
- *          by \c H5detect(). Their names differ from other HDF5 datatype names
- *          as follows:
+ * \details These are the C-like datatypes for the platform. Their names differ
+ *          from other HDF5 datatype names as follows:
  *          \li Instead of a class name, precision and byte order as the last
  *              component, they have a C-like type name.
  *          \li If the type begins with \c U then it is the unsigned version of
@@ -3934,16 +3940,22 @@ filled according to the value of this property. The padding can be:
  *          \li The datatype \c LLONG corresponds C's \Code{long long} and
  *              \c LDOUBLE is \Code{long double}. These types might be the same
  *              as \c LONG and \c DOUBLE, respectively.
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_native_datatypes_table
+ * </div>
  *
  * \defgroup PDTC9x C9x Integer Datatypes
  * \ingroup PDTNAT
  * \details C9x integer types
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_c9x_datatypes_table
+ * </div>
  *
  * \defgroup PDTS Strings
  * \ingroup PDT
+ * <div>
  * \snippet{doc} tables/predefinedDatatypes.dox predefined_string_datatypes_table
+ * </div>
  *
  */
 

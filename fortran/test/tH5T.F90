@@ -819,8 +819,6 @@ CONTAINS
 
     SUBROUTINE enumtest(cleanup, total_error)
 
-    USE HDF5
-    USE TH5_MISC
     IMPLICIT NONE
 
     LOGICAL, INTENT(IN)  :: cleanup
@@ -949,12 +947,6 @@ CONTAINS
 ! * Return:      Success:        0
 ! *
 ! *              Failure:        number of errors
-! *
-! * Fortran Programmer:  M.S. Breitenfeld
-! *                      September 9, 2008
-! *
-! * Modifications:
-! *
 ! *-------------------------------------------------------------------------
 !
 

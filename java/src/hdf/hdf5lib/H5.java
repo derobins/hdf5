@@ -8607,7 +8607,7 @@ public class H5 implements java.io.Serializable {
      * @ingroup JH5P
      *
      * H5Premove_filter deletes a filter from the dataset creation property list;
-     *                  deletes all filters if filter is H5Z_FILTER_NONE
+     *                  deletes all filters if filter is H5Z_FILTER_ALL
      *
      * @param obj_id
      *            IN: Property list identifier.
@@ -9434,10 +9434,10 @@ public class H5 implements java.io.Serializable {
     /**
      * @ingroup JH5P
      *
-     * H5Pset_sieve_buf_size Sets the maximum size of the data seive buffer used for file
+     * H5Pset_sieve_buf_size Sets the maximum size of the data sieve buffer used for file
      *      drivers which are capable of using data sieving.  The data sieve
      *      buffer is used when performing I/O on datasets in the file.  Using a
-     *      buffer which is large anough to hold several pieces of the dataset
+     *      buffer which is large enough to hold several pieces of the dataset
      *      being read in for hyperslab selections boosts performance by quite a
      *      bit.
      * <p>
@@ -9448,7 +9448,7 @@ public class H5 implements java.io.Serializable {
      * @param fapl_id
      *            IN: Identifier of property list to modify.
      * @param size
-     *            IN: maximum size of the data seive buffer.
+     *            IN: maximum size of the data sieve buffer.
      *
      * @exception HDF5LibraryException
      *            Error from the HDF5 Library.
@@ -13806,7 +13806,7 @@ public class H5 implements java.io.Serializable {
     /**
      * @ingroup JH5T
      *
-     * H5Tcreate creates a new dataype of the specified class with the specified number of bytes.
+     * H5Tcreate creates a new datatype of the specified class with the specified number of bytes.
      *
      * @param tclass
      *            IN: Class of datatype to create.
@@ -15261,7 +15261,7 @@ public class H5 implements java.io.Serializable {
     /**
      * @ingroup JH5T
      *
-     * H5Tvlen_create creates a new variable-length (VL) dataype.
+     * H5Tvlen_create creates a new variable-length (VL) datatype.
      *
      * @param base_id
      *            IN: Identifier of parent datatype.

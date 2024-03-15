@@ -12,8 +12,6 @@
 
 /*-------------------------------------------------------------------------
  * Created:		H5timer.c
- *			Aug 21 2006
- *			Quincey Koziol
  *
  * Purpose:             Internal, platform-independent 'timer' support routines.
  *
@@ -89,9 +87,6 @@
  *
  * Return:	void
  *
- * Programmer:	Robb Matzke
- *              Wednesday, August  5, 1998
- *
  *-------------------------------------------------------------------------
  */
 void
@@ -100,41 +95,41 @@ H5_bandwidth(char *buf /*out*/, size_t bufsize, double nbytes, double nseconds)
     double bw;
 
     if (nseconds <= 0.0)
-        HDstrcpy(buf, "       NaN");
+        strcpy(buf, "       NaN");
     else {
         bw = nbytes / nseconds;
         if (H5_DBL_ABS_EQUAL(bw, 0.0))
-            HDstrcpy(buf, "0.000  B/s");
+            strcpy(buf, "0.000  B/s");
         else if (bw < 1.0)
-            HDsnprintf(buf, bufsize, "%10.4e", bw);
+            snprintf(buf, bufsize, "%10.4e", bw);
         else if (bw < (double)H5_KB) {
-            HDsnprintf(buf, bufsize, "%05.4f", bw);
-            HDstrcpy(buf + 5, "  B/s");
+            snprintf(buf, bufsize, "%05.4f", bw);
+            strcpy(buf + 5, "  B/s");
         }
         else if (bw < (double)H5_MB) {
-            HDsnprintf(buf, bufsize, "%05.4f", bw / (double)H5_KB);
-            HDstrcpy(buf + 5, " kB/s");
+            snprintf(buf, bufsize, "%05.4f", bw / (double)H5_KB);
+            strcpy(buf + 5, " kB/s");
         }
         else if (bw < (double)H5_GB) {
-            HDsnprintf(buf, bufsize, "%05.4f", bw / (double)H5_MB);
-            HDstrcpy(buf + 5, " MB/s");
+            snprintf(buf, bufsize, "%05.4f", bw / (double)H5_MB);
+            strcpy(buf + 5, " MB/s");
         }
         else if (bw < (double)H5_TB) {
-            HDsnprintf(buf, bufsize, "%05.4f", bw / (double)H5_GB);
-            HDstrcpy(buf + 5, " GB/s");
+            snprintf(buf, bufsize, "%05.4f", bw / (double)H5_GB);
+            strcpy(buf + 5, " GB/s");
         }
         else if (bw < (double)H5_PB) {
-            HDsnprintf(buf, bufsize, "%05.4f", bw / (double)H5_TB);
-            HDstrcpy(buf + 5, " TB/s");
+            snprintf(buf, bufsize, "%05.4f", bw / (double)H5_TB);
+            strcpy(buf + 5, " TB/s");
         }
         else if (bw < (double)H5_EB) {
-            HDsnprintf(buf, bufsize, "%05.4f", bw / (double)H5_PB);
-            HDstrcpy(buf + 5, " PB/s");
+            snprintf(buf, bufsize, "%05.4f", bw / (double)H5_PB);
+            strcpy(buf + 5, " PB/s");
         }
         else {
-            HDsnprintf(buf, bufsize, "%10.4e", bw);
-            if (HDstrlen(buf) > 10)
-                HDsnprintf(buf, bufsize, "%10.3e", bw);
+            snprintf(buf, bufsize, "%10.4e", bw);
+            if (strlen(buf) > 10)
+                snprintf(buf, bufsize, "%10.3e", bw);
         } /* end else-if */
     }     /* end else */
 } /* end H5_bandwidth() */
@@ -145,9 +140,6 @@ H5_bandwidth(char *buf /*out*/, size_t bufsize, double nbytes, double nseconds)
  * Purpose:	Retrieves the current time, as seconds after the UNIX epoch.
  *
  * Return:	# of seconds from the epoch (can't fail)
- *
- * Programmer:	Quincey Koziol
- *              Tuesday, November 28, 2006
  *
  *-------------------------------------------------------------------------
  */
@@ -177,9 +169,6 @@ H5_now(void)
  *
  * Return:	# of microseconds from the epoch (can't fail)
  *
- * Programmer:	Quincey Koziol
- *              Tuesday, November 28, 2006
- *
  *-------------------------------------------------------------------------
  */
 uint64_t
@@ -191,7 +180,7 @@ H5_now_usec(void)
     {
         struct timespec ts;
 
-        HDclock_gettime(CLOCK_MONOTONIC, &ts);
+        clock_gettime(CLOCK_MONOTONIC, &ts);
 
         /* Cast all values in this expression to uint64_t to ensure that all intermediate
          * calculations are done in 64 bit, to prevent overflow */
@@ -225,8 +214,6 @@ H5_now_usec(void)
  * Return:      Success:    A non-negative time value
  *              Failure:    -1.0 (in theory, can't currently fail)
  *
- * Programmer:  Quincey Koziol
- *              October 05, 2016
  *--------------------------------------------------------------------------
  */
 double
@@ -240,7 +227,7 @@ H5_get_time(void)
     {
         struct timespec ts;
 
-        HDclock_gettime(CLOCK_MONOTONIC, &ts);
+        clock_gettime(CLOCK_MONOTONIC, &ts);
         ret_value = (double)ts.tv_sec + ((double)ts.tv_nsec / 1000000000.0);
     }
 #elif defined(H5_HAVE_GETTIMEOFDAY)
@@ -266,16 +253,13 @@ H5_get_time(void)
  * Return:      Success:    0
  *              Failure:    -1
  *
- * Programmer:  Dana Robinson
- *              May 2011
- *
  *-------------------------------------------------------------------------
  */
 static herr_t
 H5__timer_get_timevals(H5_timevals_t *times /*in,out*/)
 {
     /* Sanity check */
-    HDassert(times);
+    assert(times);
 
     /* Windows call handles both system/user and elapsed times */
 #ifdef H5_HAVE_WIN32_API
@@ -295,7 +279,7 @@ H5__timer_get_timevals(H5_timevals_t *times /*in,out*/)
     {
         struct rusage res;
 
-        if (HDgetrusage(RUSAGE_SELF, &res) < 0)
+        if (getrusage(RUSAGE_SELF, &res) < 0)
             return -1;
         times->system = (double)res.ru_stime.tv_sec + ((double)res.ru_stime.tv_usec / 1.0E6);
         times->user   = (double)res.ru_utime.tv_sec + ((double)res.ru_utime.tv_usec / 1.0E6);
@@ -366,19 +350,16 @@ H5__timer_get_timevals(H5_timevals_t *times /*in,out*/)
  * Return:      Success:    0
  *              Failure:    -1
  *
- * Programmer:  Dana Robinson
- *              May 2011
- *
  *-------------------------------------------------------------------------
  */
 herr_t
 H5_timer_init(H5_timer_t *timer /*in,out*/)
 {
     /* Sanity check */
-    HDassert(timer);
+    assert(timer);
 
     /* Initialize everything */
-    HDmemset(timer, 0, sizeof(H5_timer_t));
+    memset(timer, 0, sizeof(H5_timer_t));
 
     return 0;
 } /* end H5_timer_init() */
@@ -391,16 +372,13 @@ H5_timer_init(H5_timer_t *timer /*in,out*/)
  * Return:      Success:    0
  *              Failure:    -1
  *
- * Programmer:  Dana Robinson
- *              May 2011
- *
  *-------------------------------------------------------------------------
  */
 herr_t
 H5_timer_start(H5_timer_t *timer /*in,out*/)
 {
     /* Sanity check */
-    HDassert(timer);
+    assert(timer);
 
     /* Start the timer
      * This sets the "initial" times to the system-defined start times.
@@ -408,7 +386,7 @@ H5_timer_start(H5_timer_t *timer /*in,out*/)
     if (H5__timer_get_timevals(&(timer->initial)) < 0)
         return -1;
 
-    timer->is_running = TRUE;
+    timer->is_running = true;
 
     return 0;
 } /* end H5_timer_start() */
@@ -421,16 +399,13 @@ H5_timer_start(H5_timer_t *timer /*in,out*/)
  * Return:      Success:    0
  *              Failure:    -1
  *
- * Programmer:  Dana Robinson
- *              May 2011
- *
  *-------------------------------------------------------------------------
  */
 herr_t
 H5_timer_stop(H5_timer_t *timer /*in,out*/)
 {
     /* Sanity check */
-    HDassert(timer);
+    assert(timer);
 
     /* Stop the timer */
     if (H5__timer_get_timevals(&(timer->final_interval)) < 0)
@@ -448,7 +423,7 @@ H5_timer_stop(H5_timer_t *timer /*in,out*/)
     timer->total.system += timer->final_interval.system;
     timer->total.user += timer->final_interval.user;
 
-    timer->is_running = FALSE;
+    timer->is_running = false;
 
     return 0;
 } /* end H5_timer_stop() */
@@ -472,16 +447,13 @@ H5_timer_stop(H5_timer_t *timer /*in,out*/)
  * Return:      Success:    0
  *              Failure:    -1
  *
- * Programmer:  Dana Robinson
- *              May 2011
- *
  *-------------------------------------------------------------------------
  */
 herr_t
 H5_timer_get_times(H5_timer_t timer, H5_timevals_t *times /*in,out*/)
 {
     /* Sanity check */
-    HDassert(times);
+    assert(times);
 
     if (timer.is_running) {
         H5_timevals_t now;
@@ -527,16 +499,13 @@ H5_timer_get_times(H5_timer_t timer, H5_timevals_t *times /*in,out*/)
  * Return:      Success:    0
  *              Failure:    -1
  *
- * Programmer:  Dana Robinson
- *              May 2011
- *
  *-------------------------------------------------------------------------
  */
 herr_t
 H5_timer_get_total_times(H5_timer_t timer, H5_timevals_t *times /*in,out*/)
 {
     /* Sanity check */
-    HDassert(times);
+    assert(times);
 
     if (timer.is_running) {
         H5_timevals_t now;
@@ -580,9 +549,6 @@ H5_timer_get_total_times(H5_timer_t timer, H5_timevals_t *times /*in,out*/)
  *
  *              Failure:  NULL
  *
- * Programmer:  Dana Robinson
- *              May 2011
- *
  *-------------------------------------------------------------------------
  */
 char *
@@ -602,22 +568,22 @@ H5_timer_get_time_string(double seconds)
         remainder_sec = seconds;
 
         /* Extract days */
-        days = HDfloor(remainder_sec / H5_SEC_PER_DAY);
+        days = floor(remainder_sec / H5_SEC_PER_DAY);
         remainder_sec -= (days * H5_SEC_PER_DAY);
 
         /* Extract hours */
-        hours = HDfloor(remainder_sec / H5_SEC_PER_HOUR);
+        hours = floor(remainder_sec / H5_SEC_PER_HOUR);
         remainder_sec -= (hours * H5_SEC_PER_HOUR);
 
         /* Extract minutes */
-        minutes = HDfloor(remainder_sec / H5_SEC_PER_MIN);
+        minutes = floor(remainder_sec / H5_SEC_PER_MIN);
         remainder_sec -= (minutes * H5_SEC_PER_MIN);
 
         /* The # of seconds left is in remainder_sec */
     } /* end if */
 
     /* Allocate */
-    if (NULL == (s = (char *)HDcalloc(H5TIMER_TIME_STRING_LEN, sizeof(char))))
+    if (NULL == (s = (char *)calloc(H5TIMER_TIME_STRING_LEN, sizeof(char))))
         return NULL;
 
     /* Do we need a format string? Some people might like a certain
@@ -626,31 +592,30 @@ H5_timer_get_time_string(double seconds)
      * (name? round_up_size? ?)
      */
     if (seconds < 0.0)
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "N/A");
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "N/A");
     else if (H5_DBL_ABS_EQUAL(0.0, seconds))
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "0.0 s");
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "0.0 s");
     else if (seconds < 1.0E-6)
         /* t < 1 us, Print time in ns */
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "%.f ns", seconds * 1.0E9);
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "%.f ns", seconds * 1.0E9);
     else if (seconds < 1.0E-3)
         /* t < 1 ms, Print time in us */
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "%.1f us", seconds * 1.0E6);
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "%.1f us", seconds * 1.0E6);
     else if (seconds < 1.0)
         /* t < 1 s, Print time in ms */
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "%.1f ms", seconds * 1.0E3);
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "%.1f ms", seconds * 1.0E3);
     else if (seconds < H5_SEC_PER_MIN)
         /* t < 1 m, Print time in s */
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "%.2f s", seconds);
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "%.2f s", seconds);
     else if (seconds < H5_SEC_PER_HOUR)
         /* t < 1 h, Print time in m and s */
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "%.f m %.f s", minutes, remainder_sec);
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "%.f m %.f s", minutes, remainder_sec);
     else if (seconds < H5_SEC_PER_DAY)
         /* t < 1 d, Print time in h, m and s */
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "%.f h %.f m %.f s", hours, minutes, remainder_sec);
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "%.f h %.f m %.f s", hours, minutes, remainder_sec);
     else
         /* Print time in d, h, m and s */
-        HDsnprintf(s, H5TIMER_TIME_STRING_LEN, "%.f d %.f h %.f m %.f s", days, hours, minutes,
-                   remainder_sec);
+        snprintf(s, H5TIMER_TIME_STRING_LEN, "%.f d %.f h %.f m %.f s", days, hours, minutes, remainder_sec);
 
     return s;
 } /* end H5_timer_get_time_string() */

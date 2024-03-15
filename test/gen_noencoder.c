@@ -21,11 +21,6 @@
  *
  *              Failure:        non-zero
  *
- * Programmer:  James Laird and Nat Furrer
- *              Thursday, July 1, 2004
- *
- * Modifications:
- *
  *-------------------------------------------------------------------------
  */
 int

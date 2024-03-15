@@ -20,17 +20,17 @@
 
 /** Information about open objects in a file */
 typedef struct H5FO_open_obj_t {
-    haddr_t addr;        /** Address of object header for object */
-    void   *obj;         /** Pointer to the object */
-    bool    delete_flag; /** Flag to indicate that the object was deleted from the file */
-    UT_hash_handle hh;   /** Hash table handle (must be LAST) */
+    haddr_t        addr;        /** Address of object header for object */
+    void          *obj;         /** Pointer to the object */
+    bool           delete_flag; /** Flag to indicate that the object was deleted from the file */
+    UT_hash_handle hh;          /** Hash table handle (must be LAST) */
 } H5FO_open_obj_t;
 
 /** Information about counted objects in a file */
 typedef struct H5FO_obj_count_t {
-    haddr_t addr;      /** Address of object header for object */
-    hsize_t count;     /** Number of times object is opened */
-    UT_hash_handle hh; /** Hash table handle (must be LAST) */
+    haddr_t        addr;  /** Address of object header for object */
+    hsize_t        count; /** Number of times object is opened */
+    UT_hash_handle hh;    /** Hash table handle (must be LAST) */
 } H5FO_obj_count_t;
 
 /** The open objects */
@@ -88,7 +88,7 @@ H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
     FUNC_ENTER_NOAPI(NULL)
 
     assert(objects);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
 
     /* Get the object from the collection */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -124,7 +124,7 @@ H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, bool delete_flag)
     FUNC_ENTER_NOAPI(FAIL)
 
     assert(objects);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
     assert(obj);
 
     /* Allocate new open object information structure */
@@ -165,7 +165,7 @@ H5FO_delete(H5FO_objects_t *objects, struct H5F_t *f, haddr_t addr)
     FUNC_ENTER_NOAPI(FAIL)
 
     assert(objects);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
 
     /* Remove from container */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -202,7 +202,7 @@ H5FO_mark(H5FO_objects_t *objects, haddr_t addr, bool delete_flag)
     FUNC_ENTER_NOAPI_NOERR
 
     assert(objects);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -230,12 +230,12 @@ bool
 H5FO_marked(H5FO_objects_t *objects, haddr_t addr)
 {
     H5FO_open_obj_t *open_obj  = NULL; /* Information about open object */
-    bool             ret_value = FALSE;
+    bool             ret_value = false;
 
     FUNC_ENTER_NOAPI_NOERR
 
     assert(objects);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -314,7 +314,7 @@ H5FO_top_incr(H5FO_counts_t *counts, haddr_t addr)
     FUNC_ENTER_NOAPI(FAIL)
 
     assert(counts);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, counts->hash_table, &addr, sizeof(haddr_t), obj_count);
@@ -360,7 +360,7 @@ H5FO_top_decr(H5FO_counts_t *counts, haddr_t addr)
     FUNC_ENTER_NOAPI(FAIL)
 
     assert(counts);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, counts->hash_table, &addr, sizeof(haddr_t), obj_count);
@@ -401,7 +401,7 @@ H5FO_top_count(H5FO_counts_t *counts, haddr_t addr)
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
     assert(counts);
-    assert(H5F_addr_defined(addr));
+    assert(H5_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, counts->hash_table, &addr, sizeof(haddr_t), obj_count);

@@ -28,15 +28,15 @@ using std::cerr;
 using std::endl;
 
 #define MESSAGE(V, A)                                                                                        \
-    {                                                                                                        \
+    do {                                                                                                     \
         if (HDGetTestVerbosity() > (V))                                                                      \
             print_func A;                                                                                    \
-    }
+    } while (0)
 #define SUBTEST(TEST)                                                                                        \
-    {                                                                                                        \
+    do {                                                                                                     \
         printf("   Subtest: %-52s", TEST);                                                                   \
         fflush(stdout);                                                                                      \
-    }
+    } while (0)
 
 int  check_values(hsize_t i, hsize_t j, int apoint, int acheck);
 void check_values(const char *value, const char *msg, int line, const char *file_name);
@@ -49,14 +49,14 @@ class InvalidActionException : public Exception {
   public:
     InvalidActionException(const H5std_string &func_name, const H5std_string &message = DEFAULT_MSG);
     InvalidActionException();
-    ~InvalidActionException() throw() override;
+    ~InvalidActionException() override = default;
 };
 
 class TestFailedException : public Exception {
   public:
     TestFailedException(const H5std_string &func_name, const H5std_string &message = DEFAULT_MSG);
     TestFailedException();
-    ~TestFailedException() throw() override;
+    ~TestFailedException() override = default;
 };
 
 // Overloaded/Template functions to verify values and display proper info

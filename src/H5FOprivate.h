@@ -21,7 +21,7 @@
  * which need to be aware of such things.
  */
 
-#include "H5private.h"   /* Generic Functions                       */
+#include "H5private.h" /* Generic Functions                       */
 
 /* Forward declarations */
 struct H5F_t;

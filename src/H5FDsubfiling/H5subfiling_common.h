@@ -155,6 +155,25 @@ typedef enum io_ops {
  * will be broadcast to all MPI ranks and will
  * provide a basis for determining which MPI ranks
  * will host an I/O concentrator.
+ *
+ * - rank
+ *     The MPI rank value for this processor
+ *
+ * - node_local_rank
+ *     The MPI rank value for this processor in an MPI
+ *     communicator that only involves MPI ranks on the
+ *     same node as this processor
+ *
+ * - node_local_size
+ *     The number of MPI ranks on the same node as this
+ *     processor, including this processor itself
+ *
+ * - node_lead_rank
+ *     The lowest MPI rank value for processors on the
+ *     same node as this processor (possibly the MPI
+ *     rank value for this processor); Denotes a "lead"
+ *     MPI rank for certain operations.
+ *
  */
 typedef struct {
     int rank;
@@ -265,7 +284,10 @@ H5_DLL herr_t H5_subfiling_validate_config(const H5FD_subfiling_params_t *subf_c
 
 H5_DLL herr_t H5_subfiling_terminate(void);
 
+#ifdef H5_SUBFILING_DEBUG
 H5_DLL void H5_subfiling_log(int64_t sf_context_id, const char *fmt, ...);
+H5_DLL void H5_subfiling_log_nonewline(int64_t sf_context_id, const char *fmt, ...);
+#endif
 
 #ifdef __cplusplus
 }

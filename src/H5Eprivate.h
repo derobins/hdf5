@@ -30,16 +30,20 @@ typedef struct H5E_t H5E_t;
  * error number, the minor error number, and a description of the error.
  */
 #define HERROR(maj_id, min_id, ...)                                                                          \
-    H5E_printf_stack(NULL, __FILE__, __func__, __LINE__, H5E_ERR_CLS_g, maj_id, min_id, __VA_ARGS__)
+    do {                                                                                                     \
+        H5E_printf_stack(NULL, __FILE__, __func__, __LINE__, H5E_ERR_CLS_g, maj_id, min_id, __VA_ARGS__);    \
+    } while (0)
 
 /*
  * HCOMMON_ERROR macro, used by HDONE_ERROR and HGOTO_ERROR
  * (Shouldn't need to be used outside this header file)
  */
 #define HCOMMON_ERROR(maj, min, ...)                                                                         \
-    HERROR(maj, min, __VA_ARGS__);                                                                           \
-    err_occurred = TRUE;                                                                                     \
-    err_occurred = err_occurred; /* Shut GCC warnings up! */
+    do {                                                                                                     \
+        HERROR(maj, min, __VA_ARGS__);                                                                       \
+        err_occurred = true;                                                                                 \
+        err_occurred = err_occurred; /* Shut GCC warnings up! */                                             \
+    } while (0)
 
 /*
  * HDONE_ERROR macro, used to facilitate error reporting between a
@@ -51,10 +55,10 @@ typedef struct H5E_t H5E_t;
  *      without jumping to any labels)
  */
 #define HDONE_ERROR(maj, min, ret_val, ...)                                                                  \
-    {                                                                                                        \
+    do {                                                                                                     \
         HCOMMON_ERROR(maj, min, __VA_ARGS__);                                                                \
         ret_value = ret_val;                                                                                 \
-    }
+    } while (0)
 
 /*
  * HGOTO_ERROR macro, used to facilitate error reporting between a
@@ -64,21 +68,21 @@ typedef struct H5E_t H5E_t;
  * control branches to the `done' label.
  */
 #define HGOTO_ERROR(maj, min, ret_val, ...)                                                                  \
-    {                                                                                                        \
+    do {                                                                                                     \
         HCOMMON_ERROR(maj, min, __VA_ARGS__);                                                                \
-        HGOTO_DONE(ret_val)                                                                                  \
-    }
+        HGOTO_DONE(ret_val);                                                                                 \
+    } while (0)
 
 /*
  * HGOTO_ERROR_TAG macro, used like HGOTO_ERROR between H5_BEGIN_TAG and
  * H5_END_TAG statements.  Resets the metadata tag before leaving the function.
  */
 #define HGOTO_ERROR_TAG(maj, min, ret_val, ...)                                                              \
-    {                                                                                                        \
+    do {                                                                                                     \
         H5AC_tag(prv_tag, NULL);                                                                             \
         HCOMMON_ERROR(maj, min, __VA_ARGS__);                                                                \
-        HGOTO_DONE(ret_val)                                                                                  \
-    }
+        HGOTO_DONE(ret_val);                                                                                 \
+    } while (0)
 
 /*
  * HGOTO_DONE macro, used to facilitate normal return between a FUNC_ENTER()
@@ -87,20 +91,20 @@ typedef struct H5E_t H5E_t;
  * the `done' label.
  */
 #define HGOTO_DONE(ret_val)                                                                                  \
-    {                                                                                                        \
+    do {                                                                                                     \
         ret_value = ret_val;                                                                                 \
         goto done;                                                                                           \
-    }
+    } while (0)
 
 /*
  * HGOTO_DONE_TAG macro, used like HGOTO_DONE between H5_BEGIN_TAG and
  * H5_END_TAG statements.  Resets the metadata tag before leaving the function.
  */
 #define HGOTO_DONE_TAG(ret_val)                                                                              \
-    {                                                                                                        \
+    do {                                                                                                     \
         H5AC_tag(prv_tag, NULL);                                                                             \
-        HGOTO_DONE(ret_val)                                                                                  \
-    }
+        HGOTO_DONE(ret_val);                                                                                 \
+    } while (0)
 
 /*
  * Macros handling system error messages as described in C standard.
@@ -118,7 +122,7 @@ typedef struct H5E_t H5E_t;
          * considered as an API change                                                                       \
          */                                                                                                  \
         HDONE_ERROR(majorcode, minorcode, retcode, "%s, errno = %d, error message = '%s'", str, myerrno,     \
-                    HDstrerror(myerrno));                                                                    \
+                    strerror(myerrno));                                                                      \
     }
 #define HSYS_GOTO_ERROR(majorcode, minorcode, retcode, str)                                                  \
     {                                                                                                        \
@@ -127,7 +131,7 @@ typedef struct H5E_t H5E_t;
          * considered as an API change                                                                       \
          */                                                                                                  \
         HGOTO_ERROR(majorcode, minorcode, retcode, "%s, errno = %d, error message = '%s'", str, myerrno,     \
-                    HDstrerror(myerrno));                                                                    \
+                    strerror(myerrno));                                                                      \
     }
 #else /* H5_HAVE_WIN32_API */
 /* On Windows we also emit the result of GetLastError(). This call returns a DWORD, which is always a
@@ -144,7 +148,7 @@ typedef struct H5E_t H5E_t;
          */                                                                                                  \
         HDONE_ERROR(majorcode, minorcode, retcode,                                                           \
                     "%s, errno = %d, error message = '%s', Win32 GetLastError() = %" PRIu32 "", str,         \
-                    myerrno, HDstrerror(myerrno), win_error);                                                \
+                    myerrno, strerror(myerrno), win_error);                                                  \
     }
 #define HSYS_GOTO_ERROR(majorcode, minorcode, retcode, str)                                                  \
     {                                                                                                        \
@@ -155,7 +159,7 @@ typedef struct H5E_t H5E_t;
          */                                                                                                  \
         HGOTO_ERROR(majorcode, minorcode, retcode,                                                           \
                     "%s, errno = %d, error message = '%s', Win32 GetLastError() = %" PRIu32 "", str,         \
-                    myerrno, HDstrerror(myerrno), win_error);                                                \
+                    myerrno, strerror(myerrno), win_error);                                                  \
     }
 #endif /* H5_HAVE_WIN32_API */
 
@@ -184,6 +188,6 @@ H5_DLL herr_t H5E_init(void);
 H5_DLL herr_t H5E_printf_stack(H5E_t *estack, const char *file, const char *func, unsigned line, hid_t cls_id,
                                hid_t maj_id, hid_t min_id, const char *fmt, ...) H5_ATTR_FORMAT(printf, 8, 9);
 H5_DLL herr_t H5E_clear_stack(H5E_t *estack);
-H5_DLL herr_t H5E_dump_api_stack(hbool_t is_api);
+H5_DLL herr_t H5E_dump_api_stack(bool is_api);
 
 #endif /* H5Eprivate_H */

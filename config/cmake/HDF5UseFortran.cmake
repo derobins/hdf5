@@ -17,6 +17,12 @@
 enable_language (Fortran)
 
 set (HDF_PREFIX "H5")
+
+# Force lowercase Fortran module file names
+if (CMAKE_Fortran_COMPILER_ID STREQUAL "Cray")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ef")
+endif ()
+
 include (CheckFortranFunctionExists)
 
 include (CheckFortranSourceRuns)
@@ -39,11 +45,16 @@ macro (FORTRAN_RUN FUNCTION_NAME SOURCE_CODE RUN_RESULT_VAR1 COMPILE_RESULT_VAR1
         ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testFortranCompiler1.f90
         "${SOURCE_CODE}"
     )
+    if (CMAKE_VERSION VERSION_LESS 3.25)
+      set (_RUN_OUTPUT_VARIABLE "RUN_OUTPUT_VARIABLE")
+    else ()
+      set (_RUN_OUTPUT_VARIABLE  "RUN_OUTPUT_STDOUT_VARIABLE")
+    endif()
     TRY_RUN (RUN_RESULT_VAR COMPILE_RESULT_VAR
         ${CMAKE_BINARY_DIR}
         ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/testFortranCompiler1.f90
         LINK_LIBRARIES "${HDF5_REQUIRED_LIBRARIES}"
-        RUN_OUTPUT_VARIABLE OUTPUT_VAR
+        ${_RUN_OUTPUT_VARIABLE} OUTPUT_VAR
     )
     set (${RETURN_OUTPUT_VAR} ${OUTPUT_VAR})
 
@@ -90,6 +101,16 @@ else ()
   set (${HDF_PREFIX}_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE 0)
 endif ()
 
+# Check to see C_BOOL is different from default LOGICAL
+
+READ_SOURCE("MODULE l_type_mod" "END PROGRAM PROG_FC_C_BOOL_EQ_LOGICAL" SOURCE_CODE)
+check_fortran_source_compiles (${SOURCE_CODE} FORTRAN_C_BOOL_IS_UNIQUE SRC_EXT f90)
+if (${FORTRAN_C_BOOL_IS_UNIQUE})
+  set (${HDF_PREFIX}_FORTRAN_C_BOOL_IS_UNIQUE 1)
+else ()
+  set (${HDF_PREFIX}_FORTRAN_C_BOOL_IS_UNIQUE 0)
+endif ()
+
 ## Set the sizeof function for use later in the fortran tests
 if (${HDF_PREFIX}_FORTRAN_HAVE_STORAGE_SIZE)
   set (FC_SIZEOF_A "STORAGE_SIZE(a, c_size_t)/STORAGE_SIZE(c_char_'a',c_size_t)")
@@ -101,6 +122,15 @@ elseif (${HDF_PREFIX}_FORTRAN_HAVE_C_SIZEOF)
   set (FC_SIZEOF_C "SIZEOF(c)")
 else ()
   message (FATAL_ERROR "Fortran compiler requires either intrinsic functions SIZEOF or STORAGE_SIZE")
+endif ()
+
+# Check to see of Fortran supports allocatable character
+READ_SOURCE("PROGRAM PROG_CHAR_ALLOC" "END PROGRAM PROG_CHAR_ALLOC" SOURCE_CODE)
+check_fortran_source_compiles (${SOURCE_CODE} FORTRAN_CHAR_ALLOC SRC_EXT f90)
+if (${FORTRAN_CHAR_ALLOC})
+  set (${HDF_PREFIX}_FORTRAN_HAVE_CHAR_ALLOC 1)
+else ()
+  set (${HDF_PREFIX}_FORTRAN_HAVE_CHAR_ALLOC 0)
 endif ()
 
 #-----------------------------------------------------------------------------
@@ -169,10 +199,10 @@ foreach (KIND ${VAR})
   "
        PROGRAM main
           USE ISO_C_BINDING
-          USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stderr=>ERROR_UNIT
+          USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stdout=>OUTPUT_UNIT
           IMPLICIT NONE
           INTEGER (KIND=${KIND}) a
-          WRITE(stderr,'(I0)') ${FC_SIZEOF_A}
+          WRITE(stdout,'(I0)') ${FC_SIZEOF_A}
        END
    "
   )
@@ -210,10 +240,10 @@ foreach (KIND ${VAR} )
   "
        PROGRAM main
           USE ISO_C_BINDING
-          USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stderr=>ERROR_UNIT
+          USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stdout=>OUTPUT_UNIT
           IMPLICIT NONE
           REAL (KIND=${KIND}) a
-          WRITE(stderr,'(I0)') ${FC_SIZEOF_A}
+          WRITE(stdout,'(I0)') ${FC_SIZEOF_A}
        END
   "
   )
@@ -252,17 +282,17 @@ set (PROG_SRC3
   "
        PROGRAM main
           USE ISO_C_BINDING
-          USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stderr=>ERROR_UNIT
+          USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stdout=>OUTPUT_UNIT
           IMPLICIT NONE
           INTEGER a
           REAL b
           DOUBLE PRECISION c
-          WRITE(stderr,*) ${FC_SIZEOF_A}
-          WRITE(stderr,*) kind(a)
-          WRITE(stderr,*) ${FC_SIZEOF_B}
-          WRITE(stderr,*) kind(b)
-          WRITE(stderr,*) ${FC_SIZEOF_C}
-          WRITE(stderr,*) kind(c)
+          WRITE(stdout,*) ${FC_SIZEOF_A}
+          WRITE(stdout,*) kind(a)
+          WRITE(stdout,*) ${FC_SIZEOF_B}
+          WRITE(stdout,*) kind(b)
+          WRITE(stdout,*) ${FC_SIZEOF_C}
+          WRITE(stdout,*) kind(c)
        END
   "
 )
@@ -334,7 +364,7 @@ string (REGEX REPLACE "}" "" OUT_VAR2 ${OUT_VAR2})
 set (${HDF_PREFIX}_H5CONFIG_F_RKIND_SIZEOF "INTEGER, DIMENSION(1:num_rkinds) :: rkind_sizeof = (/${OUT_VAR2}/)")
 
 # Setting definition if there is a 16 byte fortran integer
-string (FIND ${PAC_FC_ALL_INTEGER_KINDS_SIZEOF} "16" pos)
+string (FIND "${PAC_FC_ALL_INTEGER_KINDS_SIZEOF}" "16" pos)
 if (${pos} EQUAL -1)
   set (${HDF_PREFIX}_HAVE_Fortran_INTEGER_SIZEOF_16 0)
 else ()

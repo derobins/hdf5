@@ -237,6 +237,12 @@ typedef int herr_t;
 /**
  * C99-style Boolean type. Successful return values are zero (false) or positive
  * (true). The typical true value is 1 but don't bet on it.
+ *
+ * \deprecated Now that we require C99, hbool_t is typedef'd to C99's bool
+ *             and hbool_t is considered deprecated. Due to its long-standing,
+ *             widespread use, we have no plans to remove the hbool_t typedef
+ *             from the public API, though we will probably switch to using
+ *             bool in the public API starting in the next major release of HDF5.
  * \attention Boolean functions cannot fail.
  */
 #include <stdbool.h>
@@ -423,6 +429,9 @@ extern "C" {
  *          H5open() before an application issues any other function calls to
  *          the HDF5 library, as there are no damaging side effects in calling
  *          it more than once.
+ *
+ * \since 1.0.0
+ *
  */
 H5_DLL herr_t H5open(void);
 /**
@@ -462,6 +471,9 @@ H5_DLL herr_t H5atclose(H5_atclose_func_t func, void *ctx);
  *          generally called when the application calls exit(), but may be
  *          called earlier in the event of an emergency shutdown or out of a
  *          desire to free all resources used by the HDF5 library.
+ *
+ * \since 1.0.0
+ *
  */
 H5_DLL herr_t H5close(void);
 /**
@@ -481,6 +493,9 @@ H5_DLL herr_t H5close(void);
  *            before any other HDF5 function calls, and must be called each
  *            time the library is loaded/linked into the application (the first
  *            time and after it's been unloaded).
+ *
+ * \since 1.0.0
+ *
  */
 H5_DLL herr_t H5dont_atexit(void);
 /**
@@ -501,6 +516,9 @@ H5_DLL herr_t H5dont_atexit(void);
  *
  * \note The library automatically garbage collects all the free lists when the
  *       application ends.
+ *
+ * \since 1.4.0
+ *
  */
 H5_DLL herr_t H5garbage_collect(void);
 /**
@@ -553,7 +571,7 @@ H5_DLL herr_t H5garbage_collect(void);
  * \version 1.8.3 Function changed in this release to set factory free list
  *                memory limits.
  *
- * \since 1.6.0
+ * \since 1.4.0
  */
 H5_DLL herr_t H5set_free_list_limits(int reg_global_lim, int reg_list_lim, int arr_global_lim,
                                      int arr_list_lim, int blk_global_lim, int blk_list_lim);
@@ -588,6 +606,8 @@ H5_DLL herr_t H5get_free_list_sizes(size_t *reg_size, size_t *arr_size, size_t *
  * \details H5get_libversion() retrieves the major, minor, and release numbers
  *          of the version of the HDF5 library which is linked to the
  *          application.
+ *
+ * \since 1.0.0
  *
  */
 H5_DLL herr_t H5get_libversion(unsigned *majnum, unsigned *minnum, unsigned *relnum);
@@ -637,6 +657,8 @@ H5_DLL herr_t H5get_libversion(unsigned *majnum, unsigned *minnum, unsigned *rel
  *          informational warning is printed but the application is allowed to
  *          run.
  *
+ * \since 1.0.0
+ *
  */
 H5_DLL herr_t H5check_version(unsigned majnum, unsigned minnum, unsigned relnum);
 /**
@@ -647,7 +669,7 @@ H5_DLL herr_t H5check_version(unsigned majnum, unsigned minnum, unsigned relnum)
  *
  * \details H5is_library_terminating() queries whether the HDF5 library is in
  *          the process of shutting down.  The \p is_terminating flag will only
- *          be set to TRUE after shutdown starts, it will be FALSE before the
+ *          be set to true after shutdown starts, it will be false before the
  *          library has been initialized, while the library is initialized, and
  *          after it has been closed.  The value of \p is_terminating is
  *          undefined if this routine fails.
@@ -669,6 +691,9 @@ H5_DLL herr_t H5is_library_terminating(hbool_t *is_terminating);
  *          data structures with a mutex. In certain circumstances, it may be
  *          useful to determine, at run-time, whether the linked HDF5 library
  *          was built with the thread-safety feature enabled.
+ *
+ * \since 1.10.0
+ *
  */
 H5_DLL herr_t H5is_library_threadsafe(hbool_t *is_ts);
 /**
@@ -684,7 +709,7 @@ H5_DLL herr_t H5is_library_threadsafe(hbool_t *is_ts);
  *
  *          H5Tget_member_name() provides an example of memory allocation on
  *          behalf of the caller: The function returns a buffer containing the
- *          name of a compound datatype member. It is the caller’s
+ *          name of a compound datatype member. It is the caller's
  *          responsibility to eventually free that buffer with H5free_memory().
  *
  * \attention It is especially important to use this function to free memory
@@ -710,7 +735,7 @@ H5_DLL herr_t H5is_library_threadsafe(hbool_t *is_ts);
 H5_DLL herr_t H5free_memory(void *mem);
 /**
  * \ingroup H5
- * \brief Frees memory allocated by the HDF5 library
+ * \brief Allocates memory that will be freed later internally.
  *
  * \param[in] size The size in bytes of the buffer to be allocated
  * \param[in] clear Flag whether the new buffer is to be initialized with 0
@@ -723,8 +748,8 @@ H5_DLL herr_t H5free_memory(void *mem);
  *          will later be freed internally by the HDF5 library.
  *
  *          The boolean \p clear parameter specifies whether the buffer should
- *          be initialized. If clear is \c TRUE, all bits in the buffer are to be
- *          set to 0 (zero); if clear is \c FALSE, the buffer will not be
+ *          be initialized. If clear is \c true, all bits in the buffer are to be
+ *          set to 0 (zero); if clear is \c false, the buffer will not be
  *          initialized.
  *
  *          This function is intended to have the semantics of malloc() and

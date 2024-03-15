@@ -54,6 +54,7 @@ PROGRAM subfiling_test
   INTEGER(HID_T) :: driver_id
 
   CHARACTER(len=8) :: hex1, hex2
+  CHARACTER(len=1) :: arg
 
   !
   ! initialize MPI
@@ -90,6 +91,8 @@ PROGRAM subfiling_test
   ! initialize the HDF5 fortran interface
   !
   CALL h5open_f(hdferror)
+
+  IF(mpi_rank==0) CALL write_test_header("SUBFILING FORTRAN TESTING")
 
   ! ***********************************
   ! Test H5Pset/get_mpi_params_f APIs
@@ -334,10 +337,14 @@ PROGRAM subfiling_test
         WRITE(*,"(A,A)") "Failed to find the stub subfile ",TRIM(filename)
         nerrors = nerrors + 1
      ENDIF
-
-     CALL EXECUTE_COMMAND_LINE("stat --format='%i' "//filename//" >> tmp_inode", EXITSTAT=i)
+#ifdef H5_HAVE_DARWIN
+     arg(1:1)="f"
+#else
+     arg(1:1)="c"
+#endif
+     CALL EXECUTE_COMMAND_LINE("stat -"//arg(1:1)//" %i "//filename//" >> tmp_inode", EXITSTAT=i)
      IF(i.ne.0)THEN
-        WRITE(*,"(A,A)") "Failed to stat the stub  subfile ",TRIM(filename)
+        WRITE(*,"(A,A)") "Failed to stat the stub subfile ",TRIM(filename)
         nerrors = nerrors + 1
      ENDIF
 
@@ -384,6 +391,9 @@ PROGRAM subfiling_test
         WRITE(*,*) "MPI_ABORT  *FAILED* Process = ", mpi_rank
      ENDIF
   ENDIF
+
+  IF(mpi_rank==0) CALL write_test_footer()
+
   !
   ! end main program
   !
@@ -392,8 +402,13 @@ PROGRAM subfiling_test
 
   CALL mpi_init(mpierror)
   CALL mpi_comm_rank(MPI_COMM_WORLD, mpi_rank, mpierror)
-  IF(mpi_rank==0) CALL write_test_status( -1, &
-       'Subfiling not enabled', total_error)
+
+  IF(mpi_rank==0) THEN
+     CALL write_test_header("SUBFILING FORTRAN TESTING")
+     CALL write_test_status( -1, 'Subfiling not enabled', total_error)
+     CALL write_test_footer()
+  ENDIF
+
   CALL mpi_finalize(mpierror)
 
 #endif

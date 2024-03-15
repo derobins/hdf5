@@ -49,7 +49,7 @@
  * The <em>Abstract Data Model</em> is a conceptual model of data, data types, and data organization. The
  * abstract data model is independent of storage medium or programming environment. The
  * <em>Storage Model</em> is a standard representation for the objects of the abstract data model. The
- * <a href="https://docs.hdfgroup.org/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
+ * <a href="https://hdfgroup.github.io/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
  * defines the storage model.
  *
  * The <em>Programming Model</em> is a model of the computing environment and includes platforms from
@@ -100,7 +100,7 @@
  * model, and stored in a storage medium. The stored objects include header blocks, free lists, data
  * blocks, B-trees, and other objects. Each group or dataset is stored as one or more header and data
  * blocks.
- * @see <a href="https://docs.hdfgroup.org/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
+ * @see <a href="https://hdfgroup.github.io/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
  * for more information on how these objects are organized. The HDF5 library can also use other
  * libraries and modules such as compression.
  *
@@ -125,7 +125,7 @@
  * HDF5 abstract data model is up to the application developer. The application program only
  * needs to deal with the library and the abstract data model. Most applications need not consider
  * any details of the
- * <a href="https://docs.hdfgroup.org/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
+ * <a href="https://hdfgroup.github.io/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
  * or the details of how objects of abstract data model are translated to and from storage.
  *
  * \subsection subsec_data_model_abstract The Abstract Data Model
@@ -352,7 +352,7 @@
  * pass parameters from the calling program to a VFL driver or a module of the pipeline.
  *
  * Property lists are conceptually similar to attributes. Property lists are information relevant to the
- * behavior of the library while attributes are relevant to the user’s data and application.
+ * behavior of the library while attributes are relevant to the user's data and application.
  *
  * <table>
  * <tr>
@@ -408,7 +408,7 @@
  *
  * \subsection subsec_data_model_storage The HDF5 Storage Model
  * \subsubsection subsubsec_data_model_storage_spec The Abstract Storage Model: the HDF5 Format Specification
- * The <a href="https://docs.hdfgroup.org/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
+ * The <a href="https://hdfgroup.github.io/hdf5/develop/_s_p_e_c.html">HDF5 File Format Specification</a>
  * defines how HDF5 objects and data are mapped to a linear
  * address space. The address space is assumed to be a contiguous array of bytes stored on some
  * random access medium. The format defines the standard for how the objects of the abstract data
@@ -761,7 +761,7 @@
  * \subsubsection subsubsec_program_model_close Closing an Object
  * An application should close an object such as a datatype, dataspace, or dataset once the object is
  * no longer needed. Since each is an independent object, each must be released (or closed)
- * separately. This action is frequently referred to as releasing the object’s identifier. The code in
+ * separately. This action is frequently referred to as releasing the object's identifier. The code in
  * the example below closes the datatype, dataspace, and dataset that were created in the preceding
  * section.
  *
@@ -779,7 +779,7 @@
  *
  * For more information,
  * @see <a href="http://www.hdfgroup.org/HDF5/doc/Advanced/UsingIdentifiers/index.html">Using Identifiers</a>
- * in the HDF5 Application Developer’s Guide under General Topics in HDF5.
+ * in the HDF5 Application Developer's Guide under General Topics in HDF5.
  *
  * <h4>How Closing a File Effects Other Open Structural Elements</h4>
  * Every structural element in an HDF5 file can be opened, and these elements can be opened more
@@ -828,7 +828,7 @@
  * portions of a dataset. These parts of datasets are known as selections.
  *
  * The simplest type of selection is a simple hyperslab. This is an n-dimensional rectangular sub-set
- * of a dataset where n is equal to the dataset’s rank. Other available selections include a more
+ * of a dataset where n is equal to the dataset's rank. Other available selections include a more
  * complex hyperslab with user-defined stride and block size, a list of independent points, or the
  * union of any of these.
  *
@@ -863,7 +863,7 @@
  * user-defined stride and block, a selection of points, or a union of any of these forms.
  *
  * Selections and hyperslabs are portions of a dataset. As described above, a simple hyperslab is a
- * rectangular array of data elements with the same rank as the dataset’s dataspace. Thus, a simple
+ * rectangular array of data elements with the same rank as the dataset's dataspace. Thus, a simple
  * hyperslab is a logically contiguous collection of points within the dataset.
  *
  * The more general case of a hyperslab can also be a regular pattern of points or blocks within the
@@ -880,7 +880,7 @@
  * </tr>
  * <tr>
  * <td>start</td>
- * <td>The coordinates of the starting location of the hyperslab in the dataset’s dataspace.</td>
+ * <td>The coordinates of the starting location of the hyperslab in the dataset's dataspace.</td>
  * </tr>
  * <tr>
  * <td>block</td>
@@ -964,7 +964,7 @@
  * count=(3,4,1), stride and block size are NULL.
  *
  * <h4>Writing Data into a Differently Shaped Disk Storage Block</h4>
- * Now let’s consider the opposite process of writing a selection from memory to a selection in a
+ * Now let's consider the opposite process of writing a selection from memory to a selection in a
  * dataset in a file. Suppose that the source dataspace in memory is a 50-element, one-dimensional
  * array called vector and that the source selection is a 48-element simple hyperslab that starts at the
  * second element of vector. See the figure below.
@@ -1372,7 +1372,7 @@
  * and a data I/O pipeline. The data I/O pipeline applies compression to data blocks, transforms
  * data elements, and implements selections.
  *
- * A substantial portion of the HDF5 library’s work is in transferring data from one environment or
+ * A substantial portion of the HDF5 library's work is in transferring data from one environment or
  * media to another. This most often involves a transfer between system memory and a storage
  * medium. Data transfers are affected by compression, encryption, machine-dependent differences
  * in numerical representation, and other features. So, the bit-by-bit arrangement of a given dataset
@@ -1399,7 +1399,7 @@
  * For a given I/O request, different combinations of actions may be performed by the pipeline. The
  * library automatically sets up the pipeline and passes data through the processing steps. For
  * example, for a read request (from disk to memory), the library must determine which logical
- * blocks contain the requested data elements and fetch each block into the library’s cache. If the
+ * blocks contain the requested data elements and fetch each block into the library's cache. If the
  * data needs to be decompressed, then the compression algorithm is applied to the block after it is
  * read from disk. If the data is a selection, the selected elements are extracted from the data block
  * after it is decompressed. If the data needs to be transformed (for example, byte swapped), then
@@ -1420,7 +1420,7 @@
  * Library by linking an appropriate module into the pipeline through the VFL. This requires
  * creating an appropriate wrapper for the compression module and registering it with the library
  * with #H5Zregister. The algorithm can then be applied to a dataset with an #H5Pset_filter call which
- * will add the algorithm to the selected dataset’s transfer property list.
+ * will add the algorithm to the selected dataset's transfer property list.
  *
  * Previous Chapter \ref sec_data_model - Next Chapter \ref sec_file
  *

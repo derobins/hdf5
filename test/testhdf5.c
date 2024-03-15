@@ -37,6 +37,15 @@
 int
 main(int argc, char *argv[])
 {
+    hid_t fapl_id = H5I_INVALID_HID;
+
+    fapl_id = H5Pcreate(H5P_FILE_ACCESS);
+    CHECK(fapl_id, H5I_INVALID_HID, "H5Pcreate");
+
+    CHECK(H5Pget_vol_cap_flags(fapl_id, &vol_cap_flags_g), FAIL, "H5Pget_vol_cap_flags");
+
+    H5Pclose(fapl_id);
+
     /* Initialize testing framework */
     TestInit(argv[0], NULL, NULL);
 
@@ -80,7 +89,7 @@ main(int argc, char *argv[])
         TestSummary();
 
     /* Clean up test files, if allowed */
-    if (GetTestCleanup() && !HDgetenv(HDF5_NOCLEANUP))
+    if (GetTestCleanup() && !getenv(HDF5_NOCLEANUP))
         TestCleanup();
 
     /* Release test infrastructure */
@@ -89,7 +98,7 @@ main(int argc, char *argv[])
     /* Exit failure if errors encountered; else exit success. */
     /* No need to print anything since PerformTests() already does. */
     if (GetTestNumErrs() > 0)
-        HDexit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     else
-        HDexit(EXIT_SUCCESS);
+        exit(EXIT_SUCCESS);
 } /* end main() */

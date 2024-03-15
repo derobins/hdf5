@@ -117,13 +117,13 @@ H5P__macc_reg_prop(H5P_genclass_t *pclass)
     if (H5P__register_real(pclass, H5M_ACS_KEY_PREFETCH_SIZE_NAME, H5M_ACS_KEY_PREFETCH_SIZE_SIZE,
                            &key_prefetch_size, NULL, NULL, NULL, H5M_ACS_KEY_PREFETCH_SIZE_ENC,
                            H5M_ACS_KEY_PREFETCH_SIZE_DEC, NULL, NULL, NULL, NULL) < 0)
-        HGOTO_ERROR(H5E_PLIST, H5E_CANTINSERT, FAIL, "can't insert property into class")
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTINSERT, FAIL, "can't insert property into class");
 
     /* Register the key prefetch allocation size for iteration */
     if (H5P__register_real(pclass, H5M_ACS_KEY_ALLOC_SIZE_NAME, H5M_ACS_KEY_ALLOC_SIZE_SIZE, &key_alloc_size,
                            NULL, NULL, NULL, H5M_ACS_KEY_ALLOC_SIZE_ENC, H5M_ACS_KEY_ALLOC_SIZE_DEC, NULL,
                            NULL, NULL, NULL) < 0)
-        HGOTO_ERROR(H5E_PLIST, H5E_CANTINSERT, FAIL, "can't insert property into class")
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTINSERT, FAIL, "can't insert property into class");
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -187,7 +187,7 @@ H5Pget_map_iterate_hints(hid_t mapl_id, size_t *key_prefetch_size /*out*/, size_
     herr_t          ret_value = SUCCEED; /* return value */
 
     FUNC_ENTER_API(FAIL)
-    H5TRACE3("e", "ixx", mapl_id, key_prefetch_size, key_alloc_size);
+    H5TRACE3("e", "i*z*z", mapl_id, key_prefetch_size, key_alloc_size);
 
     /* Get the plist structure */
     if (NULL == (plist = H5P_object_verify(mapl_id, H5P_MAP_ACCESS)))

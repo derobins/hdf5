@@ -11,9 +11,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Leon Arber  <larber@uiuc.edu>
- *              Sept. 28, 2006.
- *
  * Purpose:     This is the first half of a two-part test that makes sure
  *              that a file can be read after a parallel application crashes
  *              as long as the file was flushed first.  We simulate a crash by
@@ -22,7 +19,7 @@
  */
 #include "h5test.h"
 
-const char *FILENAME[] = {"flush", "noflush", NULL};
+static const char *FILENAME[] = {"flush", "noflush", NULL};
 
 static int *data_g = NULL;
 
@@ -35,10 +32,6 @@ static int *data_g = NULL;
  *
  * Return:      Success:    A valid file ID
  *              Failure:    H5I_INVALID_HID
- *
- * Programmer:  Leon Arber
- *              Sept. 26, 2006
- *
  *-------------------------------------------------------------------------
  */
 static hid_t
@@ -85,7 +78,7 @@ create_test_file(char *name, size_t name_length, hid_t fapl_id)
     if ((top_level_gid = H5Gcreate2(fid, "some_groups", H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)) < 0)
         goto error;
     for (i = 0; i < N_GROUPS; i++) {
-        HDsnprintf(name, name_length, "grp%02u", (unsigned)i);
+        snprintf(name, name_length, "grp%02u", (unsigned)i);
         if ((gid = H5Gcreate2(top_level_gid, name, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT)) < 0)
             goto error;
         if (H5Gclose(gid) < 0)
@@ -104,10 +97,6 @@ error:
  * Purpose:     Part 1 of a two-part parallel H5Fflush() test.
  *
  * Return:      EXIT_FAILURE (always)
- *
- * Programmer:  Robb Matzke
- *              Friday, October 23, 1998
- *
  *-------------------------------------------------------------------------
  */
 int
@@ -132,20 +121,20 @@ main(int argc, char *argv[])
         TESTING("H5Fflush (part1)");
 
     /* Don't run using the split VFD */
-    envval = HDgetenv(HDF5_DRIVER);
+    envval = getenv(HDF5_DRIVER);
     if (envval == NULL)
         envval = "nomatch";
 
-    if (!HDstrcmp(envval, "split")) {
+    if (!strcmp(envval, "split")) {
         if (mpi_rank == 0) {
             SKIPPED();
-            HDputs("    Test not compatible with current Virtual File Driver");
+            puts("    Test not compatible with current Virtual File Driver");
         }
         MPI_Finalize();
-        HDexit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
-    if (NULL == (data_g = HDmalloc(100 * 100 * sizeof(*data_g))))
+    if (NULL == (data_g = malloc(100 * 100 * sizeof(*data_g))))
         goto error;
 
     if ((fapl_id = H5Pcreate(H5P_FILE_ACCESS)) < 0)
@@ -169,8 +158,8 @@ main(int argc, char *argv[])
     if (mpi_rank == 0)
         PASSED();
 
-    HDfflush(stdout);
-    HDfflush(stderr);
+    fflush(stdout);
+    fflush(stderr);
 
     /* Some systems like AIX do not like files not being closed when MPI_Finalize
      * is called.  So, we need to get the MPI file handles, close them by hand.
@@ -191,11 +180,11 @@ main(int argc, char *argv[])
     if (MPI_File_close(mpifh_p) != MPI_SUCCESS)
         goto error;
 
-    HDfflush(stdout);
-    HDfflush(stderr);
+    fflush(stdout);
+    fflush(stderr);
 
     if (data_g) {
-        HDfree(data_g);
+        free(data_g);
         data_g = NULL;
     }
 
@@ -207,17 +196,17 @@ main(int argc, char *argv[])
      * always ignore the failure condition than to handle some
      * platforms returning success and others failure.
      */
-    HD_exit(EXIT_FAILURE);
+    _exit(EXIT_FAILURE);
 
 error:
-    HDfflush(stdout);
-    HDfflush(stderr);
-    HDprintf("*** ERROR ***\n");
-    HDprintf("THERE WAS A REAL ERROR IN t_pflush1.\n");
-    HDfflush(stdout);
+    fflush(stdout);
+    fflush(stderr);
+    printf("*** ERROR ***\n");
+    printf("THERE WAS A REAL ERROR IN t_pflush1.\n");
+    fflush(stdout);
 
     if (data_g)
-        HDfree(data_g);
+        free(data_g);
 
-    HD_exit(EXIT_FAILURE);
+    _exit(EXIT_FAILURE);
 } /* end main() */

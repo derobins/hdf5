@@ -10,16 +10,12 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/*
- * Programmer:  Robb Matzke
- *              Monday, July 26, 1999
- */
 #ifndef H5FDpublic_H
 #define H5FDpublic_H
 
-/* Public headers needed by this file */
-#include "H5public.h"  /* Generic Functions */
-#include "H5Fpublic.h" /* Files */
+#include "H5public.h"  /* Generic Functions                        */
+#include "H5Fpublic.h" /* Files                                    */
+#include "H5Ipublic.h" /* Identifiers                              */
 
 /*****************/
 /* Public Macros */
@@ -80,7 +76,7 @@
 /*
  * Defining H5FD_FEAT_DATA_SIEVE for a VFL driver means that
  * the library will attempt to cache raw data as it is read from/written to
- * a file in a "data seive" buffer.  See Rajeev Thakur's papers:
+ * a file in a "data sieve" buffer.  See Rajeev Thakur's papers:
  *  http://www.mcs.anl.gov/~thakur/papers/romio-coll.ps.gz
  *  http://www.mcs.anl.gov/~thakur/papers/mpio-high-perf.ps.gz
  */
@@ -183,6 +179,7 @@
 #define H5FD_CTL_INVALID_OPCODE              0
 #define H5FD_CTL_TEST_OPCODE                 1
 #define H5FD_CTL_GET_MPI_COMMUNICATOR_OPCODE 2
+#define H5FD_CTL_GET_MPI_INFO_OPCODE         9
 #define H5FD_CTL_GET_MPI_RANK_OPCODE         3
 #define H5FD_CTL_GET_MPI_SIZE_OPCODE         4
 #define H5FD_CTL_MEM_ALLOC                   5
@@ -318,6 +315,7 @@ typedef struct {
     /**
      * \param[in] dest Address of the destination buffer
      * \param[in] src Address of the source buffer
+     * \param[in] size Size in bytes of the file image buffer to allocate
      * \param[in] file_image_op A value from #H5FD_file_image_op_t indicating
      *                          the operation being performed on the file image
      *                          when this callback is invoked
@@ -330,6 +328,7 @@ typedef struct {
     //! <!-- [image_memcpy_snip] -->
     /**
      * \param[in] ptr Pointer to the buffer being reallocated
+     * \param[in] size Size in bytes of the file image buffer to allocate
      * \param[in] file_image_op A value from #H5FD_file_image_op_t indicating
      *                          the operation being performed on the file image
      *                          when this callback is invoked
@@ -340,6 +339,10 @@ typedef struct {
     void *(*image_realloc)(void *ptr, size_t size, H5FD_file_image_op_t file_image_op, void *udata);
     //! <!-- [image_realloc_snip] -->
     /**
+     * \param[in] ptr Pointer to the buffer being reallocated
+     * \param[in] file_image_op A value from #H5FD_file_image_op_t indicating
+     *                          the operation being performed on the file image
+     *                          when this callback is invoked
      * \param[in] udata Value passed in in the H5Pset_file_image_callbacks
      *            parameter \p udata
      */

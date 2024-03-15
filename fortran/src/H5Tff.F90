@@ -38,7 +38,6 @@
 
 MODULE H5T
 
-  USE, INTRINSIC :: ISO_C_BINDING, ONLY : C_PTR,  C_CHAR, C_NULL_PTR
   USE H5GLOBAL
   IMPLICIT NONE
 
@@ -80,7 +79,7 @@ CONTAINS
     CHARACTER(LEN=*), INTENT(IN) :: name
     INTEGER(HID_T), INTENT(OUT) :: type_id
     INTEGER, INTENT(OUT) :: hdferr
-    INTEGER(HID_T), OPTIONAL, INTENT(IN) :: tapl_id
+    INTEGER(HID_T), INTENT(IN), OPTIONAL :: tapl_id
     INTEGER :: namelen                  ! Name length
     INTEGER(HID_T) :: tapl_id_default
 
@@ -126,9 +125,9 @@ CONTAINS
     CHARACTER(LEN=*), INTENT(IN) :: name
     INTEGER(HID_T), INTENT(IN) :: type_id
     INTEGER, INTENT(OUT) :: hdferr
-    INTEGER(HID_T), OPTIONAL, INTENT(IN) :: lcpl_id
-    INTEGER(HID_T), OPTIONAL, INTENT(IN) :: tcpl_id
-    INTEGER(HID_T), OPTIONAL, INTENT(IN) :: tapl_id
+    INTEGER(HID_T), INTENT(IN), OPTIONAL :: lcpl_id
+    INTEGER(HID_T), INTENT(IN), OPTIONAL :: tcpl_id
+    INTEGER(HID_T), INTENT(IN), OPTIONAL :: tapl_id
 
     INTEGER :: namelen          ! Name length
 
@@ -1409,14 +1408,6 @@ CONTAINS
 !                               Success:  0
 !                               Failure: -1
 !
-! AUTHOR
-!      Elena Pourmal
-!            August 12, 1999
-!
-! HISTORY
-!       Explicit Fortran interfaces were added for
-!                  called C functions (it is needed for Windows
-!                  port).  March 7, 2001
 ! SOURCE
 !  SUBROUTINE h5tinsert_array_f(parent_id,name,offset, ndims, dims, member_id, hdferr, perm)
 !  IMPLICIT NONE
@@ -1793,8 +1784,8 @@ CONTAINS
     INTEGER(HID_T), INTENT(IN) :: loc_id
     INTEGER(HID_T), INTENT(IN) :: dtype_id
     INTEGER, INTENT(OUT) :: hdferr
-    INTEGER(HID_T), OPTIONAL, INTENT(IN) :: tcpl_id
-    INTEGER(HID_T), OPTIONAL, INTENT(IN) :: tapl_id
+    INTEGER(HID_T), INTENT(IN), OPTIONAL :: tcpl_id
+    INTEGER(HID_T), INTENT(IN), OPTIONAL :: tapl_id
     INTEGER(HID_T) :: tcpl_id_default
     INTEGER(HID_T) :: tapl_id_default
 
@@ -1954,7 +1945,7 @@ CONTAINS
 !>
 !! \ingroup FH5T
 !!
-!! \brief Check whether the library’s default conversion is hard conversion.
+!! \brief Check whether the library&apos;s default conversion is hard conversion.
 !!
 !! \param src_id Identifier for the source datatype.
 !! \param dst_id Identifier for the destination datatype.
@@ -2040,13 +2031,13 @@ CONTAINS
 !!
   SUBROUTINE h5tconvert_f(src_id, dst_id, nelmts, buf, hdferr, background, plist_id)
     IMPLICIT NONE
-    INTEGER(HID_T) , INTENT(IN)               :: src_id
-    INTEGER(HID_T) , INTENT(IN)               :: dst_id
-    INTEGER(SIZE_T), INTENT(IN)               :: nelmts
-    TYPE(C_PTR)    , INTENT(INOUT)            :: buf
-    INTEGER        , INTENT(OUT)              :: hdferr
-    TYPE(C_PTR)    , INTENT(INOUT), OPTIONAL  :: background
-    INTEGER(HID_T) , INTENT(IN)   , OPTIONAL  :: plist_id
+    INTEGER(HID_T) , INTENT(IN)            :: src_id
+    INTEGER(HID_T) , INTENT(IN)            :: dst_id
+    INTEGER(SIZE_T), INTENT(IN)            :: nelmts
+    TYPE(C_PTR)    , INTENT(IN)            :: buf
+    INTEGER        , INTENT(OUT)           :: hdferr
+    TYPE(C_PTR)    , INTENT(IN), OPTIONAL  :: background
+    INTEGER(HID_T) , INTENT(IN), OPTIONAL  :: plist_id
     INTEGER(HID_T) :: plist_id_default
     TYPE(C_PTR) :: background_default
 

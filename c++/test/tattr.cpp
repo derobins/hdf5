@@ -297,7 +297,7 @@ test_attr_getname(FileAccPropList &fapl)
         // 1. With arbitrary buf_size that is larger than the name size
         size_t buf_size    = FATTR1_NAME.length() + 10;
         char  *fattr1_name = new char[buf_size + 1];
-        HDmemset(fattr1_name, 0, buf_size + 1);
+        memset(fattr1_name, 0, buf_size + 1);
         ssize_t name_size = 0; // actual length of attribute name
         name_size         = fattr1.getName(fattr1_name, buf_size + 1);
         CHECK(name_size, FAIL, "Attribute::getName", __LINE__, __FILE__);
@@ -312,7 +312,7 @@ test_attr_getname(FileAccPropList &fapl)
         buf_size           = 4;
         char short_name[5] = "File"; // to verify the read name
         fattr1_name        = new char[buf_size + 1];
-        HDmemset(fattr1_name, 0, buf_size + 1);
+        memset(fattr1_name, 0, buf_size + 1);
         name_size = fattr1.getName(fattr1_name, buf_size + 1);
         CHECK(name_size, FAIL, "Attribute::getName", __LINE__, __FILE__);
         verify_val(static_cast<size_t>(name_size), FATTR1_NAME.size(), "Attribute::getName", __LINE__,
@@ -324,7 +324,7 @@ test_attr_getname(FileAccPropList &fapl)
         // 3. With a buf_size that equals the name's length.
         buf_size    = FATTR1_NAME.length();
         fattr1_name = new char[buf_size + 1];
-        HDmemset(fattr1_name, 0, buf_size + 1);
+        memset(fattr1_name, 0, buf_size + 1);
         name_size = fattr1.getName(fattr1_name, buf_size + 1);
         CHECK(name_size, FAIL, "Attribute::getName", __LINE__, __FILE__);
         verify_val(fattr1_name, FATTR1_NAME, "Attribute::getName", __LINE__, __FILE__);
@@ -531,7 +531,7 @@ test_attr_basic_read(FileAccPropList &fapl)
 
         // Verify the correct number of attributes another way
         H5O_info2_t oinfo;
-        HDmemset(&oinfo, 0, sizeof(oinfo));
+        memset(&oinfo, 0, sizeof(oinfo));
         dataset.getObjinfo(oinfo, H5O_INFO_NUM_ATTRS);
         verify_val(static_cast<long>(oinfo.num_attrs), 3, "DataSet::getObjinfo", __LINE__, __FILE__);
 
@@ -560,7 +560,7 @@ test_attr_basic_read(FileAccPropList &fapl)
         verify_val(num_attrs, 1, "Group::getNumAttrs", __LINE__, __FILE__);
 
         // Verify the correct number of attributes another way
-        HDmemset(&oinfo, 0, sizeof(oinfo));
+        memset(&oinfo, 0, sizeof(oinfo));
         group.getObjinfo(oinfo, H5O_INFO_NUM_ATTRS);
         verify_val(static_cast<long>(oinfo.num_attrs), 1, "Group::getObjinfo", __LINE__, __FILE__);
 
@@ -686,7 +686,7 @@ test_attr_compound_read(FileAccPropList &fapl)
 
         // Verify the correct number of attributes another way
         H5O_info2_t oinfo;
-        HDmemset(&oinfo, 0, sizeof(oinfo));
+        memset(&oinfo, 0, sizeof(oinfo));
         dataset.getObjinfo(oinfo, H5O_INFO_NUM_ATTRS);
         verify_val(static_cast<long>(oinfo.num_attrs), 1, "DataSet::getObjinfo", __LINE__, __FILE__);
 
@@ -789,7 +789,7 @@ test_attr_compound_read(FileAccPropList &fapl)
         hsize_t ii, jj;
         for (ii = 0; ii < ATTR4_DIM1; ii++)
             for (jj = 0; jj < ATTR4_DIM2; jj++)
-                if (HDmemcmp(&attr_data4[ii][jj], &read_data4[ii][jj], sizeof(struct attr4_struct)) != 0) {
+                if (memcmp(&attr_data4[ii][jj], &read_data4[ii][jj], sizeof(struct attr4_struct)) != 0) {
                     TestErrPrintf("%d:attribute data different: attr_data4[%" PRIuHSIZE "][%" PRIuHSIZE
                                   "].i=%d, "
                                   "read_data4[%" PRIuHSIZE "][%" PRIuHSIZE "].i=%d\n",
@@ -1604,7 +1604,7 @@ test_string_attr(FileAccPropList &fapl)
         // Read and verify the attribute string as a string of chars.
         char flstring_att_check[ATTR_LEN];
         gr_flattr1.read(fls_type, flstring_att_check);
-        if (HDstrcmp(flstring_att_check, ATTRSTR_DATA.c_str()) != 0)
+        if (strcmp(flstring_att_check, ATTRSTR_DATA.c_str()) != 0)
             TestErrPrintf("Line %d: Attribute data different: ATTRSTR_DATA=%s,flstring_att_check=%s\n",
                           __LINE__, ATTRSTR_DATA.c_str(), flstring_att_check);
 
@@ -1614,7 +1614,7 @@ test_string_attr(FileAccPropList &fapl)
         char  *fl_dyn_string_att_check;
         fl_dyn_string_att_check = new char[attr_size + 1];
         gr_flattr1.read(fls_type, fl_dyn_string_att_check);
-        if (HDstrcmp(fl_dyn_string_att_check, ATTRSTR_DATA.c_str()) != 0)
+        if (strcmp(fl_dyn_string_att_check, ATTRSTR_DATA.c_str()) != 0)
             TestErrPrintf("Line %d: Attribute data different: ATTRSTR_DATA=%s,flstring_att_check=%s\n",
                           __LINE__, ATTRSTR_DATA.c_str(), fl_dyn_string_att_check);
         delete[] fl_dyn_string_att_check;
@@ -1629,9 +1629,9 @@ test_string_attr(FileAccPropList &fapl)
                           ATTRSTR_DATA.c_str(), read_flstr1.c_str());
 
         // Read and verify the attribute string as a string of chars.
-        HDstrcpy(flstring_att_check, "");
+        strcpy(flstring_att_check, "");
         gr_flattr2.read(fls_type, flstring_att_check);
-        if (HDstrcmp(flstring_att_check, ATTRSTR_DATA.c_str()) != 0)
+        if (strcmp(flstring_att_check, ATTRSTR_DATA.c_str()) != 0)
             TestErrPrintf("Line %d: Attribute data different: ATTRSTR_DATA=%s,flstring_att_check=%s\n",
                           __LINE__, ATTRSTR_DATA.c_str(), flstring_att_check);
 
@@ -1660,10 +1660,10 @@ test_string_attr(FileAccPropList &fapl)
         // Read and verify the attribute string as a string of chars.
         char *string_att_check;
         gr_vlattr.read(vls_type, &string_att_check);
-        if (HDstrcmp(string_att_check, ATTRSTR_DATA.c_str()) != 0)
+        if (strcmp(string_att_check, ATTRSTR_DATA.c_str()) != 0)
             TestErrPrintf("Line %d: Attribute data different: ATTRSTR_DATA=%s,string_att_check=%s\n",
                           __LINE__, ATTRSTR_DATA.c_str(), string_att_check);
-        HDfree(string_att_check);
+        free(string_att_check);
 
         /* Test Attribute::read(...,H5std_string& strg) with VL string */
         // Read and verify the attribute string as an std::string.

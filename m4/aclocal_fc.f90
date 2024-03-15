@@ -55,6 +55,35 @@ PROGRAM PROG_FC_HAVE_F2003_REQUIREMENTS
   ptr = C_LOC(ichr(1:1))
 END PROGRAM PROG_FC_HAVE_F2003_REQUIREMENTS
 
+PROGRAM PROG_CHAR_ALLOC
+  CHARACTER(:), ALLOCATABLE :: str
+END PROGRAM PROG_CHAR_ALLOC
+
+!---- START ----- Check to see C_BOOL is different from LOGICAL
+MODULE l_type_mod
+  USE ISO_C_BINDING
+  INTERFACE h5t
+     MODULE PROCEDURE h5t_c_bool
+     MODULE PROCEDURE h5t_logical
+  END INTERFACE
+CONTAINS
+  SUBROUTINE h5t_c_bool(lcb)
+    LOGICAL(KIND=C_BOOL) :: lcb
+  END SUBROUTINE h5t_c_bool
+  SUBROUTINE h5t_logical(l)
+    LOGICAL :: l
+  END SUBROUTINE h5t_logical
+END MODULE l_type_mod
+PROGRAM PROG_FC_C_BOOL_EQ_LOGICAL
+  USE ISO_C_BINDING
+  USE l_type_mod
+  LOGICAL(KIND=C_BOOL) :: lcb
+  LOGICAL              :: l
+  CALL h5t(lcb)
+  CALL h5t(l)
+END PROGRAM PROG_FC_C_BOOL_EQ_LOGICAL
+!---- END ------- Check to see C_BOOL is different from LOGICAL
+
 !---- START ----- Check to see C_LONG_DOUBLE is different from C_DOUBLE
 MODULE type_mod
   USE ISO_C_BINDING
@@ -82,7 +111,7 @@ END PROGRAM PROG_FC_C_LONG_DOUBLE_EQ_C_DOUBLE
 
 !---- START ----- Determine the available KINDs for REALs and INTEGERs
 PROGRAM FC_AVAIL_KINDS
-      USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stderr=>ERROR_UNIT
+      USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : stdout=>OUTPUT_UNIT
       IMPLICIT NONE
       INTEGER :: ik, jk, k, kk, max_decimal_prec
       INTEGER :: prev_rkind, num_rkinds = 1, num_ikinds = 1
@@ -102,11 +131,11 @@ PROGRAM FC_AVAIL_KINDS
       ENDDO
 
       DO k = 1, num_ikinds
-         WRITE(stderr,'(I0)', ADVANCE='NO') list_ikinds(k)
+         WRITE(stdout,'(I0)', ADVANCE='NO') list_ikinds(k)
          IF(k.NE.num_ikinds)THEN
-            WRITE(stderr,'(A)',ADVANCE='NO') ','
+            WRITE(stdout,'(A)',ADVANCE='NO') ','
          ELSE
-            WRITE(stderr,'()')
+            WRITE(stdout,'()')
          ENDIF
       ENDDO
 
@@ -139,22 +168,22 @@ PROGRAM FC_AVAIL_KINDS
       ENDDO prec
 
       DO k = 1, num_rkinds
-         WRITE(stderr,'(I0)', ADVANCE='NO') list_rkinds(k)
+         WRITE(stdout,'(I0)', ADVANCE='NO') list_rkinds(k)
          IF(k.NE.num_rkinds)THEN
-            WRITE(stderr,'(A)',ADVANCE='NO') ','
+            WRITE(stdout,'(A)',ADVANCE='NO') ','
          ELSE
-            WRITE(stderr,'()')
+            WRITE(stdout,'()')
          ENDIF
       ENDDO
 
-     WRITE(stderr,'(I0)') max_decimal_prec
-     WRITE(stderr,'(I0)') num_ikinds
-     WRITE(stderr,'(I0)') num_rkinds
+     WRITE(stdout,'(I0)') max_decimal_prec
+     WRITE(stdout,'(I0)') num_ikinds
+     WRITE(stdout,'(I0)') num_rkinds
 END PROGRAM FC_AVAIL_KINDS
 !---- END ----- Determine the available KINDs for REALs and INTEGERs
 
 PROGRAM FC_MPI_CHECK
-  INCLUDE 'mpif.h'
+  USE mpi
   INTEGER :: comm, amode, info, fh, ierror
   CHARACTER(LEN=1) :: filename
   CALL MPI_File_open( comm, filename, amode, info, fh, ierror)

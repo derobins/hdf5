@@ -33,15 +33,15 @@ typedef struct ioc_data_t {
     hg_thread_pool_t *io_thread_pool;
     int64_t           sf_context_id;
 
-    /* sf_io_ops_pending is use to track the number of I/O operations pending so that we can wait
+    atomic_int sf_ioc_ready;
+    atomic_int sf_shutdown_flag;
+    /* sf_io_ops_pending tracks the number of I/O operations pending so that we can wait
      * until all I/O operations have been serviced before shutting down the worker thread pool.
      * The value of this variable must always be non-negative.
      *
      * Note that this is a convenience variable -- we could use io_queue.q_len instead.
      * However, accessing this field requires locking io_queue.q_mutex.
      */
-    atomic_int sf_ioc_ready;
-    atomic_int sf_shutdown_flag;
     atomic_int sf_io_ops_pending;
     atomic_int sf_work_pending;
 } ioc_data_t;
@@ -85,7 +85,7 @@ static int ioc_file_report_eof(sf_work_request_t *msg, MPI_Comm comm);
 
 static ioc_io_queue_entry_t *ioc_io_queue_alloc_entry(void);
 static void ioc_io_queue_complete_entry(ioc_data_t *ioc_data, ioc_io_queue_entry_t *entry_ptr);
-static void ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock);
+static void ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, bool try_lock);
 static void ioc_io_queue_free_entry(ioc_io_queue_entry_t *q_entry_ptr);
 static void ioc_io_queue_add_entry(ioc_data_t *ioc_data, sf_work_request_t *wk_req_ptr);
 
@@ -102,11 +102,6 @@ static void ioc_io_queue_add_entry(ioc_data_t *ioc_data, sf_work_request_t *wk_r
  * Return:      SUCCESS (0) or FAIL (-1) if any errors are detected
  *              for the multi-threaded initialization.
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
- *
  *-------------------------------------------------------------------------
  */
 int
@@ -121,13 +116,13 @@ initialize_ioc_threads(void *_sf_context)
     double t_start = 0.0, t_end = 0.0;
 #endif
 
-    HDassert(sf_context);
+    assert(sf_context);
 
     /*
      * Allocate and initialize IOC data that will be passed
      * to the IOC main thread
      */
-    if (NULL == (ioc_data = HDmalloc(sizeof(*ioc_data))))
+    if (NULL == (ioc_data = malloc(sizeof(*ioc_data))))
         H5_SUBFILING_GOTO_ERROR(H5E_RESOURCE, H5E_CANTALLOC, (-1),
                                 "can't allocate IOC data for IOC main thread");
     ioc_data->sf_context_id  = sf_context->sf_context_id;
@@ -172,8 +167,8 @@ initialize_ioc_threads(void *_sf_context)
         H5_SUBFILING_GOTO_ERROR(H5E_RESOURCE, H5E_CANTINIT, (-1), "can't initialize IOC thread queue mutex");
 
     /* Allow experimentation with the number of helper threads */
-    if ((env_value = HDgetenv(H5FD_IOC_THREAD_POOL_SIZE)) != NULL) {
-        int value_check = HDatoi(env_value);
+    if ((env_value = getenv(H5FD_IOC_THREAD_POOL_SIZE)) != NULL) {
+        int value_check = atoi(env_value);
         if (value_check > 0) {
             thread_pool_size = (unsigned int)value_check;
         }
@@ -197,8 +192,8 @@ initialize_ioc_threads(void *_sf_context)
 
 #ifdef H5FD_IOC_DEBUG
     if (sf_context->topology->ioc_idx == 0) {
-        HDprintf("%s: time = %lf seconds\n", __func__, (t_end - t_start));
-        HDfflush(stdout);
+        printf("%s: time = %lf seconds\n", __func__, (t_end - t_start));
+        fflush(stdout);
     }
 #endif
 
@@ -215,12 +210,12 @@ finalize_ioc_threads(void *_sf_context)
     ioc_data_t          *ioc_data   = NULL;
     int                  ret_value  = 0;
 
-    HDassert(sf_context);
-    HDassert(sf_context->topology->rank_is_ioc);
+    assert(sf_context);
+    assert(sf_context->topology->rank_is_ioc);
 
     ioc_data = sf_context->ioc_data;
     if (ioc_data) {
-        HDassert(0 == atomic_load(&ioc_data->sf_shutdown_flag));
+        assert(0 == atomic_load(&ioc_data->sf_shutdown_flag));
 
         /* Shutdown the main IOC thread */
         atomic_store(&ioc_data->sf_shutdown_flag, 1);
@@ -231,7 +226,7 @@ finalize_ioc_threads(void *_sf_context)
         } while (0 != atomic_load(&ioc_data->sf_shutdown_flag));
 
         /* Tear down IOC worker thread pool */
-        HDassert(0 == atomic_load(&ioc_data->sf_io_ops_pending));
+        assert(0 == atomic_load(&ioc_data->sf_io_ops_pending));
         hg_thread_pool_destroy(ioc_data->io_thread_pool);
 
         hg_thread_mutex_destroy(&ioc_data->io_queue.q_mutex);
@@ -244,7 +239,7 @@ finalize_ioc_threads(void *_sf_context)
         H5_SUBFILING_DONE_ERROR(H5E_IO, H5E_CLOSEERROR, -1, "%" PRId32 " I/O requests failed",
                                 ioc_data->io_queue.num_failed);
 
-    HDfree(ioc_data);
+    free(ioc_data);
     sf_context->ioc_data = NULL;
 
     H5_SUBFILING_FUNC_LEAVE;
@@ -260,11 +255,6 @@ finalize_ioc_threads(void *_sf_context)
  *              file associated with this context is open.  At file close,
  *              the thread will return from 'ioc_main' and the thread
  *              exit status will be checked by the main program.
- *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
  *
  *-------------------------------------------------------------------------
  */
@@ -336,10 +326,6 @@ ioc_thread_main(void *arg)
  * Return:      None
  * Errors:      None
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
  *-------------------------------------------------------------------------
  */
 static int
@@ -350,10 +336,10 @@ ioc_main(ioc_data_t *ioc_data)
     int                  shutdown_requested;
     int                  ret_value = 0;
 
-    HDassert(ioc_data);
+    assert(ioc_data);
 
     context = H5_get_subfiling_object(ioc_data->sf_context_id);
-    HDassert(context);
+    assert(context);
 
     /* We can't have opened any files at this point..
      * The file open approach has changed so that the normal
@@ -403,7 +389,7 @@ ioc_main(ioc_data_t *ioc_data)
              * Zero out work request, since the received message should
              * be smaller than sizeof(sf_work_request_t)
              */
-            HDmemset(&wk_req, 0, sizeof(sf_work_request_t));
+            memset(&wk_req, 0, sizeof(sf_work_request_t));
 
             if (MPI_SUCCESS != (mpi_code = MPI_Recv(&wk_req, count, MPI_BYTE, source, tag,
                                                     context->sf_msg_comm, MPI_STATUS_IGNORE)))
@@ -421,7 +407,7 @@ ioc_main(ioc_data_t *ioc_data)
 
             ioc_io_queue_add_entry(ioc_data, &wk_req);
 
-            HDassert(atomic_load(&ioc_data->sf_io_ops_pending) >= 0);
+            assert(atomic_load(&ioc_data->sf_io_ops_pending) >= 0);
         }
         else {
             struct timespec sleep_spec = {0, IOC_MAIN_SLEEP_DELAY};
@@ -470,8 +456,9 @@ translate_opcode(io_op_t op)
         case LOGGING_OP:
             return "LOGGING_OP";
             break;
+        default:
+            return "unknown";
     }
-    return "unknown";
 }
 #endif
 
@@ -490,11 +477,6 @@ translate_opcode(io_op_t op)
  *
  * Return:      (none) Doesn't fail.
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
- *
  *-------------------------------------------------------------------------
  */
 static HG_THREAD_RETURN_TYPE
@@ -508,15 +490,15 @@ handle_work_request(void *arg)
     int                   op_ret;
     hg_thread_ret_t       ret_value = 0;
 
-    HDassert(q_entry_ptr);
-    HDassert(q_entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
-    HDassert(q_entry_ptr->in_progress);
+    assert(q_entry_ptr);
+    assert(q_entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
+    assert(q_entry_ptr->in_progress);
 
     sf_context = H5_get_subfiling_object(file_context_id);
-    HDassert(sf_context);
+    assert(sf_context);
 
     ioc_data = sf_context->ioc_data;
-    HDassert(ioc_data);
+    assert(ioc_data);
 
     atomic_fetch_add(&ioc_data->sf_work_pending, 1);
 
@@ -566,14 +548,14 @@ handle_work_request(void *arg)
 #ifdef H5FD_IOC_DEBUG
     {
         int curr_io_ops_pending = atomic_load(&ioc_data->sf_io_ops_pending);
-        HDassert(curr_io_ops_pending > 0);
+        assert(curr_io_ops_pending > 0);
     }
 #endif
 
     /* complete the I/O request */
     ioc_io_queue_complete_entry(ioc_data, q_entry_ptr);
 
-    HDassert(atomic_load(&ioc_data->sf_io_ops_pending) >= 0);
+    assert(atomic_load(&ioc_data->sf_io_ops_pending) >= 0);
 
     /* Check the I/O Queue to see if there are any dispatchable entries */
     ioc_io_queue_dispatch_eligible_entries(ioc_data, 1);
@@ -587,11 +569,6 @@ handle_work_request(void *arg)
  * Purpose:     Mutex lock to restrict access to code or variables.
  *
  * Return:      integer result of mutex_lock request.
- *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
  *
  *-------------------------------------------------------------------------
  */
@@ -609,11 +586,6 @@ H5FD_ioc_begin_thread_exclusive(void)
  *
  * Return:      result of mutex_unlock operation.
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
- *
  *-------------------------------------------------------------------------
  */
 void
@@ -628,7 +600,7 @@ send_ack_to_client(int ack_val, int dest_rank, int source_rank, int msg_tag, MPI
     int    mpi_code;
     herr_t ret_value = SUCCEED;
 
-    HDassert(ack_val > 0);
+    assert(ack_val > 0);
 
     (void)source_rank;
 
@@ -676,11 +648,6 @@ from the thread pool threads...
  *              function.  Successful operations will return 0.
  * Errors:      An MPI related error value.
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
- *
  *-------------------------------------------------------------------------
  */
 static int
@@ -688,7 +655,7 @@ ioc_file_queue_write_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_
 {
     subfiling_context_t *sf_context = NULL;
     MPI_Status           msg_status;
-    hbool_t              send_nack = FALSE;
+    bool                 send_nack = false;
     int64_t              file_context_id;
     int64_t              data_size;
     int64_t              file_offset;
@@ -710,7 +677,7 @@ ioc_file_queue_write_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_
     int   mpi_code;
     int   ret_value = 0;
 
-    HDassert(msg);
+    assert(msg);
 
     file_context_id = msg->context_id;
 
@@ -720,12 +687,12 @@ ioc_file_queue_write_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_
     subfile_idx = msg->header[2];
 
     if (data_size < 0) {
-        send_nack = TRUE;
+        send_nack = true;
         H5_SUBFILING_GOTO_ERROR(H5E_IO, H5E_BADVALUE, -1, "invalid data size for write");
     }
 
     sf_context = H5_get_subfiling_object(file_context_id);
-    HDassert(sf_context);
+    assert(sf_context);
 
     stripe_id = file_offset + data_size;
     sf_eof    = (haddr_t)(stripe_id % sf_context->sf_stripe_size);
@@ -752,8 +719,8 @@ ioc_file_queue_write_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_
 #endif
 
     /* Allocate space to receive data sent from the client */
-    if (NULL == (recv_buf = HDmalloc((size_t)data_size))) {
-        send_nack = TRUE;
+    if (NULL == (recv_buf = malloc((size_t)data_size))) {
+        send_nack = true;
         H5_SUBFILING_GOTO_ERROR(H5E_RESOURCE, H5E_CANTALLOC, -1, "couldn't allocate receive buffer for data");
     }
 
@@ -764,7 +731,7 @@ ioc_file_queue_write_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_
      * allows us to distinguish between multiple concurrent
      * writes from a single rank.
      */
-    HDassert(H5FD_IOC_tag_ub_val_ptr && (*H5FD_IOC_tag_ub_val_ptr >= IO_TAG_BASE));
+    assert(H5FD_IOC_tag_ub_val_ptr && (*H5FD_IOC_tag_ub_val_ptr >= IO_TAG_BASE));
     rcv_tag = (int)(counter % (INT_MAX - IO_TAG_BASE));
     rcv_tag %= (*H5FD_IOC_tag_ub_val_ptr - IO_TAG_BASE);
     rcv_tag += IO_TAG_BASE;
@@ -800,7 +767,7 @@ ioc_file_queue_write_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_
 
 #endif
 
-    HDassert(subfile_idx < sf_context->sf_num_fids);
+    assert(subfile_idx < sf_context->sf_num_fids);
     sf_fid = sf_context->sf_fids[subfile_idx];
 
 #ifdef H5_SUBFILING_DEBUG
@@ -849,7 +816,7 @@ done:
             H5_SUBFILING_DONE_ERROR(H5E_IO, H5E_WRITEERROR, -1, "couldn't send NACK to client");
     }
 
-    HDfree(recv_buf);
+    free(recv_buf);
 
     H5_SUBFILING_FUNC_LEAVE;
 } /* ioc_file_queue_write_indep() */
@@ -867,20 +834,15 @@ done:
  *              function.  Successful operations will return 0.
  * Errors:      An MPI related error value.
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
- *
  *-------------------------------------------------------------------------
  */
 static int
 ioc_file_queue_read_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_Comm comm, uint32_t counter)
 {
     subfiling_context_t *sf_context     = NULL;
-    hbool_t              send_empty_buf = TRUE;
-    hbool_t              send_nack      = FALSE;
-    hbool_t              need_data_tag  = FALSE;
+    bool                 send_empty_buf = true;
+    bool                 send_nack      = false;
+    bool                 need_data_tag  = false;
     int64_t              file_context_id;
     int64_t              data_size;
     int64_t              file_offset;
@@ -898,12 +860,12 @@ ioc_file_queue_read_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_C
     int   mpi_code;
     int   ret_value = 0;
 
-    HDassert(msg);
+    assert(msg);
 
     file_context_id = msg->context_id;
 
     sf_context = H5_get_subfiling_object(file_context_id);
-    HDassert(sf_context);
+    assert(sf_context);
 
     /*
      * If we are using 1 subfile per IOC, we can optimize reads
@@ -912,9 +874,14 @@ ioc_file_queue_read_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_C
      * unpredictable order. However, if some IOCs own more than
      * 1 subfile, we need to associate each read with a unique
      * message tag to make sure the data is received in the
-     * correct order.
+     * correct order. We also need a unique message tag in the
+     * case where only 1 subfile is used in total. In this case,
+     * vector I/O calls are passed directly down to this VFD without
+     * being split up into multiple I/O requests, so we need the
+     * tag to distinguish each I/O request.
      */
-    need_data_tag = sf_context->sf_num_subfiles != sf_context->topology->n_io_concentrators;
+    need_data_tag = (sf_context->sf_num_subfiles == 1) ||
+                    (sf_context->sf_num_subfiles != sf_context->topology->n_io_concentrators);
     if (!need_data_tag)
         send_tag = READ_INDEP_DATA;
 
@@ -925,8 +892,8 @@ ioc_file_queue_read_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_C
 
     if (data_size < 0) {
         if (need_data_tag) {
-            send_nack      = TRUE;
-            send_empty_buf = FALSE;
+            send_nack      = true;
+            send_empty_buf = false;
         }
         H5_SUBFILING_GOTO_ERROR(H5E_IO, H5E_BADVALUE, -1, "invalid data size for read");
     }
@@ -950,10 +917,10 @@ ioc_file_queue_read_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_C
 #endif
 
     /* Allocate space to send data read from file to client */
-    if (NULL == (send_buf = HDmalloc((size_t)data_size))) {
+    if (NULL == (send_buf = malloc((size_t)data_size))) {
         if (need_data_tag) {
-            send_nack      = TRUE;
-            send_empty_buf = FALSE;
+            send_nack      = true;
+            send_empty_buf = false;
         }
         H5_SUBFILING_GOTO_ERROR(H5E_RESOURCE, H5E_CANTALLOC, -1, "couldn't allocate send buffer for data");
     }
@@ -967,19 +934,19 @@ ioc_file_queue_read_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_C
          * reads from a single rank, which can happen when a rank
          * owns multiple subfiles.
          */
-        HDassert(H5FD_IOC_tag_ub_val_ptr && (*H5FD_IOC_tag_ub_val_ptr >= IO_TAG_BASE));
+        assert(H5FD_IOC_tag_ub_val_ptr && (*H5FD_IOC_tag_ub_val_ptr >= IO_TAG_BASE));
         send_tag = (int)(counter % (INT_MAX - IO_TAG_BASE));
         send_tag %= (*H5FD_IOC_tag_ub_val_ptr - IO_TAG_BASE);
         send_tag += IO_TAG_BASE;
 
         if (send_ack_to_client(send_tag, source, ioc_idx, READ_INDEP_ACK, comm) < 0) {
-            send_empty_buf = FALSE;
+            send_empty_buf = false;
             H5_SUBFILING_GOTO_ERROR(H5E_IO, H5E_READERROR, -1, "couldn't send ACK to client");
         }
     }
 
     /* Read data from the subfile */
-    HDassert(subfile_idx < sf_context->sf_num_fids);
+    assert(subfile_idx < sf_context->sf_num_fids);
     sf_fid = sf_context->sf_fids[subfile_idx];
     if (sf_fid < 0)
         H5_SUBFILING_GOTO_ERROR(H5E_IO, H5E_BADVALUE, -1, "subfile file descriptor %d is invalid", sf_fid);
@@ -990,7 +957,7 @@ ioc_file_queue_read_indep(sf_work_request_t *msg, int ioc_idx, int source, MPI_C
                                 read_ret);
     }
 
-    send_empty_buf = FALSE;
+    send_empty_buf = false;
 
     /* Send read data to the client */
     H5_CHECK_OVERFLOW(data_size, int64_t, int);
@@ -1025,7 +992,7 @@ done:
             H5_SUBFILING_MPI_DONE_ERROR(-1, "MPI_Send failed", mpi_code);
     }
 
-    HDfree(send_buf);
+    free(send_buf);
 
     return ret_value;
 } /* end ioc_file_queue_read_indep() */
@@ -1062,8 +1029,8 @@ ioc_file_write_data(int fd, int64_t file_offset, void *data_buffer, int64_t data
             bytes_remaining -= bytes_written;
 
 #ifdef H5FD_IOC_DEBUG
-            HDprintf("[ioc(%d) %s]: wrote %ld bytes, remaining=%ld, file_offset=%" PRId64 "\n", ioc_idx,
-                     __func__, bytes_written, bytes_remaining, file_offset);
+            printf("[ioc(%d) %s]: wrote %ld bytes, remaining=%ld, file_offset=%" PRId64 "\n", ioc_idx,
+                   __func__, bytes_written, bytes_remaining, file_offset);
 #endif
 
             this_data += bytes_written;
@@ -1114,25 +1081,25 @@ ioc_file_read_data(int fd, int64_t file_offset, void *data_buffer, int64_t data_
             bytes_remaining -= bytes_read;
 
 #ifdef H5FD_IOC_DEBUG
-            HDprintf("[ioc(%d) %s]: read %ld bytes, remaining=%ld, file_offset=%" PRId64 "\n", ioc_idx,
-                     __func__, bytes_read, bytes_remaining, file_offset);
+            printf("[ioc(%d) %s]: read %ld bytes, remaining=%ld, file_offset=%" PRId64 "\n", ioc_idx,
+                   __func__, bytes_read, bytes_remaining, file_offset);
 #endif
 
             this_buffer += bytes_read;
             file_offset += bytes_read;
         }
         else if (bytes_read == 0) {
-            HDassert(bytes_remaining > 0);
+            assert(bytes_remaining > 0);
 
             /* end of file but not end of format address space */
-            HDmemset(this_buffer, 0, (size_t)bytes_remaining);
+            memset(this_buffer, 0, (size_t)bytes_remaining);
             break;
         }
         else {
             if (retries == 0) {
 #ifdef H5FD_IOC_DEBUG
-                HDprintf("[ioc(%d) %s]: TIMEOUT: file_offset=%" PRId64 ", data_size=%ld\n", ioc_idx, __func__,
-                         file_offset, data_size);
+                printf("[ioc(%d) %s]: TIMEOUT: file_offset=%" PRId64 ", data_size=%ld\n", ioc_idx, __func__,
+                       file_offset, data_size);
 #endif
 
                 H5_SUBFILING_SYS_GOTO_ERROR(H5E_IO, H5E_READERROR, -1, "HDpread failed");
@@ -1160,7 +1127,7 @@ ioc_file_truncate(sf_work_request_t *msg)
     int                  mpi_code;
     int                  ret_value = 0;
 
-    HDassert(msg);
+    assert(msg);
 
     file_context_id = msg->context_id;
     ioc_idx         = msg->ioc_idx;
@@ -1175,7 +1142,7 @@ ioc_file_truncate(sf_work_request_t *msg)
     if (NULL == (sf_context = H5_get_subfiling_object(file_context_id)))
         H5_SUBFILING_GOTO_ERROR(H5E_FILE, H5E_CANTGET, -1, "couldn't retrieve subfiling context");
 
-    HDassert(subfile_idx < sf_context->sf_num_fids);
+    assert(subfile_idx < sf_context->sf_num_fids);
 
     fd = sf_context->sf_fids[subfile_idx];
 
@@ -1191,9 +1158,9 @@ ioc_file_truncate(sf_work_request_t *msg)
         H5_SUBFILING_MPI_GOTO_ERROR(FAIL, "MPI_Send failed", mpi_code);
 
 #ifdef H5FD_IOC_DEBUG
-    HDprintf("[ioc(%d) %s]: truncated subfile to %lld bytes. ret = %d\n", ioc_idx, __func__,
-             (long long)length, errno);
-    HDfflush(stdout);
+    printf("[ioc(%d) %s]: truncated subfile to %lld bytes. ret = %d\n", ioc_idx, __func__, (long long)length,
+           errno);
+    fflush(stdout);
 #endif
 
 done:
@@ -1214,11 +1181,6 @@ done:
  *
  * Return:      0 if successful, 1 or an MPI error code on failure.
  *
- * Programmer:  John Mainzer
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
- *
  *-------------------------------------------------------------------------
  */
 
@@ -1236,7 +1198,7 @@ ioc_file_report_eof(sf_work_request_t *msg, MPI_Comm comm)
     int                  mpi_code;
     int                  ret_value = 0;
 
-    HDassert(msg);
+    assert(msg);
 
     file_context_id = msg->context_id;
     source          = msg->source;
@@ -1247,7 +1209,7 @@ ioc_file_report_eof(sf_work_request_t *msg, MPI_Comm comm)
     if (NULL == (sf_context = H5_get_subfiling_object(file_context_id)))
         H5_SUBFILING_GOTO_ERROR(H5E_FILE, H5E_CANTGET, -1, "couldn't retrieve subfiling context");
 
-    HDassert(subfile_idx < sf_context->sf_num_fids);
+    assert(subfile_idx < sf_context->sf_num_fids);
 
     fd = sf_context->sf_fids[subfile_idx];
 
@@ -1281,10 +1243,6 @@ done:
  * Return:      Pointer to new instance of ioc_io_queue_entry_t
  *              on success, and NULL on failure.
  *
- * Programmer:  JRM -- 11/6/21
- *
- * Changes:     None.
- *
  *-------------------------------------------------------------------------
  */
 static ioc_io_queue_entry_t *
@@ -1292,14 +1250,14 @@ ioc_io_queue_alloc_entry(void)
 {
     ioc_io_queue_entry_t *q_entry_ptr = NULL;
 
-    q_entry_ptr = (ioc_io_queue_entry_t *)HDmalloc(sizeof(ioc_io_queue_entry_t));
+    q_entry_ptr = (ioc_io_queue_entry_t *)malloc(sizeof(ioc_io_queue_entry_t));
 
     if (q_entry_ptr) {
 
         q_entry_ptr->magic       = H5FD_IOC__IO_Q_ENTRY_MAGIC;
         q_entry_ptr->next        = NULL;
         q_entry_ptr->prev        = NULL;
-        q_entry_ptr->in_progress = FALSE;
+        q_entry_ptr->in_progress = false;
         q_entry_ptr->counter     = 0;
 
         /* will memcpy the wk_req field, so don't bother to initialize */
@@ -1336,10 +1294,6 @@ ioc_io_queue_alloc_entry(void)
  *
  * Return:      void.
  *
- * Programmer:  JRM -- 11/7/21
- *
- * Changes:     None.
- *
  *-------------------------------------------------------------------------
  */
 static void
@@ -1347,21 +1301,21 @@ ioc_io_queue_add_entry(ioc_data_t *ioc_data, sf_work_request_t *wk_req_ptr)
 {
     ioc_io_queue_entry_t *entry_ptr = NULL;
 
-    HDassert(ioc_data);
-    HDassert(ioc_data->io_queue.magic == H5FD_IOC__IO_Q_MAGIC);
-    HDassert(wk_req_ptr);
+    assert(ioc_data);
+    assert(ioc_data->io_queue.magic == H5FD_IOC__IO_Q_MAGIC);
+    assert(wk_req_ptr);
 
     entry_ptr = ioc_io_queue_alloc_entry();
 
-    HDassert(entry_ptr);
-    HDassert(entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
+    assert(entry_ptr);
+    assert(entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
 
-    HDmemcpy((void *)(&(entry_ptr->wk_req)), (const void *)wk_req_ptr, sizeof(sf_work_request_t));
+    H5MM_memcpy((void *)(&(entry_ptr->wk_req)), (const void *)wk_req_ptr, sizeof(sf_work_request_t));
 
     /* must obtain io_queue mutex before appending */
     hg_thread_mutex_lock(&ioc_data->io_queue.q_mutex);
 
-    HDassert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
+    assert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
 
     entry_ptr->counter = ioc_data->io_queue.req_counter++;
 
@@ -1381,7 +1335,7 @@ ioc_io_queue_add_entry(ioc_data_t *ioc_data, sf_work_request_t *wk_req_ptr)
         atomic_load(&ioc_data->sf_io_ops_pending));
 #endif
 
-    HDassert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress == ioc_data->io_queue.q_len);
+    assert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress == ioc_data->io_queue.q_len);
 
 #ifdef H5FD_IOC_COLLECT_STATS
     entry_ptr->q_time = H5_now_usec();
@@ -1419,7 +1373,7 @@ ioc_io_queue_add_entry(ioc_data_t *ioc_data, sf_work_request_t *wk_req_ptr)
     }
 #endif
 
-    HDassert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
+    assert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
 
     hg_thread_mutex_unlock(&ioc_data->io_queue.q_mutex);
 
@@ -1459,10 +1413,6 @@ ioc_io_queue_add_entry(ioc_data_t *ioc_data, sf_work_request_t *wk_req_ptr)
  *
  * Return:      void.
  *
- * Programmer:  JRM -- 11/7/21
- *
- * Changes:     None.
- *
  *-------------------------------------------------------------------------
  */
 /* TODO: Keep an eye on statistics and optimize this algorithm if necessary.  While it is O(N)
@@ -1470,9 +1420,9 @@ ioc_io_queue_add_entry(ioc_data_t *ioc_data, sf_work_request_t *wk_req_ptr)
  *       can become O(N**2) in the worst case.
  */
 static void
-ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
+ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, bool try_lock)
 {
-    hbool_t               conflict_detected;
+    bool                  conflict_detected;
     int64_t               entry_offset;
     int64_t               entry_len;
     int64_t               scan_offset;
@@ -1480,8 +1430,8 @@ ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
     ioc_io_queue_entry_t *entry_ptr = NULL;
     ioc_io_queue_entry_t *scan_ptr  = NULL;
 
-    HDassert(ioc_data);
-    HDassert(ioc_data->io_queue.magic == H5FD_IOC__IO_Q_MAGIC);
+    assert(ioc_data);
+    assert(ioc_data->io_queue.magic == H5FD_IOC__IO_Q_MAGIC);
 
     if (try_lock) {
         if (hg_thread_mutex_try_lock(&ioc_data->io_queue.q_mutex) < 0)
@@ -1493,11 +1443,11 @@ ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
     entry_ptr = ioc_data->io_queue.q_head;
 
     /* sanity check on first element in the I/O queue */
-    HDassert((entry_ptr == NULL) || (entry_ptr->prev == NULL));
+    assert((entry_ptr == NULL) || (entry_ptr->prev == NULL));
 
     while ((entry_ptr) && (ioc_data->io_queue.num_pending > 0)) {
 
-        HDassert(entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
+        assert(entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
 
         /* Check for a get EOF or truncate operation at head of queue */
         if (ioc_data->io_queue.q_head->in_progress) {
@@ -1518,11 +1468,11 @@ ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
             entry_offset = entry_ptr->wk_req.header[1];
             entry_len    = entry_ptr->wk_req.header[0];
 
-            conflict_detected = FALSE;
+            conflict_detected = false;
 
             scan_ptr = entry_ptr->prev;
 
-            HDassert((scan_ptr == NULL) || (scan_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC));
+            assert((scan_ptr == NULL) || (scan_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC));
 
             if ((entry_ptr->wk_req.tag == TRUNC_OP) || (entry_ptr->wk_req.tag == GET_EOF_OP)) {
 
@@ -1553,7 +1503,7 @@ ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
                     /* TODO: update this if statement when we add collective I/O */
                     if ((entry_ptr->wk_req.tag != READ_INDEP) || (scan_ptr->wk_req.tag != READ_INDEP)) {
 
-                        conflict_detected = TRUE;
+                        conflict_detected = true;
                     }
                 }
 
@@ -1562,18 +1512,18 @@ ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
 
             if (!conflict_detected) { /* dispatch I/O request */
 
-                HDassert(scan_ptr == NULL);
-                HDassert(!entry_ptr->in_progress);
+                assert(scan_ptr == NULL);
+                assert(!entry_ptr->in_progress);
 
-                entry_ptr->in_progress = TRUE;
+                entry_ptr->in_progress = true;
 
-                HDassert(ioc_data->io_queue.num_pending > 0);
+                assert(ioc_data->io_queue.num_pending > 0);
 
                 ioc_data->io_queue.num_pending--;
                 ioc_data->io_queue.num_in_progress++;
 
-                HDassert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress ==
-                         ioc_data->io_queue.q_len);
+                assert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress ==
+                       ioc_data->io_queue.q_len);
 
                 entry_ptr->thread_wk.func = handle_work_request;
                 entry_ptr->thread_wk.args = entry_ptr;
@@ -1606,7 +1556,7 @@ ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
         entry_ptr = entry_ptr->next;
     }
 
-    HDassert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
+    assert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
 
     hg_thread_mutex_unlock(&ioc_data->io_queue.q_mutex);
 } /* ioc_io_queue_dispatch_eligible_entries() */
@@ -1627,10 +1577,6 @@ ioc_io_queue_dispatch_eligible_entries(ioc_data_t *ioc_data, hbool_t try_lock)
  *
  * Return:      void.
  *
- * Programmer:  JRM -- 11/7/21
- *
- * Changes:     None.
- *
  *-------------------------------------------------------------------------
  */
 static void
@@ -1641,16 +1587,16 @@ ioc_io_queue_complete_entry(ioc_data_t *ioc_data, ioc_io_queue_entry_t *entry_pt
     uint64_t execution_time;
 #endif
 
-    HDassert(ioc_data);
-    HDassert(ioc_data->io_queue.magic == H5FD_IOC__IO_Q_MAGIC);
-    HDassert(entry_ptr);
-    HDassert(entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
+    assert(ioc_data);
+    assert(ioc_data->io_queue.magic == H5FD_IOC__IO_Q_MAGIC);
+    assert(entry_ptr);
+    assert(entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
 
     /* must obtain io_queue mutex before deleting and updating stats */
     hg_thread_mutex_lock(&ioc_data->io_queue.q_mutex);
 
-    HDassert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress == ioc_data->io_queue.q_len);
-    HDassert(ioc_data->io_queue.num_in_progress > 0);
+    assert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress == ioc_data->io_queue.q_len);
+    assert(ioc_data->io_queue.num_in_progress > 0);
 
     if (entry_ptr->wk_ret < 0)
         ioc_data->io_queue.num_failed++;
@@ -1659,7 +1605,7 @@ ioc_io_queue_complete_entry(ioc_data_t *ioc_data, ioc_io_queue_entry_t *entry_pt
 
     ioc_data->io_queue.num_in_progress--;
 
-    HDassert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress == ioc_data->io_queue.q_len);
+    assert(ioc_data->io_queue.num_pending + ioc_data->io_queue.num_in_progress == ioc_data->io_queue.q_len);
 
     atomic_fetch_sub(&ioc_data->sf_io_ops_pending, 1);
 
@@ -1677,10 +1623,10 @@ ioc_io_queue_complete_entry(ioc_data_t *ioc_data, ioc_io_queue_entry_t *entry_pt
      * there aren't other operations in progress
      */
     if ((entry_ptr->wk_req.tag == GET_EOF_OP) || (entry_ptr->wk_req.tag == TRUNC_OP))
-        HDassert(ioc_data->io_queue.num_in_progress == 0);
+        assert(ioc_data->io_queue.num_in_progress == 0);
 #endif
 
-    HDassert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
+    assert(ioc_data->io_queue.q_len == atomic_load(&ioc_data->sf_io_ops_pending));
 
 #ifdef H5FD_IOC_COLLECT_STATS
     /* Compute the queued and execution time */
@@ -1713,24 +1659,20 @@ ioc_io_queue_complete_entry(ioc_data_t *ioc_data, ioc_io_queue_entry_t *entry_pt
  *
  * Return:      void.
  *
- * Programmer:  JRM -- 11/6/21
- *
- * Changes:     None.
- *
  *-------------------------------------------------------------------------
  */
 static void
 ioc_io_queue_free_entry(ioc_io_queue_entry_t *q_entry_ptr)
 {
     /* use assertions for error checking, since the following should never fail. */
-    HDassert(q_entry_ptr);
-    HDassert(q_entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
-    HDassert(q_entry_ptr->next == NULL);
-    HDassert(q_entry_ptr->prev == NULL);
+    assert(q_entry_ptr);
+    assert(q_entry_ptr->magic == H5FD_IOC__IO_Q_ENTRY_MAGIC);
+    assert(q_entry_ptr->next == NULL);
+    assert(q_entry_ptr->prev == NULL);
 
     q_entry_ptr->magic = 0;
 
-    HDfree(q_entry_ptr);
+    free(q_entry_ptr);
 
     q_entry_ptr = NULL;
 

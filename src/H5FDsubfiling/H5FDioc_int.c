@@ -32,12 +32,12 @@ calculate_target_ioc(int64_t file_offset, int64_t stripe_size, int num_io_concen
     int64_t subfile_row;
     int64_t subfile_idx;
 
-    HDassert(stripe_size > 0);
-    HDassert(num_io_concentrators > 0);
-    HDassert(num_subfiles > 0);
-    HDassert(target_ioc);
-    HDassert(ioc_file_offset);
-    HDassert(ioc_subfile_idx);
+    assert(stripe_size > 0);
+    assert(num_io_concentrators > 0);
+    assert(num_subfiles > 0);
+    assert(target_ioc);
+    assert(ioc_file_offset);
+    assert(ioc_subfile_idx);
 
     stripe_idx  = file_offset / stripe_size;
     subfile_row = stripe_idx / num_subfiles;
@@ -88,10 +88,6 @@ cast_to_void(const void *data)
  *
  * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -112,12 +108,12 @@ ioc__write_independent_async(int64_t context_id, int64_t offset, int64_t element
     int                  mpi_code;
     herr_t               ret_value = SUCCEED;
 
-    HDassert(io_req);
+    assert(io_req);
 
     if (NULL == (sf_context = H5_get_subfiling_object(context_id)))
         H5_SUBFILING_GOTO_ERROR(H5E_IO, H5E_WRITEERROR, FAIL, "can't get subfiling context from ID");
-    HDassert(sf_context->topology);
-    HDassert(sf_context->topology->io_concentrators);
+    assert(sf_context->topology);
+    assert(sf_context->topology->io_concentrators);
 
     io_concentrators     = sf_context->topology->io_concentrators;
     num_io_concentrators = sf_context->topology->n_io_concentrators;
@@ -168,7 +164,7 @@ ioc__write_independent_async(int64_t context_id, int64_t offset, int64_t element
      * Allocate the I/O request object that will
      * be returned to the caller
      */
-    if (NULL == (sf_io_request = HDmalloc(sizeof(io_req_t))))
+    if (NULL == (sf_io_request = malloc(sizeof(io_req_t))))
         H5_SUBFILING_GOTO_ERROR(H5E_RESOURCE, H5E_WRITEERROR, FAIL, "couldn't allocate I/O request");
 
     H5_CHECK_OVERFLOW(ioc_start, int64_t, int);
@@ -229,7 +225,7 @@ done:
             }
         }
 
-        HDfree(sf_io_request);
+        free(sf_io_request);
         *io_req = NULL;
     }
 
@@ -260,10 +256,6 @@ done:
  *
  * Return:      Non-negative on success/Negative on failure
  *
- * Programmer:  Richard Warren
- *              7/17/2020
- *
- * Changes:     Initial Version/None.
  *-------------------------------------------------------------------------
  */
 herr_t
@@ -273,7 +265,7 @@ ioc__read_independent_async(int64_t context_id, int64_t offset, int64_t elements
     subfiling_context_t *sf_context    = NULL;
     MPI_Request          ack_request   = MPI_REQUEST_NULL;
     io_req_t            *sf_io_request = NULL;
-    hbool_t              need_data_tag = FALSE;
+    bool                 need_data_tag = false;
     int64_t              ioc_start;
     int64_t              ioc_offset;
     int64_t              ioc_subfile_idx;
@@ -285,14 +277,14 @@ ioc__read_independent_async(int64_t context_id, int64_t offset, int64_t elements
     int                  mpi_code;
     herr_t               ret_value = SUCCEED;
 
-    HDassert(io_req);
+    assert(io_req);
 
     H5_CHECK_OVERFLOW(elements, int64_t, int);
 
     if (NULL == (sf_context = H5_get_subfiling_object(context_id)))
         H5_SUBFILING_GOTO_ERROR(H5E_IO, H5E_READERROR, FAIL, "can't get subfiling context from ID");
-    HDassert(sf_context->topology);
-    HDassert(sf_context->topology->io_concentrators);
+    assert(sf_context->topology);
+    assert(sf_context->topology->io_concentrators);
 
     io_concentrators     = sf_context->topology->io_concentrators;
     num_io_concentrators = sf_context->topology->n_io_concentrators;
@@ -305,9 +297,13 @@ ioc__read_independent_async(int64_t context_id, int64_t offset, int64_t elements
      * unpredictable order. However, if some IOCs own more than
      * 1 subfile, we need to associate each read with a unique
      * message tag to make sure the data is received in the
-     * correct order.
+     * correct order. We also need a unique message tag in the
+     * case where only 1 subfile is used in total. In this case,
+     * vector I/O calls are passed directly down to this VFD without
+     * being split up into multiple I/O requests, so we need the
+     * tag to distinguish each I/O request.
      */
-    need_data_tag = num_subfiles != num_io_concentrators;
+    need_data_tag = (num_subfiles == 1) || (num_subfiles != num_io_concentrators);
     if (!need_data_tag)
         data_tag = READ_INDEP_DATA;
 
@@ -322,7 +318,7 @@ ioc__read_independent_async(int64_t context_id, int64_t offset, int64_t elements
      * Allocate the I/O request object that will
      * be returned to the caller
      */
-    if (NULL == (sf_io_request = HDmalloc(sizeof(io_req_t))))
+    if (NULL == (sf_io_request = malloc(sizeof(io_req_t))))
         H5_SUBFILING_GOTO_ERROR(H5E_RESOURCE, H5E_READERROR, FAIL, "couldn't allocate I/O request");
 
     H5_CHECK_OVERFLOW(ioc_start, int64_t, int);
@@ -404,7 +400,7 @@ done:
             }
         }
 
-        HDfree(sf_io_request);
+        free(sf_io_request);
         *io_req = NULL;
     }
 
@@ -428,11 +424,17 @@ ioc__async_completion(MPI_Request *mpi_reqs, size_t num_reqs)
     herr_t ret_value = SUCCEED;
     int    mpi_code;
 
-    HDassert(mpi_reqs);
+    assert(mpi_reqs);
 
     H5_CHECK_OVERFLOW(num_reqs, size_t, int);
+
+    /* Have to supppress gcc warnings regarding MPI_STATUSES_IGNORE
+     * with MPICH (https://github.com/pmodels/mpich/issues/5687)
+     */
+    H5_GCC_DIAG_OFF("stringop-overflow")
     if (MPI_SUCCESS != (mpi_code = MPI_Waitall((int)num_reqs, mpi_reqs, MPI_STATUSES_IGNORE)))
         H5_SUBFILING_MPI_GOTO_ERROR(FAIL, "MPI_Waitall failed", mpi_code);
+    H5_GCC_DIAG_ON("stringop-overflow")
 
 done:
     H5_SUBFILING_FUNC_LEAVE;

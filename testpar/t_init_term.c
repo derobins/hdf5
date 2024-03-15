@@ -11,9 +11,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:  Mohamad Chaarawi
- *              June 2015
- *
  * Purpose: This test checks for the correct initialization and
  * termination of the HDF5 library with MPI init and finalize.
  */
@@ -22,7 +19,7 @@
 
 int nerrors = 0; /* errors count */
 
-const char *FILENAME[] = {"after_mpi_fin", NULL};
+static const char *FILENAME[] = {"after_mpi_fin", NULL};
 
 int
 main(int argc, char **argv)
@@ -40,11 +37,9 @@ main(int argc, char **argv)
 
     MPI_Finalize();
 
-    nerrors += GetTestNumErrs();
-
     /* test if we can initialize the library with MPI being finalized
        and create a file serially */
-    H5open();
+    VRFY((H5open() >= 0), "H5open succeeded");
 
     if (mpi_rank == 0) {
         char  filename[1024];
@@ -57,7 +52,7 @@ main(int argc, char **argv)
         file_id = -1;
     }
 
-    H5close();
+    VRFY((H5close() >= 0), "H5close succeeded");
 
     if (MAINPROCESS) {
         if (0 == nerrors)

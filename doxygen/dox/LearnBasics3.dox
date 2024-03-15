@@ -152,13 +152,13 @@ To use the compact storage layout, call: #H5Pset_layout
 \li Create a dataset with the modified property list. (See #H5Dcreate)
 \li Close the property list. (See #H5Pclose)
 For example code, see the \ref HDF5Examples page.
-Specifically look at the <a href="https://portal.hdfgroup.org/display/HDF5/Examples+by+API">Examples by API</a>.
+Specifically look at the \ref ExAPI.
 There are examples for different languages.
 
 The C example to create a chunked dataset is:
-<a href="https://support.hdfgroup.org/ftp/HDF5/examples/examples-by-api/hdf5-examples/1_8/C/H5D/h5ex_d_chunk.c">h5ex_d_chunk.c</a>
+<a href="https://github.com/HDFGroup/hdf5/blob/develop/HDF5Examples/C/H5D/h5ex_d_chunk.c">h5ex_d_chunk.c</a>
 The C example to create a compact dataset is:
-<a href="https://support.hdfgroup.org/ftp/HDF5/examples/examples-by-api/hdf5-examples/1_8/C/H5D/h5ex_d_compact.c">h5ex_d_compact.c</a>
+<a href="https://github.com/HDFGroup/hdf5/blob/develop/HDF5Examples/C/H5D/h5ex_d_compact.c">h5ex_d_compact.c</a>
 
 \section secLBDsetLayoutChange Changing the Layout after Dataset Creation
 The dataset layout is a Dataset Creation Property List. This means that once the dataset has been
@@ -210,7 +210,7 @@ For details on compiling an HDF5 application:
 an extendible array dataset, pass in #H5P_DATASET_CREATE for the property list class.
 \li The #H5Pset_chunk call modifies a Dataset Creation Property List instance to store a chunked
 layout dataset and sets the size of the chunks used.
-\li To extend an unlimited dimension dataset use the the #H5Dset_extent call. Please be aware that
+\li To extend an unlimited dimension dataset use the #H5Dset_extent call. Please be aware that
 after this call, the dataset's dataspace must be refreshed with #H5Dget_space before more data can be accessed.
 \li The #H5Pget_chunk call retrieves the size of chunks for the raw data of a chunked layout dataset.
 \li Once there is no longer a need for a Property List instance, it should be closed with the #H5Pclose call.
@@ -288,9 +288,9 @@ is met, at a certain point in the future.)
 
 \section secLBContentsProg Programming Example
 
-\subsection subsecLBContentsProgUsing Using #H5Literate, #H5Lvisit and #H5Ovisit
+\subsection subsecLBContentsProgUsing Using H5Literate, H5Lvisit and H5Ovisit
 For example code, see the \ref HDF5Examples page.
-Specifically look at the <a href="https://portal.hdfgroup.org/display/HDF5/Examples+by+API">Examples by API</a>.
+Specifically look at the \ref ExAPI.
 There are examples for different languages, where examples of using #H5Literate and #H5Ovisit/#H5Lvisit are included.
 
 The h5ex_g_traverse example traverses a file using H5Literate:
@@ -715,7 +715,7 @@ When the library is built, the following compile scripts are included:
 \li h5fc:  compile script for HDF5 F90 programs
 \li h5c++: compile script for HDF5 C++ programs
 
-These scripts are easilye used to compile single file applications, such as those included in the tutorial.
+These scripts are easily used to compile single file applications, such as those included in the tutorial.
 <table>
 <tr>
 <th><strong>Warning</strong>
@@ -945,7 +945,7 @@ For a more complete script (and to help resolve issues) see the script provided 
 
 \subsection subsecLBCompilingCMakeExamples HDF5 Examples
 The installed HDF5 can be verified by compiling the HDF5 Examples project, included with the CMake built HDF5 binaries
-in the share folder or you can go to the <a href="https://github.com/HDFGroup/hdf5_examples">HDF5 Examples</a> github repository.
+in the share folder or you can go to the <a href="https://github.com/HDFGroup/hdf5-examples">HDF5 Examples</a> github repository.
 
 Go into the share directory and follow the instructions in USING_CMake_examples.txt to build the examples.
 

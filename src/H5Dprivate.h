@@ -78,12 +78,16 @@
 #define H5D_MPIO_LOCAL_NO_COLLECTIVE_CAUSE_NAME                                                              \
     "local_no_collective_cause" /* cause of broken collective I/O in each process */
 #define H5D_MPIO_GLOBAL_NO_COLLECTIVE_CAUSE_NAME                                                             \
-    "global_no_collective_cause"                      /* cause of broken collective I/O in all processes */
-#define H5D_XFER_EDC_NAME         "err_detect"        /* EDC */
-#define H5D_XFER_FILTER_CB_NAME   "filter_cb"         /* Filter callback function */
-#define H5D_XFER_CONV_CB_NAME     "type_conv_cb"      /* Type conversion callback function */
-#define H5D_XFER_XFORM_NAME       "data_transform"    /* Data transform */
-#define H5D_XFER_DSET_IO_SEL_NAME "dset_io_selection" /* Dataset I/O selection */
+    "global_no_collective_cause" /* cause of broken collective I/O in all processes */
+#define H5D_XFER_EDC_NAME                      "err_detect"            /* EDC */
+#define H5D_XFER_FILTER_CB_NAME                "filter_cb"             /* Filter callback function */
+#define H5D_XFER_CONV_CB_NAME                  "type_conv_cb"          /* Type conversion callback function */
+#define H5D_XFER_XFORM_NAME                    "data_transform"        /* Data transform */
+#define H5D_XFER_DSET_IO_SEL_NAME              "dset_io_selection"     /* Dataset I/O selection */
+#define H5D_XFER_SELECTION_IO_MODE_NAME        "selection_io_mode"     /* Selection I/O mode */
+#define H5D_XFER_NO_SELECTION_IO_CAUSE_NAME    "no_selection_io_cause" /* Cause for no selection I/O */
+#define H5D_XFER_ACTUAL_SELECTION_IO_MODE_NAME "actual_selection_io_mode" /* Actual selection I/O mode */
+#define H5D_XFER_MODIFY_WRITE_BUF_NAME         "modify_write_buf"         /* Modify write buffers */
 #ifdef H5_HAVE_INSTRUMENTED_LIBRARY
 /* Collective chunk instrumentation properties */
 #define H5D_XFER_COLL_CHUNK_LINK_HARD_NAME        "coll_chunk_link_hard"
@@ -101,8 +105,8 @@
 #define H5D_XFER_COLL_RANK0_BCAST_NAME "coll_rank0_bcast"
 
 /* Definitions for general collective I/O instrumentation properties */
-#define H5D_XFER_COLL_RANK0_BCAST_SIZE sizeof(hbool_t)
-#define H5D_XFER_COLL_RANK0_BCAST_DEF  FALSE
+#define H5D_XFER_COLL_RANK0_BCAST_SIZE sizeof(bool)
+#define H5D_XFER_COLL_RANK0_BCAST_DEF  false
 #endif /* H5_HAVE_INSTRUMENTED_LIBRARY */
 
 /* Default temporary buffer size */
@@ -169,7 +173,7 @@ H5_DLL hid_t       H5D_get_create_plist(const H5D_t *dset);
 H5_DLL hid_t       H5D_get_access_plist(const H5D_t *dset);
 
 /* Functions that operate on chunked storage */
-H5_DLL herr_t H5D_chunk_idx_reset(H5O_storage_chunk_t *storage, hbool_t reset_addr);
+H5_DLL herr_t H5D_chunk_idx_reset(H5O_storage_chunk_t *storage, bool reset_addr);
 
 /* Functions that operate on virtual storage */
 H5_DLL herr_t H5D_virtual_check_mapping_pre(const H5S_t *vspace, const H5S_t *src_space,

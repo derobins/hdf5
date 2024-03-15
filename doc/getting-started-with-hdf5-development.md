@@ -270,7 +270,7 @@ H5X_do_stuff(/*parameters*/)
 	HDassert(/*parameter check*/);
 
 	if (H5X_other_call() < 0)
-		HGOTO_ERROR(H5E_MAJ, H5E_MIN, FAIL, "badness")
+		HGOTO_ERROR(H5E_MAJ, H5E_MIN, FAIL, "badness");
 
 done:
 	if (ret_value < 0)
@@ -329,12 +329,12 @@ H5Xdo_api_stuff(/*parameters*/)
 	H5TRACE3(/*stuff*/)
 
 	if (/*parameter check*/)
-		HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "badness")
+		HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "badness");
 
 	/* VOL setup */
 
 	if (H5VL_call() < 0)
-		HGOTO_ERROR(H5E_FOO, H5E_BAR, FAIL, "badness")
+		HGOTO_ERROR(H5E_FOO, H5E_BAR, FAIL, "badness");
 
 done:
 	if (ret_value < 0)
@@ -483,7 +483,7 @@ fail. The general format is this:
 
 ```c
 if (function_that_could_fail(foo, bar) < 0)
-    HGOTO_ERROR(H5E_<major>, H5E_<minor>, <bad value>, "tell me about badness")
+    HGOTO_ERROR(H5E_<major>, H5E_<minor>, <bad value>, "tell me about badness");
 ```
 
 `HGOTO_ERROR` is one of a set of macros defined in `H5Eprivate.h`. This macro
@@ -496,7 +496,7 @@ files at configure time by the `bin/make_err` script. The original intent was fo
 codes to be strongly associated. i.e., a given minor code would *only* be used
 with its associated major code. Unfortunately, this has not been the case in
 practice, and the emitted text can appear nonsensical in error
-stack dumps. Even worse, the major and minor error codes are used inconsitently
+stack dumps. Even worse, the major and minor error codes are used inconsistently
 throughout the library, making interpreting them almost impossible for
 external users. We hope to address this deficiency in the near future.
 
@@ -556,7 +556,7 @@ configure/CMake options, but it's normally easier to use external tools like
 valgrind or the compiler's memory debugging options.
 
 `H5FL` provides memory pools (*Free Lists*) that create a set of fixed-size allocations
-of a certain type that the library will re-use as needed. They use `H5MM` calls
+of a certain type that the library will reuse as needed. They use `H5MM` calls
 under the hood and can be useful when the library creates and frees a lot of
 objects of that type. It's difficult to give a good guideline as to when to use
 the `H5FL` calls and when to use the `H5MM` calls, but it's probably best to
@@ -713,7 +713,7 @@ error:
     {
         H5Fclose(fid);
     }
-    H5E_END_TRY;
+    H5E_END_TRY
 
     return FAIL;
 }
@@ -746,7 +746,7 @@ to do this via a script. These are normally named `test_<thing>.sh.in`. The
 step. In the past, we have tried to stick to POSIX Bourne shell scripts, but
 many scripts now require bash.
 
-If you write a new test script, it is important to also add a Powershell
+If you write a new test script, it is important to also add a PowerShell
 equivalent for testing on Windows.
 
 It's helpful to run any new shell scripts through `shellcheck`

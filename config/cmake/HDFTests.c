@@ -12,7 +12,7 @@
 
 
 /* A simple test program to see if a function "works" */
-#define SIMPLE_TEST(x) int main(){ x; return 0; }
+#define SIMPLE_TEST(x) int main(void){ x; return 0; }
 
 
 #ifdef HAVE_ATTRIBUTE
@@ -89,17 +89,6 @@ int main ()
 
 #endif /* DEV_T_IS_SCALAR */
 
-#ifdef HAVE_OFF64_T
-
-#include <sys/types.h>
-
-int main()
-{
-    off64_t n = 0;
-    return (int)n;
-}
-#endif
-
 #ifdef TEST_DIRECT_VFD_WORKS
 
 #include <sys/types.h>
@@ -135,66 +124,6 @@ main(void)
 #else
     return 0;
 #endif
-}
-#endif
-
-#ifdef TEST_LFS_WORKS
-
-/* Return 0 when LFS is available and 1 otherwise.  */
-
-#define _LARGEFILE_SOURCE
-#define _LARGEFILE64_SOURCE
-#define _LARGE_FILES
-#define _FILE_OFFSET_BITS 64
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <assert.h>
-#include <stdio.h>
-
-#define OFF_T_64 (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
-
-int main(int argc, char **argv)
-{
-
-    /* Check that off_t can hold 2^63 - 1 and perform basic operations... */
-    if (OFF_T_64 % 2147483647 != 1)
-        return 1;
-
-    /* stat breaks on SCO OpenServer */
-    struct stat buf;
-    stat(argv[0], &buf);
-    if (!S_ISREG(buf.st_mode))
-        return 2;
-
-    FILE *file = fopen(argv[0], "r");
-    off_t offset = ftello(file);
-    fseek(file, offset, SEEK_CUR);
-    fclose(file);
-    return 0;
-}
-#endif
-
-#ifdef GETTIMEOFDAY_GIVES_TZ
-#include <time.h>
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
-int main(void)
-{
-    struct timeval tv;
-    struct timezone tz;
-
-    tz.tz_minuteswest = 7777;  /* Initialize to an unreasonable number */
-    tz.tz_dsttime = 7;
-
-    gettimeofday(&tv, &tz);
-
-    /* Check whether the function returned any value at all */
-    if (tz.tz_minuteswest == 7777 && tz.tz_dsttime == 7)
-        return 1;
-    else
-        return 0;
 }
 #endif
 

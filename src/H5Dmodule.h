@@ -11,12 +11,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Programmer:	Quincey Koziol
- *		Saturday, September 12, 2015
- *
- * Purpose:	This file contains declarations which define macros for the
- *		H5D package.  Including this header means that the source file
- *		is part of the H5D package.
+ * Purpose: This file contains declarations which define macros for the
+ *          H5D package.  Including this header means that the source file
+ *          is part of the H5D package.
  */
 #ifndef H5Dmodule_H
 #define H5Dmodule_H
@@ -55,7 +52,7 @@
  * pointers to metadata) that describes or annotates the dataset. Header information includes the
  * name of the object, its dimensionality, its number-type, information about how the data itself is
  * stored on disk (the storage layout), and other information used by the library to speed up access
- * to the dataset or maintain the file’s integrity.
+ * to the dataset or maintain the file's integrity.
  *
  * The HDF5 dataset interface, comprising the @ref H5D functions, provides a mechanism for managing
  * HDF5 datasets including the transfer of data between memory and disk and the description of
@@ -177,15 +174,20 @@
  * </tr>
  * <tr>
  * <td>#H5Dset_extent</td>
- * <td>Changes the sizes of a dataset’s dimensions.</td>
+ * <td>Changes the sizes of a dataset's dimensions.</td>
  * </tr>
  * </table>
  *
  * \anchor dcpl_table_tag Dataset creation property list functions (H5P)
+ * <div>
  * \snippet{doc} tables/propertyLists.dox dcpl_table
+ * </div>
  *
  * \anchor dapl_table_tag Dataset access property list functions (H5P)
+ *
+ * <div>
  * \snippet{doc} tables/propertyLists.dox dapl_table
+ * </div>
  *
  * \subsection subsec_dataset_program Programming Model for Datasets
  * This section explains the programming model for datasets.
@@ -271,7 +273,7 @@
  * of each dimension. The maximum dimension size can be a fixed value or the constant
  * #H5S_UNLIMITED, in which case the actual dimension size can be changed with calls to
  * #H5Dset_extent, up to the maximum set with the maxdims parameter in the #H5Screate_simple
- * call that established the dataset’s original dimensions. The maximum dimension size is set when
+ * call that established the dataset's original dimensions. The maximum dimension size is set when
  * the dataset is created and cannot be changed.
  *
  * <h4>Datatype</h4>
@@ -741,11 +743,11 @@
  * </tr>
  * <tr>
  * <td>I/O initiation</td>
- * <td>Initiation of HDF5 I/O activities (#H5Dwrite and #H5Dread) in a user’s application program.</td>
+ * <td>Initiation of HDF5 I/O activities (#H5Dwrite and #H5Dread) in a user's application program.</td>
  * </tr>
  * <tr>
  * <td>Memory hyperslab operation</td>
- * <td>Data is scattered to (for read), or gathered from (for write) the application’s memory buffer
+ * <td>Data is scattered to (for read), or gathered from (for write) the application's memory buffer
  * (bypassed if no datatype conversion is needed).</td>
  * </tr>
  * <tr>
@@ -852,7 +854,7 @@
  * Filters are selected by dataset creation properties, and some behavior may be controlled by data
  * transfer properties. The library determines what filters must be applied and applies them in the
  * order in which they were set by the application. That is, if an application calls
- * #H5Pset_shuffle and then #H5Pset_deflate when creating a dataset’s creation property list, the
+ * #H5Pset_shuffle and then #H5Pset_deflate when creating a dataset's creation property list, the
  * library will apply the shuffle filter first and then the deflate filter.
  *
  * For more information,
@@ -866,7 +868,9 @@
  * the pipeline processing: the pipeline and filter operations are identical no matter what data access
  * mechanism is used.
  *
+ * <div>
  * \snippet{doc} tables/propertyLists.dox lcpl_table
+ * </div>
  *
  * Each file driver writes/reads contiguous blocks of bytes from a logically contiguous address
  * space. The file driver is responsible for managing the details of the different physical storage
@@ -883,7 +887,9 @@
  * Data transfer properties set optional parameters that control parts of the data pipeline. The
  * function listing below shows transfer properties that control the behavior of the library.
  *
+ * <div>
  * \snippet{doc} tables/fileDriverLists.dox file_driver_table
+ * </div>
  *
  * Some filters and file drivers require or use additional parameters from the application program.
  * These can be passed in the data transfer property list. The table below shows file driver property
@@ -1150,8 +1156,8 @@ allocated if necessary.
  * are defined. See the example code below.
  *
  * The dimensions of the dataset can also be reduced. If the sizes specified are smaller than the
- * dataset’s current dimension sizes, #H5Dset_extent will reduce the dataset’s dimension sizes to the
- * specified values. It is the user’s responsibility to ensure that valuable data is not lost;
+ * dataset's current dimension sizes, #H5Dset_extent will reduce the dataset's dimension sizes to the
+ * specified values. It is the user's responsibility to ensure that valuable data is not lost;
  * #H5Dset_extent does not check.
  *
  * <em>Using #H5Dset_extent to increase the size of a dataset</em>
@@ -1301,7 +1307,7 @@ allocated if necessary.
  * </tr>
  * </table>
  *
- * Together these three properties control the library’s behavior. The table below summarizes the
+ * Together these three properties control the library's behavior. The table below summarizes the
  * possibilities during the dataset create-write-close cycle.
  *
  * <table>
@@ -1815,7 +1821,7 @@ allocated if necessary.
  * The first and second parameters can be obtained using the HDF5 dataspace and datatype
  * interface calls.
  *
- * A compound datatype can have members of array or compound datatype. An array datatype’s
+ * A compound datatype can have members of array or compound datatype. An array datatype's
  * base datatype can be a complex compound datatype. Recursive calls are required to set
  * parameters for these complex situations.
  *
@@ -1824,16 +1830,16 @@ allocated if necessary.
  * recursive calls.
  *
  * For an atomic datatype (integer or floating-point), parameters that will be stored include the
- * datatype’s size, endianness, precision, and offset.
+ * datatype's size, endianness, precision, and offset.
  *
  * For a no-op datatype, only the size is required.
  *
- * For a compound datatype, parameters that will be stored include the datatype’s total size and
+ * For a compound datatype, parameters that will be stored include the datatype's total size and
  * number of members. For each member, its member offset needs to be stored. Other parameters
  * for members will depend on the respective datatype class.
  *
- * For an array datatype, the total size parameter should be stored. Other parameters for the array’s
- * base type depend on the base type’s datatype class.
+ * For an array datatype, the total size parameter should be stored. Other parameters for the array's
+ * base type depend on the base type's datatype class.
  *
  * Further, to correctly retrieve the parameter for use of n-bit compression or decompression later,
  * parameters for distinguishing between datatype classes should be stored.
@@ -1900,7 +1906,7 @@ allocated if necessary.
  * In the function H5Z__set_parms_array:
  * <ul><li>1. Store the assigned numeric code for the array datatype in cd_value[i]; increment i</li>
  * <li>2. Get the size of the array datatype and store in cd_value[i]; increment i</li>
- * <li>3. Get the class of the array’s base datatype.
+ * <li>3. Get the class of the array's base datatype.
  *   <ul><li>For an integer or floating-point datatype, call H5Z__set_parms_atomic</li>
  *   <li>For an array datatype, call H5Z__set_parms_array</li>
  *   <li>For a compound datatype, call H5Z__set_parms_compound</li>

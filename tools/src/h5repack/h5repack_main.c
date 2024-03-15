@@ -21,10 +21,10 @@ static int  parse_command_line(int argc, const char *const *argv, pack_opt_t *op
 static void leave(int ret) H5_ATTR_NORETURN;
 
 /* module-scoped variables */
-static int  has_i   = 0;
-static int  has_o   = 0;
-const char *infile  = NULL;
-const char *outfile = NULL;
+static int         has_i   = 0;
+static int         has_o   = 0;
+static const char *infile  = NULL;
+static const char *outfile = NULL;
 
 /*
  * Command-line options: The user can specify short or long-named
@@ -371,7 +371,7 @@ static void
 leave(int ret)
 {
     h5tools_close();
-    HDexit(ret);
+    exit(ret);
 }
 
 /*-------------------------------------------------------------------------
@@ -392,7 +392,7 @@ read_info(const char *filename, pack_opt_t *options)
     int   i;
     int   ret_value = EXIT_SUCCESS;
 
-    if (NULL == (fp = HDfopen(filename, "r"))) {
+    if (NULL == (fp = fopen(filename, "r"))) {
         error_msg("cannot open options file %s\n", filename);
         h5tools_setstatus(EXIT_FAILURE);
         ret_value = EXIT_FAILURE;
@@ -401,11 +401,11 @@ read_info(const char *filename, pack_opt_t *options)
 
     /* cycle until end of file reached */
     while (1) {
-        if (EOF == HDfscanf(fp, "%9s", stype))
+        if (EOF == fscanf(fp, "%9s", stype))
             break;
 
         /* Info indicator must be for layout or filter */
-        if (HDstrcmp(stype, "-l") != 0 && HDstrcmp(stype, "-f") != 0) {
+        if (strcmp(stype, "-l") != 0 && strcmp(stype, "-f") != 0) {
             error_msg("bad file format for %s", filename);
             h5tools_setstatus(EXIT_FAILURE);
             ret_value = EXIT_FAILURE;
@@ -416,33 +416,33 @@ read_info(const char *filename, pack_opt_t *options)
         i = 0;
         c = '0';
         while (c != ' ') {
-            if (HDfscanf(fp, "%c", &c) < 0 && HDferror(fp)) {
+            if (fscanf(fp, "%c", &c) < 0 && ferror(fp)) {
                 error_msg("fscanf error\n");
                 h5tools_setstatus(EXIT_FAILURE);
                 ret_value = EXIT_FAILURE;
                 goto done;
             }
-            if (HDfeof(fp))
+            if (feof(fp))
                 break;
         }
         c = '0';
         /* go until end */
         while (c != ' ') {
-            if (HDfscanf(fp, "%c", &c) < 0 && HDferror(fp)) {
+            if (fscanf(fp, "%c", &c) < 0 && ferror(fp)) {
                 error_msg("fscanf error\n");
                 h5tools_setstatus(EXIT_FAILURE);
                 ret_value = EXIT_FAILURE;
                 goto done;
             }
             comp_info[i++] = c;
-            if (HDfeof(fp))
+            if (feof(fp))
                 break;
             if (c == 10 /*eol*/)
                 break;
         }
         comp_info[i - 1] = '\0'; /*cut the last " */
 
-        if (!HDstrcmp(stype, "-l")) {
+        if (!strcmp(stype, "-l")) {
             if (h5repack_addlayout(comp_info, options) == -1) {
                 error_msg("could not add chunk option\n");
                 h5tools_setstatus(EXIT_FAILURE);
@@ -462,7 +462,7 @@ read_info(const char *filename, pack_opt_t *options)
 
 done:
     if (fp)
-        HDfclose(fp);
+        fclose(fp);
 
     return ret_value;
 }
@@ -482,9 +482,9 @@ set_sort_by(const char *form)
 {
     H5_index_t idx_type = H5_INDEX_UNKNOWN;
 
-    if (!HDstrcmp(form, "name"))
+    if (!strcmp(form, "name"))
         idx_type = H5_INDEX_NAME;
-    else if (!HDstrcmp(form, "creation_order"))
+    else if (!strcmp(form, "creation_order"))
         idx_type = H5_INDEX_CRT_ORDER;
 
     return idx_type;
@@ -505,9 +505,9 @@ set_sort_order(const char *form)
 {
     H5_iter_order_t iter_order = H5_ITER_UNKNOWN;
 
-    if (!HDstrcmp(form, "ascending"))
+    if (!strcmp(form, "ascending"))
         iter_order = H5_ITER_INC;
-    else if (!HDstrcmp(form, "descending"))
+    else if (!strcmp(form, "descending"))
         iter_order = H5_ITER_DEC;
 
     return iter_order;
@@ -526,19 +526,19 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
     h5tools_vol_info_t out_vol_info;
     h5tools_vfd_info_t in_vfd_info;
     h5tools_vfd_info_t out_vfd_info;
-    hbool_t            custom_in_vol  = FALSE;
-    hbool_t            custom_in_vfd  = FALSE;
-    hbool_t            custom_out_vol = FALSE;
-    hbool_t            custom_out_vfd = FALSE;
+    bool               custom_in_vol  = false;
+    bool               custom_in_vfd  = false;
+    bool               custom_out_vol = false;
+    bool               custom_out_vfd = false;
     hid_t              tmp_fapl       = H5I_INVALID_HID;
     int                bound, opt;
     int                ret_value = 0;
 
     /* Initialize fapl info structs */
-    HDmemset(&in_vol_info, 0, sizeof(h5tools_vol_info_t));
-    HDmemset(&out_vol_info, 0, sizeof(h5tools_vol_info_t));
-    HDmemset(&in_vfd_info, 0, sizeof(h5tools_vfd_info_t));
-    HDmemset(&out_vfd_info, 0, sizeof(h5tools_vfd_info_t));
+    memset(&in_vol_info, 0, sizeof(h5tools_vol_info_t));
+    memset(&out_vol_info, 0, sizeof(h5tools_vol_info_t));
+    memset(&in_vfd_info, 0, sizeof(h5tools_vfd_info_t));
+    memset(&out_vfd_info, 0, sizeof(h5tools_vfd_info_t));
 
     /* parse command line options */
     while (EOF != (opt = H5_get_option(argc, argv, s_opts, l_opts))) {
@@ -570,7 +570,7 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
 
             case 'v':
                 if (H5_optarg != NULL) {
-                    if (2 == HDatoi(H5_optarg))
+                    if (2 == atoi(H5_optarg))
                         options->verbose = 2;
                 }
                 else
@@ -598,7 +598,7 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
                 break;
 
             case 'm':
-                options->min_comp = HDstrtoull(H5_optarg, NULL, 0);
+                options->min_comp = strtoull(H5_optarg, NULL, 0);
                 if ((int)options->min_comp <= 0) {
                     error_msg("invalid minimum compress size <%s>\n", H5_optarg);
                     h5tools_setstatus(EXIT_FAILURE);
@@ -621,11 +621,11 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
                 break;
 
             case 'L':
-                options->latest = TRUE;
+                options->latest = true;
                 break;
 
             case 'j':
-                bound = HDatoi(H5_optarg);
+                bound = atoi(H5_optarg);
                 if (bound < H5F_LIBVER_EARLIEST || bound > H5F_LIBVER_LATEST) {
                     error_msg("in parsing low bound\n");
                     h5tools_setstatus(EXIT_FAILURE);
@@ -636,7 +636,7 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
                 break;
 
             case 'k':
-                bound = HDatoi(H5_optarg);
+                bound = atoi(H5_optarg);
                 if (bound < H5F_LIBVER_EARLIEST || bound > H5F_LIBVER_LATEST) {
                     error_msg("in parsing high bound\n");
                     h5tools_setstatus(EXIT_FAILURE);
@@ -647,50 +647,50 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
                 break;
 
             case 'X':
-                options->merge = TRUE;
+                options->merge = true;
                 break;
 
             case 'W':
-                options->prune = TRUE;
+                options->prune = true;
                 break;
 
             case 'c':
-                options->grp_compact = HDatoi(H5_optarg);
+                options->grp_compact = atoi(H5_optarg);
                 if (options->grp_compact > 0)
-                    options->latest = TRUE; /* must use latest format */
+                    options->latest = true; /* must use latest format */
                 break;
 
             case 'd':
-                options->grp_indexed = HDatoi(H5_optarg);
+                options->grp_indexed = atoi(H5_optarg);
                 if (options->grp_indexed > 0)
-                    options->latest = TRUE; /* must use latest format */
+                    options->latest = true; /* must use latest format */
                 break;
 
             case 's': {
                 int   idx       = 0;
                 int   ssize     = 0;
-                char *msgPtr    = HDstrchr(H5_optarg, ':');
-                options->latest = TRUE; /* must use latest format */
+                char *msgPtr    = strchr(H5_optarg, ':');
+                options->latest = true; /* must use latest format */
                 if (msgPtr == NULL) {
-                    ssize = HDatoi(H5_optarg);
+                    ssize = atoi(H5_optarg);
                     for (idx = 0; idx < 5; idx++)
                         options->msg_size[idx] = ssize;
                 }
                 else {
                     char msgType[10];
 
-                    HDstrcpy(msgType, msgPtr + 1);
+                    strcpy(msgType, msgPtr + 1);
                     msgPtr[0] = '\0';
-                    ssize     = HDatoi(H5_optarg);
-                    if (!HDstrncmp(msgType, "dspace", 6))
+                    ssize     = atoi(H5_optarg);
+                    if (!strncmp(msgType, "dspace", 6))
                         options->msg_size[0] = ssize;
-                    else if (!HDstrncmp(msgType, "dtype", 5))
+                    else if (!strncmp(msgType, "dtype", 5))
                         options->msg_size[1] = ssize;
-                    else if (!HDstrncmp(msgType, "fill", 4))
+                    else if (!strncmp(msgType, "fill", 4))
                         options->msg_size[2] = ssize;
-                    else if (!HDstrncmp(msgType, "pline", 5))
+                    else if (!strncmp(msgType, "pline", 5))
                         options->msg_size[3] = ssize;
-                    else if (!HDstrncmp(msgType, "attr", 4))
+                    else if (!strncmp(msgType, "attr", 4))
                         options->msg_size[4] = ssize;
                 }
             } break;
@@ -700,19 +700,19 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
                 break;
 
             case 'b':
-                options->ublock_size = (hsize_t)HDatol(H5_optarg);
+                options->ublock_size = (hsize_t)atol(H5_optarg);
                 break;
 
             case 'M':
-                options->meta_block_size = (hsize_t)HDatol(H5_optarg);
+                options->meta_block_size = (hsize_t)atol(H5_optarg);
                 break;
 
             case 't':
-                options->threshold = (hsize_t)HDatol(H5_optarg);
+                options->threshold = (hsize_t)atol(H5_optarg);
                 break;
 
             case 'a':
-                options->alignment = HDstrtoull(H5_optarg, NULL, 0);
+                options->alignment = strtoull(H5_optarg, NULL, 0);
                 if (options->alignment < 1) {
                     error_msg("invalid alignment size `%s`\n", H5_optarg);
                     h5tools_setstatus(EXIT_FAILURE);
@@ -724,14 +724,14 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
             case 'S': {
                 char strategy[MAX_NC_NAME];
 
-                HDstrcpy(strategy, H5_optarg);
-                if (!HDstrcmp(strategy, "FSM_AGGR"))
+                strcpy(strategy, H5_optarg);
+                if (!strcmp(strategy, "FSM_AGGR"))
                     options->fs_strategy = H5F_FSPACE_STRATEGY_FSM_AGGR;
-                else if (!HDstrcmp(strategy, "PAGE"))
+                else if (!strcmp(strategy, "PAGE"))
                     options->fs_strategy = H5F_FSPACE_STRATEGY_PAGE;
-                else if (!HDstrcmp(strategy, "AGGR"))
+                else if (!strcmp(strategy, "AGGR"))
                     options->fs_strategy = H5F_FSPACE_STRATEGY_AGGR;
-                else if (!HDstrcmp(strategy, "NONE"))
+                else if (!strcmp(strategy, "NONE"))
                     options->fs_strategy = H5F_FSPACE_STRATEGY_NONE;
                 else {
                     error_msg("invalid file space management strategy `%s`\n", H5_optarg);
@@ -745,21 +745,21 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
             } break;
 
             case 'P':
-                options->fs_persist = HDatoi(H5_optarg);
+                options->fs_persist = atoi(H5_optarg);
                 if (options->fs_persist == 0)
                     /* To distinguish the "specified" zero value */
                     options->fs_persist = -1;
                 break;
 
             case 'T':
-                options->fs_threshold = HDatol(H5_optarg);
+                options->fs_threshold = atol(H5_optarg);
                 if (options->fs_threshold == 0)
                     /* To distinguish the "specified" zero value */
                     options->fs_threshold = -1;
                 break;
 
             case 'G':
-                options->fs_pagesize = HDstrtoll(H5_optarg, NULL, 0);
+                options->fs_pagesize = strtoll(H5_optarg, NULL, 0);
                 if (options->fs_pagesize == 0)
                     /* To distinguish the "specified" zero value */
                     options->fs_pagesize = -1;
@@ -785,21 +785,21 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
 
             case 'E':
                 if (H5_optarg != NULL)
-                    enable_error_stack = HDatoi(H5_optarg);
+                    enable_error_stack = atoi(H5_optarg);
                 else
                     enable_error_stack = 1;
                 break;
 
             case '1':
                 in_vol_info.type    = VOL_BY_VALUE;
-                in_vol_info.u.value = (H5VL_class_value_t)HDatoi(H5_optarg);
-                custom_in_vol       = TRUE;
+                in_vol_info.u.value = (H5VL_class_value_t)atoi(H5_optarg);
+                custom_in_vol       = true;
                 break;
 
             case '2':
                 in_vol_info.type   = VOL_BY_NAME;
                 in_vol_info.u.name = H5_optarg;
-                custom_in_vol      = TRUE;
+                custom_in_vol      = true;
                 break;
 
             case '3':
@@ -808,14 +808,14 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
 
             case '4':
                 out_vol_info.type    = VOL_BY_VALUE;
-                out_vol_info.u.value = (H5VL_class_value_t)HDatoi(H5_optarg);
-                custom_out_vol       = TRUE;
+                out_vol_info.u.value = (H5VL_class_value_t)atoi(H5_optarg);
+                custom_out_vol       = true;
                 break;
 
             case '5':
                 out_vol_info.type   = VOL_BY_NAME;
                 out_vol_info.u.name = H5_optarg;
-                custom_out_vol      = TRUE;
+                custom_out_vol      = true;
                 break;
 
             case '6':
@@ -824,14 +824,14 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
 
             case '7':
                 in_vfd_info.type    = VFD_BY_VALUE;
-                in_vfd_info.u.value = (H5FD_class_value_t)HDatoi(H5_optarg);
-                custom_in_vfd       = TRUE;
+                in_vfd_info.u.value = (H5FD_class_value_t)atoi(H5_optarg);
+                custom_in_vfd       = true;
                 break;
 
             case '8':
                 in_vfd_info.type   = VFD_BY_NAME;
                 in_vfd_info.u.name = H5_optarg;
-                custom_in_vfd      = TRUE;
+                custom_in_vfd      = true;
                 break;
 
             case '9':
@@ -840,14 +840,14 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
 
             case '0':
                 out_vfd_info.type    = VFD_BY_VALUE;
-                out_vfd_info.u.value = (H5FD_class_value_t)HDatoi(H5_optarg);
-                custom_out_vfd       = TRUE;
+                out_vfd_info.u.value = (H5FD_class_value_t)atoi(H5_optarg);
+                custom_out_vfd       = true;
                 break;
 
             case 'Y':
                 out_vfd_info.type   = VFD_BY_NAME;
                 out_vfd_info.u.name = H5_optarg;
-                custom_out_vfd      = TRUE;
+                custom_out_vfd      = true;
                 break;
 
             case 'Z':
@@ -865,7 +865,7 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
             infile  = argv[H5_optind];
             outfile = argv[H5_optind + 1];
 
-            if (!HDstrcmp(infile, outfile)) {
+            if (!strcmp(infile, outfile)) {
                 error_msg("file names cannot be the same\n");
                 usage(h5tools_getprogname());
                 h5tools_setstatus(EXIT_FAILURE);
@@ -887,12 +887,12 @@ parse_command_line(int argc, const char *const *argv, pack_opt_t *options)
     }
 
     /* If the input file uses the onion VFD, get the revision number */
-    if (in_vfd_info.u.name && !HDstrcmp(in_vfd_info.u.name, "onion")) {
+    if (in_vfd_info.u.name && !strcmp(in_vfd_info.u.name, "onion")) {
         if (in_vfd_info.info) {
             errno                      = 0;
-            onion_fa_in_g.revision_num = HDstrtoull(in_vfd_info.info, NULL, 10);
+            onion_fa_in_g.revision_num = strtoull(in_vfd_info.info, NULL, 10);
             if (errno == ERANGE) {
-                HDprintf("Invalid onion revision specified for the input file\n");
+                printf("Invalid onion revision specified for the input file\n");
                 usage(h5tools_getprogname());
                 exit(EXIT_FAILURE);
             }
@@ -966,7 +966,7 @@ main(int argc, char **argv)
     pack_opt_t options; /*the global options */
     int        parse_ret;
 
-    HDmemset(&options, 0, sizeof(pack_opt_t));
+    memset(&options, 0, sizeof(pack_opt_t));
 
     /* Initialize h5tools lib */
     h5tools_init();
@@ -976,14 +976,14 @@ main(int argc, char **argv)
 
     /* update hyperslab buffer size from H5TOOLS_BUFSIZE env if exist */
     if (h5tools_getenv_update_hyperslab_bufsize() < 0) {
-        HDprintf("Error occurred while retrieving H5TOOLS_BUFSIZE value\n");
+        printf("Error occurred while retrieving H5TOOLS_BUFSIZE value\n");
         h5tools_setstatus(EXIT_FAILURE);
         goto done;
     }
 
     /* initialize options  */
-    if (h5repack_init(&options, 0, FALSE) < 0) {
-        HDprintf("Error occurred while initializing repack options\n");
+    if (h5repack_init(&options, 0, false) < 0) {
+        printf("Error occurred while initializing repack options\n");
         h5tools_setstatus(EXIT_FAILURE);
         goto done;
     }
@@ -993,7 +993,7 @@ main(int argc, char **argv)
 
     parse_ret = parse_command_line(argc, (const char *const *)argv, &options);
     if (parse_ret < 0) {
-        HDprintf("Error occurred while parsing command-line options\n");
+        printf("Error occurred while parsing command-line options\n");
         h5tools_setstatus(EXIT_FAILURE);
         goto done;
     }
@@ -1008,7 +1008,7 @@ main(int argc, char **argv)
 
     /* pack it */
     if (h5repack(infile, outfile, &options) < 0) {
-        HDprintf("Error occurred while repacking\n");
+        printf("Error occurred while repacking\n");
         h5tools_setstatus(EXIT_FAILURE);
         goto done;
     }

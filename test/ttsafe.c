@@ -53,15 +53,15 @@ num_digits(int num)
 void
 tts_is_threadsafe(void)
 {
-    hbool_t is_ts;
-    hbool_t should_be;
+    bool is_ts;
+    bool should_be;
 
 #ifdef H5_HAVE_THREADSAFE
-    is_ts     = FALSE;
-    should_be = TRUE;
+    is_ts     = false;
+    should_be = true;
 #else  /* H5_HAVE_THREADSAFE */
-    is_ts     = TRUE;
-    should_be = FALSE;
+    is_ts     = true;
+    should_be = false;
 #endif /* H5_HAVE_THREADSAFE */
 
     if (H5is_library_threadsafe(&is_ts) != SUCCEED)
@@ -80,8 +80,8 @@ gen_name(int value)
     int      i;
 
     length                     = num_digits(MAX_NUM_NAME - 1);
-    temp                       = (char *)HDmalloc(NAME_OFFSET + length + 1);
-    temp                       = HDstrcpy(temp, "attrib");
+    temp                       = (char *)malloc(NAME_OFFSET + length + 1);
+    temp                       = strcpy(temp, "attrib");
     temp[NAME_OFFSET + length] = '\0';
 
     for (i = (int)(length - 1); i >= 0; i--) {
@@ -113,7 +113,7 @@ main(int argc, char *argv[])
 
 #else /* H5_HAVE_THREADSAFE */
 
-    HDprintf("Most thread-safety tests skipped because THREADSAFE not enabled\n");
+    printf("Most thread-safety tests skipped because THREADSAFE not enabled\n");
 
 #endif /* H5_HAVE_THREADSAFE */
 
@@ -131,7 +131,7 @@ main(int argc, char *argv[])
         TestSummary();
 
     /* Clean up test files, if allowed */
-    if (GetTestCleanup() && !HDgetenv(HDF5_NOCLEANUP))
+    if (GetTestCleanup() && !getenv(HDF5_NOCLEANUP))
         TestCleanup();
 
     /* Release test infrastructure */
