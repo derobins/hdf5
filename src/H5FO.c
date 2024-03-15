@@ -22,7 +22,7 @@
 typedef struct H5FO_open_obj_t {
     haddr_t addr;        /** Address of object header for object */
     void   *obj;         /** Pointer to the object */
-    hbool_t delete_flag; /** Flag to indicate that the object was deleted from the file */
+    bool    delete_flag; /** Flag to indicate that the object was deleted from the file */
     UT_hash_handle hh;   /** Hash table handle (must be LAST) */
 } H5FO_open_obj_t;
 
@@ -61,7 +61,7 @@ H5FO_create(void)
     FUNC_ENTER_NOAPI(NULL)
 
     if ((ret_value = H5FL_CALLOC(H5FO_objects_t)) == NULL)
-        HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, NULL, "memory allocation failed")
+        HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, NULL, "memory allocation failed");
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -87,8 +87,8 @@ H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
 
     FUNC_ENTER_NOAPI(NULL)
 
-    HDassert(objects);
-    HDassert(H5F_addr_defined(addr));
+    assert(objects);
+    assert(H5F_addr_defined(addr));
 
     /* Get the object from the collection */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -96,7 +96,7 @@ H5FO_opened(H5FO_objects_t *objects, haddr_t addr)
     if (NULL != open_obj) {
         ret_value = open_obj->obj;
         if (NULL == ret_value)
-            HGOTO_ERROR(H5E_FILE, H5E_CANTGET, NULL, "no object stored in the hash table entry")
+            HGOTO_ERROR(H5E_FILE, H5E_CANTGET, NULL, "no object stored in the hash table entry");
     }
     else
         ret_value = NULL;
@@ -116,20 +116,20 @@ done:
  * \return \herr_t
  */
 herr_t
-H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, hbool_t delete_flag)
+H5FO_insert(H5FO_objects_t *objects, haddr_t addr, void *obj, bool delete_flag)
 {
     H5FO_open_obj_t *open_obj;
     herr_t           ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    HDassert(objects);
-    HDassert(H5F_addr_defined(addr));
-    HDassert(obj);
+    assert(objects);
+    assert(H5F_addr_defined(addr));
+    assert(obj);
 
     /* Allocate new open object information structure */
     if ((open_obj = H5FL_MALLOC(H5FO_open_obj_t)) == NULL)
-        HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, FAIL, "memory allocation failed")
+        HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, FAIL, "memory allocation failed");
 
     /* Assign information */
     open_obj->addr        = addr;
@@ -164,8 +164,8 @@ H5FO_delete(H5FO_objects_t *objects, struct H5F_t *f, haddr_t addr)
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    HDassert(objects);
-    HDassert(H5F_addr_defined(addr));
+    assert(objects);
+    assert(H5F_addr_defined(addr));
 
     /* Remove from container */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -174,7 +174,7 @@ H5FO_delete(H5FO_objects_t *objects, struct H5F_t *f, haddr_t addr)
     /* Delete the object if it was marked for deletion */
     if (open_obj->delete_flag) {
         if (H5O_delete(f, addr) < 0)
-            HGOTO_ERROR(H5E_FILE, H5E_CANTDELETE, FAIL, "can't delete object from file")
+            HGOTO_ERROR(H5E_FILE, H5E_CANTDELETE, FAIL, "can't delete object from file");
     }
 
     /* Release the object information */
@@ -194,15 +194,15 @@ done:
  * \return \herr_t
  */
 herr_t
-H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t delete_flag)
+H5FO_mark(H5FO_objects_t *objects, haddr_t addr, bool delete_flag)
 {
     H5FO_open_obj_t *open_obj  = NULL; /* Information about open object */
     herr_t           ret_value = SUCCEED;
 
     FUNC_ENTER_NOAPI_NOERR
 
-    HDassert(objects);
-    HDassert(H5F_addr_defined(addr));
+    assert(objects);
+    assert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -221,21 +221,21 @@ H5FO_mark(H5FO_objects_t *objects, haddr_t addr, hbool_t delete_flag)
  * \param[in] objects The collection of open file objects
  * \param[in] addr Object's address in the file
  *
- * \return \hbool_t
+ * \return true/false
  *
  * \details Also implicitly checks that the object is in the list of
  *          objects. Not being in the list is not considered an error.
  */
-hbool_t
+bool
 H5FO_marked(H5FO_objects_t *objects, haddr_t addr)
 {
     H5FO_open_obj_t *open_obj  = NULL; /* Information about open object */
-    hbool_t          ret_value = FALSE;
+    bool             ret_value = FALSE;
 
     FUNC_ENTER_NOAPI_NOERR
 
-    HDassert(objects);
-    HDassert(H5F_addr_defined(addr));
+    assert(objects);
+    assert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, objects->hash_table, &addr, sizeof(haddr_t), open_obj);
@@ -260,13 +260,13 @@ H5FO_dest(H5FO_objects_t *objects)
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    HDassert(objects);
+    assert(objects);
 
     /* NOTE: Use HDONE_ERROR to push errors and keep going */
 
     /* Check if the object info set is empty */
     if (HASH_COUNT(objects->hash_table) != 0)
-        HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, FAIL, "objects still in open object info set")
+        HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, FAIL, "objects still in open object info set");
 
     /* Release memory */
     H5FL_FREE(H5FO_objects_t, objects);
@@ -287,7 +287,7 @@ H5FO_top_create(void)
     FUNC_ENTER_NOAPI(NULL)
 
     if ((ret_value = H5FL_CALLOC(H5FO_counts_t)) == NULL)
-        HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, NULL, "memory allocation failed")
+        HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, NULL, "memory allocation failed");
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -313,8 +313,8 @@ H5FO_top_incr(H5FO_counts_t *counts, haddr_t addr)
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    HDassert(counts);
-    HDassert(H5F_addr_defined(addr));
+    assert(counts);
+    assert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, counts->hash_table, &addr, sizeof(haddr_t), obj_count);
@@ -325,7 +325,7 @@ H5FO_top_incr(H5FO_counts_t *counts, haddr_t addr)
     else {
         /* Allocate new opened object information structure */
         if (NULL == (obj_count = H5FL_MALLOC(H5FO_obj_count_t)))
-            HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, FAIL, "memory allocation failed")
+            HGOTO_ERROR(H5E_FILE, H5E_NOSPACE, FAIL, "memory allocation failed");
 
         /* Assign information */
         obj_count->addr  = addr;
@@ -359,8 +359,8 @@ H5FO_top_decr(H5FO_counts_t *counts, haddr_t addr)
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    HDassert(counts);
-    HDassert(H5F_addr_defined(addr));
+    assert(counts);
+    assert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, counts->hash_table, &addr, sizeof(haddr_t), obj_count);
@@ -378,7 +378,7 @@ H5FO_top_decr(H5FO_counts_t *counts, haddr_t addr)
         }
     }
     else
-        HGOTO_ERROR(H5E_FILE, H5E_NOTFOUND, FAIL, "can't decrement ref. count")
+        HGOTO_ERROR(H5E_FILE, H5E_NOTFOUND, FAIL, "can't decrement ref. count");
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -400,8 +400,8 @@ H5FO_top_count(H5FO_counts_t *counts, haddr_t addr)
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
-    HDassert(counts);
-    HDassert(H5F_addr_defined(addr));
+    assert(counts);
+    assert(H5F_addr_defined(addr));
 
     /* Get the object node from the container */
     HASH_FIND(hh, counts->hash_table, &addr, sizeof(haddr_t), obj_count);
@@ -428,13 +428,13 @@ H5FO_top_dest(H5FO_counts_t *counts)
 
     FUNC_ENTER_NOAPI(FAIL)
 
-    HDassert(counts);
+    assert(counts);
 
     /* NOTE: Use HDONE_ERROR to push errors and keep going */
 
     /* Check if the object count set is empty */
     if (HASH_COUNT(counts->hash_table) != 0)
-        HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, FAIL, "objects still in open object counts list")
+        HDONE_ERROR(H5E_FILE, H5E_CANTRELEASE, FAIL, "objects still in open object counts list");
 
     /* Release memory */
     H5FL_FREE(H5FO_counts_t, counts);

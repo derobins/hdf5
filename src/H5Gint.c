@@ -324,9 +324,9 @@ H5G__create(H5F_t *file, H5G_obj_create_t *gcrt_info)
 
     /* Add group to list of open objects in file */
     if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(grp->oloc.file), grp->oloc.addr) < 0)
-        HGOTO_ERROR(H5E_SYM, H5E_CANTINC, NULL, "can't incr object ref. count")
+        HGOTO_ERROR(H5E_SYM, H5E_CANTINC, NULL, "can't incr object ref. count");
     if (H5FO_insert(H5F_OPEN_OBJECTS(grp->oloc.file), grp->oloc.addr, grp->shared, TRUE) < 0)
-        HGOTO_ERROR(H5E_SYM, H5E_CANTINSERT, NULL, "can't insert group into list of open objects")
+        HGOTO_ERROR(H5E_SYM, H5E_CANTINSERT, NULL, "can't insert group into list of open objects");
 
     /* Set the count of times the object is opened */
     grp->shared->fo_count = 1;

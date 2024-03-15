@@ -873,14 +873,14 @@ H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *delete_flag)
                 if (H5FO_opened(H5F_OPEN_OBJECTS(f), addr) != NULL) {
                     /* Flag the object to be deleted when it's closed */
                     if (H5FO_mark(H5F_OPEN_OBJECTS(f), addr, TRUE) < 0)
-                        HGOTO_ERROR(H5E_OHDR, H5E_CANTDELETE, (-1), "can't mark object for deletion")
-                } /* end if */
+                        HGOTO_ERROR(H5E_OHDR, H5E_CANTDELETE, (-1), "can't mark object for deletion");
+                }
                 else {
                     /* Mark the object header for deletion */
                     *delete_flag = TRUE;
-                } /* end else */
-            }     /* end if */
-        }         /* end if */
+                }
+            } /* end if */
+        } /* end if */
         else {
             /* A new object, or one that will be deleted */
             if (0 == oh->nlink) {
@@ -888,9 +888,9 @@ H5O__link_oh(H5F_t *f, int adjust, H5O_t *oh, hbool_t *delete_flag)
                 if (H5FO_marked(H5F_OPEN_OBJECTS(f), addr)) {
                     /* Remove "delete me" flag on the object */
                     if (H5FO_mark(H5F_OPEN_OBJECTS(f), addr, FALSE) < 0)
-                        HGOTO_ERROR(H5E_OHDR, H5E_CANTDELETE, (-1), "can't mark object for deletion")
-                } /* end if */
-            }     /* end if */
+                        HGOTO_ERROR(H5E_OHDR, H5E_CANTDELETE, (-1), "can't mark object for deletion");
+                }
+            }
 
             /* Adjust the link count for the object header */
             oh->nlink = (unsigned)((int)oh->nlink + adjust);

@@ -1066,11 +1066,11 @@ H5T_open(const H5G_loc_t *loc)
 
         /* Add the datatype to the list of opened objects in the file */
         if (H5FO_insert(H5F_OPEN_OBJECTS(dt->sh_loc.file), dt->sh_loc.u.loc.oh_addr, dt->shared, FALSE) < 0)
-            HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINSERT, NULL, "can't insert datatype into list of open objects")
+            HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINSERT, NULL, "can't insert datatype into list of open objects");
 
         /* Increment object count for the object in the top file */
         if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(dt->sh_loc.file), dt->sh_loc.u.loc.oh_addr) < 0)
-            HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, NULL, "can't increment object count")
+            HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, NULL, "can't increment object count");
 
         /* Mark any datatypes as being in memory now */
         if (H5T_set_loc(dt, NULL, H5T_LOC_MEMORY) < 0)
@@ -1118,12 +1118,12 @@ H5T_open(const H5G_loc_t *loc)
         if (H5FO_top_count(H5F_OPEN_OBJ_COUNTS(dt->sh_loc.file), dt->sh_loc.u.loc.oh_addr) == 0) {
             /* Open the object through this top file */
             if (H5O_open(&(dt->oloc)) < 0)
-                HGOTO_ERROR(H5E_DATATYPE, H5E_CANTOPENOBJ, NULL, "unable to open object header")
-        } /* end if */
+                HGOTO_ERROR(H5E_DATATYPE, H5E_CANTOPENOBJ, NULL, "unable to open object header");
+        }
 
         /* Increment object count for the object in the top file */
         if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(dt->sh_loc.file), dt->sh_loc.u.loc.oh_addr) < 0)
-            HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, NULL, "can't increment object count")
+            HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, NULL, "can't increment object count");
     } /* end else */
 
     ret_value = dt;
@@ -1371,7 +1371,7 @@ H5T_save_refresh_state(hid_t tid, H5O_shared_t *cached_H5O_shared)
 
     /* Increment object count for the object in the top file */
     if (H5FO_top_incr(H5F_OPEN_OBJ_COUNTS(vol_dt->sh_loc.file), vol_dt->sh_loc.u.loc.oh_addr) < 0)
-        HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, FAIL, "can't increment object count")
+        HGOTO_ERROR(H5E_DATATYPE, H5E_CANTINC, FAIL, "can't increment object count");
 
     /* Cache the H5O_shared_t data */
     H5MM_memcpy(cached_H5O_shared, &(vol_dt->sh_loc), sizeof(H5O_shared_t));
@@ -1411,7 +1411,7 @@ H5T_restore_refresh_state(hid_t tid, H5O_shared_t *cached_H5O_shared)
 
     /* Decrement the ref. count for this object in the top file */
     if (H5FO_top_decr(H5F_OPEN_OBJ_COUNTS(vol_dt->sh_loc.file), vol_dt->sh_loc.u.loc.oh_addr) < 0)
-        HGOTO_ERROR(H5E_DATATYPE, H5E_CANTDEC, FAIL, "can't decrement object count")
+        HGOTO_ERROR(H5E_DATATYPE, H5E_CANTDEC, FAIL, "can't decrement object count");
 
     /* Decrease the count on the file object */
     vol_dt->shared->fo_count -= 1;

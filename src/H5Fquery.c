@@ -1387,7 +1387,7 @@ H5F_get_open_obj_counts(H5F_t *f)
 {
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
-    HDassert(f);
+    assert(f);
 
     FUNC_LEAVE_NOAPI(f->obj_counts)
 }
@@ -1405,8 +1405,8 @@ H5F_get_open_objects(H5F_t *f)
 {
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
-    HDassert(f);
-    HDassert(f->shared);
+    assert(f);
+    assert(f->shared);
 
     FUNC_LEAVE_NOAPI(f->shared->open_objs)
 }
