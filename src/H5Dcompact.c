@@ -248,7 +248,9 @@ H5D__compact_init(H5F_t H5_ATTR_UNUSED *f, const H5D_t *dset, hid_t H5_ATTR_UNUS
 
     /* Check for mismatch */
     if (dset->shared->layout.storage.u.compact.size != data_size)
-        HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL, "bad value from dataset header - size of compact dataset's data buffer doesn't match size of dataset data");
+        HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL,
+                    "bad value from dataset header - size of compact dataset's data buffer doesn't match "
+                    "size of dataset data");
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)

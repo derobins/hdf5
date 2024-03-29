@@ -354,10 +354,10 @@ H5G__ent_reset(H5G_entry_t *ent)
 herr_t
 H5G__ent_to_link(const H5G_entry_t *ent, const H5HL_t *heap, H5O_link_t *lnk)
 {
-    const char *name;           /* Pointer to link name in heap */
-    size_t block_size;          /* Size of the heap block */
-    bool   dup_soft  = false;   /* xstrdup the symbolic link name or not */
-    herr_t ret_value = SUCCEED; /* Return value */
+    const char *name;                /* Pointer to link name in heap */
+    size_t      block_size;          /* Size of the heap block */
+    bool        dup_soft  = false;   /* xstrdup the symbolic link name or not */
+    herr_t      ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -382,7 +382,7 @@ H5G__ent_to_link(const H5G_entry_t *ent, const H5HL_t *heap, H5O_link_t *lnk)
 
     /* Object is a symbolic or hard link */
     if (ent->type == H5G_CACHED_SLINK) {
-        const char *s;              /* Pointer to link value */
+        const char *s; /* Pointer to link value */
 
         if (NULL == (s = (const char *)H5HL_offset_into(heap, ent->cache.slink.lval_offset)))
             HGOTO_ERROR(H5E_SYM, H5E_CANTGET, FAIL, "unable to get symbolic link name");

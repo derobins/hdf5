@@ -37,8 +37,8 @@
 /* User data for finding link information from B-tree */
 typedef struct {
     /* downward */
-    const char *name; 	      /* Name to search for */
-    H5HL_t     *heap;         /* Local heap for group */
+    const char *name; /* Name to search for */
+    H5HL_t     *heap; /* Local heap for group */
 
     /* upward */
     H5O_link_t *lnk; /* Caller's link location */
@@ -227,8 +227,8 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5G__stab_insert_real(H5F_t *f, const H5O_stab_t *stab, H5O_link_t *obj_lnk,
-                      H5O_type_t obj_type, const void *crt_info)
+H5G__stab_insert_real(H5F_t *f, const H5O_stab_t *stab, H5O_link_t *obj_lnk, H5O_type_t obj_type,
+                      const void *crt_info)
 {
     H5HL_t      *heap = NULL;         /* Pointer to local heap */
     H5G_bt_ins_t udata;               /* Data to pass through B-tree	*/
@@ -275,8 +275,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5G__stab_insert(const H5O_loc_t *grp_oloc, H5O_link_t *obj_lnk, H5O_type_t obj_type,
-                 const void *crt_info)
+H5G__stab_insert(const H5O_loc_t *grp_oloc, H5O_link_t *obj_lnk, H5O_type_t obj_type, const void *crt_info)
 {
     H5O_stab_t stab;                /* Symbol table message		*/
     herr_t     ret_value = SUCCEED; /* Return value */
@@ -850,7 +849,7 @@ done:
 static herr_t
 H5G__stab_lookup_by_idx_cb(const H5G_entry_t *ent, void *_udata)
 {
-    H5G_bt_it_lbi_t *udata = (H5G_bt_it_lbi_t *)_udata;
+    H5G_bt_it_lbi_t *udata     = (H5G_bt_it_lbi_t *)_udata;
     herr_t           ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

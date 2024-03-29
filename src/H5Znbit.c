@@ -1197,7 +1197,7 @@ H5Z__nbit_decompress_one_compound(unsigned char *data, size_t data_offset, unsig
         member_class  = parms[(*parms_index)++];
 
         /* Check for overflow */
-        member_size = parms[*parms_index];
+        member_size    = parms[*parms_index];
         prev_used_size = used_size;
         used_size += member_size;
         if (used_size > size)

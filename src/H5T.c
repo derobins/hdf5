@@ -4852,11 +4852,13 @@ H5T__path_init(void)
 
     /* Sanity check */
     if (0 != H5T_g.npaths)
-        HGOTO_ERROR(H5E_DATATYPE, H5E_ALREADYINIT, FAIL, "datatype conversion path table is aleady initialized");
+        HGOTO_ERROR(H5E_DATATYPE, H5E_ALREADYINIT, FAIL,
+                    "datatype conversion path table is aleady initialized");
 
     /* Set up no-op conversion path, and make sure it's the first entry in the table */
     if (NULL == (H5T_g.path = (H5T_path_t **)H5MM_calloc(128 * sizeof(H5T_path_t *))))
-        HGOTO_ERROR(H5E_DATATYPE, H5E_CANTALLOC, FAIL, "memory allocation failed for type conversion path table");
+        HGOTO_ERROR(H5E_DATATYPE, H5E_CANTALLOC, FAIL,
+                    "memory allocation failed for type conversion path table");
     H5T_g.apaths = 128;
     if (NULL == (H5T_g.path[0] = H5FL_CALLOC(H5T_path_t)))
         HGOTO_ERROR(H5E_DATATYPE, H5E_CANTALLOC, FAIL, "memory allocation failed for no-op conversion path");
@@ -4864,7 +4866,8 @@ H5T__path_init(void)
     H5T_g.path[0]->conv.is_app     = false;
     H5T_g.path[0]->conv.u.lib_func = H5T__conv_noop;
     H5T_g.path[0]->cdata.command   = H5T_CONV_INIT;
-    if (H5T__conv_noop((hid_t)FAIL, (hid_t)FAIL, &(H5T_g.path[0]->cdata), (size_t)0, (size_t)0, (size_t)0, NULL, NULL) < 0) {
+    if (H5T__conv_noop((hid_t)FAIL, (hid_t)FAIL, &(H5T_g.path[0]->cdata), (size_t)0, (size_t)0, (size_t)0,
+                       NULL, NULL) < 0) {
 #ifdef H5T_DEBUG
         if (H5DEBUG(T))
             fprintf(H5DEBUG(T), "H5T: unable to initialize no-op conversion function (ignored)\n");
@@ -4874,7 +4877,7 @@ H5T__path_init(void)
     H5T_g.path[0]->is_noop = true;
 
     /* Set # of initial paths in the table */
-    H5T_g.npaths           = 1;
+    H5T_g.npaths = 1;
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
@@ -4916,8 +4919,8 @@ H5T__path_table_search(const H5T_t *src, const H5T_t *dst, int *md, int *cmp)
     /* Find the conversion path in the table, using a binary search */
     /* NOTE: Doesn't match against entry 0, which is the no-op path */
     l = m = 1;
-    r = H5T_g.npaths;
-    c = -1;
+    r     = H5T_g.npaths;
+    c     = -1;
 
     while (c && l < r) {
         m = (l + r) / 2;
@@ -5240,7 +5243,7 @@ H5T_path_noop(const H5T_path_t *p)
 bool
 H5T_noop_conv(const H5T_t *src, const H5T_t *dst)
 {
-    bool ret_value = false;  /* Return value */
+    bool ret_value = false; /* Return value */
 
     FUNC_ENTER_NOAPI_NOINIT_NOERR
 
@@ -5259,7 +5262,7 @@ H5T_noop_conv(const H5T_t *src, const H5T_t *dst)
         ret_value = true;
     } /* end if */
     else {
-        int idx = 0;    /* Matching entry */
+        int idx = 0; /* Matching entry */
 
         /* Search the table of conversion paths */
         if (H5T__path_table_search(src, dst, &idx, NULL))

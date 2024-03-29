@@ -202,15 +202,15 @@ struct H5O_loc_t;
 typedef struct H5S_t H5S_t;
 
 /* Operations on dataspaces */
-H5_DLL herr_t      H5S_init(void);
-H5_DLL H5S_t      *H5S_copy(const H5S_t *src, bool share_selection, bool copy_max);
-H5_DLL herr_t      H5S_close(H5S_t *ds);
+H5_DLL herr_t              H5S_init(void);
+H5_DLL H5S_t              *H5S_copy(const H5S_t *src, bool share_selection, bool copy_max);
+H5_DLL herr_t              H5S_close(H5S_t *ds);
 H5_DLL const H5S_extent_t *H5S_get_simple_extent(const H5S_t *ds);
-H5_DLL H5S_class_t H5S_get_simple_extent_type(const H5S_t *ds);
-H5_DLL hssize_t    H5S_get_simple_extent_npoints(const H5S_t *ds);
-H5_DLL hsize_t     H5S_get_npoints_max(const H5S_t *ds);
-H5_DLL bool        H5S_has_extent(const H5S_t *ds);
-H5_DLL int         H5S_get_simple_extent_ndims(const H5S_t *ds);
+H5_DLL H5S_class_t         H5S_get_simple_extent_type(const H5S_t *ds);
+H5_DLL hssize_t            H5S_get_simple_extent_npoints(const H5S_t *ds);
+H5_DLL hsize_t             H5S_get_npoints_max(const H5S_t *ds);
+H5_DLL bool                H5S_has_extent(const H5S_t *ds);
+H5_DLL int                 H5S_get_simple_extent_ndims(const H5S_t *ds);
 H5_DLL int    H5S_get_simple_extent_dims(const H5S_t *ds, hsize_t dims[] /*out*/, hsize_t max_dims[] /*out*/);
 H5_DLL herr_t H5S_write(H5F_t *f, struct H5O_t *oh, unsigned update_flags, H5S_t *ds);
 H5_DLL herr_t H5S_append(H5F_t *f, struct H5O_t *oh, H5S_t *ds);

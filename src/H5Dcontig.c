@@ -368,12 +368,11 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5D__contig_check(const H5F_t *f, const H5O_layout_t *layout, const H5S_extent_t *extent,
-    const H5T_t *dt)
+H5D__contig_check(const H5F_t *f, const H5O_layout_t *layout, const H5S_extent_t *extent, const H5T_t *dt)
 {
-    hsize_t nelmts;    /* Number of elements in dataspace */
-    size_t  dt_size;   /* Size of datatype */
-    hsize_t data_size; /* Raw data size */
+    hsize_t nelmts;              /* Number of elements in dataspace */
+    size_t  dt_size;             /* Size of datatype */
+    hsize_t data_size;           /* Raw data size */
     herr_t  ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -400,7 +399,7 @@ H5D__contig_check(const H5F_t *f, const H5O_layout_t *layout, const H5S_extent_t
 
     /* Check for invalid (corrupted in the file, probably) dimensions */
     if (H5_addr_defined(layout->storage.u.contig.addr)) {
-        haddr_t rel_eoa;        /* Relative end of file address	*/
+        haddr_t rel_eoa; /* Relative end of file address	*/
 
         if (HADDR_UNDEF == (rel_eoa = H5F_get_eoa(f, H5FD_MEM_DRAW)))
             HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, FAIL, "unable to determine file size");
@@ -408,9 +407,9 @@ H5D__contig_check(const H5F_t *f, const H5O_layout_t *layout, const H5S_extent_t
         /* Check for invalid dataset size (from bad dimensions) putting the
          * dataset elements off the end of the file
          */
-         if (H5_addr_le((layout->storage.u.contig.addr + data_size), layout->storage.u.contig.addr))
+        if (H5_addr_le((layout->storage.u.contig.addr + data_size), layout->storage.u.contig.addr))
             HGOTO_ERROR(H5E_DATASET, H5E_OVERFLOW, FAIL, "invalid dataset size, likely file corruption");
-         if (H5_addr_gt((layout->storage.u.contig.addr + data_size), rel_eoa))
+        if (H5_addr_gt((layout->storage.u.contig.addr + data_size), rel_eoa))
             HGOTO_ERROR(H5E_DATASET, H5E_OVERFLOW, FAIL, "invalid dataset size, likely file corruption");
     }
 
@@ -502,8 +501,8 @@ done:
 static herr_t
 H5D__contig_init(H5F_t *f, const H5D_t *dset, hid_t H5_ATTR_UNUSED dapl_id)
 {
-    size_t  tmp_sieve_buf_size;  /* Temporary holder for sieve buffer size */
-    herr_t  ret_value = SUCCEED; /* Return value */
+    size_t tmp_sieve_buf_size;  /* Temporary holder for sieve buffer size */
+    herr_t ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -512,7 +511,8 @@ H5D__contig_init(H5F_t *f, const H5D_t *dset, hid_t H5_ATTR_UNUSED dapl_id)
     assert(dset);
 
     /* Sanity check the dataset's info */
-    if (H5D__contig_check(f, &dset->shared->layout, H5S_GET_EXTENT(dset->shared->space), dset->shared->type) < 0)
+    if (H5D__contig_check(f, &dset->shared->layout, H5S_GET_EXTENT(dset->shared->space), dset->shared->type) <
+        0)
         HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL, "invalid dataset info");
 
     /* Compute the size of the contiguous storage for versions of the

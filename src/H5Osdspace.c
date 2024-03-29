@@ -198,7 +198,9 @@ H5O__sdspace_decode(H5F_t *f, H5O_t H5_ATTR_UNUSED *open_oh, unsigned H5_ATTR_UN
             for (i = 0; i < sdim->rank; i++) {
                 H5F_DECODE_LENGTH(f, p, sdim->max[i]);
                 if (sdim->size[i] > sdim->max[i])
-                    HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, NULL, "dataspace dim %u size of %llu is greater than maxdim size of %llu", i, (unsigned long long)sdim->size[i], (unsigned long long)sdim->max[i]);
+                    HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, NULL,
+                                "dataspace dim %u size of %llu is greater than maxdim size of %llu", i,
+                                (unsigned long long)sdim->size[i], (unsigned long long)sdim->max[i]);
             }
         }
 

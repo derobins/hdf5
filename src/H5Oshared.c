@@ -287,13 +287,13 @@ done:
  *-------------------------------------------------------------------------
  */
 void *
-H5O__shared_decode(H5F_t *f, H5O_t *open_oh, unsigned *ioflags, size_t buf_size,
-		   const uint8_t *buf, const H5O_msg_class_t *type)
+H5O__shared_decode(H5F_t *f, H5O_t *open_oh, unsigned *ioflags, size_t buf_size, const uint8_t *buf,
+                   const H5O_msg_class_t *type)
 {
     const uint8_t *buf_end = buf + buf_size - 1; /* End of the buffer */
-    H5O_shared_t sh_mesg;                        /* Shared message info */
-    unsigned     version;                        /* Shared message version */
-    void        *ret_value = NULL;               /* Return value */
+    H5O_shared_t   sh_mesg;                      /* Shared message info */
+    unsigned       version;                      /* Shared message version */
+    void          *ret_value = NULL;             /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -347,8 +347,8 @@ H5O__shared_decode(H5F_t *f, H5O_t *open_oh, unsigned *ioflags, size_t buf_size,
          */
         if (sh_mesg.type == H5O_SHARE_TYPE_SOHM) {
             assert(version >= H5O_SHARED_VERSION_3);
-	    if (H5_IS_BUFFER_OVERFLOW(buf, sizeof(sh_mesg.u.heap_id), buf_end))
-		HGOTO_ERROR(H5E_OHDR, H5E_OVERFLOW, NULL, "ran off end of input buffer while decoding");
+            if (H5_IS_BUFFER_OVERFLOW(buf, sizeof(sh_mesg.u.heap_id), buf_end))
+                HGOTO_ERROR(H5E_OHDR, H5E_OVERFLOW, NULL, "ran off end of input buffer while decoding");
             H5MM_memcpy(&sh_mesg.u.heap_id, buf, sizeof(sh_mesg.u.heap_id));
         } /* end if */
         else {

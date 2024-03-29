@@ -295,11 +295,11 @@ done:
 H5HL_t *
 H5HL_protect(H5F_t *f, haddr_t addr, unsigned flags)
 {
-    H5HL_cache_prfx_ud_t prfx_udata;                /* User data for protecting local heap prefix       */
-    H5HL_prfx_t         *prfx = NULL;               /* Local heap prefix                                */
-    H5HL_dblk_t         *dblk = NULL;               /* Local heap data block                            */
-    H5HL_t              *heap = NULL;               /* Heap data structure                              */
-    H5HL_t  *ret_value        = NULL;
+    H5HL_cache_prfx_ud_t prfx_udata;       /* User data for protecting local heap prefix       */
+    H5HL_prfx_t         *prfx      = NULL; /* Local heap prefix                                */
+    H5HL_dblk_t         *dblk      = NULL; /* Local heap data block                            */
+    H5HL_t              *heap      = NULL; /* Heap data structure                              */
+    H5HL_t              *ret_value = NULL;
 
     FUNC_ENTER_NOAPI(NULL)
 
@@ -326,7 +326,7 @@ H5HL_protect(H5F_t *f, haddr_t addr, unsigned flags)
     /* Check if the heap is already pinned in memory */
     /* (for re-entrant situation) */
     if (heap->prots == 0) {
-        void *pin_obj;  /* Pointer to local heap object to pin */
+        void *pin_obj; /* Pointer to local heap object to pin */
 
         /* Check if heap has separate data block */
         if (heap->single_cache_obj)
@@ -334,7 +334,8 @@ H5HL_protect(H5F_t *f, haddr_t addr, unsigned flags)
             pin_obj = prfx;
         else {
             /* Protect the local heap data block */
-            if (NULL == (dblk = (H5HL_dblk_t *)H5AC_protect(f, H5AC_LHEAP_DBLK, heap->dblk_addr, heap, flags)))
+            if (NULL ==
+                (dblk = (H5HL_dblk_t *)H5AC_protect(f, H5AC_LHEAP_DBLK, heap->dblk_addr, heap, flags)))
                 HGOTO_ERROR(H5E_HEAP, H5E_CANTPROTECT, NULL, "unable to load heap data block");
 
             /* Pin data block */

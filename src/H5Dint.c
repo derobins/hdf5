@@ -1670,7 +1670,7 @@ H5D__open_oid(H5D_t *dataset, hid_t dapl_id)
     htri_t          msg_exists;                /* Whether a particular type of message exists */
     bool            layout_init       = false; /* Flag to indicate that chunk information was initialized */
     bool            must_init_storage = false;
-    bool            fill_init         = false; /* Flag to indicate that fill information was initialized */
+    bool            fill_init         = false;   /* Flag to indicate that fill information was initialized */
     herr_t          ret_value         = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE_TAG(dataset->oloc.addr)
@@ -1782,7 +1782,7 @@ H5D__open_oid(H5D_t *dataset, hid_t dapl_id)
 
     /* Check if there is a fill value, but no type yet */
     if (fill_prop->buf != NULL && fill_prop->type == NULL) {
-        H5T_t   *tmp_type;      /* Temporary pointer to dataset's datatype */
+        H5T_t *tmp_type; /* Temporary pointer to dataset's datatype */
 
         /* Copy the dataset type into the fill value message */
         if (NULL == (tmp_type = H5T_copy(dataset->shared->type, H5T_COPY_TRANSIENT)))
@@ -1798,7 +1798,8 @@ H5D__open_oid(H5D_t *dataset, hid_t dapl_id)
             if ((size_t)fill_prop->size < bkg_size) {
                 if (H5T_close_real(tmp_type) < 0)
                     HDONE_ERROR(H5E_DATASET, H5E_CANTFREE, FAIL, "Can't free temporary datatype");
-                HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL, "fill value size doesn't match dataset's datatype size");
+                HGOTO_ERROR(H5E_DATASET, H5E_BADVALUE, FAIL,
+                            "fill value size doesn't match dataset's datatype size");
             }
         }
 

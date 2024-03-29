@@ -358,7 +358,9 @@ H5O__dtype_decode_helper(unsigned *ioflags /*in,out*/, const uint8_t **pp, H5T_t
                 /* Check for duplicated field name */
                 for (memb_idx = 0; memb_idx < dt->shared->u.compnd.nmembs; memb_idx++)
                     if (0 == strcmp((const char *)*pp, dt->shared->u.compnd.memb[memb_idx].name))
-                        HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, FAIL, "duplicated compound field name '%s', for fields %u and %u", (const char *)*pp, memb_idx, dt->shared->u.compnd.nmembs);
+                        HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, FAIL,
+                                    "duplicated compound field name '%s', for fields %u and %u",
+                                    (const char *)*pp, memb_idx, dt->shared->u.compnd.nmembs);
 
                 /* Decode the field name */
                 if (NULL == (dt->shared->u.compnd.memb[dt->shared->u.compnd.nmembs].name =
@@ -475,10 +477,13 @@ H5O__dtype_decode_helper(unsigned *ioflags /*in,out*/, const uint8_t **pp, H5T_t
                         /* Validate decoded dims */
                         for (unsigned u = 0; u < ndims; u++)
                             if (!(dim[u] > 0)) {
-                                dt->shared->u.compnd.memb[dt->shared->u.compnd.nmembs].name = H5MM_xfree(dt->shared->u.compnd.memb[dt->shared->u.compnd.nmembs].name);                      
+                                dt->shared->u.compnd.memb[dt->shared->u.compnd.nmembs].name =
+                                    H5MM_xfree(dt->shared->u.compnd.memb[dt->shared->u.compnd.nmembs].name);
                                 if (H5T_close_real(temp_type) < 0)
-                                    HDONE_ERROR(H5E_DATATYPE, H5E_CANTRELEASE, FAIL, "can't release datatype info");
-                                HGOTO_ERROR(H5E_DATATYPE, H5E_BADVALUE, FAIL, "zero-sized dimension specified");
+                                    HDONE_ERROR(H5E_DATATYPE, H5E_CANTRELEASE, FAIL,
+                                                "can't release datatype info");
+                                HGOTO_ERROR(H5E_DATATYPE, H5E_BADVALUE, FAIL,
+                                            "zero-sized dimension specified");
                             }
 
                         /* Create the array datatype for the field */

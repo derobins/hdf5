@@ -347,8 +347,8 @@ H5_DLL const char *H5G__component(const char *name, size_t *size_p);
  */
 H5_DLL herr_t H5G__stab_create(H5O_loc_t *grp_oloc, const H5O_ginfo_t *ginfo, H5O_stab_t *stab);
 H5_DLL herr_t H5G__stab_create_components(H5F_t *f, H5O_stab_t *stab, size_t size_hint);
-H5_DLL herr_t H5G__stab_insert(const H5O_loc_t *grp_oloc, H5O_link_t *obj_lnk,
-                               H5O_type_t obj_type, const void *crt_info);
+H5_DLL herr_t H5G__stab_insert(const H5O_loc_t *grp_oloc, H5O_link_t *obj_lnk, H5O_type_t obj_type,
+                               const void *crt_info);
 H5_DLL herr_t H5G__stab_insert_real(H5F_t *f, const H5O_stab_t *stab, H5O_link_t *obj_lnk,
                                     H5O_type_t obj_type, const void *crt_info);
 H5_DLL herr_t H5G__stab_delete(H5F_t *f, const H5O_stab_t *stab);
@@ -393,8 +393,8 @@ H5_DLL herr_t H5G__node_iterate_size(H5F_t *f, const void *_lt_key, haddr_t addr
 H5_DLL herr_t H5G__node_free(H5G_node_t *sym);
 
 /* Functions that understand links in groups */
-H5_DLL herr_t H5G__link_to_ent(H5F_t *f, H5HL_t *heap, const H5O_link_t *lnk,
-                               H5O_type_t obj_type, const void *crt_info, H5G_entry_t *ent);
+H5_DLL herr_t H5G__link_to_ent(H5F_t *f, H5HL_t *heap, const H5O_link_t *lnk, H5O_type_t obj_type,
+                               const void *crt_info, H5G_entry_t *ent);
 H5_DLL herr_t H5G__link_to_loc(const H5G_loc_t *grp_loc, const H5O_link_t *lnk, H5G_loc_t *obj_loc);
 H5_DLL herr_t H5G__link_sort_table(H5G_link_table_t *ltable, H5_index_t idx_type, H5_iter_order_t order);
 H5_DLL herr_t H5G__link_iterate_table(const H5G_link_table_t *ltable, hsize_t skip, hsize_t *last_lnk,

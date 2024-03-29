@@ -329,7 +329,7 @@ H5O__stab_post_copy_file(const H5O_loc_t *src_oloc, const void *mesg_src, H5O_lo
     const H5O_stab_t *stab_src = (const H5O_stab_t *)mesg_src;
     H5O_stab_t       *stab_dst = (H5O_stab_t *)mesg_dst;
     H5G_bt_it_cpy_t   udata;               /* B-tree user data */
-    H5HL_t           *heap = NULL;	   /* Pointer to source group's heap */
+    H5HL_t           *heap      = NULL;    /* Pointer to source group's heap */
     herr_t            ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE

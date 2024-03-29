@@ -364,7 +364,8 @@ H5O__copy_header_real(const H5O_loc_t *oloc_src, H5O_loc_t *oloc_dst /*out*/, H5
         /* Sanity check message for possible corruption */
         if (H5O_UNKNOWN_ID != mesg_src->type->id && H5O_NULL_ID != mesg_src->type->id)
             if (0 == mesg_src->raw_size)
-                HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, FAIL, "message of type '%s' has zero size", mesg_src->type->name);
+                HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, FAIL, "message of type '%s' has zero size",
+                            mesg_src->type->name);
 
         /* Check for continuation message; these are converted to NULL
          * messages because the destination OH will have only one chunk

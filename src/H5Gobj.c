@@ -402,8 +402,8 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5G_obj_insert(const H5O_loc_t *grp_oloc, H5O_link_t *obj_lnk, bool adj_link,
-               H5O_type_t obj_type, const void *crt_info)
+H5G_obj_insert(const H5O_loc_t *grp_oloc, H5O_link_t *obj_lnk, bool adj_link, H5O_type_t obj_type,
+               const void *crt_info)
 {
     H5O_pline_t  tmp_pline;             /* Pipeline message */
     H5O_pline_t *pline = NULL;          /* Pointer to pipeline message */

@@ -644,15 +644,15 @@ H5G__loc_addr_cb(H5G_loc_t H5_ATTR_UNUSED *grp_loc /*in*/, const char H5_ATTR_UN
                  const H5O_link_t H5_ATTR_UNUSED *lnk, H5G_loc_t *obj_loc, void *_udata /*in,out*/,
                  H5G_own_loc_t *own_loc /*out*/)
 {
-    haddr_t *udata     = (haddr_t *)_udata; /* User data passed in */
+    haddr_t *udata = (haddr_t *)_udata; /* User data passed in */
 
     FUNC_ENTER_PACKAGE_NOERR
 
     /* Check if the name in this group resolved to a valid link */
     if (obj_loc == NULL)
-        *udata = HADDR_UNDEF;	/* No object found */
+        *udata = HADDR_UNDEF; /* No object found */
     else
-	*udata = obj_loc->oloc->addr; /* Set address of object */
+        *udata = obj_loc->oloc->addr; /* Set address of object */
 
     /* Indicate that this callback didn't take ownership of the group *
      * location for the object */

@@ -1220,7 +1220,7 @@ H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst, bool H5_
     H5D_copy_file_ud_t *udata      = (H5D_copy_file_ud_t *)_udata; /* Dataset copying user data */
     H5O_layout_t       *layout_src = (H5O_layout_t *)mesg_src;
     H5O_layout_t       *layout_dst = NULL;
-    void               *ret_value  = NULL;  /* Return value */
+    void               *ret_value  = NULL; /* Return value */
 
     FUNC_ENTER_PACKAGE
 
@@ -1244,37 +1244,35 @@ H5O__layout_copy_file(H5F_t *file_src, void *mesg_src, H5F_t *file_dst, bool H5_
             } /* end if */
             break;
 
-        case H5D_CONTIGUOUS:
-            {
-                hsize_t nelmts;         /* Number of elements in dataset's extent */
-                size_t dt_size;         /* Size of dataset's datatype in bytes */
-                /* Sanity check the dataset's info */
-                if (H5D__contig_check(file_src, layout_src, udata->src_space_extent, udata->src_dtype) < 0)
-                    HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, NULL, "invalid layout / dataspace / datatype info");
+        case H5D_CONTIGUOUS: {
+            hsize_t nelmts;  /* Number of elements in dataset's extent */
+            size_t  dt_size; /* Size of dataset's datatype in bytes */
+            /* Sanity check the dataset's info */
+            if (H5D__contig_check(file_src, layout_src, udata->src_space_extent, udata->src_dtype) < 0)
+                HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, NULL, "invalid layout / dataspace / datatype info");
 
-                /* Compute the size of the contiguous storage for versions of the
-                 * layout message less than version 3 because versions 1 & 2 would
-                 * truncate the dimension sizes to 32-bits of information. - QAK 5/26/04
-                 */
-                nelmts = H5S_extent_nelem(udata->src_space_extent);
-                dt_size = H5T_get_size(udata->src_dtype);
-                if (layout_src->version < H5O_LAYOUT_VERSION_3)
-                    layout_dst->storage.u.contig.size = nelmts * dt_size;
-                else
-                    /* Sanity check layout storage size */
-                    if (layout_dst->storage.u.contig.size != (nelmts * dt_size))
-                        HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, NULL, "invalid layout storage size ");
+            /* Compute the size of the contiguous storage for versions of the
+             * layout message less than version 3 because versions 1 & 2 would
+             * truncate the dimension sizes to 32-bits of information. - QAK 5/26/04
+             */
+            nelmts  = H5S_extent_nelem(udata->src_space_extent);
+            dt_size = H5T_get_size(udata->src_dtype);
+            if (layout_src->version < H5O_LAYOUT_VERSION_3)
+                layout_dst->storage.u.contig.size = nelmts * dt_size;
+            else
+                /* Sanity check layout storage size */
+                if (layout_dst->storage.u.contig.size != (nelmts * dt_size))
+                    HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, NULL, "invalid layout storage size ");
 
-                if (H5D__contig_is_space_alloc(&layout_src->storage) ||
-                    (cpy_info->shared_fo &&
-                     H5D__contig_is_data_cached((const H5D_shared_t *)cpy_info->shared_fo))) {
-                    /* copy contiguous raw data */
-                    if (H5D__contig_copy(file_src, &layout_src->storage.u.contig, file_dst,
-                                         &layout_dst->storage.u.contig, udata->src_dtype, cpy_info) < 0)
-                        HGOTO_ERROR(H5E_OHDR, H5E_CANTCOPY, NULL, "unable to copy contiguous storage");
-                } /* end if */
-            }
-            break;
+            if (H5D__contig_is_space_alloc(&layout_src->storage) ||
+                (cpy_info->shared_fo &&
+                 H5D__contig_is_data_cached((const H5D_shared_t *)cpy_info->shared_fo))) {
+                /* copy contiguous raw data */
+                if (H5D__contig_copy(file_src, &layout_src->storage.u.contig, file_dst,
+                                     &layout_dst->storage.u.contig, udata->src_dtype, cpy_info) < 0)
+                    HGOTO_ERROR(H5E_OHDR, H5E_CANTCOPY, NULL, "unable to copy contiguous storage");
+            } /* end if */
+        } break;
 
         case H5D_CHUNKED:
             if (H5D__chunk_is_space_alloc(&layout_src->storage) ||

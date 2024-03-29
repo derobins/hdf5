@@ -138,7 +138,7 @@ H5D__efl_construct(H5F_t *f, H5D_t *dset)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTINIT, FAIL, "unable to determine datatype size");
 
     /* Check for storage overflows */
-    max_points  = H5S_get_npoints_max(dset->shared->space);
+    max_points = H5S_get_npoints_max(dset->shared->space);
     if (H5O_efl_total_size(&dset->shared->dcpl_cache.efl, &max_storage) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, FAIL, "unable to retrieve size of external file");
     if (H5S_UNLIMITED == max_points) {
@@ -179,7 +179,7 @@ H5D__efl_init(H5F_t H5_ATTR_UNUSED *f, const H5D_t *dset, hid_t H5_ATTR_UNUSED d
     size_t   dt_size;             /* Size of datatype */
     hssize_t snelmts;             /* Temporary holder for number of elements in dataspace */
     hsize_t  nelmts;              /* Number of elements in dataspace */
-    hsize_t data_size;           /* Raw data size */
+    hsize_t  data_size;           /* Raw data size */
     hsize_t  max_storage;         /* Maximum storage size */
     herr_t   ret_value = SUCCEED; /* Return value */
 

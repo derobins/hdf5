@@ -265,8 +265,8 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5G__link_to_ent(H5F_t *f, H5HL_t *heap, const H5O_link_t *lnk, H5O_type_t obj_type,
-                 const void *crt_info, H5G_entry_t *ent)
+H5G__link_to_ent(H5F_t *f, H5HL_t *heap, const H5O_link_t *lnk, H5O_type_t obj_type, const void *crt_info,
+                 H5G_entry_t *ent)
 {
     size_t name_offset;         /* Offset of name in heap */
     herr_t ret_value = SUCCEED; /* Return value */

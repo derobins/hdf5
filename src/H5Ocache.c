@@ -311,7 +311,7 @@ H5O__cache_deserialize(const void *image, size_t len, void *_udata, bool *dirty)
                                &(udata->common), dirty) < 0)
         HGOTO_ERROR(H5E_OHDR, H5E_CANTINIT, NULL, "can't deserialize first object header chunk");
 
-    /* Check for corruption in object header # of messages */ 
+    /* Check for corruption in object header # of messages */
     if (oh->version == H5O_VERSION_1 && udata->v1_pfx_nmesgs < oh->nmesgs)
         HGOTO_ERROR(H5E_OHDR, H5E_BADVALUE, NULL, "bad object header message count");
 

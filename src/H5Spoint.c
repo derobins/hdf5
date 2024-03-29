@@ -1403,7 +1403,8 @@ H5S__point_deserialize(H5S_t **space, const uint8_t **p, const size_t p_size, bo
         HGOTO_ERROR(H5E_DATASPACE, H5E_OVERFLOW, FAIL, "buffer overflow while decoding selection rank");
     UINT32DECODE(pp, rank);
     if (0 == rank || rank > H5S_MAX_RANK)
-        HGOTO_ERROR(H5E_DATASPACE, H5E_BADVALUE, FAIL, "invalid rank (%u) for serialized point selection", rank);
+        HGOTO_ERROR(H5E_DATASPACE, H5E_BADVALUE, FAIL, "invalid rank (%u) for serialized point selection",
+                    rank);
 
     if (!*space) {
         /* Patch the rank of the allocated dataspace */

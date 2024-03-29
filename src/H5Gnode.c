@@ -344,7 +344,7 @@ H5G__node_cmp2(void *_lt_key, void *_udata, void *_rt_key)
     H5G_node_key_t  *lt_key = (H5G_node_key_t *)_lt_key;
     H5G_node_key_t  *rt_key = (H5G_node_key_t *)_rt_key;
     const char      *s1, *s2;
-    size_t 	     max_len;
+    size_t           max_len;
     int              ret_value = SUCCEED; /* Return value */
 
     FUNC_ENTER_PACKAGE
@@ -747,10 +747,10 @@ H5G__node_remove(H5F_t *f, haddr_t addr, void H5_ATTR_NDEBUG_UNUSED *_lt_key /*i
         if (NULL == (lnk.name = (char *)H5HL_offset_into(udata->common.heap, sn->entry[idx].name_off)))
             HGOTO_ERROR(H5E_SYM, H5E_CANTGET, H5B_INS_ERROR, "unable to get link name");
 
-	/* Compute the size of the link name in the heap, being defensive about corrupted data */
+        /* Compute the size of the link name in the heap, being defensive about corrupted data */
         link_name_len = strnlen(lnk.name, (udata->common.block_size - sn->entry[idx].name_off)) + 1;
-	if (link_name_len > (udata->common.block_size - sn->entry[idx].name_off))
-	    link_name_len = (udata->common.block_size - sn->entry[idx].name_off);
+        if (link_name_len > (udata->common.block_size - sn->entry[idx].name_off))
+            link_name_len = (udata->common.block_size - sn->entry[idx].name_off);
 
         /* Set up rest of link structure */
         lnk.corder_valid = false;
@@ -788,13 +788,17 @@ H5G__node_remove(H5F_t *f, haddr_t addr, void H5_ATTR_NDEBUG_UNUSED *_lt_key /*i
             if (lnk.u.soft.name) {
                 size_t soft_link_len; /* Length of string in local heap */
 
-		/* Compute the size of the soft link name in the heap, being defensive about corrupted data */
-                soft_link_len = strnlen(lnk.u.soft.name, (udata->common.block_size - sn->entry[idx].cache.slink.lval_offset)) + 1;
-		if (soft_link_len > (udata->common.block_size - sn->entry[idx].cache.slink.lval_offset))
-		    soft_link_len = (udata->common.block_size - sn->entry[idx].cache.slink.lval_offset);
+                /* Compute the size of the soft link name in the heap, being defensive about corrupted data */
+                soft_link_len = strnlen(lnk.u.soft.name,
+                                        (udata->common.block_size - sn->entry[idx].cache.slink.lval_offset)) +
+                                1;
+                if (soft_link_len > (udata->common.block_size - sn->entry[idx].cache.slink.lval_offset))
+                    soft_link_len = (udata->common.block_size - sn->entry[idx].cache.slink.lval_offset);
 
-                if (H5HL_remove(f, udata->common.heap, sn->entry[idx].cache.slink.lval_offset, soft_link_len) < 0)
-                    HGOTO_ERROR(H5E_SYM, H5E_CANTDELETE, H5B_INS_ERROR, "unable to remove soft link from local heap");
+                if (H5HL_remove(f, udata->common.heap, sn->entry[idx].cache.slink.lval_offset,
+                                soft_link_len) < 0)
+                    HGOTO_ERROR(H5E_SYM, H5E_CANTDELETE, H5B_INS_ERROR,
+                                "unable to remove soft link from local heap");
             } /* end if */
         }     /* end else */
 
@@ -900,8 +904,8 @@ H5G__node_iterate(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr,
 {
     H5G_bt_it_it_t *udata = (H5G_bt_it_it_t *)_udata;
     H5G_node_t     *sn    = NULL;
-    H5G_entry_t    *ents;           /* Pointer to entries in this node */
-    unsigned        u;              /* Local index variable */
+    H5G_entry_t    *ents; /* Pointer to entries in this node */
+    unsigned        u;    /* Local index variable */
     int             ret_value = H5_ITER_CONT;
 
     FUNC_ENTER_PACKAGE
@@ -924,11 +928,12 @@ H5G__node_iterate(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr,
         if (udata->skip > 0)
             --udata->skip;
         else {
-            H5O_link_t  lnk;            /* Link for entry */
+            H5O_link_t lnk; /* Link for entry */
 
             /* Convert the entry to a link */
             if (H5G__ent_to_link(&ents[u], udata->heap, &lnk) < 0)
-                HGOTO_ERROR(H5E_SYM, H5E_CANTCONVERT, H5_ITER_ERROR, "unable to convert symbol table entry to link");
+                HGOTO_ERROR(H5E_SYM, H5E_CANTCONVERT, H5_ITER_ERROR,
+                            "unable to convert symbol table entry to link");
 
             /* Make the callback */
             ret_value = (udata->op)(&lnk, udata->op_data);
@@ -1154,14 +1159,15 @@ H5G__node_copy(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr, const
 
     /* copy object in this node one by one */
     for (i = 0; i < sn->nsyms; i++) {
-        H5G_entry_t        *src_ent = &(sn->entry[i]); /* Convenience variable to refer to current source group entry */
-        H5O_link_t          lnk;          /* Link to insert */
-        char               *name;         /* Name of source object */
-        H5G_entry_t         tmp_src_ent;  /* Temporary copy. Change will not affect the cache */
+        H5G_entry_t *src_ent =
+            &(sn->entry[i]);             /* Convenience variable to refer to current source group entry */
+        H5O_link_t          lnk;         /* Link to insert */
+        char               *name;        /* Name of source object */
+        H5G_entry_t         tmp_src_ent; /* Temporary copy. Change will not affect the cache */
         H5O_type_t          obj_type = H5O_TYPE_UNKNOWN; /* Target object type */
-        H5G_copy_file_ud_t *cpy_udata;    /* Copy file udata */
-        H5G_obj_create_t    gcrt_info;    /* Group creation info */
-        size_t              max_link_len; /* Max. length of string in local heap */
+        H5G_copy_file_ud_t *cpy_udata;                   /* Copy file udata */
+        H5G_obj_create_t    gcrt_info;                   /* Group creation info */
+        size_t              max_link_len;                /* Max. length of string in local heap */
 
         /* expand soft link */
         if (H5G_CACHED_SLINK == src_ent->type && cpy_info->expand_soft_link) {
@@ -1181,22 +1187,24 @@ H5G__node_copy(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr, const
             H5_GCC_CLANG_DIAG_ON("cast-qual")
 
             /* Get pointer to link value in local heap */
-            if ((link_name = (char *)H5HL_offset_into(udata->src_heap, tmp_src_ent.cache.slink.lval_offset)) == NULL)
+            if ((link_name =
+                     (char *)H5HL_offset_into(udata->src_heap, tmp_src_ent.cache.slink.lval_offset)) == NULL)
                 HGOTO_ERROR(H5E_SYM, H5E_CANTGET, H5_ITER_ERROR, "unable to get link name");
 
-	    /* Sanity check soft link name, to detect running off the end of the heap block */
-	    max_link_len = udata->src_block_size - tmp_src_ent.cache.slink.lval_offset;
-	    if (strnlen(link_name, max_link_len) == max_link_len)
+            /* Sanity check soft link name, to detect running off the end of the heap block */
+            max_link_len = udata->src_block_size - tmp_src_ent.cache.slink.lval_offset;
+            if (strnlen(link_name, max_link_len) == max_link_len)
                 HGOTO_ERROR(H5E_SYM, H5E_BADVALUE, H5_ITER_ERROR, "invalid link name offset");
 
             /* Check if the object pointed by the soft link exists in the source file */
             if (H5G__loc_addr(&grp_loc, link_name, &obj_addr) < 0)
-                HGOTO_ERROR(H5E_SYM, H5E_CANTFIND, H5_ITER_ERROR, "unable to check if soft link resolves to an object");
+                HGOTO_ERROR(H5E_SYM, H5E_CANTFIND, H5_ITER_ERROR,
+                            "unable to check if soft link resolves to an object");
             if (H5_addr_defined(obj_addr)) {
                 tmp_src_ent.header = obj_addr;
                 src_ent            = &tmp_src_ent;
             } /* end if */
-        } /* if ((H5G_CACHED_SLINK == src_ent->type)... */
+        }     /* if ((H5G_CACHED_SLINK == src_ent->type)... */
 
         /* Check if object in source group is a hard link */
         if (H5_addr_defined(src_ent->header)) {
@@ -1237,12 +1245,13 @@ H5G__node_copy(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr, const
 
             /* Construct link information for eventual insertion */
             lnk.type = H5L_TYPE_SOFT;
-            if ((lnk.u.soft.name = (char *)H5HL_offset_into(udata->src_heap, src_ent->cache.slink.lval_offset)) == NULL)
+            if ((lnk.u.soft.name =
+                     (char *)H5HL_offset_into(udata->src_heap, src_ent->cache.slink.lval_offset)) == NULL)
                 HGOTO_ERROR(H5E_OHDR, H5E_CANTGET, H5_ITER_ERROR, "unable to get link name");
 
-	    /* Sanity check soft link name, to detect running off the end of the heap block */
-	    max_link_len = udata->src_block_size - src_ent->cache.slink.lval_offset;
-	    if (strnlen(lnk.u.soft.name, max_link_len) == max_link_len)
+            /* Sanity check soft link name, to detect running off the end of the heap block */
+            max_link_len = udata->src_block_size - src_ent->cache.slink.lval_offset;
+            if (strnlen(lnk.u.soft.name, max_link_len) == max_link_len)
                 HGOTO_ERROR(H5E_SYM, H5E_BADVALUE, H5_ITER_ERROR, "invalid link name offset");
         } /* else if */
         else
@@ -1252,16 +1261,16 @@ H5G__node_copy(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr, const
         if ((name = (char *)H5HL_offset_into(udata->src_heap, src_ent->name_off)) == NULL)
             HGOTO_ERROR(H5E_SYM, H5E_CANTGET, H5_ITER_ERROR, "unable to get source object name");
 
-	/* Sanity check soft link name, to detect running off the end of the heap block */
-	max_link_len = udata->src_block_size - src_ent->name_off;
-	if (strnlen(name, max_link_len) == max_link_len)
+        /* Sanity check soft link name, to detect running off the end of the heap block */
+        max_link_len = udata->src_block_size - src_ent->name_off;
+        if (strnlen(name, max_link_len) == max_link_len)
             HGOTO_ERROR(H5E_SYM, H5E_BADVALUE, H5_ITER_ERROR, "invalid link name offset");
 
         /* Set up common link data */
         lnk.cset         = H5F_DEFAULT_CSET; /* XXX: Allow user to set this */
         lnk.corder       = 0;                /* Creation order is not tracked for old-style links */
         lnk.corder_valid = false;            /* Creation order is not valid */
-        lnk.name         = name;	     /* Name of link */
+        lnk.name         = name;             /* Name of link */
 
         /* Set copied metadata tag */
         H5_BEGIN_TAG(H5AC__COPIED_TAG)
@@ -1298,8 +1307,8 @@ H5G__node_build_table(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr
                       const void H5_ATTR_UNUSED *_rt_key, void *_udata)
 {
     H5G_bt_it_bt_t *udata = (H5G_bt_it_bt_t *)_udata;
-    H5G_node_t     *sn    = NULL;   /* Symbol table node */
-    unsigned        u;              /* Local index variable */
+    H5G_node_t     *sn    = NULL; /* Symbol table node */
+    unsigned        u;            /* Local index variable */
     int             ret_value = H5_ITER_CONT;
 
     FUNC_ENTER_PACKAGE
@@ -1332,14 +1341,15 @@ H5G__node_build_table(H5F_t *f, const void H5_ATTR_UNUSED *_lt_key, haddr_t addr
 
     /* Iterate over the symbol table node entries, adding to link table */
     for (u = 0; u < sn->nsyms; u++) {
-        size_t      linkno;         /* Link allocated */
+        size_t linkno; /* Link allocated */
 
         /* Determine the link to operate on in the table */
         linkno = udata->ltable->nlinks++;
 
         /* Convert the entry to a link */
         if (H5G__ent_to_link(&sn->entry[u], udata->heap, &udata->ltable->lnks[linkno]) < 0)
-            HGOTO_ERROR(H5E_SYM, H5E_CANTCONVERT, H5_ITER_ERROR, "unable to convert symbol table entry to link");
+            HGOTO_ERROR(H5E_SYM, H5E_CANTCONVERT, H5_ITER_ERROR,
+                        "unable to convert symbol table entry to link");
     } /* end for */
 
 done:
@@ -1419,7 +1429,7 @@ H5G_node_debug(H5F_t *f, haddr_t addr, FILE *stream, int indent, int fwidth, had
         H5G_bt_common_t udata; /*data to pass through B-tree	*/
 
         H5E_clear_stack(NULL); /* discard that error */
-        udata.heap = heap;
+        udata.heap       = heap;
         udata.block_size = H5HL_heap_get_size(heap);
         if (H5B_debug(f, addr, stream, indent, fwidth, H5B_SNODE, &udata) < 0)
             HGOTO_ERROR(H5E_SYM, H5E_CANTLOAD, FAIL, "unable to debug B-tree node");

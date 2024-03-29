@@ -75,9 +75,9 @@ H5O__efl_decode(H5F_t *f, H5O_t H5_ATTR_UNUSED *open_oh, unsigned H5_ATTR_UNUSED
 {
     H5O_efl_t     *mesg = NULL;
     int            version;
-    const uint8_t *p_end     = p + p_size - 1; /* pointer to last byte in p */
-    const char    *s         = NULL;
-    H5HL_t        *heap      = NULL;
+    const uint8_t *p_end = p + p_size - 1; /* pointer to last byte in p */
+    const char    *s     = NULL;
+    H5HL_t        *heap  = NULL;
     size_t         block_size;       /* Size of the heap block */
     void          *ret_value = NULL; /* Return value */
 
@@ -395,7 +395,7 @@ herr_t
 H5O_efl_total_size(const H5O_efl_t *efl, hsize_t *size)
 {
     hsize_t total_size = 0, tmp;
-    herr_t  ret_value = SUCCEED; /* Return value */
+    herr_t  ret_value  = SUCCEED; /* Return value */
 
     FUNC_ENTER_NOAPI(FAIL)
 
@@ -412,7 +412,7 @@ H5O_efl_total_size(const H5O_efl_t *efl, hsize_t *size)
 
         /* Set the size to return */
         *size = total_size;
-    }     /* end else */
+    } /* end else */
 
 done:
     FUNC_LEAVE_NOAPI(ret_value)
