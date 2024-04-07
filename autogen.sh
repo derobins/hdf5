@@ -43,13 +43,6 @@ echo
 # These should be run before the Autotools so that failures here block
 # compilation.
 
-# Run trace script
-# The trace script adds H5TRACE macros to library source files.  It should
-# have no effect on files that don't have HDF5 API macros in them.
-echo "Running trace script:"
-bin/trace src/H5*.c || exit 1
-echo
-
 # Run make_err
 # make_err automatically generates the H5E headers that create error message
 # types for HDF5.
