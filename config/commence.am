@@ -77,10 +77,6 @@ AM_LDFLAGS=@AM_LDFLAGS@ @H5_LDFLAGS@
 
 ACLOCAL_AMFLAGS="-I m4"
 
-# The trace script; this is used on source files from the C library to
-# insert tracing macros.
-TRACE=perl $(top_srcdir)/bin/trace
-
 # Make sure that these variables are exported to the Makefiles
 F9XMODEXT=@F9XMODEXT@
 F9XMODFLAG=@F9XMODFLAG@
