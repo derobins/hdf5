@@ -326,7 +326,6 @@ H5Xdo_api_stuff(/*parameters*/)
 	herr_t ret_value = SUCCEED;
 
 	FUNC_ENTER_API(FAIL)
-	H5TRACE3(/*stuff*/)
 
 	if (/*parameter check*/)
 		HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "badness");
@@ -354,9 +353,6 @@ A public API call differs little from an internal call. The biggest differences:
 * The function enter macro is `FUNC_ENTER_API` (or similar). Under the hood, this
   one differs quite a bit from an internal function enter macro. It checks for
   package initialization, for example, and acquires the global lock in thread-safe HDF5.
-* There is a `TRACE` macro. This helps with API tracing and is applied by a
-  script invoked by `autogen.sh` (Autotools) or CMake. You probably don't need
-  to worry much about this.
 * Parameter checking uses the regular HDF5 error scheme and invokes 
   `HGOTO_ERROR` macros on errors.
 * In storage-related calls, there will usually be some VOL setup (HDF5 1.12.x
