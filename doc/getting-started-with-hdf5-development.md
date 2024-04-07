@@ -518,20 +518,6 @@ return value, in the hopes that we can clean up as much as possible.
 
 At the end of the function, the `FUNC_LEAVE` macro will return `ret_value`.
 
-### Trace macros
-
-These are automatically generated for public C library API calls by the
-`bin/trace` script, which scans the source code, looking for functions of the
-form `H5X(Y?)<whatever>()`, to which it will add or update the `H5TRACE` macros.
-
-`H5TRACE` macros are only added to public C library API calls. They are NOT
-added to the language wrappers, tools code, high-level library, etc.
-
-You should never have to modify an `H5TRACE` macro. Either point `bin/trace` at
-your source file or run `autogen.sh` (which runs `bin/trace` over the C files
-in `src`). `bin/trace` is a Perl script, so you'll need to have that available.
-
-
 ### Memory - `H5MM` and `H5FL`
 
 In the C library itself, we use `H5MM` and `H5FL` calls to allocate and free
