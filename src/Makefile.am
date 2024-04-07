@@ -195,22 +195,5 @@ $(top_srcdir)/src/H5version.h: $(top_srcdir)/src/H5vers.txt
 $(top_srcdir)/src/H5overflow.h: $(top_srcdir)/src/H5overflow.txt
 	perl $(top_srcdir)/bin/make_overflow $?
 
-# Add TRACE macros to library source files.  This is done via the trace script
-# in the hdf5/bin directory.  If the file contains HDF5 API macros, a "clean"
-# version of the source file is saved with a tilde (~) after its name and
-# tracing information is inserted.  trace should have no effect on files
-# without HDF5 macros.
-
-trace: $(libhdf5_la_SOURCES)
-	@for dep in $? dummy; do                                          \
-	 if test $$dep != "dummy" -a -n "$(PERL)"; then                   \
-	  case "$$dep" in                                                 \
-	   *.c)                                                           \
-	    $(TRACE) $$dep;                                               \
-	    ;;                                                            \
-	  esac;                                                           \
-	 fi;                                                              \
-	done
-
 include $(top_srcdir)/config/conclude.am
 
