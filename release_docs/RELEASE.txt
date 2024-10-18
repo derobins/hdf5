@@ -65,7 +65,7 @@ New Features
     - H5Iregister_type() no longer takes a hash_size parameter
 
       The hash_size parameter of H5Iregister_type() has not been used since
-      HDF5 1.8.13, when the internal representation of IDs changed. This
+      HDF5 1.8.13, when the internal storage of IDs changed. This
       parameter has been removed and the H5Iregister_type() API call has
       been versioned using our usual scheme, producing:
 
