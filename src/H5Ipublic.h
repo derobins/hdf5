@@ -119,7 +119,7 @@ extern "C" {
  *
  * \details The \p type parameter is the identifier for the ID type to which
  *          this new ID will belong. This identifier must have been created by
- *          a call to H5Iregister_type().
+ *          a call to H5Iregister_type2().
  *
  * \details The \p object parameter is a pointer to the memory which the new ID
  *          will be a reference to. This pointer will be stored by the library
@@ -176,7 +176,7 @@ H5_DLL void *H5Iobject_verify(hid_t id, H5I_type_t type);
  *
  *          The \p type parameter is the identifier for the ID type which \p id
  *          is supposed to belong to. This identifier must have been created by
- *          a call to H5Iregister_type().
+ *          a call to H5Iregister_type2().
  *
  * \note This function does NOT deallocate the memory that \p id refers to.
  *       The pointer returned by H5Iregister() must be deallocated by the user
@@ -394,19 +394,13 @@ H5_DLL int H5Iget_ref(hid_t id);
  *
  * \brief Creates and returns a new ID type
  *
- * \param[in] hash_size Minimum hash table size (in entries) used to store IDs
- *                      for the new type (unused in 1.8.13 and later)
  * \param[in] reserved Number of reserved IDs for the new type
  * \param[in] free_func Function used to deallocate space for a single ID
  *
  * \return Returns the type identifier on success, negative on failure.
  *
- * \details H5Iregister_type() allocates space for a new ID type and returns an
+ * \details H5Iregister_type2() allocates space for a new ID type and returns an
  *          identifier for it.
- *
- *          The \p hash_size parameter indicates the minimum size of the hash
- *          table used to store IDs in the new type. This parameter is unused
- *          in 1.8.13 and later, when the implementation of ID storage changed.
  *
  *          The \p reserved parameter indicates the number of IDs in this new
  *          type to be reserved. Reserved IDs are valid IDs which are not
@@ -420,10 +414,13 @@ H5_DLL int H5Iget_ref(hid_t id);
  *          pointer which was passed in to the H5Iregister() function. The \p
  *          free_func function should return 0 on success and -1 on failure.
  *
- * \since 1.8.0
+ * \note H5Iregister_type2() originally took a hash_size parameter. This
+ *       parameter had been unused since 1.8.13 and was removed in 1.16.0.
+ *
+ * \since 1.16.0
  *
  */
-H5_DLL H5I_type_t H5Iregister_type(size_t hash_size, unsigned reserved, H5I_free_t free_func);
+H5_DLL H5I_type_t H5Iregister_type2(unsigned reserved, H5I_free_t free_func);
 /**
  * \ingroup H5IUD
  *
@@ -490,7 +487,7 @@ H5_DLL herr_t H5Idestroy_type(H5I_type_t type);
  *
  *          The type parameter is the identifier for the ID type whose
  *          reference count is to be incremented. This identifier must have
- *          been created by a call to H5Iregister_type().
+ *          been created by a call to H5Iregister_type2().
  *
  * \since 1.8.0
  *
@@ -512,7 +509,7 @@ H5_DLL int H5Iinc_type_ref(H5I_type_t type);
  *
  *          The type parameter is the identifier for the identifier type whose
  *          reference count is to be decremented. This identifier must have
- *          been created by a call to H5Iregister_type().
+ *          been created by a call to H5Iregister_type2().
  *
  * \since 1.8.0
  *
@@ -533,7 +530,7 @@ H5_DLL int H5Idec_type_ref(H5I_type_t type);
  *
  *          The type parameter is the identifier for the ID type whose
  *          reference count is to be retrieved. This identifier must have been
- *          created by a call to H5Iregister_type().
+ *          created by a call to H5Iregister_type2().
  *
  * \since 1.8.0
  *
@@ -561,7 +558,7 @@ H5_DLL int H5Iget_type_ref(H5I_type_t type);
  *
  *          The \p type parameter is the identifier for the ID type which is to
  *          be searched. This identifier must have been created by a call to
- *          H5Iregister_type().
+ *          H5Iregister_type2().
  *
  *          The parameter \p func is a function pointer to a function which
  *          takes three parameters. The first parameter is a \c void* and will
@@ -680,6 +677,53 @@ H5_DLL htri_t H5Itype_exists(H5I_type_t type);
  *
  */
 H5_DLL htri_t H5Iis_valid(hid_t id);
+
+/* Symbols defined for compatibility with previous versions of the HDF5 API.
+ *
+ * Use of these symbols is deprecated.
+ */
+#ifndef H5_NO_DEPRECATED_SYMBOLS
+
+/**
+ * \ingroup H5IUD
+ *
+ * \brief Creates and returns a new ID type
+ *
+ * \param[in] hash_size Minimum hash table size (in entries) used to store IDs
+ *                      for the new type (unused in 1.8.13 and later)
+ * \param[in] reserved Number of reserved IDs for the new type
+ * \param[in] free_func Function used to deallocate space for a single ID
+ *
+ * \return Returns the type identifier on success, negative on failure.
+ *
+ * \details H5Iregister_type1() allocates space for a new ID type and returns an
+ *          identifier for it.
+ *
+ *          The \p hash_size parameter indicates the minimum size of the hash
+ *          table used to store IDs in the new type. This parameter is unused
+ *          in 1.8.13 and later, when the implementation of ID storage changed.
+ *
+ *          The \p reserved parameter indicates the number of IDs in this new
+ *          type to be reserved. Reserved IDs are valid IDs which are not
+ *          associated with any storage within the library.
+ *
+ *          The \p free_func parameter is a function pointer to a function
+ *          which returns an herr_t and accepts a \c void*. The purpose of this
+ *          function is to deallocate memory for a single ID. It will be called
+ *          by H5Iclear_type() and H5Idestroy_type() on each ID. This function
+ *          is NOT called by H5Iremove_verify(). The \c void* will be the same
+ *          pointer which was passed in to the H5Iregister() function. The \p
+ *          free_func function should return 0 on success and -1 on failure.
+ *
+ * \note This function has been deprecated since the hash_size parameter
+ *       has been unused for so long. Please use H5Iregister_type2() instead.
+ *
+ * \since 1.8.0
+ *
+ */
+H5_DLL H5I_type_t H5Iregister_type1(size_t hash_size, unsigned reserved, H5I_free_t free_func);
+
+#endif /* H5_NO_DEPRECATED_SYMBOLS */
 
 #ifdef __cplusplus
 }

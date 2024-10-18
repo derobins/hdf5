@@ -62,6 +62,24 @@ New Features
 
     Library:
     --------
+    - H5Iregister_type() no longer takes a hash_size parameter
+
+      The hash_size parameter of H5Iregister_type() has not been used since
+      HDF5 1.8.13, when the internal representation of IDs changed. This
+      parameter has been removed and the H5Iregister_type() API call has
+      been versioned using our usual scheme, producing:
+
+      H5I_type_t H5Iregister_type1(size_t hash_size, unsigned reserved,
+                                   H5I_free_t free_func)
+
+      and
+
+      H5I_type_t H5Iregister_type2(unsigned reserved, H5I_free_t free_func)
+
+      as well as the H5Iregister_type() macro, which will resolve to
+      one of the above signatures, depending on how the library was
+      built, the latter of which is the library default.
+
     - H5Pset_external() now uses HDoff_t, which is always a 64-bit type
 
       The H5Pset_external() call took an off_t parameter in HDF5 1.14.x and

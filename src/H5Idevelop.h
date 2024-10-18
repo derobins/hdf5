@@ -77,7 +77,7 @@ extern "C" {
  *
  * \details The \p type parameter is the identifier for the ID type to which
  *          this new future ID will belong. This identifier may have been created
- *          by a call to H5Iregister_type() or may be one of the HDF5 pre-defined
+ *          by a call to H5Iregister_type2() or may be one of the HDF5 pre-defined
  *          ID classes (e.g. H5I_FILE, H5I_GROUP, H5I_DATASPACE, etc).
  *
  * \details The \p object parameter is a pointer to the memory which the new ID
@@ -91,7 +91,7 @@ extern "C" {
  *          invoked by the HDF5 library to convert a future object into an
  *          actual object.   The \p realize_cb function may be invoked by
  *          H5Iobject_verify() to return the actual object for a user-defined
- *          ID class (i.e. an ID class registered with H5Iregister_type()) or
+ *          ID class (i.e. an ID class registered with H5Iregister_type22()) or
  *          internally by the HDF5 library in order to use or get information
  *          from an HDF5 pre-defined ID type.  For example, the \p realize_cb
  *          for a future dataspace object will be called during the process
