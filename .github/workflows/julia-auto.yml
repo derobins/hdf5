@@ -23,8 +23,9 @@ jobs:
       - name: Save the Julia patch file
         shell: bash
         run: |
+          echo "${{ runner.workspace }}"
           mkdir "${{ runner.workspace }}/julia_patch"
-          cp .github/workflows/julia_ci.patch julia_patch/
+          cp .github/workflows/julia_ci.patch "${{ runner.workspace }}/julia_patch"
 
       - name: Install Dependencies
         shell: bash
@@ -95,7 +96,7 @@ jobs:
           echo " -- ls ../hdf5 -----------------"
           ls ../hdf5
 
-          git apply $GITHUB_WORKSPACE/julia_patch/julia_ci.patch -v
+          git apply "${{ runner.workspace }}/julia_patch/julia_ci.patch" -v
 
       - name: Generate LocalPreferences
         run: |
