@@ -76,7 +76,7 @@ jobs:
           ls ../..
           echo " -- ls ../build -----------------"
           ls ../build
-          git apply ${{ runner.workspace }}/build/.github/workflows/julia_ci.patch -v
+          git apply $GITHUB_WORKSPACE/.github/workflows/julia_ci.patch -v
 
       - name: Generate LocalPreferences
         run: |
