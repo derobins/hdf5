@@ -68,6 +68,9 @@ jobs:
           repository: JuliaIO/HDF5.jl
           path: .
 
+      - name: Patch Julia CI
+        run:  git apply ${{ github.workspace }}/.github/workflows/julia_ci.patch -v
+
       - name: Generate LocalPreferences
         run: |
           echo '[HDF5]' >> LocalPreferences.toml
