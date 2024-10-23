@@ -72,6 +72,8 @@ jobs:
           ls
           echo " -- ls .. -----------------"
           ls ..
+          echo " -- ls ../.. -----------------"
+          ls ../..
           git apply .github/workflows/julia_ci.patch -v
 
       - name: Generate LocalPreferences
