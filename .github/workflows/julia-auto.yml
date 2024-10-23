@@ -68,6 +68,7 @@ jobs:
       - name: Patch Julia CI
         run:  |
           echo $PWD
+          ls
           git apply .github/workflows/julia_ci.patch -v
 
       - name: Generate LocalPreferences
