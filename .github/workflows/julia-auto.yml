@@ -16,8 +16,15 @@ jobs:
     name: "julia ${{ inputs.build_mode }}"
     runs-on: ubuntu-latest
     steps:
-      - name: Get Sources
+      - name: Check out HDF5 source
         uses: actions/checkout@v4.1.7
+
+        # Checking out the Julia HDF5 wrappers will clobber the HDF5 checkout
+      - name: Save the Julia patch file
+        shell: bash
+        run: |
+          mkdir "${{ runner.workspace }}/julia_patch"
+          cp .github/workflows/julia_ci.patch julia_patch/
 
       - name: Install Dependencies
         shell: bash
@@ -31,10 +38,6 @@ jobs:
       - name: Autotools Configure
         shell: bash
         run: |
-          echo " -- HDF5 PWD -----------------"
-          echo $PWD
-
-
           sh ./autogen.sh
           mkdir "${{ runner.workspace }}/build"
           cd "${{ runner.workspace }}/build"
@@ -73,6 +76,8 @@ jobs:
         run:  |
           echo " -- Julia PWD -----------------"
           echo $PWD
+          echo "-- GITHUB_WORKSPACE -----------"
+          echo $GITHUB_WORKSPACE
 
           echo
           echo " -- ls -----------------"
@@ -90,7 +95,7 @@ jobs:
           echo " -- ls ../hdf5 -----------------"
           ls ../hdf5
 
-          git apply $GITHUB_WORKSPACE/.github/workflows/julia_ci.patch -v
+          git apply $GITHUB_WORKSPACE/julia_patch/julia_ci.patch -v
 
       - name: Generate LocalPreferences
         run: |
