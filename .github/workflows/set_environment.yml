@@ -1,0 +1,20 @@
+name: Set job environment variables
+
+jobs:
+  set_environment_vars:
+    runs-on: ubuntu-latest
+    outputs:
+      linux_version:   ${{ steps.set_outputs.outputs.linux_version }}
+      macos_version:   ${{ steps.set_outputs.outputs.macos_version }}
+      windows_version: ${{ steps.set_outputs.outputs.windows_version }}
+      gcc_packages:    ${{ steps.set_outputs.outputs.gcc_packages }}
+      gcc_compilers:   ${{ steps.set_outputs.outputs.gcc_compilers }}
+    steps:
+      - name: Set up common test environment
+        id: set_output
+        run: |
+          echo "::set-output name=linux_version::ubuntu-latest"
+          echo "::set-output name=macos_version::macos-latest"
+          echo "::set-output name=windows_version::windows-latest"
+          echo "::set-output name=gcc_packages::gcc-12 g++-12 gfortran-12"
+          echo "::set-output name=gcc_compilers::CC=gcc-12 CXX=g++-12 FC=gfortran-12"
