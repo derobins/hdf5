@@ -1,4 +1,8 @@
-name: Set job environment variables
+name: Set env defaults
+
+on: [push, pull_request]
+permissions:
+  contents: read
 
 jobs:
   set_environment_vars:
