@@ -60,7 +60,7 @@ jobs:
             parallel: OFF
             mirror_vfd: OFF
             direct_vfd: OFF
-            ros3_vfd: OFF
+            ros3_vfd: ON
             generator: "-G \"Visual Studio 17 2022\" -A x64"
             run_tests: true
 
@@ -98,7 +98,7 @@ jobs:
             parallel: OFF
             mirror_vfd: ON
             direct_vfd: OFF
-            ros3_vfd: OFF
+            ros3_vfd: ON
             generator: "-G Ninja"
             run_tests: true
 
@@ -131,8 +131,17 @@ jobs:
       # CMake gets libaec from fetchcontent
 
       - name: Install Dependencies (macOS)
-        run: brew install ninja
+        run: brew install ninja libcurl
         if: ${{ matrix.os == 'macos-latest' }}
+
+      - name: Install Dependencies (Windows)
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+          .\vcpkg\vcpkg.exe install curl:x64-windows openssl:x64-windows
+          $env:PATH += ";$PWD\vcpkg\installed\x64-windows\bin"
+          [Environment]::SetEnvironmentVariable("PATH", $env:PATH, "Machine")
+        if: ${{ matrix.os == 'windows-latest' }}
 
         # symlinks the compiler executables to a common location 
 #      - name: Install GNU Fortran (macOS)
