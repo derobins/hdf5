@@ -131,7 +131,7 @@ jobs:
       # CMake gets libaec from fetchcontent
 
       - name: Install Dependencies (macOS)
-        run: brew install ninja libcurl
+        run: brew install ninja curl
         if: ${{ matrix.os == 'macos-latest' }}
 
       - name: Install Dependencies (Windows)
