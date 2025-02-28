@@ -32,7 +32,7 @@ jobs:
       - name: Install AOCC 5.0.0
         shell: bash
         run: |
-          wget https://download.amd.com/developer/eula/aocc/aocc-4-2/aocc-compiler-5.0.0.tar
+          wget https://download.amd.com/developer/eula/aocc/aocc-5-0/aocc-compiler-5.0.0.tar
           tar -xvf aocc-compiler-5.0.0.tar
           cd aocc-compiler-5.0.0
           bash install.sh
